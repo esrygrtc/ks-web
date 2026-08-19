@@ -75,7 +75,13 @@ for (const [form, spec] of Object.entries(FORMS)) {
       if (missing.length) return redirect(`/sorry?why=missing&fields=${missing.join(',')}`);
       if (spec.fields.includes('email') && !emailOk(body.email)) return redirect('/sorry?why=email');
 
-      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      // SWA's x-forwarded-for carries ip:port; the port is per-request
+      // noise that would give every submit its own rate bucket (the W4
+      // gate caught exactly that: six 303s, no 429).
+      const raw = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      const ip = raw.startsWith('[') ? raw.replace(/\]:\d+$/, ']')
+        : /^\d+\.\d+\.\d+\.\d+(:\d+)?$/.test(raw) ? raw.split(':')[0]
+        : raw;
       const ipHash = createHash('sha256').update(form + ip).digest('hex').slice(0, 24);
       const client = table(spec.table);
 
