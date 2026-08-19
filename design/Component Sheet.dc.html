@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @keyframes ksBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes ksShimmer { 0% { background-position: -320px 0; } 100% { background-position: 320px 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 60; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 20px; font-weight: 500;">KeepState</span>
+        <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; color: #7A6F60; border-left: 1px solid #D8D2C4; padding-left: 12px; margin-left: 4px;">component sheet · v0.1</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <a href="#laws" style="font-size: 13px; color: #39404C;">UI Laws</a>
+        <a href="#controls" style="font-size: 13px; color: #39404C;">Controls</a>
+        <a href="#data" style="font-size: 13px; color: #39404C;">Data</a>
+        <a href="#session" style="font-size: 13px; color: #39404C;">Session</a>
+        <a href="#feedback" style="font-size: 13px; color: #39404C;">Feedback</a>
+        <a href="#states" style="font-size: 13px; color: #39404C;">States</a>
+        <a href="KeepState.dc.html" style="font-size: 13px; color: #7A2530;">Site →</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 40px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Stage 1 · design system</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.2vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 18em;">The parts, and the laws that govern them.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0; max-width: 44em; text-wrap: pretty;">Every component the console and the site are built from, rendered in each state it can hold. Three laws come before the parts, because they decide what a part is allowed to say.</p>
+  </div>
+
+  <section id="laws" style="border-top: 1px solid #D8D2C4; background: #EFEBE1;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 60px;">
+      <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 26px;">UI Laws</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px;">
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+            <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #7A2530; letter-spacing: 0.08em;">LAW 1</span>
+            <p style="font-size: 14px; font-weight: 600; margin: 0;">Absence is not zero</p>
+          </div>
+          <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.5; color: #16130F; margin: 0 0 20px;">Missing instrumentation reports as unavailable, never as zero. A zero is a measurement.</p>
+          <div style="display: grid; gap: 12px;">
+            <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px;">
+              <p style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">measured</p>
+              <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 26px; color: #7A2530; margin: 0 0 8px;">0</p>
+              <p style="font-size: 12px; color: #39404C; margin: 0;">The meter reported zero tokens. This is a fact.</p>
+            </div>
+            <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px; background: #FBFAF7;">
+              <p style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">absent</p>
+              <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A6F60; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 10px;">
+                <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>unavailable (meter unreachable)
+              </span>
+              <p style="font-size: 12px; color: #39404C; margin: 8px 0 0;">The meter said nothing. We refuse to invent a number.</p>
+            </div>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+            <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #7A2530; letter-spacing: 0.08em;">LAW 2</span>
+            <p style="font-size: 14px; font-weight: 600; margin: 0;">Every number carries provenance</p>
+          </div>
+          <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.5; color: #16130F; margin: 0 0 20px;">Measured, or estimated. Dollars derived from external rates are estimated even when their tokens are measured.</p>
+          <div style="display: grid; gap: 12px;">
+            <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 8px;">Tokens not re-purchased</p>
+              <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 26px; color: #7A2530;">41.2M</span>
+                <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 2px 6px;">MEASURED</span>
+              </div>
+            </div>
+            <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 8px;">Value of tokens not re-purchased</p>
+              <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 26px; color: #7A2530;">$4,100</span>
+                <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.12em; color: #7A6F60; border: 1px solid #C9C2B2; border-radius: 2px; padding: 2px 6px;">ESTIMATED</span>
+              </div>
+              <p style="font-size: 12px; color: #7A6F60; margin: 8px 0 0;">at published list rates, 2026-08-01</p>
+            </div>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+            <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #7A2530; letter-spacing: 0.08em;">LAW 3</span>
+            <p style="font-size: 14px; font-weight: 600; margin: 0;">A claim links its evidence</p>
+          </div>
+          <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.5; color: #16130F; margin: 0 0 20px;">Any claim-shaped sentence may carry a diamond to the gate run that proves it. Unproven sentences soften to observation.</p>
+          <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 16px; margin-bottom: 12px;">
+            <p style="font-size: 15px; line-height: 1.65; color: #16130F; margin: 0;">Content-addressed dedup measured at 19x on our own soak<a href="#laws" title="gate G-114 · soak-dedup" style="display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; vertical-align: baseline; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; color: #7A2530; text-decoration: none; border-bottom: 1px solid #E4CFCC;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>G-114</a>. Absorption on aider was observed 3 of 4, reported as data.</p>
+          </div>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0;">Hover the diamond for the gate tag; click routes to raw gate output on Proof.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="controls" style="border-top: 1px solid #D8D2C4;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 0;">
+      <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 8px;">Controls</p>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 32px;">Buttons, fields, navigation</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px;">
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Buttons</p>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">Labels are verbs the CLI uses.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;">
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: 1px solid #7A2530; border-radius: 3px; padding: 10px 18px; cursor: pointer;" style-hover="background: #641E27; border-color: #641E27;">Run</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 18px; cursor: pointer;" style-hover="border-color: #16130F;">Park</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 10px 14px; cursor: pointer;" style-hover="background: #EFEBE1; color: #16130F;">Fork</button>
+            <button type="button" disabled="{{ true }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #A69E8E; background: #F2EFE8; border: 1px solid #E2DDD1; border-radius: 3px; padding: 10px 18px; cursor: not-allowed;">Wake</button>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #7A2530; background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 3px; padding: 8px 14px; cursor: pointer;" style-hover="background: #EFDFDC;">Checkpoint</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #16130F; border: 1px solid #16130F; border-radius: 3px; padding: 8px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;" style-hover="background: #2A2622;"><span style="width: 6px; height: 6px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>Attach</button>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">Fields with inline validation</p>
+          <div style="display: grid; gap: 16px;">
+            <div>
+              <label for="cs-name" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Session name</label>
+              <input id="cs-name" type="text" value="payments-migration" readonly="{{ true }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" style-focus="border-color: #7A2530;" />
+            </div>
+            <div>
+              <label for="cs-cap" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Budget cap</label>
+              <input id="cs-cap" type="text" value="-40" readonly="{{ true }}" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid #7A2530; border-radius: 3px; padding: 10px 12px; outline: none;" />
+              <p style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: #7A2530; margin: 7px 0 0;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>A cap must be a positive dollar amount.</p>
+            </div>
+            <div>
+              <label for="cs-cad" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Checkpoint cadence</label>
+              <input id="cs-cad" type="text" value="5m" readonly="{{ true }}" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" />
+              <p style="font-size: 12px; color: #7A6F60; margin: 7px 0 0;">Storage is content-addressed, so cadence costs less than it looks.</p>
+            </div>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">Tabs, breadcrumbs, pagination</p>
+          <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #7A6F60; margin-bottom: 18px;">
+            <a href="#controls" style="color: #39404C;">Sessions</a><span>/</span>
+            <a href="#controls" style="color: #39404C;">s_7f3a</a><span>/</span>
+            <span style="color: #16130F;">Timeline</span>
+          </nav>
+          <div style="display: flex; gap: 4px; border-bottom: 1px solid #D8D2C4; margin-bottom: 18px; overflow-x: auto;">
+            <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="5">
+              <button type="button" onClick="{{ tab.onClick }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; background: transparent; border: none; border-bottom: 2px solid {{ tab.line }}; color: {{ tab.color }}; padding: 9px 12px; cursor: pointer; white-space: nowrap;">{{ tab.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">1-25 of 1,284</p>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #A69E8E;">←</button>
+              <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #16130F; border: 1px solid #16130F; color: #FBFAF7; border-radius: 3px; padding: 6px 11px; cursor: pointer;">1</button>
+              <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #39404C;">2</button>
+              <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #39404C;">52</button>
+              <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #39404C;">→</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; margin-top: 20px;">
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Command palette</p>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">Cmd-K anywhere in the console. Try it on this page.</p>
+          <button type="button" onClick="{{ openPalette }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: Inter, sans-serif; font-size: 13px; color: #7A6F60; background: #FBFAF7; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 13px; cursor: pointer; text-align: left;" style-hover="border-color: #16130F;">
+            <span>Search sessions, checkpoints, docs</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid #D8D2C4; border-radius: 3px; padding: 2px 6px;">⌘K</span>
+          </button>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">Code tabs</p>
+          <div style="display: flex; gap: 4px; margin-bottom: 10px;">
+            <sc-for list="{{ codeTabs }}" as="ct" hint-placeholder-count="3">
+              <button type="button" onClick="{{ ct.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; background: {{ ct.bg }}; color: {{ ct.color }}; border: 1px solid {{ ct.border }}; border-radius: 3px; padding: 6px 11px; cursor: pointer;">{{ ct.label }}</button>
+            </sc-for>
+          </div>
+          <div style="background: #16130F; border-radius: 4px; padding: 16px; position: relative;">
+            <button type="button" onClick="{{ onCopy }}" style="position: absolute; top: 10px; right: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 4px 8px; cursor: pointer;" style-hover="color: #FBFAF7; border-color: #6A6258;">{{ copyLabel }}</button>
+            <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">{{ codeSample }}</pre>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Terminal block</p>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">No traffic lights. A diamond marks the live session.</p>
+          <div style="background: #16130F; border: 1px solid #2A2622; border-radius: 5px; padding: 16px 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2A2622; padding-bottom: 10px; margin-bottom: 12px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378;">s_7f3a · attached</span>
+              <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; color: #EFEBE1;">
+              <div>$ ks save s_7f3a</div>
+              <div style="color: #8A8378;">checkpoint c_0041 · 1.2 GB · dedup 19x</div>
+              <div style="color: #D9B8B8;">[agent working]<span style="display: inline-block; width: 7px; height: 12px; background: #D9B8B8; vertical-align: -2px; margin-left: 4px; animation: ksBlink 1s step-end infinite;"></span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="data" style="border-top: 1px solid #D8D2C4; margin-top: 56px; background: #EFEBE1;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 60px;">
+      <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 8px;">Data</p>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 32px;">Tables, metrics, meters, pills</h2>
+
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 20px;">
+        <div style="padding: 18px 20px; border-bottom: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <p style="font-size: 13px; font-weight: 600; margin: 0;">Mono data table</p>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">click a header to sort · numerals right-aligned, tabular</p>
+        </div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px;">
+            <thead>
+              <tr style="background: #FBFAF7;">
+                <sc-for list="{{ cols }}" as="col" hint-placeholder-count="6">
+                  <th onClick="{{ col.onClick }}" style="text-align: {{ col.align }}; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: {{ col.color }}; padding: 11px 16px; border-bottom: 1px solid #D8D2C4; cursor: pointer; white-space: nowrap; user-select: none;">{{ col.label }}{{ col.caret }}</th>
+                </sc-for>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ rows }}" as="row" hint-placeholder-count="5">
+                <tr style="border-bottom: 1px solid #EDE9DF;" style-hover="background: #FBFAF7;">
+                  <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #16130F; white-space: nowrap;">{{ row.id }}</td>
+                  <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; white-space: nowrap;">{{ row.image }}</td>
+                  <td style="padding: 12px 16px;">
+                    <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ row.pillColor }}; background: {{ row.pillBg }}; border: 1px solid {{ row.pillBorder }}; border-radius: 100px; padding: 3px 10px; white-space: nowrap;">
+                      <span style="width: 5px; height: 5px; background: {{ row.pillDot }}; transform: rotate(45deg); display: block;"></span>{{ row.status }}
+                    </span>
+                  </td>
+                  <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;">{{ row.age }}</td>
+                  <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ row.ckpt }}</td>
+                  <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
+                    <span style="font-family: 'JetBrains Mono', monospace; color: #16130F; font-variant-numeric: tabular-nums;">{{ row.spend }}</span>
+                    <div style="width: 108px; height: 4px; background: #EDE9DF; border-radius: 2px; margin: 7px 0 0 auto; overflow: hidden;">
+                      <div style="height: 100%; width: {{ row.pct }}; background: {{ row.barColor }};"></div>
+                    </div>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px;">
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+          <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Tokens not re-purchased (lifetime)</p>
+          <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 34px; color: #7A2530; letter-spacing: -0.02em;">41.2M</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 2px 6px;">MEASURED</span>
+          </div>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0;">gateway meter, all sessions</p>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+          <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Checkpoint storage</p>
+          <div style="margin-bottom: 8px;">
+            <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 11px;">
+              <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>unavailable (meter unreachable)
+            </span>
+          </div>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0;">Law 1: absence never renders as zero</p>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+          <p style="font-size: 12px; color: #39404C; margin: 0 0 14px;">Budget, org</p>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 20px; color: #16130F; font-variant-numeric: tabular-nums;">$418</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60;">of $500 cap</span>
+          </div>
+          <div style="height: 6px; background: #EDE9DF; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
+            <div style="height: 100%; width: 83.6%; background: #7A2530;"></div>
+          </div>
+          <p style="font-size: 12px; color: #7A2530; margin: 0;">Past 80 percent. Sessions checkpoint and park at the cap.</p>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+          <p style="font-size: 12px; color: #39404C; margin: 0 0 14px;">Status pills</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <sc-for list="{{ pills }}" as="p" hint-placeholder-count="6">
+              <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ p.color }}; background: {{ p.bg }}; border: 1px solid {{ p.border }}; border-radius: 100px; padding: 4px 11px;">
+                <span style="width: 5px; height: 5px; background: {{ p.dot }}; transform: rotate(45deg); display: block;"></span>{{ p.label }}
+              </span>
+            </sc-for>
+          </div>
+          <p style="font-size: 12px; color: #7A6F60; margin: 14px 0 0; line-height: 1.55;">aborted: infrastructure could not hold the trial. failed: the session's own error. Never the same pill.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="session" style="border-top: 1px solid #D8D2C4;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 0;">
+      <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 8px;">Session objects</p>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 32px;">The diamond timeline</h2>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; margin: 0;">s_7f3a · 41 checkpoints · 3 branches</p>
+          <p style="font-size: 12px; color: #7A6F60; margin: 0;">hover a diamond</p>
+        </div>
+        <div style="position: relative; overflow-x: auto;">
+          <div style="min-width: 620px; position: relative; height: 210px;">
+            <svg viewBox="0 0 620 210" style="width: 100%; height: 100%; display: block;" role="img" aria-label="Session timeline with checkpoint diamonds and three fork branches">
+              <line x1="14" y1="40" x2="606" y2="40" stroke="#D8D2C4" stroke-width="1"></line>
+              <path d="M300 40 C 380 40, 400 80, 520 80" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+              <path d="M300 40 C 380 40, 400 130, 520 130" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+              <path d="M300 40 C 380 40, 400 180, 520 180" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+              <rect x="56" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 62 40)"></rect>
+              <rect x="174" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 180 40)"></rect>
+              <rect x="294" y="32" width="16" height="16" fill="#7A2530" transform="rotate(45 302 40)"></rect>
+              <rect x="414" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 420 40)"></rect>
+              <rect x="534" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 540 40)"></rect>
+              <rect x="514" y="74" width="12" height="12" fill="#7A2530" transform="rotate(45 520 80)"></rect>
+              <rect x="514" y="124" width="12" height="12" fill="#7A2530" transform="rotate(45 520 130)"></rect>
+              <rect x="514" y="174" width="12" height="12" fill="#7A2530" transform="rotate(45 520 180)"></rect>
+              <text x="284" y="20" font-family="'JetBrains Mono', monospace" font-size="11" fill="#7A2530">c_0040</text>
+            </svg>
+            <div style="position: absolute; left: 44%; top: 58px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; box-shadow: 0 14px 30px -18px rgba(22,19,15,0.45); padding: 14px 16px; width: 232px;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0 0 10px;">c_0040 · step 40</p>
+              <div style="display: grid; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between;"><span>age</span><span style="color: #39404C;">2d 04h</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>size</span><span style="color: #39404C;">1.2 GB</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>dedup delta</span><span style="color: #39404C;">+41 MB</span></div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Fork from here</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Resume</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; margin-top: 18px;">
+          <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "one big migration"</div>
+          <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "keep legacy adapter"</div>
+          <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "split by tenant"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="feedback" style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 0;">
+    <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 8px;">Feedback</p>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 32px;">Banners, toasts, friction</h2>
+
+    <div style="display: grid; gap: 12px; margin-bottom: 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 12px; background: #F6ECEA; border: 1px solid #E4CFCC; border-left: 3px solid #7A2530; border-radius: 4px; padding: 14px 18px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 6px; flex: 0 0 auto;"></span>
+        <p style="font-size: 14px; line-height: 1.55; color: #16130F; margin: 0;"><span style="font-weight: 600;">Incident: elevated resume latency in eu-west.</span> Cold resumes are averaging 140 s. Checkpoints are unaffected. <a href="#feedback">Status page</a></p>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 18px;">
+        <span style="width: 7px; height: 7px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 6px; flex: 0 0 auto;"></span>
+        <p style="font-size: 14px; line-height: 1.55; color: #39404C; margin: 0;"><span style="font-weight: 600; color: #16130F;">Maintenance, Sunday 02:00 to 04:00 UTC.</span> Running sessions checkpoint and park automatically, then wake. No action needed.</p>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 18px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 6px; flex: 0 0 auto;"></span>
+        <p style="font-size: 14px; line-height: 1.55; color: #39404C; margin: 0;"><span style="font-weight: 600; color: #16130F;">Grant applied: 500 hours of session credit.</span> Your Compatibility row is live. <a href="#feedback">See it</a></p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px;">
+      <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">Toasts</p>
+        <div style="display: grid; gap: 10px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px; background: #16130F; border-radius: 4px; padding: 13px 15px; box-shadow: 0 14px 30px -20px rgba(22,19,15,0.6);">
+            <span style="width: 6px; height: 6px; background: #D9B8B8; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto;"></span>
+            <p style="font-size: 13px; line-height: 1.5; color: #EFEBE1; margin: 0;">Checkpoint c_0041 written. 1.2 GB, dedup 19x.</p>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; background: #FFFFFF; border: 1px solid #E4CFCC; border-radius: 4px; padding: 13px 15px;">
+            <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto;"></span>
+            <p style="font-size: 13px; line-height: 1.5; color: #16130F; margin: 0;">Budget reached. Session checkpointed and parked, nothing lost. Raise the cap to wake it.</p>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 13px 15px;">
+            <span style="width: 6px; height: 6px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto;"></span>
+            <p style="font-size: 13px; line-height: 1.5; color: #39404C; margin: 0;">replayed from store, 0 new tokens</p>
+          </div>
+        </div>
+      </article>
+
+      <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Destructive modal</p>
+        <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">Consequence in one sentence, then type-to-confirm.</p>
+        <div style="border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px; background: #FBFAF7;">
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 20px; margin: 0 0 12px;">Kill session s_7f3a</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0 0 16px;">The VM stops now. Checkpoints through c_0041 remain and stay resumable; work since the last checkpoint, about 4 minutes, is lost.</p>
+          <label for="cs-confirm" style="display: block; font-size: 12px; color: #39404C; margin-bottom: 6px;">Type <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">s_7f3a</span> to confirm</label>
+          <input id="cs-confirm" type="text" value="{{ confirmText }}" onChange="{{ onConfirm }}" placeholder="s_7f3a" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none; margin-bottom: 14px;" style-focus="border-color: #7A2530;" />
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" disabled="{{ killDisabled }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: {{ killColor }}; background: {{ killBg }}; border: 1px solid {{ killBg }}; border-radius: 3px; padding: 9px 16px; cursor: {{ killCursor }};">Kill session</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 16px; cursor: pointer;">Cancel</button>
+          </div>
+        </div>
+      </article>
+
+      <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Preserved artifact</p>
+        <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">No delete affordance is rendered at all.</p>
+        <div style="border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 4px; padding: 16px;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 10px;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">preserved under ruling</span>
+          </div>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; margin: 0 0 6px;">c_0040 · 1.2 GB</p>
+          <p style="font-size: 12px; color: #39404C; margin: 0;">Retention: 7 years. Legal hold LH-19.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="states" style="border-top: 1px solid #D8D2C4; margin-top: 56px; background: #EFEBE1;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 28px 64px;">
+      <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 8px;">States</p>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 12px;">Empty, loading, error</h2>
+      <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 32px; max-width: 44em;">Every empty state teaches a command. No illustrations of empty boxes.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px;">
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Sessions · empty</p>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">No sessions yet. One line starts one.</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0 0 16px;">It checkpoints every 5 minutes from the first second, so the first crash costs you nothing.</p>
+          <div style="background: #16130F; border-radius: 4px; padding: 14px 16px; position: relative;">
+            <button type="button" onClick="{{ onCopyEmpty }}" style="position: absolute; top: 9px; right: 9px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 8px; cursor: pointer;">{{ copyEmptyLabel }}</button>
+            <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap; padding-right: 60px;">ks run --image claude-code --workspace .</code>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Overview · loading</p>
+          <div style="display: grid; gap: 12px;">
+            <div style="height: 13px; width: 46%; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            <div style="height: 34px; width: 68%; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            <div style="height: 13px; width: 88%; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            <div style="height: 13px; width: 74%; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            <div style="height: 13px; width: 60%; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+          </div>
+          <p style="font-size: 12px; color: #7A6F60; margin: 18px 0 0;">Skeletons hold the exact geometry of the loaded state, so nothing jumps.</p>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Billing · error</p>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">The billing meter did not answer.</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0 0 16px;">Your sessions and checkpoints are unaffected and still running. Spend figures are withheld rather than guessed.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;">
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 9px 16px; cursor: pointer;">Retry</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 16px; cursor: pointer;">Status page</button>
+          </div>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">ref err_meter_timeout · 2026-08-09 11:04:22Z</p>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Overview · empty</p>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">Nothing has run yet, so there is nothing to report.</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0 0 16px;">Counters stay unavailable until a first session produces a measurement.</p>
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 10px;">
+            <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>unavailable (no sessions yet)
+          </span>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Sessions · loading</p>
+          <div style="display: grid; gap: 10px;">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 12px;">
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 12px;">
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 12px;">
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+              <div style="height: 12px; border-radius: 3px; background: linear-gradient(90deg, #EFEBE1 0%, #F7F4EC 50%, #EFEBE1 100%); background-size: 320px 100%; animation: ksShimmer 1.3s linear infinite;"></div>
+            </div>
+          </div>
+        </article>
+
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">Sessions · error</p>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">The session list could not be read.</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0 0 16px;">This is the console's failure, not your agents'. They are still running and still checkpointing. Attach directly with the CLI.</p>
+          <div style="background: #16130F; border-radius: 4px; padding: 12px 14px;">
+            <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">ks ls --json</code>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePalette }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(22,19,15,0.42); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 20px 20px;">
+      <div onClick="{{ stop }}" style="width: 100%; max-width: 560px; background: #FBFAF7; border: 1px solid #D8D2C4; border-radius: 6px; box-shadow: 0 30px 70px -30px rgba(22,19,15,0.6); overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <input type="text" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search sessions, checkpoints, docs" autoFocus="{{ true }}" style="flex: 1; font-family: Inter, sans-serif; font-size: 15px; color: #16130F; background: transparent; border: none; outline: none;" />
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7A6F60; border: 1px solid #D8D2C4; border-radius: 3px; padding: 2px 6px;">esc</span>
+        </div>
+        <div style="max-height: 320px; overflow-y: auto; padding: 8px;">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border-radius: 4px; cursor: pointer;" style-hover="background: #EFEBE1;">
+              <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; width: 74px; flex: 0 0 auto;">{{ r.kind }}</span>
+                <span style="font-size: 14px; color: #16130F; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.label }}</span>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; flex: 0 0 auto;">{{ r.hint }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <footer style="border-top: 1px solid #D8D2C4;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 26px 28px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #7A6F60; margin: 0;">© KeepState · component sheet · stage 1 of 7</p>
+      </div>
+      <p style="font-size: 13px; color: #39404C; margin: 0;">Next: session detail at full fidelity, then Overview.</p>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240}}">
+class Component extends DCLogic {
+  state = {
+    tab: 0, codeTab: 0, copied: false, copiedEmpty: false,
+    sort: { key: 'spend', dir: 'desc' },
+    confirmText: '', paletteOpen: false, query: ''
+  };
+
+  componentDidMount() {
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        this.setState((s) => ({ paletteOpen: !s.paletteOpen }));
+      }
+      if (e.key === 'Escape') this.setState({ paletteOpen: false });
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); }
+
+  copy(text, key) {
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+    this.setState({ [key]: true });
+    setTimeout(() => this.setState({ [key]: false }), 1400);
+  }
+
+  data() {
+    return [
+      { id: 's_7f3a', image: 'claude-code', status: 'running', age: '04:58:12', ckpt: 41, spend: 128.4, cap: 200 },
+      { id: 's_2c19', image: 'aider', status: 'parked', age: '2d 04h', ckpt: 18, spend: 42.9, cap: 100 },
+      { id: 's_9a04', image: 'codex', status: 'checkpointing', age: '00:41:02', ckpt: 7, spend: 88.1, cap: 100 },
+      { id: 's_44be', image: 'goose', status: 'aborted', age: '01:12:55', ckpt: 12, spend: 19.3, cap: 150 },
+      { id: 's_61d7', image: 'kimi', status: 'failed', age: '00:08:31', ckpt: 2, spend: 3.4, cap: 50 },
+      { id: 's_08fa', image: 'claude-code', status: 'resuming', age: '00:00:47', ckpt: 33, spend: 174.6, cap: 200 }
+    ];
+  }
+
+  pillStyle(status) {
+    const map = {
+      running:       { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530' },
+      parked:        { color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4', dot: '#A69E8E' },
+      checkpointing: { color: '#39404C', bg: '#FFFFFF', border: '#39404C', dot: '#39404C' },
+      resuming:      { color: '#7A2530', bg: '#FFFFFF', border: '#E4CFCC', dot: '#D9B8B8' },
+      aborted:       { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2', dot: '#C9C2B2' },
+      failed:        { color: '#FBFAF7', bg: '#16130F', border: '#16130F', dot: '#D9B8B8' }
+    };
+    return map[status] || map.parked;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const tabLabels = ['Timeline', 'Terminal', 'Ledger', 'Meter', 'Artifacts'];
+    const codeLabels = ['CLI', 'API', 'SDK'];
+    const samples = [
+      'ks run --image claude-code \\\n  --workspace ./payments-migration \\\n  --budget 200 --checkpoint 5m',
+      'POST /v1/sessions\n{\n  "image": "claude-code",\n  "budget_usd": 200,\n  "checkpoint_every": "5m"\n}',
+      'const s = await ks.sessions.create({\n  image: "claude-code",\n  budgetUsd: 200,\n  checkpointEvery: "5m"\n});'
+    ];
+
+    const colDefs = [
+      { key: 'id', label: 'session', align: 'left' },
+      { key: 'image', label: 'image', align: 'left' },
+      { key: 'status', label: 'status', align: 'left' },
+      { key: 'age', label: 'uptime', align: 'right' },
+      { key: 'ckpt', label: 'ckpts', align: 'right' },
+      { key: 'spend', label: 'spend / budget', align: 'right' }
+    ];
+
+    const dir = s.sort.dir === 'asc' ? 1 : -1;
+    const rows = this.data().slice().sort((a, b) => {
+      const k = s.sort.key, x = a[k], y = b[k];
+      if (typeof x === 'number') return (x - y) * dir;
+      return String(x).localeCompare(String(y)) * dir;
+    }).map((r) => {
+      const p = this.pillStyle(r.status);
+      const pct = Math.min(100, (r.spend / r.cap) * 100);
+      return {
+        id: r.id, image: r.image, status: r.status, age: r.age, ckpt: r.ckpt,
+        spend: '$' + r.spend.toFixed(2),
+        pct: pct.toFixed(1) + '%',
+        barColor: pct >= 80 ? '#7A2530' : '#39404C',
+        pillColor: p.color, pillBg: p.bg, pillBorder: p.border, pillDot: p.dot
+      };
+    });
+
+    const all = [
+      { kind: 'session', label: 's_7f3a · payments-migration', hint: 'running' },
+      { kind: 'checkpoint', label: 'c_0040 · step 40, 1.2 GB', hint: 'fork' },
+      { kind: 'action', label: 'Park all sessions on claude-code', hint: 'bulk' },
+      { kind: 'docs', label: 'Quickstart: your first plug-pull', hint: 'docs' },
+      { kind: 'docs', label: 'CLI reference: ks fork', hint: 'docs' },
+      { kind: 'audit', label: 'Audit log, last 24 hours', hint: 'team' }
+    ];
+    const q = s.query.trim().toLowerCase();
+    const results = q ? all.filter((r) => (r.label + ' ' + r.kind).toLowerCase().includes(q)) : all;
+
+    return {
+      tabs: tabLabels.map((label, i) => ({
+        label: label,
+        color: i === s.tab ? '#16130F' : '#7A6F60',
+        line: i === s.tab ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ tab: i })
+      })),
+      codeTabs: codeLabels.map((label, i) => ({
+        label: label,
+        bg: i === s.codeTab ? '#16130F' : '#FFFFFF',
+        color: i === s.codeTab ? '#FBFAF7' : '#39404C',
+        border: i === s.codeTab ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ codeTab: i, copied: false })
+      })),
+      codeSample: samples[s.codeTab],
+      copyLabel: s.copied ? 'copied' : 'copy',
+      onCopy: () => this.copy(samples[s.codeTab], 'copied'),
+      copyEmptyLabel: s.copiedEmpty ? 'copied' : 'copy',
+      onCopyEmpty: () => this.copy('ks run --image claude-code --workspace .', 'copiedEmpty'),
+      cols: colDefs.map((c) => ({
+        label: c.label,
+        align: c.align,
+        color: s.sort.key === c.key ? '#16130F' : '#7A6F60',
+        caret: s.sort.key === c.key ? (s.sort.dir === 'asc' ? ' ↑' : ' ↓') : '',
+        onClick: () => this.setState((st) => ({
+          sort: { key: c.key, dir: st.sort.key === c.key && st.sort.dir === 'desc' ? 'asc' : 'desc' }
+        }))
+      })),
+      rows: rows,
+      pills: ['running', 'parked', 'checkpointing', 'resuming', 'aborted', 'failed'].map((k) => {
+        const p = this.pillStyle(k);
+        return { label: k, color: p.color, bg: p.bg, border: p.border, dot: p.dot };
+      }),
+      confirmText: s.confirmText,
+      onConfirm: (e) => this.setState({ confirmText: e.target.value }),
+      killDisabled: s.confirmText !== 's_7f3a',
+      killBg: s.confirmText === 's_7f3a' ? '#7A2530' : '#E2DDD1',
+      killColor: s.confirmText === 's_7f3a' ? '#FBFAF7' : '#A69E8E',
+      killCursor: s.confirmText === 's_7f3a' ? 'pointer' : 'not-allowed',
+      paletteOpen: s.paletteOpen,
+      openPalette: () => this.setState({ paletteOpen: true }),
+      closePalette: () => this.setState({ paletteOpen: false, query: '' }),
+      stop: (e) => e.stopPropagation(),
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      results: results
+    };
+  }
+}
+</script>
+</body>
+</html>

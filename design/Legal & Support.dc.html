@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.95); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1240px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 20px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <a href="Security.dc.html" style="font-size: 13.5px; color: #39404C;">Security</a>
+        <a href="Enterprise.dc.html" style="font-size: 13.5px; color: #39404C;">Enterprise</a>
+        <div style="display: flex; gap: 3px; background: #EFEBE1; border-radius: 3px; padding: 3px;">
+          <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+            <button type="button" onClick="{{ m.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; background: {{ m.bg }}; color: {{ m.color }}; border: none; border-radius: 2px; padding: 6px 12px; cursor: pointer;">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <sc-if value="{{ isLegal }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; align-items: stretch; flex: 1; min-height: 0;">
+      <nav style="width: 244px; flex: 0 0 auto; border-right: 1px solid #D8D2C4; padding: 28px 14px 60px; display: {{ sideDisplay }}; flex-direction: column; gap: 3px; position: sticky; top: 55px; align-self: flex-start; max-height: calc(100vh - 55px); overflow-y: auto;">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 12px; padding: 0 10px;">Documents</p>
+        <sc-for list="{{ docs }}" as="d" hint-placeholder-count="5">
+          <button type="button" onClick="{{ d.onClick }}" style="width: 100%; display: flex; align-items: center; gap: 9px; font-family: Inter, sans-serif; font-size: 13px; color: {{ d.color }}; background: {{ d.bg }}; border: none; border-radius: 3px; padding: 9px 10px; cursor: pointer; text-align: left; font-weight: {{ d.weight }}; min-height: 38px;">
+            <span style="width: 5px; height: 5px; background: {{ d.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ d.label }}
+          </button>
+        </sc-for>
+        <div style="border-top: 1px solid #D8D2C4; margin: 16px 0 12px;"></div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #7A6F60; margin: 0; padding: 0 10px;">All five documents download together in the <a href="Enterprise.dc.html">security review pack</a>, with no form.</p>
+      </nav>
+
+      <main style="flex: 1; min-width: 0; padding: 30px 32px 80px;">
+        <div style="max-width: 72ch;">
+          <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #7A6F60; margin-bottom: 20px;">
+            <span>Legal</span><span>/</span><span style="color: #16130F;">{{ doc.title }}</span>
+          </nav>
+
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 3px; padding: 4px 9px;">{{ doc.version }}</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">effective {{ doc.effective }} · {{ doc.length }}</span>
+          </div>
+
+          <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.4vw, 46px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 20px;">{{ doc.title }}</h1>
+          <p style="font-size: 17px; line-height: 1.75; color: #39404C; margin: 0 0 26px; text-wrap: pretty;">{{ doc.standfirst }}</p>
+
+          <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 24px; margin-bottom: 40px;">
+            <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+              <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">the short version</span>
+            </div>
+            <p style="font-size: 15.5px; line-height: 1.72; color: #16130F; margin: 0;">{{ doc.plain }}</p>
+            <p style="font-size: 12.5px; line-height: 1.6; color: #7A6F60; margin: 12px 0 0;">A summary is not the agreement. Where the two disagree, the clauses below govern.</p>
+          </div>
+
+          <sc-for list="{{ doc.sections }}" as="sec" hint-placeholder-count="6">
+            <section style="margin-bottom: 34px;">
+              <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530; flex: 0 0 auto;">{{ sec.n }}</span>
+                <h2 style="font-family: Newsreader, Georgia, serif; font-size: 25px; line-height: 1.2; font-weight: 500; margin: 0;">{{ sec.head }}</h2>
+              </div>
+              <sc-for list="{{ sec.paras }}" as="p" hint-placeholder-count="2">
+                <p style="font-size: 16px; line-height: 1.78; color: #39404C; margin: 0 0 16px;">{{ p }}</p>
+              </sc-for>
+              <sc-if value="{{ sec.hasList }}" hint-placeholder-val="{{ false }}">
+                <div style="display: grid; gap: 0; margin: 6px 0 16px;">
+                  <sc-for list="{{ sec.list }}" as="li" hint-placeholder-count="3">
+                    <div style="display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-top: 1px solid #EDE9DF;">
+                      <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 8px; flex: 0 0 auto;"></span>
+                      <p style="font-size: 15.5px; line-height: 1.7; color: #39404C; margin: 0;">{{ li }}</p>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ sec.hasTable }}" hint-placeholder-val="{{ false }}">
+                <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin: 6px 0 16px;">
+                  <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 460px;">
+                      <thead>
+                        <tr style="background: #FBFAF7;">
+                          <sc-for list="{{ sec.head3 }}" as="h" hint-placeholder-count="3">
+                            <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">{{ h }}</th>
+                          </sc-for>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="4">
+                          <tr style="border-bottom: 1px solid #EDE9DF;">
+                            <td style="padding: 12px 16px; font-size: 13.5px; color: #16130F;">{{ r.a }}</td>
+                            <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C;">{{ r.b }}</td>
+                            <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C;">{{ r.c }}</td>
+                          </tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </sc-if>
+            </section>
+          </sc-for>
+
+          <div style="border-top: 1px solid #D8D2C4; padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+            <p style="font-size: 13.5px; line-height: 1.65; color: #7A6F60; margin: 0; max-width: 36em;">Material changes are announced 30 days before they take effect, by email to Owners and in the <a href="The Ledger.dc.html">changelog</a>. Previous versions stay published.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 15px; cursor: pointer;">Download PDF</button>
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 15px; cursor: pointer;">Version history</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <aside style="width: 212px; flex: 0 0 auto; padding: 30px 24px 60px; display: {{ tocDisplay }}; flex-direction: column; gap: 9px; position: sticky; top: 55px; align-self: flex-start; max-height: calc(100vh - 55px); overflow-y: auto;">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 4px;">On this page</p>
+        <sc-for list="{{ toc }}" as="t" hint-placeholder-count="6">
+          <span style="font-size: 12.5px; line-height: 1.5; color: {{ t.color }}; border-left: 2px solid {{ t.border }}; padding: 3px 0 3px 11px;">{{ t.label }}</span>
+        </sc-for>
+      </aside>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSupport }}" hint-placeholder-val="{{ false }}">
+    <main style="flex: 1; max-width: 1180px; width: 100%; margin: 0 auto; padding: 56px 28px 90px;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Support</span>
+      </div>
+      <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.8vw, 52px); line-height: 1.05; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 20px; max-width: 17em;">Search first. The docs are gate-tested; a ticket is not.</h1>
+      <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 30px; max-width: 44em; text-wrap: pretty;">If a documented procedure failed you, that is a finding rather than a support question, and it goes to the top of the queue because it means our gates missed something.</p>
+
+      <div style="max-width: 620px; margin-bottom: 14px;">
+        <input type="text" value="{{ q }}" onChange="{{ onQ }}" placeholder="Describe the symptom, not the guess" aria-label="search the help center" style="width: 100%; font-family: Inter, sans-serif; font-size: 16px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 15px 17px; outline: none;" style-focus="border-color: #7A2530;" />
+      </div>
+
+      <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+        <div style="max-width: 620px; margin-bottom: 40px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0 0 10px;">{{ resultNote }}</p>
+          <div style="display: grid; gap: 8px;">
+            <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+              <a href="Docs.dc.html" style="display: flex; align-items: center; justify-content: space-between; gap: 14px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 16px; text-decoration: none; min-height: 46px;" style-hover="border-color: #16130F;">
+                <span style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                  <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                  <span style="font-size: 14.5px; color: #16130F;">{{ r.title }}</span>
+                </span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; white-space: nowrap;">{{ r.kind }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width: 620px; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 20px; margin-bottom: 40px;">
+          <p style="font-size: 14.5px; line-height: 1.65; color: #16130F; margin: 0 0 6px;">Nothing documented matches that.</p>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0;">That is worth knowing on its own. Open a ticket below and it will be triaged as a documentation gap as well as a question.</p>
+        </div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; margin-bottom: 40px;">
+        <sc-for list="{{ paths }}" as="p" hint-placeholder-count="3">
+          <article style="background: {{ p.bg }}; border: 1px solid {{ p.border }}; border-radius: 5px; padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+              <span style="width: 7px; height: 7px; background: {{ p.dot }}; transform: rotate(45deg); display: block;"></span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: {{ p.eyebrow }};">{{ p.tag }}</span>
+            </div>
+            <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 12px;">{{ p.title }}</p>
+            <p style="font-size: 14px; line-height: 1.65; color: #39404C; margin: 0 0 16px;">{{ p.body }}</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: {{ p.metaColor }}; margin: 0;">{{ p.meta }}</p>
+          </article>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 34px; align-items: start;">
+        <div>
+          <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">Open a ticket.</h2>
+          <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 22px;">Symptom, then the evidence you already collected, then what you think is happening. The third part is optional; the second saves a day.</p>
+          <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 20px; margin-bottom: 22px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+              <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0;">your plan · team</p>
+            </div>
+            <div style="display: grid; gap: 8px;">
+              <sc-for list="{{ sla }}" as="s" hint-placeholder-count="3">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px;">
+                  <span style="font-size: 13px; color: #39404C;">{{ s.k }}</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: {{ s.color }};">{{ s.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size: 12.5px; line-height: 1.6; color: #7A6F60; margin: 14px 0 0;">These are commitments, not averages. Our measured median first response last month was 2 h 40 m across all plans.</p>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 20px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 10px;">Something is down right now</p>
+            <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0 0 14px;">Check the status page first. If an incident is open we are already working on it and a ticket will not make it faster.</p>
+            <a href="Status.dc.html" style="font-size: 13.5px; font-weight: 500;">Status and incident history →</a>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 28px 26px;">
+          <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="margin-bottom: 20px;">
+                <p style="font-size: 12px; font-weight: 500; color: #39404C; margin: 0 0 10px;">What kind of thing is this</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ k.onClick }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; background: {{ k.bg }}; color: {{ k.color }}; border: 1px solid {{ k.border }}; border-radius: 3px; padding: 9px 14px; cursor: pointer; min-height: 38px;">{{ k.label }}</button>
+                  </sc-for>
+                </div>
+                <p style="font-size: 12.5px; line-height: 1.6; color: #7A6F60; margin: 12px 0 0;">{{ kindNote }}</p>
+              </div>
+
+              <div style="display: grid; gap: 16px; margin-bottom: 20px;">
+                <div>
+                  <label for="sp-sym" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Symptom</label>
+                  <input id="sp-sym" type="text" value="{{ f.symptom }}" onChange="{{ onSymptom }}" placeholder="Cold resume on s_7f3a took 140 seconds" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid {{ f.symBorder }}; border-radius: 3px; padding: 11px 13px; outline: none;" style-focus="border-color: #7A2530;" />
+                </div>
+                <div>
+                  <label for="sp-ev" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Evidence you collected</label>
+                  <textarea id="sp-ev" rows="4" value="{{ f.evidence }}" onChange="{{ onEvidence }}" placeholder="Paste ks describe output, session ids, timestamps in UTC" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 13px; outline: none; resize: vertical;" style-focus="border-color: #7A2530;"></textarea>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 8px 0 0;">ks doctor --bundle attaches everything we would ask for</p>
+                </div>
+                <div>
+                  <label for="sp-sess" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Session id, if there is one</label>
+                  <input id="sp-sess" type="text" value="{{ f.session }}" onChange="{{ onSession }}" placeholder="s_7f3a" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 13px; outline: none;" style-focus="border-color: #7A2530;" />
+                </div>
+              </div>
+
+              <sc-if value="{{ f.error }}" hint-placeholder-val="{{ false }}">
+                <p style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7A2530; margin: 0 0 16px;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>A symptom is needed. One sentence about what you observed is enough.</p>
+              </sc-if>
+
+              <button type="button" onClick="{{ submit }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 13px 18px; cursor: pointer;">Send to support</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">{{ f.sentTag }}</span>
+              </div>
+              <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.25; margin: 0 0 14px;">Logged as {{ f.ref }}.</p>
+              <p style="font-size: 14.5px; line-height: 1.7; color: #39404C; margin: 0 0 20px;">{{ f.sentBody }}</p>
+              <button type="button" onClick="{{ reset }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 16px; cursor: pointer;">Open another</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400}}">
+class Component extends DCLogic {
+  state = { mode: 'legal', doc: 0, q: '', kind: 'Question', symptom: '', evidence: '', session: '', error: false, sent: false, w: 1400 };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  legalDocs() {
+    return [
+      {
+        label: 'Terms of Service', title: 'Terms of Service', version: 'v4.1', effective: '2026-06-01', length: 'about 9 minutes',
+        standfirst: 'The agreement between your organization and KeepState, Inc. for use of the durable agent session cloud. Written to be read once by a person rather than skimmed by a lawyer.',
+        plain: 'You keep ownership of everything your agents produce. We run the infrastructure, meter it honestly, and can suspend an account for non-payment or abuse with notice. Neither side promises the other unlimited liability, and either side can leave with your data intact.',
+        sections: [
+          { n: '1', head: 'What we provide', paras: ['KeepState hosts agent sessions in isolated micro-VMs, checkpoints their state, and brokers model calls through a metering gateway. Availability commitments for each surface are stated in the service level agreement and measured by an external probe rather than by our own reporting.', 'We may change how the service works, including adding, altering, or removing features. Material reductions in functionality are announced 30 days ahead in the changelog and by email to account Owners.'] },
+          { n: '2', head: 'Your content and your agents', paras: ['Everything your agents read, write, or produce belongs to you. This includes workspace contents, checkpoints, event ledgers, and any artifact a session generates. We claim no license to it beyond what is technically required to run, store, and restore the sessions you asked us to run.'], hasList: true, list: ['We do not train models on your content, and we do not permit our subprocessors to.', 'We do not read your checkpoints except through a break-glass path that notifies your Owners and writes to your audit log.', 'You may export your ledgers and checkpoint manifests at any time, on any plan, including the free tier.'] },
+          { n: '3', head: 'Acceptable use, in summary', paras: ['The full list lives in the acceptable use policy. In short: do not use sessions to attack others, to host abuse infrastructure, to mine cryptocurrency, or to run workloads whose purpose is to circumvent a model provider\u2019s own terms. An agent acting on your instructions is your responsibility.'] },
+          { n: '4', head: 'Fees, meters, and disputes', paras: ['You pay for session-minutes, checkpoint storage after deduplication, and, if you use our inference, a spread on brokered tokens. Meter output is authoritative for billing, and your ledgers show the same figures we bill from, line by line.', 'If you believe a charge is wrong, tell us within 60 days and we will reconcile it against the ledger. Where our meter is at fault we credit the difference; we have done this before and published the incident.'] },
+          { n: '5', head: 'Suspension and termination', paras: ['Either side may terminate for convenience with 30 days notice. We may suspend immediately for non-payment after two written reminders, or without notice where a workload is actively harming others or our infrastructure.'], hasList: true, list: ['On termination your checkpoints remain retrievable for 30 days, then are destroyed.', 'Checkpoints under a legal hold survive termination until the hold is lifted, and you will be told which ones.', 'Prepaid unused credits are refunded pro rata unless termination was for abuse.'] },
+          { n: '6', head: 'Warranties and liability', paras: ['We provide the service with reasonable skill and care and make the specific commitments in the SLA. Beyond those, the service is provided as it is: we do not warrant that an agent will behave correctly, that a model will return useful output, or that a workload will succeed.', 'Each side\u2019s aggregate liability is capped at the fees paid in the preceding 12 months, except for death or personal injury caused by negligence, fraud, or a breach of confidentiality obligations, where no cap applies. Neither side is liable for indirect or consequential loss.'] },
+          { n: '7', head: 'Governing law', paras: ['These terms are governed by the laws of England and Wales, and the courts of London have exclusive jurisdiction. Enterprise agreements may vary this and frequently do.'] }
+        ],
+        toc: ['What we provide', 'Your content and your agents', 'Acceptable use', 'Fees, meters, disputes', 'Suspension and termination', 'Warranties and liability', 'Governing law']
+      },
+      {
+        label: 'Privacy Policy', title: 'Privacy Policy', version: 'v3.2', effective: '2026-06-01', length: 'about 7 minutes',
+        standfirst: 'What personal data we hold, why, and for how long. Session contents are covered separately by the data processing agreement, because there we are a processor acting on your instructions rather than a controller.',
+        plain: 'We collect the minimum to run accounts and bill them: identity from your login provider, contact details, and usage telemetry. We do not sell data, we do not run advertising trackers, and we do not train on your session contents.',
+        sections: [
+          { n: '1', head: 'What we collect', paras: ['Two categories, kept deliberately separate. Account data is about you: name, email, organization, login provider identity, billing details, and the audit trail of actions you take in the console. Session data is what your agents do, and for that we are a processor under the DPA rather than a controller.'], hasTable: true, head3: ['category', 'retention', 'basis'], rows: [
+            { a: 'Account and contact data', b: 'life of account + 6 y', c: 'contract' },
+            { a: 'Billing records', b: '7 years', c: 'legal obligation' },
+            { a: 'Console audit log', b: 'plan retention', c: 'legitimate interest' },
+            { a: 'Product telemetry', b: '13 months', c: 'legitimate interest' },
+            { a: 'Session contents', b: 'your retention policy', c: 'processor, see DPA' }
+          ] },
+          { n: '2', head: 'What we do not do', paras: ['This section exists because the absences matter more than the presences.'], hasList: true, list: ['No advertising or cross-site tracking pixels anywhere on this site or in the console.', 'No sale or sharing of personal data with third parties for their own purposes.', 'No model training on your session contents, by us or by any subprocessor.', 'No dark patterns in consent: analytics are off until you opt in, and the console works identically either way.'] },
+          { n: '3', head: 'Who else touches it', paras: ['A short list of subprocessors, published separately and updated whenever it changes. Each one has a stated purpose, a region, and a data category. We give 30 days notice before adding a subprocessor that handles session contents, so you can object.'] },
+          { n: '4', head: 'Where it lives', paras: ['Account data is stored in the EU. Session contents live in the region you pinned, enforced at the scheduler rather than by policy, which means a checkpoint cannot be written outside it even by mistake.'] },
+          { n: '5', head: 'Your rights', paras: ['Access, correction, deletion, portability, and objection, exercised by emailing privacy@keepstate.ai. We answer within 30 days. Deletion of account data does not delete session contents, which are yours to delete through the console or the API, and we will tell you which ones are blocked by a legal hold.'] },
+          { n: '6', head: 'Contact and complaints', paras: ['Our data protection contact is privacy@keepstate.ai. If we handle a request badly you may complain to the Information Commissioner\u2019s Office in the UK, or to your own supervisory authority in the EU.'] }
+        ],
+        toc: ['What we collect', 'What we do not do', 'Who else touches it', 'Where it lives', 'Your rights', 'Contact and complaints']
+      },
+      {
+        label: 'Data Processing Agreement', title: 'Data Processing Agreement', version: 'v4.1', effective: '2026-06-01', length: 'about 11 minutes',
+        standfirst: 'Where session contents are personal data, you are the controller and we are the processor. This document is the instruction set, and it is the one your reviewer will actually read.',
+        plain: 'We process session contents only to run the sessions you asked for. We use approved subprocessors, keep data in the region you pinned, notify you of a breach within 24 hours, and delete or return everything on termination.',
+        sections: [
+          { n: '1', head: 'Roles and scope', paras: ['You determine what your agents do and what data they touch, which makes you the controller. We host, checkpoint, and restore, which makes us the processor. Our instructions come from your use of the product: a checkpoint happens because you set a cadence, not because we decided to keep a copy.'] },
+          { n: '2', head: 'Processing instructions', paras: ['We process session contents for exactly four purposes and no others.'], hasList: true, list: ['Running the session: executing the workload inside the micro-VM you requested.', 'Durability: writing, storing, and restoring checkpoints under your retention policy.', 'Metering: counting session-minutes, storage after dedup, and tokens brokered through the gateway.', 'Support: only when you open a ticket and only through the break-glass path, which notifies your Owners and writes to your audit log.'] },
+          { n: '3', head: 'Security measures', paras: ['Technical measures are described in full in the architecture overview. The load-bearing ones: hardware-virtualized single-tenant guests, encryption at rest with per-organization keys, provider credentials held outside the isolation boundary, and credential scanning on checkpoint write.', 'Organizational measures: least-privilege access, mandatory review for production changes, an audit trail of every staff action against customer data, and annual security training that is not a slideshow.'] },
+          { n: '4', head: 'Subprocessors', paras: ['The current list is published and versioned. We remain liable for our subprocessors\u2019 processing. You get 30 days notice before we add one that handles session contents, and if you object on reasonable grounds you may terminate the affected service without penalty.'] },
+          { n: '5', head: 'Breach notification', paras: ['We notify you within 24 hours of becoming aware of a personal data breach affecting your session contents, with what we know at that point rather than waiting for a complete picture. Subsequent updates follow as the investigation proceeds, and the write-up is published in the findings archive once affected customers have been told.'] },
+          { n: '6', head: 'International transfers', paras: ['Where a transfer outside the UK or EEA is necessary, it relies on the UK International Data Transfer Addendum or the EU Standard Contractual Clauses, with a transfer impact assessment available on request. Region pinning avoids the question entirely for most customers, and we recommend it.'] },
+          { n: '7', head: 'Deletion and return', paras: ['On termination you may export everything through the API. After 30 days we delete session contents, including from backups within a further 30 days. Checkpoints under legal hold are the exception and are itemized to you rather than silently retained.'] },
+          { n: '8', head: 'Audits', paras: ['You may audit our compliance once a year, or more often after a breach affecting you. In practice most reviewers accept the security review pack, the penetration test summary, and the public findings archive, which is why all three exist without a form in front of them.'] }
+        ],
+        toc: ['Roles and scope', 'Processing instructions', 'Security measures', 'Subprocessors', 'Breach notification', 'International transfers', 'Deletion and return', 'Audits']
+      },
+      {
+        label: 'Subprocessors', title: 'Subprocessors', version: 'updated monthly', effective: '2026-08-01', length: 'about 3 minutes',
+        standfirst: 'Every third party that may process customer data, what it does, and where. Short by design: each addition is a new place your data can be, so we add them reluctantly.',
+        plain: 'Six subprocessors. Two touch session contents, four touch account or billing data only. You get 30 days notice before we add any that handle session contents.',
+        sections: [
+          { n: '1', head: 'Current list', paras: ['Session contents means workspace data, checkpoints, and event ledgers. Account data means identity, contact, and billing information.'], hasTable: true, head3: ['subprocessor', 'purpose', 'data and region'], rows: [
+            { a: 'Cloud compute provider', b: 'micro-VM hosting', c: 'session · pinned region' },
+            { a: 'Object storage provider', b: 'checkpoint store', c: 'session · pinned region' },
+            { a: 'Payment processor', b: 'card and invoice handling', c: 'billing · EU, US' },
+            { a: 'Transactional email', b: 'account and incident email', c: 'account · EU' },
+            { a: 'Error monitoring', b: 'console exception traces', c: 'account · EU' },
+            { a: 'Support desk', b: 'ticket handling', c: 'account · EU' }
+          ] },
+          { n: '2', head: 'What is deliberately absent', paras: ['No analytics vendor by default, because the console works without one. No session recording tool, ever: replaying a customer\u2019s screen is a category of access we have decided not to have. No data warehouse holding session contents for our own analysis.'] },
+          { n: '3', head: 'Model providers', paras: ['When you use managed inference we route calls to model providers on your behalf. They are not listed as subprocessors of ours because you are choosing them: their terms apply to that call, and your ledger records which provider served it. Bring your own keys and the relationship is directly yours.'] },
+          { n: '4', head: 'Notification', paras: ['Additions are announced in the changelog and by email to Owners. Session-content subprocessors carry 30 days notice; account-data subprocessors carry 14. Removals are announced too, because a shorter list is worth telling you about.'] }
+        ],
+        toc: ['Current list', 'What is deliberately absent', 'Model providers', 'Notification']
+      },
+      {
+        label: 'Acceptable Use', title: 'Acceptable Use Policy', version: 'v2.0', effective: '2026-04-15', length: 'about 5 minutes',
+        standfirst: 'What you may not run on KeepState. Short, specific, and written so that a reasonable engineer can tell whether their workload is fine without emailing us.',
+        plain: 'Do not attack people, host abuse infrastructure, mine cryptocurrency, or use sessions to launder around a model provider\u2019s terms. An agent acting on your instructions is your responsibility.',
+        sections: [
+          { n: '1', head: 'Prohibited workloads', paras: ['These are grounds for immediate suspension without notice.'], hasList: true, list: ['Attacking, scanning, or attempting to gain unauthorized access to systems you do not own or have permission to test.', 'Hosting malware, phishing infrastructure, spam relays, or command-and-control services.', 'Cryptocurrency mining or any workload whose primary output is proof-of-work.', 'Generating content that sexually exploits children, or material whose purpose is to incite violence against people.', 'Deliberately circumventing a model provider\u2019s usage policies through our gateway.'] },
+          { n: '2', head: 'Agent autonomy is not a defense', paras: ['A long-running agent will do things you did not specifically instruct. That is the nature of the tool, and it does not transfer responsibility to us or to the model. If your agent begins scanning networks because a prompt drifted, the workload is still yours, and budget caps plus the event ledger exist partly so you can see it happening.'] },
+          { n: '3', head: 'Security research', paras: ['Testing systems you own or have written permission to test is explicitly allowed, including offensive tooling. Tell us in advance if the workload will generate traffic that looks like an attack from our address space, so we do not suspend you for doing legitimate work.'] },
+          { n: '4', head: 'Enforcement, and how we behave', paras: ['Where we can, we contact you before acting. Where a workload is actively harming others we suspend first and explain within the hour, and the session is checkpointed rather than destroyed so nothing is lost if we were wrong.', 'We have suspended two accounts under this policy. One was reinstated within four hours after the customer demonstrated it was authorized penetration testing, and we changed our detection to avoid repeating that.'] }
+        ],
+        toc: ['Prohibited workloads', 'Agent autonomy', 'Security research', 'Enforcement']
+      }
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const docs = this.legalDocs();
+    const doc = docs[s.doc];
+    const narrow = s.w < 1080;
+    const veryNarrow = s.w < 820;
+
+    const articles = [
+      { title: 'What happens when a budget cap is reached', kind: 'docs' },
+      { title: 'Troubleshooting: cold resume is slow', kind: 'troubleshooting' },
+      { title: 'Troubleshooting: the agent wakes and repeats work', kind: 'troubleshooting' },
+      { title: 'Quickstart: your first plug-pull', kind: 'docs' },
+      { title: 'Why a session shows aborted rather than failed', kind: 'concept' },
+      { title: 'Limits and quotas by plan', kind: 'reference' },
+      { title: 'Exporting an audit bundle', kind: 'guide' },
+      { title: 'Rotating a provider key without killing sessions', kind: 'guide' }
+    ];
+    const q = s.q.trim().toLowerCase();
+    const results = q ? articles.filter((a) => a.title.toLowerCase().includes(q)) : articles.slice(0, 4);
+
+    const kindNotes = {
+      Question: 'Answered from the docs where possible, with a link so you can check us.',
+      Finding: 'A documented procedure did not work. This jumps the queue: it means a gate missed something.',
+      Billing: 'Reconciled against your ledger line by line. Send the session id and we will do the arithmetic.'
+    };
+
+    return {
+      modes: [
+        { key: 'legal', label: 'legal' },
+        { key: 'support', label: 'support' }
+      ].map((m) => ({
+        label: m.label,
+        bg: s.mode === m.key ? '#16130F' : 'transparent',
+        color: s.mode === m.key ? '#FBFAF7' : '#7A6F60',
+        onClick: () => this.setState({ mode: m.key })
+      })),
+      isLegal: s.mode === 'legal', isSupport: s.mode === 'support',
+      sideDisplay: veryNarrow ? 'none' : 'flex',
+      tocDisplay: narrow ? 'none' : 'flex',
+
+      docs: docs.map((d, i) => ({
+        label: d.label,
+        color: s.doc === i ? '#16130F' : '#39404C',
+        bg: s.doc === i ? '#EFEBE1' : 'transparent',
+        weight: s.doc === i ? '600' : '400',
+        dot: s.doc === i ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ doc: i })
+      })),
+      doc: {
+        title: doc.title, version: doc.version, effective: doc.effective, length: doc.length,
+        standfirst: doc.standfirst, plain: doc.plain,
+        sections: doc.sections.map((sec) => ({
+          n: sec.n, head: sec.head, paras: sec.paras,
+          hasList: !!sec.hasList, list: sec.list || [],
+          hasTable: !!sec.hasTable, head3: sec.head3 || [], rows: sec.rows || []
+        }))
+      },
+      toc: doc.toc.map((label, i) => ({
+        label: label,
+        color: i === 0 ? '#16130F' : '#7A6F60',
+        border: i === 0 ? '#7A2530' : '#E2DDD1'
+      })),
+
+      q: s.q,
+      onQ: (e) => this.setState({ q: e.target.value }),
+      hasResults: results.length > 0,
+      noResults: results.length === 0,
+      resultNote: q ? results.length + ' documented answers' : 'most read this week',
+      results: results,
+
+      paths: [
+        {
+          tag: 'path 1', title: 'The docs, first', body: 'Every documented procedure is gate-tested on a clean machine before it ships. If one fails for you, that is our defect rather than your mistake.',
+          meta: 'answers now · 18 troubleshooting pages',
+          bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530', eyebrow: '#7A2530', metaColor: '#8A7A78'
+        },
+        {
+          tag: 'path 2', title: 'A finding, not a ticket', body: 'If our own documentation or a published number was wrong, send it to findings and it goes to the front. We publish the correction with your name unless you decline.',
+          meta: 'findings@keepstate.ai · always answered',
+          bg: '#FFFFFF', border: '#D8D2C4', dot: '#A69E8E', eyebrow: '#7A6F60', metaColor: '#7A6F60'
+        },
+        {
+          tag: 'path 3', title: 'Talk to an engineer', body: 'Team and Enterprise tickets are triaged by someone who can read the ledger and reproduce your session. There is no first-line script to get past.',
+          meta: 'no tier-one deflection · ever',
+          bg: '#FFFFFF', border: '#D8D2C4', dot: '#A69E8E', eyebrow: '#7A6F60', metaColor: '#7A6F60'
+        }
+      ],
+
+      sla: [
+        { k: 'First response', v: '8 business hours', color: '#16130F' },
+        { k: 'Something is down', v: '1 hour, any plan', color: '#7A2530' },
+        { k: 'A finding', v: 'same business day', color: '#7A2530' }
+      ],
+
+      kinds: ['Question', 'Finding', 'Billing'].map((label) => ({
+        label: label,
+        bg: s.kind === label ? '#16130F' : '#FFFFFF',
+        color: s.kind === label ? '#FBFAF7' : '#39404C',
+        border: s.kind === label ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ kind: label })
+      })),
+      kindNote: kindNotes[s.kind],
+      formOpen: !s.sent,
+      formSent: s.sent,
+      f: {
+        symptom: s.symptom, evidence: s.evidence, session: s.session,
+        symBorder: s.error && !s.symptom.trim() ? '#7A2530' : '#D8D2C4',
+        error: s.error,
+        ref: s.kind === 'Finding' ? 'F-069' : 'TKT-4192',
+        sentTag: s.kind === 'Finding' ? 'finding received' : 'ticket received',
+        sentBody: s.kind === 'Finding'
+          ? 'A finding is triaged the same business day. If it holds up we write the gate that should have caught it, publish the correction, and credit you in the archive unless you asked us not to.'
+          : 'First response within 8 business hours on your plan, from someone who can read your ledger. If it turns out a documented procedure was wrong, this gets reclassified as a finding and moves up.'
+      },
+      onSymptom: (e) => this.setState({ symptom: e.target.value, error: false }),
+      onEvidence: (e) => this.setState({ evidence: e.target.value }),
+      onSession: (e) => this.setState({ session: e.target.value }),
+      submit: () => {
+        if (!s.symptom.trim()) { this.setState({ error: true }); return; }
+        this.setState({ sent: true, error: false });
+      },
+      reset: () => this.setState({ sent: false, symptom: '', evidence: '', session: '' })
+    };
+  }
+}
+</script>
+</body>
+</html>

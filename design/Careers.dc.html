@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <a href="Manifesto.dc.html" style="font-size: 14px; color: #39404C;">Manifesto</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Grants.dc.html" style="font-size: 14px; color: #39404C;">Grants</a>
+        <a href="#roles" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Open roles</a>
+      </div>
+    </nav>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 48px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Careers</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 15em;">We work under a written constitution.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">Not a values page. An actual document, versioned in the repository, that decides arguments. It is short, it has been amended eleven times, and every amendment came from something breaking. If you would find that suffocating, this is a useful thing to know early.</p>
+    <a href="Proof.dc.html" style="font-size: 15px; font-weight: 500;">Read the public claims file before applying →</a>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px;">
+      <sc-for list="{{ epigraphs }}" as="e" hint-placeholder-count="3">
+        <blockquote style="background: {{ e.bg }}; border: 1px solid {{ e.border }}; border-radius: 5px; padding: 34px 28px; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+          <span style="width: 9px; height: 9px; background: {{ e.dot }}; transform: rotate(45deg); display: block;"></span>
+          <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.35; color: {{ e.textColor }}; margin: 0; flex: 1;">{{ e.text }}</p>
+          <footer style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.6; letter-spacing: 0.06em; color: {{ e.metaColor }};">{{ e.meta }}</footer>
+        </blockquote>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">How the work actually goes.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 30px; max-width: 44em;">Four practices, in the order they happen. None of them is optional, and all of them slow the first week down and speed up every week after.</p>
+    <div style="border-top: 1px solid #D8D2C4;">
+      <sc-for list="{{ practices }}" as="p" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px 40px; padding: 26px 2px; border-bottom: 1px solid #D8D2C4; align-items: start;">
+          <div style="display: flex; gap: 13px; align-items: flex-start;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 8px; flex: 0 0 auto;"></span>
+            <div>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">{{ p.n }}</p>
+              <p style="font-size: 18px; font-weight: 500; line-height: 1.35; color: #16130F; margin: 0;">{{ p.title }}</p>
+            </div>
+          </div>
+          <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0;">{{ p.body }}</p>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.7; color: #7A6F60; margin: 0;">{{ p.cost }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background: #39404C; margin-top: 64px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 60px 28px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; align-items: start;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 18px;">
+            <span style="width: 7px; height: 7px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #D9B8B8;">The honest part</span>
+          </div>
+          <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 20px;">Reasons not to join us.</h2>
+          <p style="font-size: 16px; line-height: 1.7; color: #E6E3DC; margin: 0;">Every company has these. Most make you discover them in month three, which wastes a year of your life and ours.</p>
+        </div>
+        <div style="display: grid; gap: 12px;">
+          <sc-for list="{{ warnings }}" as="w" hint-placeholder-count="4">
+            <div style="background: rgba(251,250,247,0.05); border: 1px solid #5A616C; border-radius: 4px; padding: 18px 20px;">
+              <p style="font-size: 14.5px; line-height: 1.65; color: #E6E3DC; margin: 0;">{{ w }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles" style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 26px;">
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 10px;">Open roles.</h2>
+        <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0; max-width: 40em;">One role is genuinely open today. We are not going to list eight speculative openings to look larger than we are.</p>
+      </div>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0;">team of 6 · London and remote in GMT ±3</p>
+    </div>
+
+    <div style="display: grid; gap: 14px;">
+      <sc-for list="{{ roles }}" as="r" hint-placeholder-count="2">
+        <article style="background: {{ r.bg }}; border: 1px solid {{ r.border }}; border-radius: 5px; overflow: hidden;">
+          <button type="button" onClick="{{ r.onToggle }}" style="width: 100%; background: transparent; border: none; padding: 24px 26px; cursor: pointer; text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px 24px; align-items: center;">
+            <div style="min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="width: 7px; height: 7px; background: {{ r.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: {{ r.tagColor }};">{{ r.tag }}</span>
+              </div>
+              <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.2; color: #16130F; margin: 0;">{{ r.title }}</p>
+            </div>
+            <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ r.line }}</p>
+            <span style="display: flex; align-items: center; justify-content: flex-end; gap: 16px; flex-wrap: wrap;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ r.meta }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #7A6F60;">{{ r.sign }}</span>
+            </span>
+          </button>
+
+          <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 0 26px 28px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 32px; align-items: start; padding-top: 20px; border-top: 1px solid {{ r.rule }};">
+                <div>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 12px;">the job</p>
+                  <p style="font-size: 15px; line-height: 1.75; color: #39404C; margin: 0 0 20px;">{{ r.job }}</p>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 12px;">first three months</p>
+                  <div style="display: grid; gap: 0;">
+                    <sc-for list="{{ r.first }}" as="ff" hint-placeholder-count="3">
+                      <div style="display: flex; gap: 11px; align-items: flex-start; padding: 10px 0; border-top: 1px solid {{ r.rule }};">
+                        <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+                        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ ff }}</p>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 12px;">you probably fit if</p>
+                  <div style="display: grid; gap: 0; margin-bottom: 22px;">
+                    <sc-for list="{{ r.fit }}" as="fi" hint-placeholder-count="3">
+                      <div style="display: flex; gap: 11px; align-items: flex-start; padding: 10px 0; border-top: 1px solid {{ r.rule }};">
+                        <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+                        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ fi }}</p>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 20px;">
+                    <div style="display: grid; gap: 9px; margin-bottom: 16px;">
+                      <sc-for list="{{ r.terms }}" as="tm" hint-placeholder-count="4">
+                        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px;">
+                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ tm.k }}</span>
+                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #16130F; text-align: right;">{{ tm.v }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <a href="#roles" style="display: block; font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 12px 16px; text-align: center; text-decoration: none;">Apply for this role</a>
+                    <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 12px 0 0; text-align: center;">Read our public claims file before applying.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </article>
+      </sc-for>
+    </div>
+
+    <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px; margin-top: 18px;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">nothing fits</span>
+      </div>
+      <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 16px; max-width: 50em;">Send a finding instead of a resume. Read the claims file, find something we got wrong or cannot yet prove, and write it up the way we write findings: what you looked at, what the evidence showed, what should change. That is the actual work, and it is the only application we have never ignored.</p>
+      <div style="background: #16130F; border-radius: 4px; padding: 13px 15px; max-width: 30em;">
+        <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">findings@keepstate.ai</code>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: #16130F; margin-top: 76px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 72px 28px;">
+      <div style="max-width: 44em;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 22px;">Our own build is governed by the same audit discipline we sell.</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #C9C4BA; margin: 0 0 30px;">Gates before evidence, evidence before claims, <span style="color: #D9B8B8;">no claim without a tag</span>. If that sounds like a good week rather than a burden, we should talk.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#roles" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">See the open role</a>
+          <a href="Proof.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Read the claims file</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 30px 0 0;">keepstate.ai · the durable agent session cloud</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { open: 0 };
+
+  renderVals() {
+    const s = this.state;
+
+    return {
+      epigraphs: [
+        {
+          text: 'Hosts sleep; ledgers don\u2019t.',
+          meta: 'constitution art. 2 · why the event ledger outlives every process we run',
+          bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530', textColor: '#16130F', metaColor: '#8A7A78'
+        },
+        {
+          text: 'Assert the fact, not the residue.',
+          meta: 'constitution art. 4 · added after F-061, a checkpoint that acknowledged too early',
+          bg: '#16130F', border: '#16130F', dot: '#D9B8B8', textColor: '#FBFAF7', metaColor: '#8A8378'
+        },
+        {
+          text: 'What gates watch stays true; what nothing watches drifts.',
+          meta: 'constitution art. 7 · the reason a claim without a gate cannot ship to the site',
+          bg: '#FFFFFF', border: '#D8D2C4', dot: '#7A2530', textColor: '#16130F', metaColor: '#7A6F60'
+        }
+      ],
+
+      practices: [
+        {
+          n: 'practice 01', title: 'Gates before evidence',
+          body: 'You write the thing that would catch the failure before you write the thing that might fail. Not tests in the ordinary sense: a gate is a check that runs on every release and whose red state removes a public claim from the website automatically.',
+          cost: 'costs about a day per feature · buys the ability to say a number out loud'
+        },
+        {
+          n: 'practice 02', title: 'ADRs before code',
+          body: 'Any decision that would be expensive to reverse gets a short written record first: the options, the one chosen, and what would make us change our minds. Eleven of them have since been reversed, which is the point of writing the reversal condition down.',
+          cost: 'costs an hour · buys not relitigating the same argument in six months'
+        },
+        {
+          n: 'practice 03', title: 'Journals between sessions',
+          body: 'Work is handed off in writing, including to your own future self. This is the same discipline our product sells: state that survives the process ending. A person who leaves for a week should not take the context with them.',
+          cost: 'costs ten minutes a day · buys a team that survives a holiday'
+        },
+        {
+          n: 'practice 04', title: 'No claim without a tag',
+          body: 'Nothing goes on the marketing site, in a deck, or into a customer email unless it cites the gate run that proves it. If the number cannot be gated, it gets softened to an observation, with its scope stated. This has killed several good slides.',
+          cost: 'costs some marketing punch · buys a claims file competitors cannot copy'
+        }
+      ],
+
+      warnings: [
+        'We are six people. There is no platform team to hand a problem to, and no design partner will be impressed by your org chart.',
+        'The constitution will occasionally tell you no when you are right. The correct move is to amend it in writing, which is slower than being right loudly.',
+        'We publish our own defects with dates on them. If having your mistake in a public archive would keep you up at night, this will be uncomfortable.',
+        'Compensation is competitive for London but not for a US hyperscaler. Equity is real and early, and early equity is a lottery ticket, not a plan.'
+      ],
+
+      roles: [
+        {
+          tag: 'engineer #1 · open now',
+          title: 'Virtualization and storage',
+          line: 'Own the freeze: micro-VM snapshotting, the content-addressed checkpoint store, and the resume path.',
+          meta: 'London or GMT ±3 · senior',
+          job: 'You own the part of the product that either works or does not. Micro-VM snapshot and restore, the content-addressed store behind it, and the resume path that has to hold three states in agreement. Today this is one person\u2019s code and it needs to become a system that a second person can safely change.',
+          first: [
+            'Take the cold resume p95 from 87 s toward 40 s without weakening the atomicity guarantee.',
+            'Write the gates that would have caught F-061 before it shipped, not after.',
+            'Cut the dedup ratio claim loose from our own soak and prove it on three customer workloads.'
+          ],
+          fit: [
+            'You have worked close to the metal on hypervisors, kernels, filesystems, or a storage engine, and can argue about fsync semantics with feeling.',
+            'You have shipped something where correctness mattered more than throughput, and you have the scar to prove it.',
+            'You would rather write the gate than the announcement.'
+          ],
+          terms: [
+            { k: 'level', v: 'senior to staff' },
+            { k: 'salary', v: '£130,000 to £165,000' },
+            { k: 'equity', v: '0.5% to 1.5%' },
+            { k: 'location', v: 'London hybrid, or remote GMT ±3' }
+          ],
+          bg: '#F6ECEA', border: '#E4CFCC', rule: '#E4CFCC', dot: '#7A2530', tagColor: '#7A2530'
+        },
+        {
+          tag: 'not open yet',
+          title: 'Everything else',
+          line: 'Roles we will genuinely need next, listed so you can tell us when you are the person.',
+          meta: 'no requisition · no timeline promised',
+          job: 'These are real gaps rather than aspirational headcount. We are not interviewing for them, we have no budget approved for them, and we would rather say that plainly than collect resumes for a pipeline. If one of them is obviously you, write to findings@keepstate.ai and we will keep the thread rather than a database row.',
+          first: [
+            'Gateway and inference routing, once managed inference is more than a spread on someone else\u2019s API.',
+            'Developer experience, when the CLI has more surface than one person can gate.',
+            'A first non-engineering hire, whenever the design partner conversations outgrow the founders.'
+          ],
+          fit: [
+            'You are comfortable with an honest maybe rather than a process.',
+            'You would read the claims file for fun.',
+            'You do not need a job description to know what you would fix first.'
+          ],
+          terms: [
+            { k: 'status', v: 'not open' },
+            { k: 'process', v: 'a conversation, not a funnel' },
+            { k: 'contact', v: 'findings@keepstate.ai' },
+            { k: 'timeline', v: 'unavailable (no requisition)' }
+          ],
+          bg: '#FFFFFF', border: '#D8D2C4', rule: '#EDE9DF', dot: '#A69E8E', tagColor: '#7A6F60'
+        }
+      ].map((r, i) => Object.assign({}, r, {
+        open: s.open === i,
+        sign: s.open === i ? '\u2212' : '+',
+        onToggle: () => this.setState({ open: s.open === i ? -1 : i })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

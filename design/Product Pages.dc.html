@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @keyframes ksBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <a href="Pricing.dc.html" style="font-size: 14px; color: #39404C;">Pricing</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Enterprise.dc.html" style="font-size: 14px; color: #39404C;">Enterprise</a>
+        <a href="Docs.dc.html" style="font-size: 14px; color: #39404C;">Docs</a>
+        <a href="#cta" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Start building</a>
+      </div>
+    </nav>
+    <div style="max-width: 1180px; margin: 0 auto; padding: 0 28px 12px; display: flex; gap: 4px; flex-wrap: wrap;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <button type="button" onClick="{{ t.onClick }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; background: {{ t.bg }}; color: {{ t.color }}; border: 1px solid {{ t.border }}; border-radius: 3px; padding: 8px 14px; cursor: pointer; white-space: nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 0;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">{{ eyebrow }}</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 18em;">{{ headline }}</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 40px; max-width: 44em; text-wrap: pretty;">{{ standfirst }}</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+
+    <sc-if value="{{ isSessions }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 44px; align-items: start;">
+        <div>
+          <div style="display: flex; align-items: stretch; gap: 10px; flex-wrap: nowrap;">
+            <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 12px; text-align: center;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0;">filesystem</p>
+            </div>
+            <div style="flex: 0 0 auto; display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #9A9384;">+</div>
+            <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 12px; text-align: center;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0;">KV cache</p>
+            </div>
+            <div style="flex: 0 0 auto; display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #9A9384;">+</div>
+            <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 12px; text-align: center;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0;">tool state</p>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center; padding: 14px 0;">
+            <span style="display: block; width: 1px; height: 34px; background: #D8D2C4;"></span>
+          </div>
+          <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 4px; padding: 22px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+            <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #7A2530; margin: 0;">one atomic checkpoint</p>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 16px 0 0;">Kill it anywhere. Resume anywhere. The world and the memory can never disagree.</p>
+        </div>
+        <div>
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 20px;">A session is a micro-VM we can freeze. The freeze is one write, not three: if the filesystem were captured at t and the model memory at t plus 40 ms, the agent would wake remembering a file that does not exist.</p>
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 24px;">Storage is content-addressed, so checkpointing every five minutes costs about 41 MB per freeze rather than a fresh 1.2 GB. That is why the cadence can be aggressive enough to make a crash boring.</p>
+          <div style="background: #16130F; border-radius: 5px; padding: 16px 18px;">
+            <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.8; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">$ ks run --image claude-code --checkpoint 5m
+<span style="color: #8A8378;">session s_7f3a started</span>
+$ kill -9 14203
+$ ks resume s_7f3a
+<span style="color: #D9B8B8;">restored in 87s · nonce match · 0 bytes lost</span><span style="display: inline-block; width: 7px; height: 12px; background: #D9B8B8; vertical-align: -2px; margin-left: 4px; animation: ksBlink 1s step-end infinite;"></span></pre>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFork }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px;">
+          <svg viewBox="0 0 620 210" style="width: 100%; height: auto; display: block;" role="img" aria-label="Session timeline branching into three forks at step 40">
+            <line x1="14" y1="40" x2="606" y2="40" stroke="#D8D2C4" stroke-width="1"></line>
+            <path d="M300 40 C 380 40, 400 80, 520 80" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+            <path d="M300 40 C 380 40, 400 130, 520 130" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+            <path d="M300 40 C 380 40, 400 180, 520 180" fill="none" stroke="#7A2530" stroke-width="1.5"></path>
+            <rect x="56" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 62 40)"></rect>
+            <rect x="174" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 180 40)"></rect>
+            <rect x="294" y="32" width="16" height="16" fill="#7A2530" transform="rotate(45 302 40)"></rect>
+            <rect x="414" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 420 40)"></rect>
+            <rect x="534" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 540 40)"></rect>
+            <rect x="514" y="74" width="12" height="12" fill="#7A2530" transform="rotate(45 520 80)"></rect>
+            <rect x="514" y="124" width="12" height="12" fill="#7A2530" transform="rotate(45 520 130)"></rect>
+            <rect x="514" y="174" width="12" height="12" fill="#7A2530" transform="rotate(45 520 180)"></rect>
+            <text x="284" y="20" font-family="'JetBrains Mono', monospace" font-size="11" fill="#7A2530">c_0040</text>
+          </svg>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; margin-top: 22px;">
+            <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "one big migration"</div>
+            <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "keep legacy adapter"</div>
+            <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "split by tenant"</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; margin-top: 34px;">
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0;">Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices, and a shared budget pool means a fan-out cannot exceed the cap you already set.</p>
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0;">This is the difference between steering an agent and gambling on it. You stop choosing which instruction to try and run all of them from the same starting state, then keep the one that produced tests you believe.</p>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isGateway }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 28px 24px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 22px;">exactly-once, enforced at the gateway</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr)); gap: 12px; align-items: stretch;">
+            <sc-for list="{{ flow }}" as="f" hint-placeholder-count="5">
+              <div style="background: {{ f.bg }}; border: 1px solid {{ f.border }}; border-radius: 4px; padding: 18px 16px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ f.titleColor }}; margin: 0 0 8px;">{{ f.step }}</p>
+                <p style="font-size: 12.5px; line-height: 1.55; color: {{ f.bodyColor }}; margin: 0;">{{ f.body }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; margin-top: 34px;">
+          <div>
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;">Tokens are not re-purchased</h2>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 18px;">An interrupted call has already been paid for. On retry the gateway serves the stored response instead of buying it again, and the ledger row says so: <span style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #7A2530;">replayed from store, 0 new tokens</span>.</p>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0;">Cache-aware routing does the rest, keeping a long conversation on the provider that already holds its prefix. Bring your own keys and we meter durability only; the token meter never appears on your bill.</p>
+          </div>
+          <div style="background: #16130F; border-radius: 5px; padding: 20px 22px;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378; margin: 0 0 16px;">ledger, one retry</p>
+            <div style="display: grid; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between; gap: 14px; color: #EFEBE1;"><span>seq 1407 · model.call</span><span>21,551 tok</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px; color: #D9B8B8;"><span>seq 1408 · retry</span><span>0 tok</span></div>
+              <div style="height: 1px; background: #2A2622;"></div>
+              <div style="display: flex; justify-content: space-between; gap: 14px; color: #8A8378;"><span>billed</span><span>once</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isGovernance }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="background: #39404C; border-radius: 5px; padding: 40px 34px;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+            <span style="width: 7px; height: 7px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #D9B8B8;">The flight recorder</span>
+          </div>
+          <p style="font-size: 17px; line-height: 1.75; color: #E6E3DC; margin: 0 0 26px; max-width: 42em;">Deterministic replay from checkpointed state. Audit trails with sequence lineage. Deposition-grade evidence for the compliance officer, zero extra work for the engineer.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px;">
+            <sc-for list="{{ govRows }}" as="g" hint-placeholder-count="3">
+              <div style="background: rgba(251,250,247,0.05); border: 1px solid #5A616C; border-radius: 4px; padding: 18px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; margin: 0 0 8px;">{{ g.title }}</p>
+                <p style="font-size: 13px; line-height: 1.6; color: #C9C4BA; margin: 0;">{{ g.body }}</p>
+              </div>
+            </sc-for>
+          </div>
+          <p style="display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #FBFAF7; border: 1px solid #5A616C; border-radius: 3px; padding: 7px 12px; margin: 22px 0 0;">Enterprise: sovereign deploys, retention, SSO.</p>
+        </div>
+        <div style="margin-top: 34px; max-width: 44em;">
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0;">A log is the agent's account of itself, written by the thing under investigation. A replay re-executes the run from the freeze that preceded it, so the evidence is produced by the system rather than narrated by it. Every event carries the checkpoint it descended from, which is what makes the reproduction exact rather than approximate.</p>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 56px 28px 0;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 18px;">
+      <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="3">
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+          <p style="font-size: 12px; color: #39404C; margin: 0 0 12px;">{{ m.label }}</p>
+          <sc-if value="{{ m.known }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 30px; color: #7A2530; letter-spacing: -0.02em;">{{ m.value }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: {{ m.badgeColor }}; border: 1px solid {{ m.badgeBorder }}; border-radius: 2px; padding: 2px 6px;">{{ m.badge }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.unknown }}" hint-placeholder-val="{{ false }}">
+            <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 10px; margin-bottom: 10px;">
+              <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>{{ m.value }}
+            </span>
+          </sc-if>
+          <p style="font-size: 13px; line-height: 1.6; color: #7A6F60; margin: 0;">{{ m.note }}</p>
+        </article>
+      </sc-for>
+    </div>
+    <p style="font-size: 14px; line-height: 1.7; color: #39404C; margin: 22px 2px 0; max-width: 46em;">{{ evidenceLine }} <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 12px;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ gateTag }}</a></p>
+  </section>
+
+  <section id="cta" style="background: #16130F; margin-top: 76px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 72px 28px;">
+      <div style="max-width: 44em;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 22px;">{{ ctaHead }}</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #C9C4BA; margin: 0 0 30px;">{{ ctaBody }}</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="Onboarding.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Start building</a>
+          <a href="Docs.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Read the docs</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 30px 0 0;">keepstate.ai · the durable agent session cloud</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { page: 0 };
+
+  pages() {
+    const measured = { badge: 'MEASURED', badgeColor: '#16130F', badgeBorder: '#16130F' };
+    const estimated = { badge: 'ESTIMATED', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' };
+    return [
+      {
+        tab: 'Sessions',
+        eyebrow: 'Sessions',
+        headline: 'Kill it anywhere. Resume anywhere.',
+        standfirst: 'Your agent runs inside a micro-VM we can freeze whole. Filesystem, model memory, and tool state are captured as one atomic snapshot, so the world it wakes into and the world it remembers are the same world.',
+        metrics: [
+          Object.assign({ label: 'Warm resume', value: '< 100 ms', note: 'same host, 1,000 trials', known: true }, measured),
+          Object.assign({ label: 'Cold resume', value: '< 90 s', note: 'cross-region, p95', known: true }, measured),
+          Object.assign({ label: 'Bytes lost across a kill', value: '0', note: '4,000 kills, claude-code', known: true }, measured)
+        ],
+        evidenceLine: 'Resume latency and durability are gated on every release; the raw output is public.',
+        gateTag: 'G-101, G-102, G-107',
+        ctaHead: 'Pull the plug on your own agent.',
+        ctaBody: 'Free credits cover a six-hour run and the kill that would have ended it.'
+      },
+      {
+        tab: 'Fork',
+        eyebrow: 'Fork',
+        headline: 'Every checkpoint is a door to six futures.',
+        standfirst: 'A fork is a new conversation with an old world as its parent. Branch a freeze from two days ago into six universes, run them at once, and keep the one whose tests you believe.',
+        metrics: [
+          Object.assign({ label: 'Forks per call', value: '64', note: 'each independent, all concurrent', known: true }, measured),
+          Object.assign({ label: 'Cost of a fork at rest', value: 'storage only', note: 'content-addressed, shared with the parent', known: true }, measured),
+          Object.assign({ label: 'Budget pool across a fan-out', value: 'one cap', note: 'ten forks cannot exceed the parent cap', known: true }, measured)
+        ],
+        evidenceLine: 'Fan-out containment is gated at 200 concurrent forks against a single pool.',
+        gateTag: 'G-126',
+        ctaHead: 'Stop gambling on one instruction.',
+        ctaBody: 'Run all of them from the same freeze and keep the winner.'
+      },
+      {
+        tab: 'Gateway & Cost',
+        eyebrow: 'Gateway and cost',
+        headline: 'Billed at most once, enforced by the gateway.',
+        standfirst: 'Every model call passes through a gateway that meters it, stores its response, and refuses to buy the same tokens twice. Enforcement lives on our side of the wire rather than in a client we would have to trust.',
+        metrics: [
+          Object.assign({ label: 'Token bill on an identical trace', value: '−45%', note: 'one design partner, one trace', known: true }, estimated),
+          Object.assign({ label: 'Double-billed interrupted calls', value: '0', note: 'gateway-enforced, all providers', known: true }, measured),
+          { label: 'Cache hit rate, your workload', value: 'unavailable (not yet measured)', note: 'we will not quote yours before we meter it', unknown: true }
+        ],
+        evidenceLine: 'Exactly-once billing is gated on every provider we support; the cost figure is one partner, labeled as observation.',
+        gateTag: 'G-121, G-140',
+        ctaHead: 'Send us one trace of your longest run.',
+        ctaBody: 'We will hand you the cost model of what you would have saved, measured on your own tokens.'
+      },
+      {
+        tab: 'Governance & Replay',
+        eyebrow: 'Governance and replay',
+        headline: 'Logs tell you what the agent said it did. Replay re-executes what it actually did.',
+        standfirst: 'Deterministic replay from checkpointed state turns an audit from an interview into a reproduction. The engineer does nothing extra; the evidence is a byproduct of how sessions already work.',
+        metrics: [
+          Object.assign({ label: 'Replays reproduced byte-identical', value: '500 / 500', note: 'claude-code, from checkpointed state', known: true }, measured),
+          Object.assign({ label: 'Event lineage depth', value: 'full', note: 'every event names its parent checkpoint', known: true }, measured),
+          Object.assign({ label: 'Retention under legal hold', value: 'indefinite', note: 'the delete path is removed, not disabled', known: true }, measured)
+        ],
+        evidenceLine: 'Determinism is gated at 500 replays per release, and a red gate removes the claim from the site automatically.',
+        gateTag: 'G-118',
+        ctaHead: 'Give your auditors a reproduction, not a transcript.',
+        ctaBody: 'Deterministic replay, sequence lineage, and retention measured in years.'
+      }
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const all = this.pages();
+    const p = all[s.page];
+
+    return {
+      tabs: all.map((pp, i) => ({
+        label: pp.tab,
+        bg: i === s.page ? '#16130F' : 'transparent',
+        color: i === s.page ? '#FBFAF7' : '#39404C',
+        border: i === s.page ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ page: i })
+      })),
+      eyebrow: p.eyebrow, headline: p.headline, standfirst: p.standfirst,
+      isSessions: s.page === 0, isFork: s.page === 1, isGateway: s.page === 2, isGovernance: s.page === 3,
+      metrics: p.metrics.map((m) => ({
+        label: m.label, value: m.value, note: m.note,
+        known: !!m.known, unknown: !!m.unknown,
+        badge: m.badge, badgeColor: m.badgeColor, badgeBorder: m.badgeBorder
+      })),
+      evidenceLine: p.evidenceLine, gateTag: p.gateTag,
+      ctaHead: p.ctaHead, ctaBody: p.ctaBody,
+      flow: [
+        { step: '1 · agent calls', body: 'The VM sends a request using a virtual key scoped to this session.', bg: '#FFFFFF', border: '#D8D2C4', titleColor: '#16130F', bodyColor: '#39404C' },
+        { step: '2 · gateway meters', body: 'Tokens counted in, tokens counted out, before the provider is touched.', bg: '#FFFFFF', border: '#D8D2C4', titleColor: '#16130F', bodyColor: '#39404C' },
+        { step: '3 · provider answers', body: 'The response is written to the store as it streams back.', bg: '#F6ECEA', border: '#E4CFCC', titleColor: '#7A2530', bodyColor: '#39404C' },
+        { step: '4 · call interrupted', body: 'A crash, a rate limit, a resume. The stored response survives it.', bg: '#F6ECEA', border: '#E4CFCC', titleColor: '#7A2530', bodyColor: '#39404C' },
+        { step: '5 · retry served', body: 'The store answers, not the provider. Zero new tokens, billed once.', bg: '#16130F', border: '#16130F', titleColor: '#D9B8B8', bodyColor: '#C9C4BA' }
+      ],
+      govRows: [
+        { title: 'deterministic replay', body: 'Re-execute the run from the freeze that preceded it, byte for byte.' },
+        { title: 'sequence lineage', body: 'Every event names its parent checkpoint, so order is provable rather than asserted.' },
+        { title: 'audit bundle', body: 'A signed archive scoped to the sessions and range your reviewer named.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

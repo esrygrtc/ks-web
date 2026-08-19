@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.95); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 13px 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 9px; color: #16130F; text-decoration: none;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 500;">KeepState</span>
+        </a>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #7A6F60; border-left: 1px solid #D8D2C4; padding-left: 12px;">auth and system states</span>
+      </div>
+      <div style="display: flex; gap: 3px; background: #EFEBE1; border-radius: 3px; padding: 3px; flex-wrap: wrap;">
+        <sc-for list="{{ screens }}" as="t" hint-placeholder-count="7">
+          <button type="button" onClick="{{ t.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; background: {{ t.bg }}; color: {{ t.color }}; border: none; border-radius: 2px; padding: 6px 11px; cursor: pointer; white-space: nowrap;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ showBanners }}" hint-placeholder-val="{{ false }}">
+    <div style="display: grid;">
+      <div style="background: #F6ECEA; border-bottom: 1px solid #E4CFCC;">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 12px 26px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto;"></span>
+          <p style="font-size: 13.5px; line-height: 1.55; color: #16130F; margin: 0;"><span style="font-weight: 600;">Incident: elevated resume latency in eu-west.</span> Cold resumes are averaging 140 s. Checkpoints and running sessions are unaffected. <a href="#">Status page</a></p>
+        </div>
+      </div>
+      <div style="background: #EFEBE1; border-bottom: 1px solid #D8D2C4;">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 12px 26px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="width: 7px; height: 7px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto;"></span>
+          <p style="font-size: 13.5px; line-height: 1.55; color: #39404C; margin: 0;"><span style="font-weight: 600; color: #16130F;">Maintenance, Sunday 02:00 to 04:00 UTC.</span> Running sessions checkpoint and park automatically, then wake. No action needed.</p>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 0 26px;">
+
+    <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 60px; align-items: center; min-height: 78vh; padding: 60px 0;">
+        <div style="max-width: 30em;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">The durable agent session cloud</span>
+          </div>
+          <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.4vw, 48px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 18px;">Your agents never start over.</h1>
+          <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 26px;">One free plug-pull is waiting on the other side of this. No card, no call.</p>
+          <div style="background: #16130F; border-radius: 5px; padding: 17px 19px;">
+            <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">ks resume s_7f3a<span style="color: #8A8378;">  # restored in 87s · 0 bytes lost</span></code>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 6px; padding: 34px 30px; max-width: 420px; width: 100%; justify-self: end;">
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 26px; margin: 0 0 8px;">Sign in</p>
+          <p style="font-size: 13px; color: #7A6F60; margin: 0 0 26px;">New here? The same button creates the account.</p>
+          <div style="display: grid; gap: 10px; margin-bottom: 20px;">
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #16130F; border: 1px solid #16130F; border-radius: 3px; padding: 13px 18px; cursor: pointer;" style-hover="background: #2A2622;">Continue with GitHub</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 13px 18px; cursor: pointer;" style-hover="border-color: #16130F;">Continue with Google</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <span style="flex: 1; height: 1px; background: #EDE9DF; display: block;"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #A69E8E;">or</span>
+            <span style="flex: 1; height: 1px; background: #EDE9DF; display: block;"></span>
+          </div>
+          <label for="auth-email" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Email a sign-in link</label>
+          <input id="auth-email" type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@company.com" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid {{ emailBorder }}; border-radius: 3px; padding: 11px 13px; outline: none; margin-bottom: 10px;" style-focus="border-color: #7A2530;" />
+          <sc-if value="{{ emailError }}" hint-placeholder-val="{{ false }}">
+            <p style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: #7A2530; margin: 0 0 10px;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>That address is missing an @ or a domain.</p>
+          </sc-if>
+          <button type="button" onClick="{{ sendLink }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 18px; cursor: pointer; margin-bottom: 20px;">Send the link</button>
+          <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 0;">We request read access to your identity, nothing else. No repository scopes are requested at sign-in.</p>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDevice }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: center; min-height: 78vh; padding: 60px 0;">
+        <div style="max-width: 500px; width: 100%; text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 22px;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530;">ks login</span>
+          </div>
+          <sc-if value="{{ deviceOpen }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 38px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">Confirm this code matches your terminal.</h1>
+              <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 30px;">Your CLI printed a code when you ran <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F;">ks login</span>. If the two do not match, do not confirm.</p>
+              <div style="background: #16130F; border-radius: 6px; padding: 30px 24px; margin-bottom: 26px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: clamp(30px, 6vw, 46px); letter-spacing: 0.22em; color: #FBFAF7; margin: 0;">{{ code }}</p>
+              </div>
+              <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button type="button" onClick="{{ confirmDevice }}" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 13px 24px; cursor: pointer;">Codes match, confirm</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 23px; cursor: pointer;">They do not match</button>
+              </div>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 22px 0 0;">expires in 9:41 · device: macOS · London</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ deviceDone }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 38px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">Confirmed. Return to your terminal.</h1>
+              <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 28px;">The CLI already knows. You can close this tab; nothing else happens here.</p>
+              <div style="background: #16130F; border-radius: 5px; padding: 18px 20px; text-align: left; margin-bottom: 26px;">
+                <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #EFEBE1; display: block; line-height: 1.8; white-space: pre;">$ ks login
+<span style="color: #8A8378;">waiting for confirmation...</span>
+<span style="color: #D9B8B8;">logged in as rk@acme.eng · org acme-eng</span></code>
+              </div>
+              <button type="button" onClick="{{ resetDevice }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 20px; cursor: pointer;">Show the code screen again</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isInvite }}" hint-placeholder-val="{{ false }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; padding: 60px 0; align-items: start;">
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 6px; padding: 32px 30px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 18px;">Organization invite</p>
+          <h1 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">Priya invited you to acme-eng.</h1>
+          <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 24px;">You will join as a <span style="font-weight: 600; color: #16130F;">Developer</span>: you can run, fork, and kill your own sessions, and read everyone else's. You cannot change budgets or billing.</p>
+          <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 16px 18px; margin-bottom: 24px;">
+            <div style="display: grid; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">org</span><span style="color: #39404C;">acme-eng</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">members</span><span style="color: #39404C;">6</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">your role</span><span style="color: #39404C;">Developer</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">session budget</span><span style="color: #39404C;">$200 default</span></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="Onboarding.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 13px 22px; text-decoration: none;">Accept and join</a>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 21px; cursor: pointer;">Decline</button>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 6px; padding: 32px 30px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 18px;">Email verification</p>
+          <h2 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">Check rk@acme.eng.</h2>
+          <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 24px;">A verification link is on its way. It expires in 30 minutes, and requesting a new one invalidates the old one.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+            <button type="button" onClick="{{ resend }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 18px; cursor: pointer;">{{ resendLabel }}</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 11px 14px; cursor: pointer;" style-hover="background: #EFEBE1;">Use a different address</button>
+          </div>
+          <div style="border-top: 1px solid #EDE9DF; padding-top: 20px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 8px;">Lost access to the account?</p>
+            <p style="font-size: 13px; line-height: 1.65; color: #39404C; margin: 0 0 12px;">There is no password to reset. Recovery re-verifies the address, and if you signed in with GitHub, that identity is the only path back in.</p>
+            <a href="#" style="font-size: 13px; font-weight: 500;">Start recovery →</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ is404 }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; min-height: 78vh; padding: 60px 0;">
+        <div style="max-width: 34em;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: clamp(48px, 8vw, 78px); line-height: 1; color: #7A2530; letter-spacing: -0.04em; margin: 0 0 24px;">404</p>
+          <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; letter-spacing: -0.022em; font-weight: 400; margin: 0 0 18px;">This page was never checkpointed. Nothing to resume.</h1>
+          <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 28px;">The address does not exist, or it did and its route was retired. Neither is recoverable from here.</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="KeepState.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 13px 22px; text-decoration: none;">Back to keepstate.ai</a>
+            <a href="Docs.dc.html" style="font-size: 15px; font-weight: 500; color: #16130F; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 21px; text-decoration: none;">Search the docs</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ is500 }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; min-height: 78vh; padding: 60px 0;">
+        <div style="max-width: 34em;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: clamp(48px, 8vw, 78px); line-height: 1; color: #7A2530; letter-spacing: -0.04em; margin: 0 0 24px;">500</p>
+          <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; letter-spacing: -0.022em; font-weight: 400; margin: 0 0 18px;">Our fault, and our ledger saw it.</h1>
+          <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 22px;">Your sessions and checkpoints are not affected by this page failing. The status page is the source of truth for what is actually degraded.</p>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 15px 17px; margin-bottom: 28px;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; margin: 0;">ref err_5b2f109c · 2026-08-09 11:04:22Z · already filed</p>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="#" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 13px 22px; text-decoration: none;">Status page</a>
+            <a href="Console Overview.dc.html" style="font-size: 15px; font-weight: 500; color: #16130F; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 21px; text-decoration: none;">Back to console</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240}}">
+class Component extends DCLogic {
+  state = { screen: 'login', email: '', emailError: false, deviceConfirmed: false, resent: false };
+
+  renderVals() {
+    const s = this.state;
+    const list = [
+      ['login', 'sign in'], ['device', 'ks login'], ['invite', 'invite + verify'],
+      ['404', '404'], ['500', '500'], ['banners', 'banners']
+    ];
+
+    return {
+      screens: list.map(([key, label]) => ({
+        label: label,
+        bg: s.screen === key ? '#16130F' : 'transparent',
+        color: s.screen === key ? '#FBFAF7' : '#7A6F60',
+        onClick: () => this.setState({ screen: key })
+      })),
+      isLogin: s.screen === 'login' || s.screen === 'banners',
+      isDevice: s.screen === 'device',
+      isInvite: s.screen === 'invite',
+      is404: s.screen === '404',
+      is500: s.screen === '500',
+      showBanners: s.screen === 'banners',
+
+      email: s.email,
+      emailBorder: s.emailError ? '#7A2530' : '#D8D2C4',
+      emailError: s.emailError,
+      onEmail: (e) => this.setState({ email: e.target.value, emailError: false }),
+      sendLink: () => this.setState({ emailError: !/.+@.+\..+/.test(s.email) }),
+
+      code: 'KQNF-7T2D',
+      deviceOpen: !s.deviceConfirmed,
+      deviceDone: s.deviceConfirmed,
+      confirmDevice: () => this.setState({ deviceConfirmed: true }),
+      resetDevice: () => this.setState({ deviceConfirmed: false }),
+
+      resendLabel: s.resent ? 'sent again' : 'Resend the link',
+      resend: () => {
+        this.setState({ resent: true });
+        setTimeout(() => this.setState({ resent: false }), 1600);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

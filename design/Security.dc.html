@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <a href="Product Pages.dc.html" style="font-size: 14px; color: #39404C;">Product</a>
+        <a href="Enterprise.dc.html" style="font-size: 14px; color: #39404C;">Enterprise</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Status.dc.html" style="font-size: 14px; color: #39404C;">Status</a>
+        <a href="Enterprise.dc.html" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Security review pack</a>
+      </div>
+    </nav>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 44px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Security</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 17em;">The real key never enters a guest, an image, or a snapshot.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0; max-width: 44em; text-wrap: pretty;">A checkpoint is a copy of a running machine, which makes every secret inside that machine a copy too. So we keep secrets out of the machine. What follows is the architecture, stated as policy rather than as reassurance.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+    <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 30px 26px;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 24px;">isolation boundary</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-bottom: 22px;">
+        <sc-for list="{{ boundary }}" as="b" hint-placeholder-count="4">
+          <div style="background: {{ b.bg }}; border: 1px solid {{ b.border }}; border-radius: 4px; padding: 20px 18px;">
+            <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 10px;">
+              <span style="width: 6px; height: 6px; background: {{ b.dot }}; transform: rotate(45deg); display: block;"></span>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{ b.titleColor }}; margin: 0;">{{ b.name }}</p>
+            </div>
+            <p style="font-size: 13px; line-height: 1.6; color: {{ b.bodyColor }}; margin: 0 0 12px;">{{ b.body }}</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.5; color: {{ b.metaColor }}; margin: 0;">{{ b.meta }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-size: 14px; line-height: 1.7; color: #39404C; margin: 0; max-width: 52em;">The guest is the only place your agent's code runs, and it is the only place that never holds a durable credential. A stolen checkpoint yields a filesystem and a conversation, not a way to spend your money.</p>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">Key handling, stated as rules.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 30px; max-width: 42em;">These are not aspirations. Each one is enforced in code, and where a gate watches it, the gate is named.</p>
+    <div style="border-top: 1px solid #D8D2C4;">
+      <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 36px; padding: 22px 2px; border-bottom: 1px solid #D8D2C4; align-items: start;">
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+            <p style="font-size: 16px; line-height: 1.6; font-weight: 500; color: #16130F; margin: 0;">{{ r.rule }}</p>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: #39404C; margin: 0;">{{ r.detail }}</p>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <sc-if value="{{ r.gated }}" hint-placeholder-val="{{ true }}">
+              <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A2530;">
+                <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ r.gate }}
+              </a>
+            </sc-if>
+            <sc-if value="{{ r.ungated }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #A69E8E;">policy, no gate yet</span>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; align-items: start;">
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 20px;">Encryption</h2>
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 380px;">
+              <thead>
+                <tr style="background: #FBFAF7;">
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">surface</th>
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">at rest</th>
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">in transit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ crypto }}" as="c" hint-placeholder-count="5">
+                  <tr style="border-bottom: 1px solid #EDE9DF;">
+                    <td style="padding: 12px 16px; font-size: 13px; color: #16130F;">{{ c.surface }}</td>
+                    <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C;">{{ c.rest }}</td>
+                    <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C;">{{ c.transit }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; color: #7A6F60; margin: 14px 2px 0;">Checkpoint keys are per-organization and rotated on a 90-day schedule. Enterprise customers may hold the root key themselves, in which case we cannot read a checkpoint even under subpoena.</p>
+      </div>
+
+      <div style="display: grid; gap: 22px;">
+        <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px;">
+          <h2 style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;">Certifications, stated honestly</h2>
+          <div style="display: grid; gap: 0;">
+            <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 0; border-top: 1px solid #DDD7C9;">
+                <span style="font-size: 14px; color: #16130F;">{{ c.name }}</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ c.color }}; background: {{ c.bg }}; border: 1px solid {{ c.border }}; border-radius: 100px; padding: 4px 11px; white-space: nowrap;">{{ c.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 18px 0 0;">No badge appears on this site until the certificate exists. There is no reserved slot waiting to be filled, because a reserved slot is a claim.</p>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px;">
+          <h2 style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;">Responsible disclosure</h2>
+          <p style="font-size: 14px; line-height: 1.7; color: #39404C; margin: 0 0 18px;">Report anything that looks like a way past the boundary. We answer within one business day, fix or explain within thirty, and publish the finding in the archive with your name on it unless you ask us not to.</p>
+          <div style="background: #16130F; border-radius: 4px; padding: 14px 16px; margin-bottom: 16px;">
+            <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">security@keepstate.ai · PGP 4E91 C02D 7F3A 2C19</code>
+          </div>
+          <div style="display: grid; gap: 0;">
+            <sc-for list="{{ disclosure }}" as="d" hint-placeholder-count="4">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 11px 0; border-top: 1px solid #EDE9DF;">
+                <span style="font-size: 13px; color: #39404C;">{{ d.k }}</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F;">{{ d.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">What we would tell an attacker.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 26px; max-width: 44em;">The honest version of a threat model names what it does not cover. These are the three places we consider ourselves most exposed today.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px;">
+      <sc-for list="{{ threats }}" as="t" hint-placeholder-count="3">
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-left: 3px solid #7A2530; border-radius: 5px; padding: 22px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0 0 12px;">{{ t.tag }}</p>
+          <p style="font-size: 15px; font-weight: 500; line-height: 1.5; color: #16130F; margin: 0 0 12px;">{{ t.risk }}</p>
+          <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0;">{{ t.mitigation }}</p>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background: #16130F; margin-top: 76px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 72px 28px;">
+      <div style="max-width: 44em;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 22px;">Read it before you talk to us.</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #C9C4BA; margin: 0 0 30px;">The DPA, the subprocessor list, the architecture overview, and the penetration test summary download together, with <span style="color: #D9B8B8;">no form and no call first</span>.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="Enterprise.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Download the security review pack</a>
+          <a href="Status.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Status and incident history</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 30px 0 0;">keepstate.ai · the durable agent session cloud</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      boundary: [
+        {
+          name: 'BYOK vault', body: 'Your real provider key, encrypted per organization, outside the isolation boundary and unreachable from any guest.',
+          meta: 'AES-256-GCM · HSM-backed root · no read path from the data plane',
+          bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530', titleColor: '#7A2530', bodyColor: '#39404C', metaColor: '#8A7A78'
+        },
+        {
+          name: 'Gateway', body: 'Mints a virtual key scoped to one session, meters every call, and enforces exactly-once billing on our side of the wire.',
+          meta: 'virtual keys expire at session end · never handled by a human',
+          bg: '#FFFFFF', border: '#D8D2C4', dot: '#39404C', titleColor: '#16130F', bodyColor: '#39404C', metaColor: '#7A6F60'
+        },
+        {
+          name: 'Micro-VM guest', body: 'The agent, its filesystem, its tools. Hardware-virtualized, one tenant, no shared kernel. Sees the virtual key only.',
+          meta: 'egress allowlisted to the gateway · no inbound path',
+          bg: '#16130F', border: '#16130F', dot: '#D9B8B8', titleColor: '#D9B8B8', bodyColor: '#C9C4BA', metaColor: '#8A8378'
+        },
+        {
+          name: 'Checkpoint store', body: 'Content-addressed, encrypted at rest, pinned to the region you named. Contains no live credential by construction.',
+          meta: 'per-org keys · region enforced at the scheduler',
+          bg: '#EFEBE1', border: '#D8D2C4', dot: '#A69E8E', titleColor: '#16130F', bodyColor: '#39404C', metaColor: '#7A6F60'
+        }
+      ],
+
+      rules: [
+        { rule: 'A provider key is never written into a guest.', detail: 'The vault has no read path from the data plane. A guest that asks for a key gets a virtual key, or nothing.', gate: 'G-151', gated: true, ungated: false },
+        { rule: 'A checkpoint is scanned for credential material before it is acknowledged.', detail: 'If a secret pattern appears in a snapshot, the checkpoint is quarantined and the session is halted rather than silently stored.', gate: 'G-153', gated: true, ungated: false },
+        { rule: 'Virtual keys are scoped to one session and die with it.', detail: 'Scope covers the session id, the model set you authorized, and the budget remaining. A leaked virtual key buys nothing after the session ends.', gate: 'G-152', gated: true, ungated: false },
+        { rule: 'Humans never handle a virtual key.', detail: 'They are minted, injected, and revoked by the gateway. No console screen displays one, and no support process asks for one.', gate: 'G-152', gated: true, ungated: false },
+        { rule: 'A revoked key stops working mid-session.', detail: 'Revocation is immediate at the gateway, not on next issue. The session checkpoints and parks rather than continuing on a credential you withdrew.', gate: 'G-154', gated: true, ungated: false },
+        { rule: 'Support staff cannot read your checkpoints.', detail: 'Access requires a break-glass path that notifies your Owners, writes to your audit log, and expires in one hour. Enterprise customers holding their own root key can make it impossible outright.', gate: '', gated: false, ungated: true }
+      ],
+
+      crypto: [
+        { surface: 'Checkpoints', rest: 'AES-256-GCM, per-org key', transit: 'TLS 1.3, mTLS internally' },
+        { surface: 'Event ledgers', rest: 'AES-256-GCM, per-org key', transit: 'TLS 1.3' },
+        { surface: 'BYOK vault', rest: 'AES-256-GCM, HSM root', transit: 'TLS 1.3, mTLS only' },
+        { surface: 'Console and API', rest: 'n/a', transit: 'TLS 1.3, HSTS' },
+        { surface: 'Backups', rest: 'AES-256-GCM, separate key', transit: 'TLS 1.3' }
+      ],
+
+      certs: [
+        { name: 'SOC 2 Type II', status: 'in progress, window closes Q4 2026', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { name: 'Penetration test, external', status: 'completed 2026-05', color: '#39404C', bg: '#FFFFFF', border: '#39404C' },
+        { name: 'ISO 27001', status: 'not started', color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2' },
+        { name: 'HIPAA, FedRAMP', status: 'not started', color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2' }
+      ],
+
+      disclosure: [
+        { k: 'First response', v: '1 business day' },
+        { k: 'Fix or explanation', v: '30 days' },
+        { k: 'Published as a finding', v: 'always' },
+        { k: 'Safe harbor', v: 'yes, good faith research' }
+      ],
+
+      threats: [
+        {
+          tag: 'exposure 1',
+          risk: 'A compromised harness image could exfiltrate your workspace.',
+          mitigation: 'We wrap images, we do not audit their contents beyond signature and provenance. Community-wrapped images carry more risk than the four we gate, and the compatibility matrix says which is which. Egress from a guest is allowlisted to the gateway, which limits the destination but not the intent.'
+        },
+        {
+          tag: 'exposure 2',
+          risk: 'A checkpoint is a complete copy of a machine, including whatever your agent wrote into it.',
+          mitigation: 'If your agent writes a secret to disk, that secret is now in every snapshot until retention expires. Credential scanning catches known patterns, not custom ones. Treat a workspace as a place secrets do not belong.'
+        },
+        {
+          tag: 'exposure 3',
+          risk: 'We are a young company with a small team and no SOC 2 yet.',
+          mitigation: 'That is a real procurement risk and we will not argue otherwise. What we offer instead is the claims file, the findings archive, and a security pack you can read without talking to anyone. Judge us on published evidence rather than on a badge we have not earned.'
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

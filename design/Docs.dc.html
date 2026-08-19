@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.95); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 9px; color: #16130F; text-decoration: none;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 500;">KeepState</span>
+        </a>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #7A6F60; border-left: 1px solid #D8D2C4; padding-left: 12px;">docs</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; flex: 1 1 260px; max-width: 460px; min-width: 0;">
+        <button type="button" onClick="{{ openPalette }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: Inter, sans-serif; font-size: 13px; color: #7A6F60; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 13px; cursor: pointer; text-align: left;" style-hover="border-color: #16130F;">
+          <span>Search the docs</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; border: 1px solid #D8D2C4; border-radius: 2px; padding: 1px 6px;">⌘K</span>
+        </button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <a href="Pricing.dc.html" style="font-size: 13px; color: #39404C;">Pricing</a>
+        <a href="Proof.dc.html" style="font-size: 13px; color: #39404C;">Proof</a>
+        <a href="Console Overview.dc.html" style="font-size: 13px; font-weight: 500; color: #7A2530;">Console →</a>
+      </div>
+    </div>
+  </header>
+
+  <div style="display: flex; align-items: stretch; flex: 1; min-height: 0;">
+
+    <nav style="width: 236px; flex: 0 0 auto; border-right: 1px solid #D8D2C4; padding: 24px 14px 60px; display: {{ sideDisplay }}; flex-direction: column; gap: 3px; position: sticky; top: 55px; align-self: flex-start; max-height: calc(100vh - 55px); overflow-y: auto;">
+      <sc-for list="{{ sections }}" as="s" hint-placeholder-count="6">
+        <div style="margin-bottom: 14px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px; padding: 0 10px;">{{ s.title }}</p>
+          <sc-for list="{{ s.items }}" as="i" hint-placeholder-count="4">
+            <button type="button" onClick="{{ i.onClick }}" style="width: 100%; display: flex; align-items: center; gap: 9px; font-family: Inter, sans-serif; font-size: 13px; color: {{ i.color }}; background: {{ i.bg }}; border: none; border-radius: 3px; padding: 7px 10px; cursor: pointer; text-align: left; font-weight: {{ i.weight }};">
+              <span style="width: 5px; height: 5px; background: {{ i.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ i.label }}
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 30px 32px 80px; max-width: 100%;">
+      <div style="max-width: 72ch;">
+
+        <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #7A6F60; margin-bottom: 18px;">
+          <span>Docs</span><span>/</span><span>{{ crumbSection }}</span><span>/</span><span style="color: #16130F;">{{ crumbPage }}</span>
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 3px; padding: 4px 9px;">last verified against {{ version }}</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ verifiedDate }}</span>
+        </div>
+
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 44px); line-height: 1.08; letter-spacing: -0.022em; font-weight: 400; margin: 0 0 18px;">{{ title }}</h1>
+        <p style="font-size: 17px; line-height: 1.72; color: #39404C; margin: 0 0 34px; text-wrap: pretty;">{{ intro }}</p>
+
+        <sc-if value="{{ isQuickstart }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display: grid; gap: 0; margin-bottom: 36px;">
+              <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+                <div style="display: grid; grid-template-columns: 30px 1fr; gap: 18px; padding-bottom: 30px; position: relative;">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span style="width: 11px; height: 11px; background: {{ st.dot }}; border: 1px solid #7A2530; transform: rotate(45deg); display: block; margin-top: 5px;"></span>
+                    <span style="width: 1px; flex: 1; background: {{ st.line }}; display: block;"></span>
+                  </div>
+                  <div style="min-width: 0;">
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">step {{ st.n }}</p>
+                    <h2 style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.25; font-weight: 500; margin: 0 0 10px;">{{ st.title }}</h2>
+                    <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 14px;">{{ st.body }}</p>
+                    <sc-if value="{{ st.hasCode }}" hint-placeholder-val="{{ true }}">
+                      <div style="background: #16130F; border-radius: 4px; padding: 15px 17px; position: relative; margin-bottom: 12px;">
+                        <button type="button" onClick="{{ st.onCopy }}" style="position: absolute; top: 10px; right: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 8px; cursor: pointer;" style-hover="color: #FBFAF7; border-color: #6A6258;">{{ st.copyLabel }}</button>
+                        <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre; padding-right: 56px;">{{ st.code }}</pre>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ st.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.6; color: #7A6F60; margin: 0;">{{ st.note }}</p>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 5px; padding: 24px;">
+              <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+                <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">what you just proved</span>
+              </div>
+              <p style="font-size: 15px; line-height: 1.7; color: #16130F; margin: 0;">You killed a process that had been working for minutes and lost nothing: not the filesystem, not the model's memory of the conversation, not the half-finished thought. That is the whole product. Everything else is scale, budgets, and evidence.</p>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isConcept }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 28px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;" id="two-ledgers">The two ledgers</h2>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 20px;">A session keeps two records that must never disagree. The <span style="color: #16130F; font-weight: 500;">state ledger</span> is the sequence of checkpoints: each one a full freeze of filesystem, model memory, and tool state. The <span style="color: #16130F; font-weight: 500;">event ledger</span> is the sequence of things that happened between them: model calls, tool calls, steers, retries.</p>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 30px;">Every event carries the checkpoint it descended from. That parent pointer is what makes replay deterministic and what makes a fork cheap: a fork is a new event ledger with an old state ledger entry as its parent.</p>
+
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px; margin-bottom: 30px;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 20px;">lineage</p>
+              <div style="display: grid; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; width: 92px; flex: 0 0 auto;">state</span>
+                  <sc-for list="{{ lineageState }}" as="l" hint-placeholder-count="5">
+                    <span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A2530; border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 3px; padding: 5px 10px;">
+                      <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block;"></span>{{ l }}
+                    </span>
+                  </sc-for>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; width: 92px; flex: 0 0 auto;">events</span>
+                  <sc-for list="{{ lineageEvents }}" as="l" hint-placeholder-count="6">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 5px 10px;">{{ l }}</span>
+                  </sc-for>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; width: 92px; flex: 0 0 auto;">fork</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C;">parent c_0040 · new event ledger from seq 0</span>
+                </div>
+              </div>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 28px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;" id="why-atomic">Why the freeze must be atomic</h2>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 20px;">If the filesystem is captured at t and the model memory at t plus 40 ms, the agent wakes into a world where it remembers writing a file that does not exist. The three states are written as one snapshot or not at all.</p>
+            <div style="border-left: 2px solid #D8D2C4; padding-left: 20px; margin-bottom: 30px;">
+              <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 19px; line-height: 1.55; color: #16130F; margin: 0;">A checkpoint that reports success before all three states are durable is not a checkpoint. It is a lie with a timestamp. <a href="Proof.dc.html" style="font-family: 'JetBrains Mono', monospace; font-style: normal; font-size: 11px;">F-061</a></p>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isGuide }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0 0 24px;">Claude Code runs unmodified on KeepState. You do not change your prompts, your tools, or your workflow; you change where the process lives. What follows is a real migration of a long-running task.</p>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 12px;">Start it on KeepState</h2>
+            <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 14px;">Point at your workspace. The image ships with Claude Code and the tools it expects.</p>
+            <div style="background: #16130F; border-radius: 4px; padding: 15px 17px; margin-bottom: 26px;">
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">ks run --image claude-code \
+  --workspace ./payments-migration \
+  --budget 200 --checkpoint 5m</pre>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 12px;">Steer it without attaching</h2>
+            <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 14px;">A steer is recorded as an event with its own sequence number, so replay reproduces it in place.</p>
+            <div style="background: #16130F; border-radius: 4px; padding: 15px 17px; margin-bottom: 26px;">
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">ks steer s_7f3a "leave the legacy adapter in place for now"</pre>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 12px;">Fork before a risky decision</h2>
+            <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 14px;">Branch the freeze rather than gambling the run. Each fork is a conversation that went differently.</p>
+            <div style="background: #16130F; border-radius: 4px; padding: 15px 17px; margin-bottom: 26px;">
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">ks fork s_7f3a@40 -n 3 \
+  --steer "one big migration" \
+  --steer "keep legacy adapter" \
+  --steer "split by tenant"</pre>
+            </div>
+
+            <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 24px;">
+              <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0 0 10px;">Known limitation</p>
+              <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0;">Claude Code's own <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px;">--resume</span> and a KeepState resume are different objects. Its resume replays your notes into a fresh world; ours thaws the world. Running both is harmless but redundant.</p>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isCli }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="background: #16130F; border-radius: 4px; padding: 16px 18px; margin-bottom: 28px;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378; margin: 0 0 10px;">synopsis</p>
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">ks fork &lt;session&gt;[@&lt;step&gt;] [-n &lt;count&gt;] [--steer &lt;text&gt;]... [--budget &lt;usd&gt;]</pre>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 16px;">Flags</h2>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 30px;">
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px;">
+                  <thead>
+                    <tr style="background: #FBFAF7;">
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">flag</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">type</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ flags }}" as="f" hint-placeholder-count="5">
+                      <tr style="border-bottom: 1px solid #EDE9DF; vertical-align: top;">
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #7A2530; white-space: nowrap;">{{ f.flag }}</td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; white-space: nowrap;">{{ f.type }}</td>
+                        <td style="padding: 12px 16px; font-size: 13px; line-height: 1.6; color: #39404C;">{{ f.desc }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 16px;">Examples</h2>
+            <div style="background: #16130F; border-radius: 4px; padding: 16px 18px; margin-bottom: 26px;">
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.9; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;"><span style="color: #8A8378;"># six universes from step 40</span>
+ks fork s_7f3a@40 -n 6
+
+<span style="color: #8A8378;"># a two-day-old freeze, steered three ways</span>
+ks fork s_7f3a@40 --steer "split by tenant" --budget 25</pre>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 14px;">Related</h2>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a href="#" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 13px;">ks save</a>
+              <a href="#" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 13px;">ks wake</a>
+              <a href="#" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 13px;">ks replay</a>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isApi }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 13px 16px; margin-bottom: 26px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 4px 9px;">POST</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #16130F;">/v1/sessions/{id}/forks</span>
+            </div>
+
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: 26px; line-height: 1.2; font-weight: 500; margin: 0 0 16px;">Parameters</h2>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 30px;">
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px;">
+                  <thead>
+                    <tr style="background: #FBFAF7;">
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">param</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">type</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">required</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ params }}" as="p" hint-placeholder-count="4">
+                      <tr style="border-bottom: 1px solid #EDE9DF; vertical-align: top;">
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #7A2530; white-space: nowrap;">{{ p.name }}</td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60;">{{ p.type }}</td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{ p.reqColor }};">{{ p.required }}</td>
+                        <td style="padding: 12px 16px; font-size: 13px; line-height: 1.6; color: #39404C;">{{ p.desc }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+              <sc-for list="{{ apiTabs }}" as="t" hint-placeholder-count="2">
+                <button type="button" onClick="{{ t.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; background: {{ t.bg }}; color: {{ t.color }}; border: 1px solid {{ t.border }}; border-radius: 3px; padding: 7px 13px; cursor: pointer;">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="background: #16130F; border-radius: 4px; padding: 16px 18px; position: relative;">
+              <button type="button" onClick="{{ onCopyApi }}" style="position: absolute; top: 11px; right: 11px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 8px; cursor: pointer;">{{ apiCopyLabel }}</button>
+              <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre; padding-right: 56px;">{{ apiSample }}</pre>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isLimits }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">limit</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">free</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">developer</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">team</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">enterprise</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ limits }}" as="l" hint-placeholder-count="7">
+                    <tr style="border-bottom: 1px solid #EDE9DF;">
+                      <td style="padding: 12px 16px; font-size: 13px; color: #16130F;">{{ l.name }}</td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ l.free }}</td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ l.dev }}</td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ l.team }}</td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #7A2530; text-align: right; font-variant-numeric: tabular-nums;">{{ l.ent }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isTrouble }}" hint-placeholder-val="{{ false }}">
+          <div style="display: grid; gap: 18px;">
+            <sc-for list="{{ symptoms }}" as="t" hint-placeholder-count="3">
+              <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+                <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+                  <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0;">symptom</p>
+                </div>
+                <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; line-height: 1.25; margin: 0 0 18px;">{{ t.symptom }}</p>
+                <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Evidence to collect</p>
+                <div style="background: #16130F; border-radius: 4px; padding: 13px 15px; margin-bottom: 16px;">
+                  <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">{{ t.evidence }}</pre>
+                </div>
+                <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Resolution</p>
+                <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0;">{{ t.resolution }}</p>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isMatrix }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">rendered live from the claims file · 2026-08-09 06:14 UTC</span>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 18px;">
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px;">
+                  <thead>
+                    <tr style="background: #FBFAF7;">
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">agent</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">door held</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">walked through</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">claim</th>
+                      <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ matrix }}" as="m" hint-placeholder-count="6">
+                      <tr style="border-bottom: 1px solid #EDE9DF;">
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #16130F; white-space: nowrap;">{{ m.agent }}</td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C;">{{ m.door }}</td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C;">{{ m.walked }}</td>
+                        <td style="padding: 12px 16px; white-space: nowrap;">
+                          <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: {{ m.color }}; background: {{ m.bg }}; border: 1px solid {{ m.border }}; border-radius: 100px; padding: 3px 10px;">
+                            <span style="width: 5px; height: 5px; background: {{ m.dot }}; transform: rotate(45deg); display: block;"></span>{{ m.status }}
+                          </span>
+                        </td>
+                        <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{ m.tagColor }};">{{ m.tag }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p style="font-size: 14px; line-height: 1.7; color: #39404C; margin: 0;">Day-0 support is a promise: new harness releases get a wrapped image within 48 hours. If yours is missing, <a href="#">open a request</a> and it becomes a row here, gated or honestly ungated.</p>
+          </div>
+        </sc-if>
+
+        <div style="border-top: 1px solid #D8D2C4; margin-top: 44px; padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+          <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; max-width: 40em;">Did this work? The quickstart is gate-tested; if it failed, that is a finding: <a href="Proof.dc.html">report it</a>.</p>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" onClick="{{ voteYes }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: {{ yesColor }}; background: {{ yesBg }}; border: 1px solid {{ yesBorder }}; border-radius: 3px; padding: 8px 16px; cursor: pointer;">It worked</button>
+            <button type="button" onClick="{{ voteNo }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: {{ noColor }}; background: {{ noBg }}; border: 1px solid {{ noBorder }}; border-radius: 3px; padding: 8px 16px; cursor: pointer;">It failed</button>
+          </div>
+        </div>
+        <sc-if value="{{ voted }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530; margin: 14px 0 0;">{{ voteNote }}</p>
+        </sc-if>
+      </div>
+    </main>
+
+    <aside style="width: 216px; flex: 0 0 auto; padding: 30px 24px 60px; display: {{ tocDisplay }}; flex-direction: column; gap: 10px; position: sticky; top: 55px; align-self: flex-start; max-height: calc(100vh - 55px); overflow-y: auto;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 4px;">On this page</p>
+      <sc-for list="{{ toc }}" as="t" hint-placeholder-count="4">
+        <a href="#" style="font-size: 12.5px; line-height: 1.5; color: {{ t.color }}; border-left: 2px solid {{ t.border }}; padding: 3px 0 3px 11px; text-decoration: none;">{{ t.label }}</a>
+      </sc-for>
+    </aside>
+  </div>
+
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePalette }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(22,19,15,0.42); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 20px 20px;">
+      <div onClick="{{ stop }}" style="width: 100%; max-width: 560px; background: #FBFAF7; border: 1px solid #D8D2C4; border-radius: 6px; box-shadow: 0 30px 70px -30px rgba(22,19,15,0.6); overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <input type="text" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search the docs" autoFocus="{{ true }}" style="flex: 1; min-width: 0; font-family: Inter, sans-serif; font-size: 15px; color: #16130F; background: transparent; border: none; outline: none;" />
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7A6F60; border: 1px solid #D8D2C4; border-radius: 3px; padding: 2px 6px;">esc</span>
+        </div>
+        <div style="max-height: 340px; overflow-y: auto; padding: 8px;">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="5">
+            <button type="button" onClick="{{ r.onClick }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: transparent; border: none; padding: 11px 12px; border-radius: 4px; cursor: pointer; text-align: left;" style-hover="background: #EFEBE1;">
+              <span style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; width: 76px; flex: 0 0 auto;">{{ r.kind }}</span>
+                <span style="font-family: Inter, sans-serif; font-size: 14px; color: #16130F; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.label }}</span>
+              </span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; flex: 0 0 auto;">↵</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400}}">
+class Component extends DCLogic {
+  state = { page: 'quickstart', copied: -1, apiTab: 0, apiCopied: false, vote: null, paletteOpen: false, query: '', w: 1400 };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.setState((s) => ({ paletteOpen: !s.paletteOpen })); }
+      if (e.key === 'Escape') this.setState({ paletteOpen: false });
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onKey);
+  }
+
+  copy(text, i) {
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+    this.setState({ copied: i });
+    setTimeout(() => this.setState({ copied: -1 }), 1400);
+  }
+
+  go(page) { this.setState({ page: page, paletteOpen: false, query: '', vote: null }); }
+
+  meta() {
+    return {
+      quickstart: { section: 'Get started', crumb: 'Quickstart', title: 'Your first plug-pull', intro: 'Six minutes, one kill, nothing lost. This page is gate-tested end to end on a clean machine; if a step fails for you, that is a finding rather than a support ticket.', toc: ['Install the CLI', 'Run an agent', 'Watch it work', 'Pull the plug', 'Resume it'] },
+      concept: { section: 'Concepts', crumb: 'Sessions and the two ledgers', title: 'Sessions and the two ledgers', intro: 'A session is not a process and not a conversation. It is a pair of records that together describe a piece of long-running work precisely enough to rebuild it.', toc: ['The two ledgers', 'Why the freeze must be atomic'] },
+      guide: { section: 'Guides', crumb: 'Claude Code on KeepState', title: 'Claude Code on KeepState', intro: 'Migrate a running Claude Code task onto durable infrastructure without changing how you work.', toc: ['Start it on KeepState', 'Steer it without attaching', 'Fork before a risky decision', 'Known limitation'] },
+      cli: { section: 'CLI reference', crumb: 'ks fork', title: 'ks fork', intro: 'Branch a session from a checkpoint into one or more independent futures. The parent is untouched and keeps running.', toc: ['Synopsis', 'Flags', 'Examples', 'Related'] },
+      api: { section: 'API reference', crumb: 'Create forks', title: 'Create forks', intro: 'Fork a session from a given step. Returns one session object per fork, each with its own event ledger and the same parent checkpoint.', toc: ['Endpoint', 'Parameters', 'Request', 'Response'] },
+      matrix: { section: 'Reference', crumb: 'Compatibility matrix', title: 'Compatibility matrix', intro: 'Which agents run on KeepState, whether the freeze is transparent to them, and what proves it. When behavior splits by third party, the claim splits with it.', toc: ['Matrix', 'Day-0 support'] },
+      limits: { section: 'Reference', crumb: 'Limits and quotas', title: 'Limits and quotas', intro: 'Hard limits by plan. Soft limits are raised on request; hard limits are architectural and stated as such.', toc: ['By plan'] },
+      trouble: { section: 'Reference', crumb: 'Troubleshooting', title: 'Troubleshooting', intro: 'Each entry runs symptom, then the evidence to collect, then the resolution. Collect the evidence before changing anything: an unmeasured fix is a guess.', toc: ['Resume is slow', 'Agent wakes confused', 'Budget parked a session'] }
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const m = this.meta()[s.page];
+    const narrow = s.w < 1000;
+    const veryNarrow = s.w < 760;
+
+    const steps = [
+      { title: 'Install the CLI', body: 'One binary, no daemon. It talks to the API over HTTPS and to nothing else.', code: 'curl -fsSL https://keepstate.ai/install | sh', note: 'verifies a signature before it writes anything to your path' },
+      { title: 'Log in', body: 'A device code appears; confirm it in the browser and return to this terminal.', code: 'ks login', note: 'we request read access to your identity, nothing else' },
+      { title: 'Run an agent', body: 'Point it at a real workspace. Checkpointing starts immediately, at the cadence you name.', code: 'ks run --image claude-code --workspace . --checkpoint 5m', note: 'note the session id it prints, for example s_7f3a' },
+      { title: 'Pull the plug', body: 'Wait until the agent is genuinely mid-task, then kill it the ugly way. No graceful shutdown, no signal handler.', code: 'kill -9 $(pgrep -f ks-agent)', note: 'this is the step the whole product exists for' },
+      { title: 'Resume it', body: 'The agent comes back inside the same thought, with the same files, the same tests running, and the same memory of what it was doing.', code: 'ks resume s_7f3a', note: 'expect: restored in under 90s · nonce match · 0 bytes lost' }
+    ];
+
+    const apiSamples = [
+      'curl -X POST https://api.keepstate.ai/v1/sessions/s_7f3a/forks \\\n  -H "Authorization: Bearer $KS_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{\n    "at_step": 40,\n    "count": 3,\n    "steer": ["one big migration", "keep legacy adapter", "split by tenant"]\n  }\'',
+      '{\n  "forks": [\n    { "id": "s_7f3a/f1", "parent": "c_0040", "status": "running" },\n    { "id": "s_7f3a/f2", "parent": "c_0040", "status": "running" },\n    { "id": "s_7f3a/f3", "parent": "c_0040", "status": "running" }\n  ],\n  "budget_pool": "s_7f3a"\n}'
+    ];
+
+    const nav = [
+      { title: 'Get started', items: [['Quickstart', 'quickstart']] },
+      { title: 'Concepts', items: [['Sessions and ledgers', 'concept']] },
+      { title: 'Guides', items: [['Claude Code on KeepState', 'guide']] },
+      { title: 'Reference', items: [['CLI: ks fork', 'cli'], ['API: create forks', 'api'], ['Compatibility matrix', 'matrix'], ['Limits and quotas', 'limits'], ['Troubleshooting', 'trouble']] }
+    ];
+
+    const searchable = [
+      { kind: 'quickstart', label: 'Your first plug-pull', page: 'quickstart' },
+      { kind: 'concept', label: 'Sessions and the two ledgers', page: 'concept' },
+      { kind: 'guide', label: 'Claude Code on KeepState', page: 'guide' },
+      { kind: 'cli', label: 'ks fork', page: 'cli' },
+      { kind: 'api', label: 'POST /v1/sessions/{id}/forks', page: 'api' },
+      { kind: 'reference', label: 'Compatibility matrix', page: 'matrix' },
+      { kind: 'reference', label: 'Limits and quotas', page: 'limits' },
+      { kind: 'reference', label: 'Troubleshooting: resume is slow', page: 'trouble' }
+    ];
+    const q = s.query.trim().toLowerCase();
+
+    const statusStyle = {
+      Proven: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530' },
+      Observed: { color: '#39404C', bg: '#FFFFFF', border: '#39404C', dot: '#39404C' },
+      'Not yet gated': { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2', dot: '#C9C2B2' }
+    };
+
+    return {
+      sideDisplay: veryNarrow ? 'none' : 'flex',
+      tocDisplay: narrow ? 'none' : 'flex',
+      sections: nav.map((sec) => ({
+        title: sec.title,
+        items: sec.items.map(([label, page]) => ({
+          label: label,
+          color: s.page === page ? '#16130F' : '#39404C',
+          bg: s.page === page ? '#EFEBE1' : 'transparent',
+          weight: s.page === page ? '600' : '400',
+          dot: s.page === page ? '#7A2530' : 'transparent',
+          onClick: () => this.go(page)
+        }))
+      })),
+      crumbSection: m.section, crumbPage: m.crumb, title: m.title, intro: m.intro,
+      version: 'ks 0.14.2', verifiedDate: 'verified 2026-08-08',
+      toc: m.toc.map((label, i) => ({
+        label: label,
+        color: i === 0 ? '#16130F' : '#7A6F60',
+        border: i === 0 ? '#7A2530' : '#E2DDD1'
+      })),
+
+      isQuickstart: s.page === 'quickstart', isConcept: s.page === 'concept', isGuide: s.page === 'guide',
+      isCli: s.page === 'cli', isApi: s.page === 'api', isMatrix: s.page === 'matrix',
+      isLimits: s.page === 'limits', isTrouble: s.page === 'trouble',
+
+      steps: steps.map((st, i) => ({
+        n: i + 1, title: st.title, body: st.body, code: st.code, note: st.note,
+        hasCode: true, hasNote: !!st.note,
+        dot: i === steps.length - 1 ? '#7A2530' : '#FBFAF7',
+        line: i === steps.length - 1 ? 'transparent' : '#E2DDD1',
+        copyLabel: s.copied === i ? 'copied' : 'copy',
+        onCopy: () => this.copy(st.code, i)
+      })),
+
+      lineageState: ['c_0000', 'c_0008', 'c_0016', 'c_0040', 'c_0041'],
+      lineageEvents: ['seq 1402', 'seq 1403', 'seq 1404', 'seq 1405', 'seq 1406', 'seq 1407'],
+
+      flags: [
+        { flag: '@<step>', type: 'int', desc: 'The step to fork from. Defaults to the latest checkpoint. Any checkpoint still within retention is valid, including one from days ago.' },
+        { flag: '-n, --count', type: 'int', desc: 'How many forks to create. Each is independent and runs concurrently.' },
+        { flag: '--steer', type: 'string, repeatable', desc: 'A steering instruction injected as the first event of the fork. Repeat once per fork to give each a different direction.' },
+        { flag: '--budget', type: 'usd', desc: 'Optional sub-cap per fork. The parent budget pool still applies, so a fan-out cannot exceed it.' },
+        { flag: '--json', type: 'bool', desc: 'Emit machine-readable output. Recommended in CI.' }
+      ],
+
+      apiTabs: ['Request', 'Response'].map((label, i) => ({
+        label: label,
+        bg: s.apiTab === i ? '#16130F' : '#FFFFFF',
+        color: s.apiTab === i ? '#FBFAF7' : '#39404C',
+        border: s.apiTab === i ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ apiTab: i, apiCopied: false })
+      })),
+      apiSample: apiSamples[s.apiTab],
+      apiCopyLabel: s.apiCopied ? 'copied' : 'copy',
+      onCopyApi: () => {
+        if (navigator.clipboard) navigator.clipboard.writeText(apiSamples[s.apiTab]).catch(() => {});
+        this.setState({ apiCopied: true });
+        setTimeout(() => this.setState({ apiCopied: false }), 1400);
+      },
+      params: [
+        { name: 'at_step', type: 'integer', required: 'no', reqColor: '#7A6F60', desc: 'Step to fork from. Defaults to the latest checkpoint.' },
+        { name: 'count', type: 'integer', required: 'no', reqColor: '#7A6F60', desc: 'Number of forks. Defaults to 1. Maximum 64 per call.' },
+        { name: 'steer', type: 'string[]', required: 'no', reqColor: '#7A6F60', desc: 'One steering instruction per fork, in order. Shorter arrays leave the remaining forks unsteered.' },
+        { name: 'budget_usd', type: 'number', required: 'no', reqColor: '#7A6F60', desc: 'Sub-cap per fork. The parent pool is still enforced above it.' }
+      ],
+
+      matrix: [
+        { agent: 'claude-code', door: 'yes', walked: 'yes', status: 'Proven', tag: 'G-133' },
+        { agent: 'codex', door: 'yes', walked: 'yes', status: 'Proven', tag: 'G-134' },
+        { agent: 'aider', door: 'yes', walked: '3 of 4', status: 'Observed', tag: 'G-135' },
+        { agent: 'goose', door: 'yes', walked: 'yes', status: 'Proven', tag: 'G-136' },
+        { agent: 'kimi', door: 'yes', walked: 'not measured', status: 'Not yet gated', tag: 'no gate yet' },
+        { agent: 'custom Dockerfile', door: 'yes', walked: 'yours to gate', status: 'Not yet gated', tag: 'no gate yet' }
+      ].map((r) => {
+        const st = statusStyle[r.status];
+        return Object.assign({}, r, {
+          color: st.color, bg: st.bg, border: st.border, dot: st.dot,
+          tagColor: r.tag === 'no gate yet' ? '#A69E8E' : '#7A2530'
+        });
+      }),
+
+      limits: [
+        { name: 'Concurrent sessions', free: '2', dev: '25', team: '250', ent: 'negotiated' },
+        { name: 'Forks per call', free: '4', dev: '16', team: '64', ent: '64' },
+        { name: 'Checkpoint retention', free: '24 h', dev: '30 d', team: '90 d', ent: 'years' },
+        { name: 'Max VM size', free: 'vm.small', dev: 'vm.large', team: 'vm.xl', ent: 'custom' },
+        { name: 'Parked session age', free: '7 d', dev: '90 d', team: '1 y', ent: 'policy' },
+        { name: 'API requests', free: '60 / min', dev: '600 / min', team: '3,000 / min', ent: 'negotiated' },
+        { name: 'Audit export range', free: 'none', dev: '30 d', team: '1 y', ent: 'full history' }
+      ],
+
+      symptoms: [
+        {
+          symptom: 'Cold resume takes longer than 90 seconds.',
+          evidence: 'ks describe s_7f3a --json | jq .resume\nks events s_7f3a --type resume --last 5',
+          resolution: 'Check whether the resume crossed a region boundary. A checkpoint pinned to eu-west resuming onto a us-east host pays transfer time. Pin the session, or accept the cold path and let the warm path handle the common case.'
+        },
+        {
+          symptom: 'The agent wakes and repeats work it already did.',
+          evidence: 'ks ledger s_7f3a --around-resume\nks diff c_0040 c_0041 --summary',
+          resolution: 'This is almost always a harness that keeps state outside the VM, in a cloud-side conversation store. The freeze cannot capture what it does not host. Check the compatibility matrix for the door-held column on your agent.'
+        },
+        {
+          symptom: 'A session parked itself overnight.',
+          evidence: 'ks events s_7f3a --type budget --last 3',
+          resolution: 'It reached its budget cap. It checkpointed first, so nothing is lost. Raise the cap and wake it: it resumes from the freeze it took on the way down.'
+        }
+      ],
+
+      voted: s.vote !== null,
+      voteNote: s.vote === 'yes' ? 'recorded · thank you' : 'recorded as a finding · we will publish the correction',
+      voteYes: () => this.setState({ vote: 'yes' }),
+      voteNo: () => this.setState({ vote: 'no' }),
+      yesBg: s.vote === 'yes' ? '#16130F' : '#FFFFFF',
+      yesColor: s.vote === 'yes' ? '#FBFAF7' : '#16130F',
+      yesBorder: s.vote === 'yes' ? '#16130F' : '#D8D2C4',
+      noBg: s.vote === 'no' ? '#7A2530' : '#FFFFFF',
+      noColor: s.vote === 'no' ? '#FBFAF7' : '#16130F',
+      noBorder: s.vote === 'no' ? '#7A2530' : '#D8D2C4',
+
+      paletteOpen: s.paletteOpen,
+      openPalette: () => this.setState({ paletteOpen: true }),
+      closePalette: () => this.setState({ paletteOpen: false, query: '' }),
+      stop: (e) => e.stopPropagation(),
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      results: (q ? searchable.filter((r) => (r.label + ' ' + r.kind).toLowerCase().includes(q)) : searchable)
+        .map((r) => ({ kind: r.kind, label: r.label, onClick: () => this.go(r.page) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

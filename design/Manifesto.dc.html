@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+  <header style="border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500; letter-spacing: -0.01em;">KeepState</span>
+      </a>
+      <a href="KeepState.dc.html" style="font-size: 14px; color: #39404C; text-decoration: none;">← Back to site</a>
+    </nav>
+  </header>
+
+  <main style="flex: 1; max-width: 1180px; margin: 0 auto; padding: 84px 28px 96px; width: 100%;">
+    <div style="max-width: 62ch;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 22px;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Manifesto</span>
+      </div>
+      <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.6vw, 62px); line-height: 1.05; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 30px;">The Session Economy</h1>
+      <p style="font-size: 18px; line-height: 1.75; color: #39404C; margin: 0 0 40px; text-wrap: pretty;">Compute used to be billed in requests, then in tokens. It is now billed in agent-hours: long, stateful, interruptible work that behaves less like an API call and more like an employee's afternoon. That unit has no home. Frameworks orchestrate it, sandboxes host it, nothing keeps it. We think the durable session is the primitive the whole agent economy will be built on, and that the company which keeps that state gets to meter it. The full argument is being written down; leave an address and we will send it when it is finished.</p>
+
+      <div style="border-top: 1px solid #D8D2C4; padding-top: 30px; max-width: 30em;">
+        <p style="font-size: 14px; font-weight: 600; margin: 0 0 14px;">Get the manifesto when it ships</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <input type="email" placeholder="you@company.com" value="{{ email }}" onChange="{{ onEmail }}" style="flex: 1 1 220px; font-family: Inter, Helvetica, sans-serif; font-size: 15px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 14px; outline: none;" style-focus="border-color: #7A2530;" />
+          <button type="button" onClick="{{ onSubmit }}" style="font-family: Inter, Helvetica, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 12px 20px; cursor: pointer;" style-hover="background: #16130F;">Notify me</button>
+        </div>
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; color: #7A6F60; margin: 14px 0 0; min-height: 16px;">{{ note }}</p>
+      </div>
+    </div>
+  </main>
+
+  <footer style="border-top: 1px solid #D8D2C4;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 22px 28px; display: flex; align-items: center; gap: 10px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; color: #7A6F60; margin: 0;">© KeepState · han, the open session protocol</p>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { email: '', note: '' };
+  renderVals() {
+    return {
+      email: this.state.email,
+      note: this.state.note,
+      onEmail: (e) => this.setState({ email: e.target.value, note: '' }),
+      onSubmit: () => {
+        const ok = /.+@.+\..+/.test(this.state.email);
+        this.setState({ note: ok ? 'queued · we will write once' : 'enter a valid address' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

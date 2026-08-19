@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @keyframes ksTip { from { opacity: 0; transform: translate(-50%, 4px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 60; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 13px 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 9px; color: #16130F; text-decoration: none;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 500;">KeepState</span>
+        </a>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #7A6F60; border-left: 1px solid #D8D2C4; padding-left: 12px;">footer system · v0.1</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <a href="#marketing" style="font-size: 13px; color: #39404C;">Marketing</a>
+        <a href="#variants" style="font-size: 13px; color: #39404C;">Variants</a>
+        <a href="#status" style="font-size: 13px; color: #39404C;">Status states</a>
+        <a href="#responsive" style="font-size: 13px; color: #39404C;">Responsive</a>
+        <a href="Component Sheet.dc.html" style="font-size: 13px; color: #7A2530;">Component sheet →</a>
+      </div>
+    </div>
+  </header>
+
+  <section style="max-width: 1280px; margin: 0 auto; padding: 56px 26px 44px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Step 3 · global footer</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.2vw, 58px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 22px; max-width: 16em;">Every page ends in the ledger.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0; max-width: 44em; text-wrap: pretty;">One footer system in three densities. It closes the way the product thinks: a checkpoint on the border, a law in the middle, a status line at the bottom. Live below, at real size.</p>
+  </section>
+
+  <section id="marketing" style="max-width: 1280px; margin: 0 auto; padding: 0 26px;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px;">
+      <div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 6px;">variant 1 of 3</p>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0;">Marketing, five bands</h2>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <button type="button" onClick="{{ toggleAnnotate }}" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: {{ annColor }}; background: {{ annBg }}; border: 1px solid {{ annBorder }}; border-radius: 3px; padding: 8px 14px; cursor: pointer;">{{ annLabel }}</button>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ heightColor }};">{{ heightNote }}</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 14px; align-items: stretch;">
+      <sc-if value="{{ annotate }}" hint-placeholder-val="{{ true }}">
+        <div style="width: 128px; flex: 0 0 auto; display: flex; flex-direction: column; gap: 2px;">
+          <sc-for list="{{ bandLabels }}" as="b" hint-placeholder-count="4">
+            <div style="flex: {{ b.grow }}; border-right: 2px solid #E4CFCC; display: flex; flex-direction: column; justify-content: center; padding: 8px 12px 8px 0; text-align: right; min-height: 0;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0 0 3px;">{{ b.n }}</p>
+              <p style="font-size: 11.5px; line-height: 1.4; color: #7A6F60; margin: 0;">{{ b.label }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <footer role="contentinfo" ref="{{ footerRef }}" style="flex: 1; min-width: 0; background: #FBFAF7; border: 1px solid #EDE9DF; border-top: none; border-radius: 0 0 5px 5px;">
+
+        <div style="position: relative; height: 1px; background: #D8D2C4;">
+          <sc-for list="{{ timelineDots }}" as="d" hint-placeholder-count="7">
+            <span style="position: absolute; left: {{ d.left }}; top: 50%; width: {{ d.size }}; height: {{ d.size }}; background: {{ d.fill }}; transform: translate(-50%, -50%) rotate(45deg); display: block;"></span>
+          </sc-for>
+          <button type="button" onMouseEnter="{{ showTip }}" onMouseLeave="{{ hideTip }}" onFocus="{{ showTip }}" onBlur="{{ hideTip }}" aria-label="final checkpoint" style="position: absolute; right: -13px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <span style="width: 11px; height: 11px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          </button>
+          <sc-if value="{{ tipOpen }}" hint-placeholder-val="{{ false }}">
+            <span style="position: absolute; right: 0; top: -38px; transform: translateX(-50%); background: #16130F; color: #EFEBE1; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 3px; white-space: nowrap; animation: ksTip 160ms ease-out;">checkpoint reached</span>
+          </sc-if>
+        </div>
+
+        <div style="padding: 22px 30px 20px; display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start;">
+         <div style="flex: 1 1 430px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+              <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+              <span style="font-family: Newsreader, Georgia, serif; font-size: 22px; font-weight: 500; letter-spacing: -0.01em;">KeepState</span>
+            </div>
+            <p style="font-size: 14px; line-height: 1.55; color: #39404C; margin: 0;">The durable agent session cloud.</p>
+          </div>
+
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch;">
+          <div style="flex: 1 1 190px; border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px; background: #FFFFFF; min-width: 0;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8372; margin: 0 0 10px;">install</p>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #16130F; flex: 1 1 200px; min-width: 0; overflow-x: auto; white-space: nowrap;">curl -fsSL keepstate.ai/install | sh</code>
+              <button type="button" onClick="{{ copyInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ installColor }}; background: {{ installBg }}; border: 1px solid {{ installBorder }}; border-radius: 3px; padding: 7px 12px; cursor: pointer; flex: 0 0 auto; min-height: 32px;">{{ installLabel }}</button>
+            </div>
+          </div>
+
+          <div style="flex: 1 1 210px; border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px; background: #FFFFFF; min-width: 0;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8372; margin: 0 0 9px;">The Session Economy</p>
+            <sc-if value="{{ subIdle }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display: flex; gap: 8px; flex-wrap: nowrap; margin-bottom: 9px;">
+                  <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@company.com" aria-label="email address" style="flex: 1 1 0; min-width: 0; font-family: Inter, sans-serif; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid {{ emailBorder }}; border-radius: 3px; padding: 10px 12px; outline: none; min-height: 38px;" style-focus="border-color: #7A2530;" />
+                  <button type="button" onClick="{{ subscribe }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 10px 16px; cursor: pointer; flex: 0 0 auto; min-height: 38px;">Subscribe</button>
+                </div>
+                <sc-if value="{{ subError }}" hint-placeholder-val="{{ false }}">
+                  <p style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: #7A2530; margin: 0 0 8px;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>That address is missing an @ or a domain.</p>
+                </sc-if>
+                <p style="font-size: 11.5px; line-height: 1.5; color: #7A6F60; margin: 0;">Five essays on where agent infrastructure is going. One email per essay. Nothing else.</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ subDone }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; align-items: center; gap: 10px; min-height: 38px;">
+                <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                <p style="font-size: 13.5px; color: #16130F; margin: 0;">Subscribed. Next essay, your inbox.</p>
+              </div>
+            </sc-if>
+          </div>
+          </div>
+         </div>
+
+         <div style="flex: 2 1 460px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 152px), 1fr)); gap: 20px;">
+          <sc-for list="{{ columns }}" as="c" hint-placeholder-count="4">
+            <nav style="min-width: 0;">
+              <p style="font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8372; margin: 0 0 8px;">{{ c.head }}</p>
+              <div style="display: flex; flex-direction: column;">
+                <sc-for list="{{ c.links }}" as="l" hint-placeholder-count="7">
+                  <a href="{{ l.href }}" style="font-size: 14px; line-height: 1.4; color: #16130F; text-decoration: none; padding: 3px 0; min-height: 26px; display: flex; align-items: center;" style-hover="color: #7A2530;">{{ l.label }}</a>
+                </sc-for>
+              </div>
+            </nav>
+          </sc-for>
+         </div>
+        </div>
+
+        <div style="padding: 56px 30px; text-align: center; border-top: 1px solid #EDE9DF;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: inline-block; margin-bottom: 12px;"></span>
+          <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.55; color: #16130F; margin: 0 auto; max-width: 36em;">{{ epigraph }}</p>
+        </div>
+
+        <div style="padding: 9px 30px; border-top: 1px solid #EDE9DF; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <sc-for list="{{ socials }}" as="s" hint-placeholder-count="5">
+              <a href="#marketing" title="{{ s.title }}" aria-label="{{ s.title }}" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0 {{ s.padX }}; border: 1px solid {{ s.border }}; border-radius: 3px; color: {{ s.color }}; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: 0.04em;" style-hover="border-color: #16130F; color: #16130F;">
+                <span style="width: 5px; height: 5px; background: {{ s.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ s.label }}
+              </a>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 100px; padding: 7px 13px; min-height: 34px;">region: eu-central-1</span>
+            <a href="#status" style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: {{ chip.color }}; background: {{ chip.bg }}; border: 1px solid {{ chip.border }}; border-radius: 100px; padding: 7px 13px; text-decoration: none; min-height: 34px;">
+              <span style="width: 7px; height: 7px; border-radius: 100px; background: {{ chip.dot }}; display: block; flex: 0 0 auto;"></span>{{ chip.label }}
+            </a>
+          </div>
+        </div>
+
+        <div style="background: #16130F; padding: 12px 30px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-radius: 0 0 4px 4px;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #8A8378; margin: 0; min-width: 0; overflow-wrap: anywhere;">{{ systemLine }}</p>
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <sc-for list="{{ legal }}" as="l" hint-placeholder-count="5">
+                <a href="#marketing" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; text-decoration: none; padding: 4px 0;" style-hover="color: #FBFAF7;">{{ l }}</a>
+              </sc-for>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8378; margin: 0;">© 2026 KeepState, Inc. · Every claim on this site cites its evidence: <a href="Proof.dc.html" style="color: #D9B8B8;">/proof</a></p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <section id="status" style="max-width: 1280px; margin: 0 auto; padding: 64px 26px 0;">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 6px;">UI Law 1 in the footer</p>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 12px;">Three status states, none of them a default green.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 26px; max-width: 44em;">The dot is never green because nothing said otherwise. Click a state to drive the live footer above, including its system line.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px;">
+      <sc-for list="{{ stateCards }}" as="st" hint-placeholder-count="3">
+        <button type="button" onClick="{{ st.onClick }}" style="text-align: left; background: {{ st.cardBg }}; border: 1px solid {{ st.cardBorder }}; border-radius: 5px; padding: 22px; cursor: pointer; font-family: Inter, sans-serif;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60;">{{ st.name }}</span>
+            <span style="width: 13px; height: 13px; border: 1px solid {{ st.radio }}; border-radius: 100px; display: flex; align-items: center; justify-content: center;"><span style="width: 6px; height: 6px; background: {{ st.radioFill }}; transform: rotate(45deg); display: block;"></span></span>
+          </div>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: {{ st.color }}; background: {{ st.bg }}; border: 1px solid {{ st.border }}; border-radius: 100px; padding: 7px 13px; margin-bottom: 14px;">
+            <span style="width: 7px; height: 7px; border-radius: 100px; background: {{ st.dot }}; display: block;"></span>{{ st.label }}
+          </span>
+          <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0;">{{ st.note }}</p>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="background: #16130F; border-radius: 5px; padding: 16px 20px; margin-top: 18px;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378; margin: 0 0 10px;">system line, this state</p>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #EFEBE1; margin: 0; overflow-wrap: anywhere;">{{ systemLine }}</p>
+    </div>
+    <p style="font-size: 13px; line-height: 1.65; color: #7A6F60; margin: 14px 2px 0; max-width: 46em;">Each field is fetched independently. A field that does not answer prints <span style="font-family: 'JetBrains Mono', monospace; color: #39404C;">unavailable</span> in place, never a zero and never a stale figure.</p>
+  </section>
+
+  <section id="variants" style="max-width: 1280px; margin: 0 auto; padding: 64px 26px 0;">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 6px;">variants 2 and 3</p>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 26px;">Same system, less of it.</h2>
+
+    <p style="font-size: 13px; font-weight: 600; margin: 0 0 12px;">Docs: pager, then bands 3, 4, 5.</p>
+    <footer role="contentinfo" style="border: 1px solid #EDE9DF; border-radius: 5px; overflow: hidden; margin-bottom: 32px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; padding: 20px 26px; background: #FBFAF7;">
+        <a href="Docs.dc.html" style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 16px; text-decoration: none; min-height: 44px;">
+          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin-bottom: 6px;">← previous</span>
+          <span style="display: block; font-size: 14px; color: #16130F;">Sessions and the two ledgers</span>
+        </a>
+        <a href="Docs.dc.html" style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 16px; text-decoration: none; text-align: right; min-height: 44px;">
+          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin-bottom: 6px;">next →</span>
+          <span style="display: block; font-size: 14px; color: #16130F;">Claude Code on KeepState</span>
+        </a>
+      </div>
+      <div style="position: relative; height: 1px; background: #D8D2C4;">
+        <sc-for list="{{ timelineDots }}" as="d" hint-placeholder-count="7">
+          <span style="position: absolute; left: {{ d.left }}; top: 50%; width: {{ d.size }}; height: {{ d.size }}; background: {{ d.fill }}; transform: translate(-50%, -50%) rotate(45deg); display: block;"></span>
+        </sc-for>
+      </div>
+      <div style="padding: 56px 26px; text-align: center;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: inline-block; margin-bottom: 18px;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.55; color: #16130F; margin: 0 auto; max-width: 36em;">{{ epigraph }}</p>
+      </div>
+      <div style="padding: 18px 26px; border-top: 1px solid #EDE9DF; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="5">
+            <a href="#variants" aria-label="{{ s.title }}" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0 {{ s.padX }}; border: 1px solid {{ s.border }}; border-radius: 3px; color: {{ s.color }}; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11.5px;" style-hover="border-color: #16130F; color: #16130F;">
+              <span style="width: 5px; height: 5px; background: {{ s.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ s.label }}
+            </a>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 100px; padding: 7px 13px; min-height: 34px;">region: eu-central-1</span>
+          <a href="#status" style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: {{ chip.color }}; background: {{ chip.bg }}; border: 1px solid {{ chip.border }}; border-radius: 100px; padding: 7px 13px; text-decoration: none; min-height: 34px;">
+            <span style="width: 7px; height: 7px; border-radius: 100px; background: {{ chip.dot }}; display: block; flex: 0 0 auto;"></span>{{ chip.label }}
+          </a>
+        </div>
+      </div>
+      <div style="background: #16130F; padding: 14px 26px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #8A8378; margin: 0; min-width: 0; overflow-wrap: anywhere;">{{ systemLine }}</p>
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end;">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <sc-for list="{{ legal }}" as="l" hint-placeholder-count="5">
+              <a href="#variants" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; text-decoration: none; padding: 4px 0;" style-hover="color: #FBFAF7;">{{ l }}</a>
+            </sc-for>
+          </div>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8378; margin: 0;">© 2026 KeepState, Inc. · <a href="Proof.dc.html" style="color: #D9B8B8;">/proof</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <p style="font-size: 13px; font-weight: 600; margin: 0 0 12px;">Console: band 5 only, persistent strip. No marketing inside the app, ever.</p>
+    <footer role="contentinfo" style="background: #16130F; border-radius: 5px; padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #8A8378; margin: 0; min-width: 0; overflow-wrap: anywhere;">{{ systemLine }}</p>
+      <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <a href="Docs.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; text-decoration: none;" style-hover="color: #FBFAF7;">Docs</a>
+        <a href="#status" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; text-decoration: none;" style-hover="color: #FBFAF7;">Status</a>
+        <a href="Console Pages.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; text-decoration: none;" style-hover="color: #FBFAF7;">Support</a>
+        <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 5px 10px; cursor: pointer;" style-hover="color: #FBFAF7; border-color: #6A6258;">Shortcuts ⌘K</button>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8378;">v0.1.1</span>
+      </div>
+    </footer>
+  </section>
+
+  <section id="responsive" style="max-width: 1280px; margin: 0 auto; padding: 64px 26px 90px;">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 6px;">reflow</p>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 12px;">Tablet and phone.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 26px; max-width: 44em;">Columns go four to two to one, band 1 stacks, band 5 wraps to two lines. No accordions: every link stays reachable and every tap target clears 44px.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; align-items: start;">
+      <sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0;">{{ f.name }}</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">{{ f.w }}px</p>
+          </div>
+          <div style="width: {{ f.w }}px; max-width: 100%; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; background: #FBFAF7;">
+            <div style="position: relative; height: 1px; background: #D8D2C4;">
+              <span style="position: absolute; left: 22%; top: 50%; width: 6px; height: 6px; background: #7A2530; transform: translate(-50%, -50%) rotate(45deg); display: block;"></span>
+              <span style="position: absolute; left: 58%; top: 50%; width: 6px; height: 6px; background: #7A2530; transform: translate(-50%, -50%) rotate(45deg); display: block;"></span>
+              <span style="position: absolute; right: 6px; top: 50%; width: 9px; height: 9px; background: #7A2530; transform: translateY(-50%) rotate(45deg); display: block;"></span>
+            </div>
+            <div style="padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 8px;">
+                <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 500;">KeepState</span>
+              </div>
+              <p style="font-size: 13px; color: #39404C; margin: 0 0 16px;">The durable agent session cloud.</p>
+              <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px; background: #FFFFFF; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <code style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #16130F; flex: 1 1 160px; min-width: 0; overflow-x: auto; white-space: nowrap;">curl -fsSL keepstate.ai/install | sh</code>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 11px; min-height: 32px; display: flex; align-items: center;">copy</span>
+                </div>
+              </div>
+              <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px; background: #FFFFFF; margin-bottom: 20px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8372; margin: 0 0 9px;">The Session Economy</p>
+                <div style="display: flex; gap: 7px; flex-wrap: wrap;">
+                  <span style="flex: 1 1 130px; min-width: 0; font-size: 12.5px; color: #A69E8E; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 11px; min-height: 38px; display: flex; align-items: center;">you@company.com</span>
+                  <span style="font-size: 12.5px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 10px 14px; min-height: 38px; display: flex; align-items: center;">Subscribe</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat({{ f.cols }}, 1fr); gap: 18px; margin-bottom: 20px;">
+                <sc-for list="{{ f.columns }}" as="c" hint-placeholder-count="4">
+                  <div style="min-width: 0;">
+                    <p style="font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8372; margin: 0 0 9px;">{{ c.head }}</p>
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                      <sc-for list="{{ c.short }}" as="l" hint-placeholder-count="4">
+                        <span style="font-size: 12.5px; line-height: 1.5; color: #16130F; padding: 4px 0;">{{ l }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="text-align: center; padding: 26px 0; border-top: 1px solid #EDE9DF;">
+                <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: inline-block; margin-bottom: 12px;"></span>
+                <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: #16130F; margin: 0;">{{ epigraph }}</p>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid #EDE9DF; padding-top: 14px;">
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                  <sc-for list="{{ socials }}" as="s" hint-placeholder-count="5">
+                    <span style="display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 1px solid {{ s.border }}; border-radius: 3px; color: {{ s.color }}; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 0 8px;">{{ s.short }}</span>
+                  </sc-for>
+                </div>
+                <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ chip.color }}; background: {{ chip.bg }}; border: 1px solid {{ chip.border }}; border-radius: 100px; padding: 7px 12px; min-height: 34px;">
+                  <span style="width: 6px; height: 6px; border-radius: 100px; background: {{ chip.dot }}; display: block;"></span>{{ chip.short }}
+                </span>
+              </div>
+            </div>
+            <div style="background: #16130F; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.6; color: #8A8378; margin: 0; overflow-wrap: anywhere;">{{ systemLine }}</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.6; color: #C9C4BA; margin: 0; overflow-wrap: anywhere;">Terms · Privacy · DPA · Subprocessors · Acceptable Use</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8A8378; margin: 0;">© 2026 KeepState, Inc. · <span style="color: #D9B8B8;">/proof</span></p>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+class Component extends DCLogic {
+  state = { status: 'operational', installed: false, email: '', subError: false, subDone: false, tipOpen: false, annotate: true, height: 0, epigraph: 0 };
+
+  componentDidMount() {
+    this.setState({ epigraph: Math.floor(Math.random() * 5) });
+    this.measure();
+    this.onResize = () => this.measure();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  measure() {
+    if (this.footerEl) {
+      const h = Math.round(this.footerEl.getBoundingClientRect().height);
+      if (h !== this.state.height) this.setState({ height: h });
+    }
+  }
+
+  componentDidUpdate() { this.measure(); }
+
+  renderVals() {
+    const s = this.state;
+
+    const epigraphs = [
+      "Hosts sleep; ledgers don't.",
+      'Assert the fact, not the residue.',
+      'What gates watch stays true; what nothing watches drifts.',
+      'No claim outlives its gate.',
+      'The gateway can hold the door open forever; walking back through it belongs to the client.'
+    ];
+
+    const chips = {
+      operational: { label: 'all systems operational', short: 'operational', color: '#39404C', bg: '#FFFFFF', border: '#D8D2C4', dot: '#4F7A52' },
+      incident: { label: 'incident: checkpoint latency', short: 'incident', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530' },
+      unavailable: { label: 'status unavailable', short: 'unavailable', color: '#7A6F60', bg: '#EFEBE1', border: '#D8D2C4', dot: '#A69E8E' }
+    };
+
+    const lines = {
+      operational: 'keepstate v0.1.1 · api 99.98% (30d) · gateway 99.99% (30d) · doctor 7/7 · no open incidents · eu-central-1',
+      incident: 'keepstate v0.1.1 · api 99.98% (30d) · gateway unavailable · doctor 7/7 · 1 open incident: checkpoint latency · eu-central-1',
+      unavailable: 'keepstate v0.1.1 · api unavailable · gateway unavailable · doctor unavailable · incidents unavailable · eu-central-1'
+    };
+
+    const columns = [
+      { head: 'Product', links: [['Sessions', 'KeepState.dc.html'], ['Fork', 'KeepState.dc.html'], ['Gateway & Cost', 'KeepState.dc.html'], ['Governance & Replay', 'KeepState.dc.html'], ['Pricing', 'Pricing.dc.html'], ['Compatibility', 'Proof.dc.html'], ['Changelog', 'Docs.dc.html']] },
+      { head: 'Developers', links: [['Documentation', 'Docs.dc.html'], ['Quickstart', 'Docs.dc.html'], ['CLI Reference', 'Docs.dc.html'], ['API Reference', 'Docs.dc.html'], ['Proof', 'Proof.dc.html'], ['Status', '#status'], ['Support', 'Console Pages.dc.html']] },
+      { head: 'Company', links: [['Manifesto', 'Manifesto.dc.html'], ['About', '#marketing'], ['Customers', '#marketing'], ['Enterprise', 'Enterprise.dc.html'], ['Careers', '#marketing'], ['The Ledger', '#marketing'], ['Press', '#marketing']] },
+      { head: 'Programs & Trust', links: [['Grants', '#marketing'], ['Security', 'Enterprise.dc.html'], ['Responsible Disclosure', 'Enterprise.dc.html'], ['Brand & Press Kit', '#marketing'], ['Contact', '#marketing'], ['Partners', '#marketing']] }
+    ];
+
+    const socials = [
+      { label: 'GitHub', short: 'GH', title: 'GitHub, the han protocol org', primary: true },
+      { label: 'X', short: 'X', title: 'X' },
+      { label: 'LinkedIn', short: 'in', title: 'LinkedIn' },
+      { label: 'YouTube', short: 'YT', title: 'YouTube' },
+      { label: 'RSS', short: 'RSS', title: 'RSS' }
+    ];
+
+    const chip = chips[s.status];
+
+    return {
+      annotate: s.annotate,
+      annLabel: s.annotate ? 'Hide band labels' : 'Show band labels',
+      annBg: s.annotate ? '#16130F' : '#FFFFFF',
+      annColor: s.annotate ? '#FBFAF7' : '#39404C',
+      annBorder: s.annotate ? '#16130F' : '#D8D2C4',
+      toggleAnnotate: () => this.setState({ annotate: !s.annotate }),
+      heightNote: s.height ? 'measured height ' + s.height + 'px of 520 budget' : 'measuring',
+      heightColor: s.height > 520 ? '#7A2530' : '#7A6F60',
+      footerRef: (el) => { this.footerEl = el; },
+      bandLabels: [
+        { n: 'bands 1 + 2', label: 'Continue strip, then link columns', grow: '2.6' },
+        { n: 'band 3', label: 'Epigraph', grow: '1.4' },
+        { n: 'band 4', label: 'Utility row', grow: '0.5' },
+        { n: 'band 5', label: 'Terminal line', grow: '0.42' }
+      ],
+
+      timelineDots: [
+        { left: '9%', size: '6px', fill: '#7A2530' },
+        { left: '22%', size: '6px', fill: '#7A2530' },
+        { left: '34%', size: '5px', fill: '#D8D2C4' },
+        { left: '48%', size: '6px', fill: '#7A2530' },
+        { left: '61%', size: '5px', fill: '#D8D2C4' },
+        { left: '74%', size: '6px', fill: '#7A2530' },
+        { left: '87%', size: '5px', fill: '#D8D2C4' }
+      ],
+      tipOpen: s.tipOpen,
+      showTip: () => {
+        this.setState({ tipOpen: true });
+        clearTimeout(this.tipT);
+        this.tipT = setTimeout(() => this.setState({ tipOpen: false }), 2000);
+      },
+      hideTip: () => this.setState({ tipOpen: false }),
+
+      installLabel: s.installed ? 'copied' : 'copy',
+      installBg: s.installed ? '#F6ECEA' : '#FFFFFF',
+      installColor: s.installed ? '#7A2530' : '#39404C',
+      installBorder: s.installed ? '#E4CFCC' : '#D8D2C4',
+      copyInstall: () => {
+        if (navigator.clipboard) navigator.clipboard.writeText('curl -fsSL keepstate.ai/install | sh').catch(() => {});
+        this.setState({ installed: true });
+        setTimeout(() => this.setState({ installed: false }), 1500);
+      },
+
+      email: s.email,
+      emailBorder: s.subError ? '#7A2530' : '#D8D2C4',
+      subError: s.subError,
+      subIdle: !s.subDone,
+      subDone: s.subDone,
+      onEmail: (e) => this.setState({ email: e.target.value, subError: false }),
+      subscribe: () => {
+        const ok = /.+@.+\..+/.test(s.email);
+        this.setState({ subError: !ok, subDone: ok });
+      },
+
+      columns: columns.map((c) => ({
+        head: c.head,
+        links: c.links.map(([label, href]) => ({ label: label, href: href }))
+      })),
+      epigraph: epigraphs[s.epigraph],
+
+      socials: socials.map((so) => ({
+        label: so.label, short: so.short, title: so.title,
+        color: so.primary ? '#16130F' : '#39404C',
+        border: so.primary ? '#C9C2B2' : '#E2DDD1',
+        dot: so.primary ? '#7A2530' : '#C9C2B2',
+        padX: so.primary ? '13px' : '11px'
+      })),
+
+      chip: chip,
+      systemLine: lines[s.status],
+      legal: ['Terms', 'Privacy', 'DPA', 'Subprocessors', 'Acceptable Use'],
+
+      stateCards: [
+        { key: 'operational', name: 'state 1', note: 'All fields answered. The dot is green only because a probe said so within the last minute.' },
+        { key: 'incident', name: 'state 2', note: 'One surface is degraded. The chip carries the incident title and routes to the status page; the system line names the failing field.' },
+        { key: 'unavailable', name: 'state 3', note: 'The status service itself did not answer. Absence renders as absence, in gray, rather than an optimistic green.' }
+      ].map((st) => {
+        const c = chips[st.key];
+        const sel = s.status === st.key;
+        return {
+          name: st.name, note: st.note,
+          label: c.label, color: c.color, bg: c.bg, border: c.border, dot: c.dot,
+          cardBg: sel ? '#F6ECEA' : '#FFFFFF',
+          cardBorder: sel ? '#E4CFCC' : '#D8D2C4',
+          radio: sel ? '#7A2530' : '#C9C2B2',
+          radioFill: sel ? '#7A2530' : 'transparent',
+          onClick: () => this.setState({ status: st.key })
+        };
+      }),
+
+      frames: [
+        {
+          name: 'Tablet', w: 720, cols: 2,
+          columns: columns.map((c) => ({ head: c.head, short: c.links.slice(0, 4).map((l) => l[0]) }))
+        },
+        {
+          name: 'Phone', w: 390, cols: 1,
+          columns: columns.map((c) => ({ head: c.head, short: c.links.slice(0, 3).map((l) => l[0]) }))
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

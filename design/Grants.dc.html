@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <a href="Product Pages.dc.html" style="font-size: 14px; color: #39404C;">Product</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Careers.dc.html" style="font-size: 14px; color: #39404C;">Careers</a>
+        <a href="Docs.dc.html" style="font-size: 14px; color: #39404C;">Docs</a>
+        <a href="#apply" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Apply for a grant</a>
+      </div>
+    </nav>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 44px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Grants</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 17em;">KeepState Grants: compute for the people building the agents.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">The harnesses we wrap were written by people who were not paid to make our product work. Grants are how we settle that: session credits, engineering time, and a compatibility row of your own so your users can see the freeze holds.</p>
+    <div style="display: flex; gap: 22px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60;">
+      <span>awarded to date: <span style="color: #16130F;">31 grants</span></span>
+      <span>credits committed: <span style="color: #16130F;">$186,000</span></span>
+      <span>median decision time: <span style="color: #16130F;">9 days</span></span>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px;">
+      <sc-for list="{{ tracks }}" as="t" hint-placeholder-count="3">
+        <article style="background: {{ t.bg }}; border: 1px solid {{ t.border }}; border-radius: 5px; padding: 28px 26px; display: flex; flex-direction: column; gap: 18px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 14px;">
+              <span style="width: 7px; height: 7px; background: {{ t.dot }}; transform: rotate(45deg); display: block;"></span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: {{ t.eyebrow }};">{{ t.tag }}</span>
+            </div>
+            <p style="font-family: Newsreader, Georgia, serif; font-size: 25px; line-height: 1.2; margin: 0 0 12px; color: {{ t.titleColor }};">{{ t.title }}</p>
+            <p style="font-size: 14px; line-height: 1.65; color: {{ t.bodyColor }}; margin: 0;">{{ t.body }}</p>
+          </div>
+
+          <div style="display: grid; gap: 9px; flex: 1;">
+            <sc-for list="{{ t.gets }}" as="g" hint-placeholder-count="4">
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="width: 5px; height: 5px; background: {{ t.dot }}; transform: rotate(45deg); display: block; margin-top: 6px; flex: 0 0 auto;"></span>
+                <p style="font-size: 13.5px; line-height: 1.55; color: {{ t.bodyColor }}; margin: 0;">{{ g }}</p>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="border-top: 1px solid {{ t.rule }}; padding-top: 16px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ t.metaColor }};">typical award</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{ t.figColor }};">{{ t.award }}</span>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; color: {{ t.metaColor }}; margin: 0;">{{ t.term }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background: #EFEBE1; border-top: 1px solid #D8D2C4; border-bottom: 1px solid #D8D2C4; margin-top: 56px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 40px 28px; display: flex; align-items: center; gap: 26px; flex-wrap: wrap; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+        <span style="width: 10px; height: 10px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: clamp(22px, 2.8vw, 30px); line-height: 1.25; margin: 0;">Day-0 support is a promise: new harness releases get a wrapped image within 48 hours.</p>
+      </div>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.7; color: #7A6F60; margin: 0; max-width: 22em;">measured on the last 14 releases · median 19 h · worst 41 h · gated as G-171</p>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 60px 28px 0;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; align-items: start;">
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">What we ask in return.</h2>
+        <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 22px;">Not a logo, not a case study, not an exclusivity clause. Three things, all of which we would want anyway:</p>
+        <div style="border-top: 1px solid #D8D2C4;">
+          <sc-for list="{{ asks }}" as="a" hint-placeholder-count="3">
+            <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px 2px; border-bottom: 1px solid #D8D2C4;">
+              <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+              <p style="font-size: 14.5px; line-height: 1.65; color: #39404C; margin: 0;">{{ a }}</p>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.7; color: #7A6F60; margin: 22px 0 0;">Grants are not a sales channel. Two of our grantees publicly recommend a competitor for parts of their workflow, and their credits were renewed anyway.</p>
+      </div>
+
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">Recent awards.</h2>
+        <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 22px;">Names appear only where the grantee asked for them. The rest are described by what they build.</p>
+        <div style="display: grid; gap: 0;">
+          <sc-for list="{{ awards }}" as="w" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 6px 18px; padding: 15px 0; border-top: 1px solid #D8D2C4; align-items: baseline;">
+              <div style="display: flex; align-items: baseline; gap: 10px; min-width: 0;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: {{ w.tagColor }}; border: 1px solid {{ w.tagBorder }}; background: {{ w.tagBg }}; border-radius: 100px; padding: 3px 8px; white-space: nowrap; flex: 0 0 auto;">{{ w.track }}</span>
+              </div>
+              <p style="font-size: 14px; line-height: 1.6; color: #16130F; margin: 0;">{{ w.what }}</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0; text-align: right;">{{ w.amount }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 90px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 34px; align-items: start;">
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 16px;">Apply.</h2>
+        <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 24px;">Four questions. A human reads it, and you get a yes or a no with a reason, never silence. Median decision is nine days; the worst was 24 and we told them why it was slow.</p>
+        <div style="display: grid; gap: 0;">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+            <div style="display: flex; gap: 12px; align-items: flex-start; padding: 13px 0; border-top: 1px solid #D8D2C4;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A2530; width: 18px; flex: 0 0 auto; margin-top: 3px;">{{ st.n }}</span>
+              <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ st.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 28px 26px;">
+        <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="margin-bottom: 22px;">
+              <p style="font-size: 12px; font-weight: 500; color: #39404C; margin: 0 0 10px;">Which track</p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <sc-for list="{{ trackPicks }}" as="p" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ p.onClick }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; background: {{ p.bg }}; color: {{ p.color }}; border: 1px solid {{ p.border }}; border-radius: 3px; padding: 9px 14px; cursor: pointer; min-height: 38px;">{{ p.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display: grid; gap: 16px; margin-bottom: 22px;">
+              <div>
+                <label for="gr-name" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Name</label>
+                <input id="gr-name" type="text" value="{{ f.name }}" onChange="{{ onName }}" placeholder="Your name" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid {{ f.nameBorder }}; border-radius: 3px; padding: 11px 13px; outline: none;" style-focus="border-color: #7A2530;" />
+              </div>
+              <div>
+                <label for="gr-link" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Project link</label>
+                <input id="gr-link" type="text" value="{{ f.link }}" onChange="{{ onLink }}" placeholder="github.com/you/your-harness" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid {{ f.linkBorder }}; border-radius: 3px; padding: 11px 13px; outline: none;" style-focus="border-color: #7A2530;" />
+              </div>
+              <div>
+                <label for="gr-run" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">What will you run</label>
+                <textarea id="gr-run" rows="4" value="{{ f.run }}" onChange="{{ onRun }}" placeholder="The workload, roughly how long a single run takes, and what breaks today" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; line-height: 1.6; color: #16130F; background: #FFFFFF; border: 1px solid {{ f.runBorder }}; border-radius: 3px; padding: 11px 13px; outline: none; resize: vertical;" style-focus="border-color: #7A2530;"></textarea>
+              </div>
+              <div>
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px;">
+                  <label for="gr-credits" style="font-size: 12px; font-weight: 500; color: #39404C;">Credits requested</label>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #7A2530; font-variant-numeric: tabular-nums;">${{ f.credits }}</span>
+                </div>
+                <input id="gr-credits" type="range" min="500" max="25000" step="500" value="{{ f.credits }}" onChange="{{ onCredits }}" style="width: 100%; height: 3px; background: #D8D2C4; border-radius: 2px; outline: none; accent-color: #7A2530;" />
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 10px 0 0;">{{ f.creditsNote }}</p>
+              </div>
+            </div>
+
+            <sc-if value="{{ f.error }}" hint-placeholder-val="{{ false }}">
+              <p style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7A2530; margin: 0 0 16px;"><span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ f.errorText }}</p>
+            </sc-if>
+
+            <button type="button" onClick="{{ submit }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 13px 18px; cursor: pointer;">Send the application</button>
+            <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 14px 0 0;">No pitch deck, no call required. If we need more we will ask one question by email.</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+              <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">application received</span>
+            </div>
+            <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.25; margin: 0 0 14px;">Logged as {{ f.ref }}.</p>
+            <p style="font-size: 14.5px; line-height: 1.7; color: #39404C; margin: 0 0 20px;">A human reads this within nine days on median. You will get a yes or a no with a reason attached, and if we go quiet past two weeks that is our failure: reply to the confirmation and it escalates.</p>
+            <button type="button" onClick="{{ reset }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 16px; cursor: pointer;">Submit another</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { track: 'Maintainer', name: '', link: '', run: '', credits: 5000, error: '', sent: false };
+
+  renderVals() {
+    const s = this.state;
+
+    const tracks = [
+      {
+        tag: 'track 1', title: 'Open-source harness maintainers',
+        body: 'You wrote the agent people actually use. We wrap it, gate it, and keep the wrap current at your release cadence rather than ours.',
+        gets: [
+          'Session credits for your own development and CI',
+          'Engineering time from us on the wrap, not a support queue',
+          'A compatibility row of your own, gated and published',
+          'Day-0 wrapping of new releases within 48 hours'
+        ],
+        award: '$5,000 to $25,000', term: '12 months, renewable · no exclusivity',
+        bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530', eyebrow: '#7A2530',
+        titleColor: '#16130F', bodyColor: '#39404C', rule: '#E4CFCC', metaColor: '#8A7A78', figColor: '#7A2530'
+      },
+      {
+        tag: 'track 2', title: 'Researchers',
+        body: 'Long-horizon agent studies need sessions that outlive the machine. A trial that dies at hour 40 is not a result, it is a lost week.',
+        gets: [
+          'Credits sized to a study, not a month',
+          'Sessions that survive cluster preemption',
+          'Deterministic replay for reproducible trials',
+          'Retention long enough to outlast peer review'
+        ],
+        award: '$2,500 to $15,000', term: 'per study · extended on request',
+        bg: '#FFFFFF', border: '#D8D2C4', dot: '#A69E8E', eyebrow: '#7A6F60',
+        titleColor: '#16130F', bodyColor: '#39404C', rule: '#EDE9DF', metaColor: '#7A6F60', figColor: '#16130F'
+      },
+      {
+        tag: 'track 3', title: 'Students',
+        body: 'No institutional affiliation required and no proposal review board. If you are learning to build agents, the meter should not be the thing that stops you.',
+        gets: [
+          'Credits that do not expire mid-term',
+          'The same durability the paid tiers get',
+          'No card on file, ever',
+          'A published project counts as the report'
+        ],
+        award: '$500 to $2,000', term: 'one academic year · renewable once',
+        bg: '#FFFFFF', border: '#D8D2C4', dot: '#A69E8E', eyebrow: '#7A6F60',
+        titleColor: '#16130F', bodyColor: '#39404C', rule: '#EDE9DF', metaColor: '#7A6F60', figColor: '#16130F'
+      }
+    ];
+
+    const asks = [
+      'Tell us when the freeze does not hold for your harness. A failed absorption is a finding we publish, and it is worth more to us than a testimonial.',
+      'Let us gate your project publicly, including the rows where the answer is only observed rather than proven.',
+      'Keep building whatever you were going to build. If that turns out to be something we compete with, the credits still stand for the term.'
+    ];
+
+    const trackStyles = {
+      maintainer: { tagColor: '#7A2530', tagBg: '#F6ECEA', tagBorder: '#E4CFCC' },
+      research: { tagColor: '#39404C', tagBg: '#EFEBE1', tagBorder: '#D8D2C4' },
+      student: { tagColor: '#7A6F60', tagBg: '#FFFFFF', tagBorder: '#C9C2B2' }
+    };
+
+    const awards = [
+      Object.assign({ track: 'maintainer', what: 'A widely used terminal coding agent, wrap plus day-0 releases', amount: '$25,000' }, trackStyles.maintainer),
+      Object.assign({ track: 'research', what: 'University lab studying 60-hour tool-use horizons', amount: '$15,000' }, trackStyles.research),
+      Object.assign({ track: 'maintainer', what: 'A community MCP server suite, 40 tools', amount: '$8,000' }, trackStyles.maintainer),
+      Object.assign({ track: 'research', what: 'Independent researcher on replay determinism, published a defect in ours', amount: '$6,000' }, trackStyles.research),
+      Object.assign({ track: 'student', what: 'Undergraduate building an agent for accessibility auditing', amount: '$2,000' }, trackStyles.student)
+    ];
+
+    const steps = [
+      { n: '01', text: 'Pick a track and tell us who you are. A GitHub handle is enough identification.' },
+      { n: '02', text: 'Link the project. Anything public: a repo, a paper, a demo, a thread.' },
+      { n: '03', text: 'Describe the workload and, more usefully, what breaks about it today.' },
+      { n: '04', text: 'Name a number. Asking for more than the range does not disqualify you, it just needs a sentence.' }
+    ];
+
+    const creditNotes = {
+      Maintainer: 'maintainer range is $5,000 to $25,000',
+      Researcher: 'researcher range is $2,500 to $15,000',
+      Student: 'student range is $500 to $2,000'
+    };
+
+    return {
+      tracks: tracks,
+      asks: asks,
+      awards: awards,
+      steps: steps,
+      trackPicks: ['Maintainer', 'Researcher', 'Student'].map((label) => ({
+        label: label,
+        bg: s.track === label ? '#16130F' : '#FFFFFF',
+        color: s.track === label ? '#FBFAF7' : '#39404C',
+        border: s.track === label ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ track: label })
+      })),
+      formOpen: !s.sent,
+      formSent: s.sent,
+      f: {
+        name: s.name, link: s.link, run: s.run, credits: s.credits.toLocaleString('en-US'),
+        creditsNote: creditNotes[s.track],
+        nameBorder: s.error && !s.name.trim() ? '#7A2530' : '#D8D2C4',
+        linkBorder: s.error && !s.link.trim() ? '#7A2530' : '#D8D2C4',
+        runBorder: s.error && !s.run.trim() ? '#7A2530' : '#D8D2C4',
+        error: !!s.error, errorText: s.error,
+        ref: 'GR-2026-118'
+      },
+      onName: (e) => this.setState({ name: e.target.value, error: '' }),
+      onLink: (e) => this.setState({ link: e.target.value, error: '' }),
+      onRun: (e) => this.setState({ run: e.target.value, error: '' }),
+      onCredits: (e) => this.setState({ credits: Number(e.target.value) }),
+      submit: () => {
+        if (!s.name.trim() || !s.link.trim() || !s.run.trim()) {
+          this.setState({ error: 'Name, project link, and what you will run are all needed before a human can judge this.' });
+          return;
+        }
+        this.setState({ sent: true, error: '' });
+      },
+      reset: () => this.setState({ sent: false, name: '', link: '', run: '' })
+    };
+  }
+}
+</script>
+</body>
+</html>

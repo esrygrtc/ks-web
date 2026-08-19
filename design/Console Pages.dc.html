@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 40; background: rgba(251,250,247,0.95); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <a href="Console Overview.dc.html" style="display: flex; align-items: center; gap: 9px; color: #16130F; text-decoration: none;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: Newsreader, Georgia, serif; font-size: 18px; font-weight: 500;">KeepState</span>
+        </a>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; border: 1px solid #D8D2C4; border-radius: 3px; padding: 3px 8px;">acme-eng</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 10px; background: #FFFFFF;">
+          <span style="color: #7A6F60;">org budget</span>
+          <span style="font-variant-numeric: tabular-nums;">$418 / $500</span>
+          <span style="width: 46px; height: 4px; background: #EDE9DF; border-radius: 2px; display: block; overflow: hidden;"><span style="display: block; height: 100%; width: 84%; background: #7A2530;"></span></span>
+        </div>
+        <div style="width: 28px; height: 28px; border-radius: 100px; background: #EFEBE1; border: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #39404C;">RK</div>
+      </div>
+    </div>
+  </header>
+
+  <div style="display: flex; align-items: stretch; flex: 1; min-height: 0;">
+    <nav style="width: 212px; flex: 0 0 auto; border-right: 1px solid #D8D2C4; padding: 20px 12px 60px; display: {{ navDisplay }}; flex-direction: column; gap: 2px; position: sticky; top: 53px; align-self: flex-start; max-height: calc(100vh - 53px); overflow-y: auto;">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="11">
+        <button type="button" onClick="{{ n.onClick }}" style="width: 100%; display: flex; align-items: center; gap: 9px; font-family: Inter, sans-serif; font-size: 13px; color: {{ n.color }}; background: {{ n.bg }}; border: none; border-radius: 3px; padding: 8px 10px; cursor: pointer; text-align: left; font-weight: {{ n.weight }};">
+          <span style="width: 5px; height: 5px; background: {{ n.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ n.label }}
+        </button>
+      </sc-for>
+      <div style="border-top: 1px solid #D8D2C4; margin: 14px 0 10px;"></div>
+      <a href="Console Overview.dc.html" style="font-size: 12px; color: #7A6F60; padding: 6px 10px; text-decoration: none;">Overview</a>
+      <a href="Console Session Detail.dc.html" style="font-size: 12px; color: #7A6F60; padding: 6px 10px; text-decoration: none;">Session detail</a>
+      <a href="Docs.dc.html" style="font-size: 12px; color: #7A6F60; padding: 6px 10px; text-decoration: none;">Docs</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 24px 22px 70px;">
+
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px;">
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -0.02em; margin: 0;">{{ title }}</h1>
+        <sc-if value="{{ hasAction }}" hint-placeholder-val="{{ true }}">
+          <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 9px 15px; cursor: pointer;">{{ action }}</button>
+        </sc-if>
+      </div>
+      <p style="font-size: 13.5px; line-height: 1.6; color: #7A6F60; margin: 0 0 26px; max-width: 52em;">{{ subtitle }}</p>
+
+      <sc-if value="{{ isSessions }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="6">
+              <button type="button" onClick="{{ f.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; background: {{ f.bg }}; color: {{ f.color }}; border: 1px solid {{ f.border }}; border-radius: 100px; padding: 5px 12px; cursor: pointer;">{{ f.label }}</button>
+            </sc-for>
+            <span style="flex: 1;"></span>
+            <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A2530;">{{ selCount }} selected</span>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 12px; cursor: pointer;">Park</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 12px; cursor: pointer;">Wake</button>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="width: 42px; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;"></th>
+                    <sc-for list="{{ cols }}" as="c" hint-placeholder-count="7">
+                      <th onClick="{{ c.onClick }}" style="text-align: {{ c.align }}; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: {{ c.color }}; padding: 11px 16px; border-bottom: 1px solid #D8D2C4; cursor: pointer; white-space: nowrap; user-select: none;">{{ c.label }}{{ c.caret }}</th>
+                    </sc-for>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+                    <tr style="border-bottom: 1px solid #EDE9DF; background: {{ r.rowBg }};" style-hover="background: #FBFAF7;">
+                      <td style="padding: 12px 16px;">
+                        <button type="button" onClick="{{ r.onSelect }}" aria-label="select session" style="width: 14px; height: 14px; border: 1px solid {{ r.boxBorder }}; background: {{ r.boxBg }}; border-radius: 2px; cursor: pointer; padding: 0; display: block;"></button>
+                      </td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; white-space: nowrap;"><a href="Console Session Detail.dc.html" style="color: #16130F;">{{ r.id }}</a></td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; white-space: nowrap;">{{ r.image }}</td>
+                      <td style="padding: 12px 16px;">
+                        <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ r.pillColor }}; background: {{ r.pillBg }}; border: 1px solid {{ r.pillBorder }}; border-radius: 100px; padding: 3px 10px; white-space: nowrap;">
+                          <span style="width: 5px; height: 5px; background: {{ r.pillDot }}; transform: rotate(45deg); display: block;"></span>{{ r.status }}
+                        </span>
+                      </td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;">{{ r.age }}</td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ r.ckpt }}</td>
+                      <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
+                        <span style="font-family: 'JetBrains Mono', monospace; color: #16130F; font-variant-numeric: tabular-nums;">{{ r.spend }}</span>
+                        <div style="width: 104px; height: 4px; background: #EDE9DF; border-radius: 2px; margin: 7px 0 0 auto; overflow: hidden;"><div style="height: 100%; width: {{ r.pct }}; background: {{ r.barColor }};"></div></div>
+                      </td>
+                      <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; white-space: nowrap;">{{ r.last }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-top: 1px solid #D8D2C4;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">{{ pageLabel }}</p>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #A69E8E;">←</button>
+                <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #16130F; border: 1px solid #16130F; color: #FBFAF7; border-radius: 3px; padding: 6px 11px; cursor: pointer;">1</button>
+                <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #39404C;">2</button>
+                <button type="button" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 11px; cursor: pointer; color: #39404C;">→</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isFleet }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 16px; margin-bottom: 22px;">
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Parked agents</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 26px; color: #16130F; margin: 0; font-variant-numeric: tabular-nums;">14</p>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Storage after dedup</p>
+              <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 26px; color: #16130F; font-variant-numeric: tabular-nums;">32.1 GB</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 1px 5px;">MEASURED</span>
+              </div>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Cost while parked</p>
+              <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 26px; color: #16130F; font-variant-numeric: tabular-nums;">$2.90</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #7A6F60; border: 1px solid #C9C2B2; border-radius: 2px; padding: 1px 5px;">ESTIMATED</span>
+              </div>
+              <p style="font-size: 12px; color: #7A6F60; margin: 8px 0 0;">per day, storage only</p>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 10px;">Oldest freeze</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 26px; color: #16130F; margin: 0;">41 d</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; margin-bottom: 22px;">
+            <sc-for list="{{ parked }}" as="p" hint-placeholder-count="6">
+              <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F;">{{ p.id }}</span>
+                  <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #39404C; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 100px; padding: 3px 9px;">
+                    <span style="width: 4px; height: 4px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>parked
+                  </span>
+                </div>
+                <p style="font-size: 13px; color: #39404C; margin: 0 0 14px;">{{ p.name }}</p>
+                <div style="display: grid; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-bottom: 16px;">
+                  <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">parked</span><span style="color: #39404C;">{{ p.age }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">size</span><span style="color: #39404C;">{{ p.size }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">reason</span><span style="color: {{ p.reasonColor }};">{{ p.reason }}</span></div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 7px 13px; cursor: pointer;">Wake</button>
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 13px; cursor: pointer;">Fork</button>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Wake rules</p>
+            <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">a parked agent is a document until something opens it</p>
+            <div style="display: grid; gap: 0;">
+              <sc-for list="{{ wakeRules }}" as="w" hint-placeholder-count="3">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 8px 20px; padding: 14px 0; border-top: 1px solid #EDE9DF; align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 6px; height: 6px; background: {{ w.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                    <span style="font-size: 13px; color: #16130F;">{{ w.name }}</span>
+                  </div>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C;">{{ w.trigger }}</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ w.stateColor }}; text-align: right;">{{ w.state }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isGateway }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px;">
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Provider keys</p>
+            <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 0 0 20px;">The real key never enters a guest, an image, or a snapshot. It lives here, outside the isolation boundary.</p>
+            <div style="display: grid; gap: 10px; margin-bottom: 20px;">
+              <sc-for list="{{ keys }}" as="k" hint-placeholder-count="3">
+                <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 14px 16px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                      <span style="font-size: 13px; font-weight: 500; color: #16130F;">{{ k.provider }}</span>
+                    </div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ k.masked }}</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">added {{ k.added }} · last used {{ k.used }}</span>
+                    <div style="display: flex; gap: 6px;">
+                      <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 5px 11px; cursor: pointer;">Rotate</button>
+                      <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #7A2530; background: transparent; border: 1px solid #E4CFCC; border-radius: 3px; padding: 5px 11px; cursor: pointer;">Revoke</button>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 16px; cursor: pointer;">Add a provider key</button>
+
+            <div style="border-top: 1px solid #EDE9DF; margin-top: 24px; padding-top: 20px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                <div style="min-width: 0;">
+                  <p style="font-size: 13px; font-weight: 500; margin: 0 0 4px;">Managed inference</p>
+                  <p style="font-size: 12px; line-height: 1.55; color: #7A6F60; margin: 0;">Current spread 4.0 percent. Falls back automatically when a BYOK key is revoked mid-session.</p>
+                </div>
+                <button type="button" onClick="{{ toggleManaged }}" aria-label="toggle managed inference" style="width: 44px; height: 24px; border-radius: 100px; border: 1px solid {{ managedBorder }}; background: {{ managedBg }}; position: relative; cursor: pointer; flex: 0 0 auto; padding: 0;">
+                  <span style="position: absolute; top: 2px; left: {{ managedLeft }}; width: 18px; height: 18px; border-radius: 100px; background: #FBFAF7; display: block;"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Virtual keys</p>
+            <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 0 0 20px;">Minted and scoped automatically; humans never handle these. Read-only, one per live session.</p>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 340px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 12px; border-bottom: 1px solid #D8D2C4;">session</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 12px; border-bottom: 1px solid #D8D2C4;">virtual key</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 12px; border-bottom: 1px solid #D8D2C4;">expires</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ vkeys }}" as="v" hint-placeholder-count="4">
+                    <tr style="border-bottom: 1px solid #EDE9DF;">
+                      <td style="padding: 11px 12px; font-family: 'JetBrains Mono', monospace; color: #16130F;">{{ v.session }}</td>
+                      <td style="padding: 11px 12px; font-family: 'JetBrains Mono', monospace; color: #7A6F60;">{{ v.key }}</td>
+                      <td style="padding: 11px 12px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right;">{{ v.exp }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isUsage }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
+            <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="3">
+              <button type="button" onClick="{{ r.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: {{ r.bg }}; color: {{ r.color }}; border: 1px solid {{ r.border }}; border-radius: 3px; padding: 6px 12px; cursor: pointer;">{{ r.label }}</button>
+            </sc-for>
+            <span style="flex: 1;"></span>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Export CSV</button>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px; margin-bottom: 18px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+              <div>
+                <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Spend by meter</p>
+                <p style="font-size: 12px; color: #7A6F60; margin: 0;">stacked, {{ rangeLabel }}</p>
+              </div>
+              <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;"><span style="width: 8px; height: 8px; background: #16130F; display: block;"></span>session-minutes</span>
+                <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;"><span style="width: 8px; height: 8px; background: #7A2530; display: block;"></span>tokens</span>
+                <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;"><span style="width: 8px; height: 8px; background: #D8D2C4; display: block;"></span>storage</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 6px; height: 190px;">
+              <sc-for list="{{ stacks }}" as="s" hint-placeholder-count="14">
+                <div title="{{ s.title }}" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; height: 100%;">
+                  <span style="height: {{ s.a }}; background: #16130F; display: block; border-radius: 1px;"></span>
+                  <span style="height: {{ s.b }}; background: #7A2530; display: block; border-radius: 1px;"></span>
+                  <span style="height: {{ s.c }}; background: #D8D2C4; display: block; border-radius: 1px;"></span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px;">
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;">
+                <p style="font-size: 13px; font-weight: 600; margin: 0;">Tokens not re-purchased</p>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 1px 5px;">MEASURED</span>
+              </div>
+              <div style="display: flex; align-items: flex-end; gap: 5px; height: 130px; margin-bottom: 12px;">
+                <sc-for list="{{ nrp }}" as="n" hint-placeholder-count="14">
+                  <span title="{{ n.title }}" style="flex: 1; height: {{ n.h }}; background: #7A2530; display: block; border-radius: 1px;"></span>
+                </sc-for>
+              </div>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">served from the store instead of the provider</p>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">By image</p>
+              <div style="display: grid; gap: 0;">
+                <sc-for list="{{ byImage }}" as="i" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; padding: 12px 0; border-top: 1px solid #EDE9DF; align-items: center;">
+                    <div style="min-width: 0;">
+                      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0 0 7px;">{{ i.name }}</p>
+                      <div style="height: 4px; background: #EDE9DF; border-radius: 2px; overflow: hidden;"><div style="height: 100%; width: {{ i.pct }}; background: {{ i.color }};"></div></div>
+                    </div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; font-variant-numeric: tabular-nums;">{{ i.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBilling }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; margin-bottom: 18px;">
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 12px; color: #39404C; margin: 0 0 12px;">Credit balance</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 34px; color: #16130F; margin: 0 0 16px; font-variant-numeric: tabular-nums;">$1,240.00</p>
+              <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                <span style="font-size: 13px; color: #39404C;">runs out in</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #7A2530;">19 days</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #7A6F60; border: 1px solid #C9C2B2; border-radius: 2px; padding: 1px 5px;">ESTIMATED</span>
+              </div>
+              <div style="height: 5px; background: #EDE9DF; border-radius: 3px; overflow: hidden; margin-bottom: 8px;"><div style="height: 100%; width: 62%; background: #39404C;"></div></div>
+              <p style="font-size: 12px; color: #7A6F60; margin: 0;">projected from the last 14 days of spend</p>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 16px;">Auto top-up</p>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px;">
+                <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 0;">When the balance falls below <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">$250</span>, add <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">$1,000</span>.</p>
+                <button type="button" onClick="{{ toggleTopup }}" aria-label="toggle auto top-up" style="width: 44px; height: 24px; border-radius: 100px; border: 1px solid {{ topupBorder }}; background: {{ topupBg }}; position: relative; cursor: pointer; flex: 0 0 auto; padding: 0;">
+                  <span style="position: absolute; top: 2px; left: {{ topupLeft }}; width: 18px; height: 18px; border-radius: 100px; background: #FBFAF7; display: block;"></span>
+                </button>
+              </div>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0 0 16px;">visa ···· 4142 · expires 09/29</p>
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 15px; cursor: pointer;">Payment methods</button>
+            </div>
+            <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 12px;">Team plan</p>
+              <p style="font-size: 13px; line-height: 1.65; color: #39404C; margin: 0 0 16px;">6 seats at $49, plus usage on three meters. Shared budgets, fleet view, roles, and the audit log.</p>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="Enterprise.dc.html" style="font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 9px 15px; text-decoration: none;">Talk about Enterprise</a>
+                <a href="Pricing.dc.html" style="font-size: 13px; font-weight: 500; color: #16130F; border: 1px solid #E4CFCC; border-radius: 3px; padding: 8px 14px; text-decoration: none;">Compare plans</a>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px; margin-bottom: 18px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Budgets and alerts</p>
+            <p style="font-size: 12px; color: #7A6F60; margin: 0 0 20px;">at the cap a session checkpoints and parks, it is never killed</p>
+            <div style="display: grid; gap: 0;">
+              <sc-for list="{{ budgets }}" as="b" hint-placeholder-count="4">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 10px 20px; padding: 15px 0; border-top: 1px solid #EDE9DF; align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <span style="width: 6px; height: 6px; background: {{ b.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                    <span style="font-size: 13px; color: #16130F;">{{ b.scope }}</span>
+                  </div>
+                  <div>
+                    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; font-variant-numeric: tabular-nums;">{{ b.spend }}</span>
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">of {{ b.cap }}</span>
+                    </div>
+                    <div style="height: 4px; background: #EDE9DF; border-radius: 2px; overflow: hidden;"><div style="height: 100%; width: {{ b.pct }}; background: {{ b.color }};"></div></div>
+                  </div>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">alert at {{ b.alert }}</span>
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 12px; cursor: pointer; justify-self: end;">Edit</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #D8D2C4;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0;">Invoices</p>
+            </div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">invoice</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">period</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">amount</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">status</th>
+                    <th style="padding: 10px 18px; border-bottom: 1px solid #D8D2C4;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ invoices }}" as="i" hint-placeholder-count="4">
+                    <tr style="border-bottom: 1px solid #EDE9DF;">
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; color: #16130F;">{{ i.id }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C;">{{ i.period }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; color: #16130F; text-align: right; font-variant-numeric: tabular-nums;">{{ i.amount }}</td>
+                      <td style="padding: 12px 18px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ i.color }}; background: {{ i.bg }}; border: 1px solid {{ i.border }}; border-radius: 100px; padding: 3px 9px;">{{ i.status }}</span></td>
+                      <td style="padding: 12px 18px; text-align: right;"><a href="#" style="font-size: 12px;">PDF</a></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTeam }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 18px;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0;">Members</p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Import from GitHub org</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Invite by email</button>
+              </div>
+            </div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">member</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">role</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">sessions</th>
+                    <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">spend, month</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">last active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ members }}" as="m" hint-placeholder-count="6">
+                    <tr style="border-bottom: 1px solid #EDE9DF;" style-hover="background: #FBFAF7;">
+                      <td style="padding: 12px 18px;">
+                        <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                          <span style="width: 26px; height: 26px; border-radius: 100px; background: #EFEBE1; border: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #39404C; flex: 0 0 auto;">{{ m.initials }}</span>
+                          <span style="min-width: 0;">
+                            <span style="display: block; font-size: 13px; color: #16130F;">{{ m.name }}</span>
+                            <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ m.email }}</span>
+                          </span>
+                        </div>
+                      </td>
+                      <td style="padding: 12px 18px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ m.roleColor }}; background: {{ m.roleBg }}; border: 1px solid {{ m.roleBorder }}; border-radius: 100px; padding: 3px 10px;">{{ m.role }}</span></td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ m.sessions }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; color: #16130F; text-align: right; font-variant-numeric: tabular-nums;">{{ m.spend }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ m.active }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+              <div>
+                <p style="font-size: 13px; font-weight: 600; margin: 0 0 3px;">Audit log</p>
+                <p style="font-size: 12px; color: #7A6F60; margin: 0;">this is the same ledger discipline your agents get</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Filter</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Export</button>
+              </div>
+            </div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 760px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">actor</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">action</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">target</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">timestamp</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 18px; border-bottom: 1px solid #D8D2C4;">ip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ audit }}" as="a" hint-placeholder-count="7">
+                    <tr style="border-bottom: 1px solid #EDE9DF;">
+                      <td style="padding: 11px 18px; font-family: 'JetBrains Mono', monospace; color: #16130F;">{{ a.actor }}</td>
+                      <td style="padding: 11px 18px; font-family: 'JetBrains Mono', monospace; color: {{ a.actionColor }};">{{ a.action }}</td>
+                      <td style="padding: 11px 18px; font-family: 'JetBrains Mono', monospace; color: #39404C;">{{ a.target }}</td>
+                      <td style="padding: 11px 18px; font-family: 'JetBrains Mono', monospace; color: #7A6F60;">{{ a.ts }}</td>
+                      <td style="padding: 11px 18px; font-family: 'JetBrains Mono', monospace; color: #7A6F60;">{{ a.ip }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isKeys }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin-bottom: 18px;">
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px;">
+                <thead>
+                  <tr style="background: #FBFAF7;">
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 18px; border-bottom: 1px solid #D8D2C4;">name</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 18px; border-bottom: 1px solid #D8D2C4;">key</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 18px; border-bottom: 1px solid #D8D2C4;">scopes</th>
+                    <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 18px; border-bottom: 1px solid #D8D2C4;">last used</th>
+                    <th style="padding: 11px 18px; border-bottom: 1px solid #D8D2C4;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ apiKeys }}" as="k" hint-placeholder-count="4">
+                    <tr style="border-bottom: 1px solid #EDE9DF;">
+                      <td style="padding: 12px 18px; font-size: 13px; color: #16130F;">{{ k.name }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{ k.keyColor }};">{{ k.key }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ k.scopes }}</td>
+                      <td style="padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: {{ k.usedColor }};">{{ k.used }}</td>
+                      <td style="padding: 12px 18px; text-align: right;"><button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #7A2530; background: transparent; border: 1px solid #E4CFCC; border-radius: 3px; padding: 5px 11px; cursor: pointer;">Revoke</button></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px; max-width: 560px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 6px;">New key created</p>
+            <p style="font-size: 13px; line-height: 1.65; color: #39404C; margin: 0 0 18px;">Copy it now. We store a hash, so this is the only time it can be shown; a lost key is revoked and replaced, never recovered.</p>
+            <div style="background: #16130F; border-radius: 4px; padding: 15px 17px; position: relative; margin-bottom: 18px;">
+              <button type="button" onClick="{{ copyKey }}" style="position: absolute; top: 11px; right: 11px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 9px; cursor: pointer;">{{ keyCopyLabel }}</button>
+              <code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap; padding-right: 60px;">ksk_live_7f3a2c19bd44e061a8f5</code>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 10px 16px; cursor: pointer;">I have copied it</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCompliance }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 16px; margin-bottom: 20px;">
+            <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #39404C; margin: 0;">enterprise plan · visible to Owners and Admins only</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px;">
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">Replay retention policy</p>
+              <div style="display: grid; gap: 0; margin-bottom: 18px;">
+                <sc-for list="{{ retention }}" as="r" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 0; border-top: 1px solid #EDE9DF;">
+                    <span style="font-size: 13px; color: #16130F;">{{ r.scope }}</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{ r.color }}; border: 1px solid {{ r.border }}; background: {{ r.bg }}; border-radius: 3px; padding: 5px 11px;">{{ r.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <p style="font-size: 12px; line-height: 1.6; color: #7A6F60; margin: 0;">A legal hold removes the delete path entirely, in the console and in the API. Checkpoints under hold render no delete affordance at all.</p>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 6px;">Audit bundle export</p>
+              <p style="font-size: 12px; color: #7A6F60; margin: 0 0 20px;">generates a signed archive: ledgers, checkpoint manifests, and replay proofs</p>
+              <div style="display: grid; gap: 14px; margin-bottom: 20px;">
+                <div>
+                  <label for="cc-scope" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Sessions</label>
+                  <input id="cc-scope" type="text" value="s_7f3a, s_2c19, s_9a04" readonly="{{ true }}" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" />
+                </div>
+                <div>
+                  <label for="cc-range" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Range</label>
+                  <input id="cc-range" type="text" value="2026-07-01 to 2026-08-09" readonly="{{ true }}" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" />
+                </div>
+              </div>
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 10px 16px; cursor: pointer;">Generate signed bundle</button>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">SIEM, SSO, and regions</p>
+              <div style="display: grid; gap: 0;">
+                <sc-for list="{{ compRows }}" as="c" hint-placeholder-count="5">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0; border-top: 1px solid #EDE9DF;">
+                    <div style="min-width: 0;">
+                      <p style="font-size: 13px; color: #16130F; margin: 0 0 3px;">{{ c.name }}</p>
+                      <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">{{ c.detail }}</p>
+                    </div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ c.color }}; background: {{ c.bg }}; border: 1px solid {{ c.border }}; border-radius: 100px; padding: 3px 10px; white-space: nowrap;">{{ c.status }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start;">
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 20px;">Profile</p>
+            <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+              <div>
+                <label for="st-name" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Name</label>
+                <input id="st-name" type="text" value="Ravi Krishnan" readonly="{{ true }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" />
+              </div>
+              <div>
+                <label for="st-email" style="display: block; font-size: 12px; font-weight: 500; color: #39404C; margin-bottom: 6px;">Email</label>
+                <input id="st-email" type="text" value="rk@acme.eng" readonly="{{ true }}" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none;" />
+              </div>
+            </div>
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 14px;">Notifications</p>
+            <div style="display: grid; gap: 0;">
+              <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 0; border-top: 1px solid #EDE9DF;">
+                  <span style="font-size: 13px; line-height: 1.5; color: #39404C;">{{ n.label }}</span>
+                  <button type="button" onClick="{{ n.onClick }}" aria-label="toggle notification" style="width: 40px; height: 22px; border-radius: 100px; border: 1px solid {{ n.border }}; background: {{ n.bg }}; position: relative; cursor: pointer; flex: 0 0 auto; padding: 0;">
+                    <span style="position: absolute; top: 2px; left: {{ n.left }}; width: 16px; height: 16px; border-radius: 100px; background: #FBFAF7; display: block;"></span>
+                  </button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: grid; gap: 18px;">
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 6px;">Support</p>
+              <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">search the docs first; most answers are gate-tested there</p>
+              <input type="text" value="{{ supportQ }}" onChange="{{ onSupportQ }}" placeholder="Search the docs" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 13px; outline: none; margin-bottom: 14px;" style-focus="border-color: #7A2530;" />
+              <sc-if value="{{ hasSupportResults }}" hint-placeholder-val="{{ false }}">
+                <div style="display: grid; gap: 6px; margin-bottom: 16px;">
+                  <sc-for list="{{ supportResults }}" as="r" hint-placeholder-count="3">
+                    <a href="Docs.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #16130F; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; text-decoration: none;">
+                      <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ r }}
+                    </a>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="border-top: 1px solid #EDE9DF; padding-top: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px; background: #EFEBE1; border-radius: 3px; padding: 10px 12px; margin-bottom: 14px;">
+                  <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C; margin: 0;">Team plan · first response within 8 business hours</p>
+                </div>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 16px; cursor: pointer;">Open a ticket</button>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E4CFCC; border-radius: 5px; padding: 24px;">
+              <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+                <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0;">danger zone</p>
+              </div>
+              <p style="font-family: Newsreader, Georgia, serif; font-size: 20px; margin: 0 0 10px;">Delete the acme-eng organization</p>
+              <p style="font-size: 13px; line-height: 1.65; color: #39404C; margin: 0 0 16px;">All 17 sessions are killed, all 412 checkpoints are destroyed, and the audit log is exported to you once and then erased. Checkpoints under legal hold block this action entirely.</p>
+              <label for="dz-confirm" style="display: block; font-size: 12px; color: #39404C; margin-bottom: 6px;">Type <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">acme-eng</span> to confirm</label>
+              <input id="dz-confirm" type="text" value="{{ dz }}" onChange="{{ onDz }}" placeholder="acme-eng" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none; margin-bottom: 14px;" style-focus="border-color: #7A2530;" />
+              <button type="button" disabled="{{ dzDisabled }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: {{ dzColor }}; background: {{ dzBg }}; border: 1px solid {{ dzBg }}; border-radius: 3px; padding: 10px 16px; cursor: {{ dzCursor }};">Delete organization</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+class Component extends DCLogic {
+  state = {
+    page: 'sessions', filter: 'all', sort: { key: 'spend', dir: 'desc' }, selected: [],
+    managed: true, topup: true, range: 14, keyCopied: false, dz: '', supportQ: '',
+    notifs: [true, true, false, true], narrow: false
+  };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ narrow: window.innerWidth < 900 });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  pill(status) {
+    return {
+      running: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530' },
+      parked: { color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4', dot: '#A69E8E' },
+      checkpointing: { color: '#39404C', bg: '#FFFFFF', border: '#39404C', dot: '#39404C' },
+      resuming: { color: '#7A2530', bg: '#FFFFFF', border: '#E4CFCC', dot: '#D9B8B8' },
+      aborted: { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2', dot: '#C9C2B2' },
+      failed: { color: '#FBFAF7', bg: '#16130F', border: '#16130F', dot: '#D9B8B8' }
+    }[status];
+  }
+
+  meta() {
+    return {
+      sessions: { title: 'Sessions', sub: 'Everything running, parked, or finished in acme-eng. Sort any column; select rows to park or wake in bulk.', action: 'Run session' },
+      fleet: { title: 'Fleet', sub: 'Parked agents are documents: they cost storage and nothing else until something opens them.', action: 'Wake all' },
+      gateway: { title: 'Gateway', sub: 'Where provider credentials live and where every model call is metered and enforced.', action: '' },
+      usage: { title: 'Usage', sub: 'What the meters actually recorded. Every series here is measured; dollar conversions are marked where they appear.', action: 'Export' },
+      billing: { title: 'Billing and credits', sub: 'Balance, budgets, and invoices. Projections are estimates and say so.', action: 'Add credits' },
+      team: { title: 'Team and audit', sub: 'Who can do what, and a record of what they did.', action: '' },
+      keys: { title: 'API keys', sub: 'Account-level keys for the API and CI. Session credentials are minted by the gateway and never appear here.', action: 'Create key' },
+      compliance: { title: 'Compliance center', sub: 'Retention, exports, and the controls your auditors ask about.', action: '' },
+      settings: { title: 'Settings and support', sub: 'Your profile, what we email you about, and the way out.', action: '' }
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const m = this.meta()[s.page];
+
+    const navItems = [
+      ['Sessions', 'sessions'], ['Fleet', 'fleet'], ['Gateway', 'gateway'], ['Usage', 'usage'],
+      ['Billing', 'billing'], ['Team & Audit', 'team'], ['API Keys', 'keys'],
+      ['Compliance', 'compliance'], ['Settings', 'settings']
+    ];
+
+    const all = [
+      { id: 's_7f3a', image: 'claude-code', status: 'running', age: '04:58:12', ckpt: 41, spend: 128.4, cap: 200, last: 'checkpoint c_0041' },
+      { id: 's_08fa', image: 'claude-code', status: 'resuming', age: '00:00:47', ckpt: 33, spend: 174.6, cap: 200, last: 'restored in 87s' },
+      { id: 's_9a04', image: 'codex', status: 'checkpointing', age: '00:41:02', ckpt: 7, spend: 88.1, cap: 100, last: 'writing c_0008' },
+      { id: 's_2c19', image: 'aider', status: 'parked', age: '2d 04h', ckpt: 18, spend: 42.9, cap: 100, last: 'budget reached' },
+      { id: 's_44be', image: 'goose', status: 'aborted', age: '01:12:55', ckpt: 12, spend: 19.3, cap: 150, last: 'host lost' },
+      { id: 's_61d7', image: 'kimi', status: 'failed', age: '00:08:31', ckpt: 2, spend: 3.4, cap: 50, last: 'tool error, exit 1' },
+      { id: 's_3d80', image: 'claude-code', status: 'parked', age: '9d 02h', ckpt: 61, spend: 210.0, cap: 250, last: 'parked by rk' }
+    ];
+
+    const filtered = s.filter === 'all' ? all : all.filter((r) => r.status === s.filter);
+    const dir = s.sort.dir === 'asc' ? 1 : -1;
+    const sorted = filtered.slice().sort((a, b) => {
+      const k = s.sort.key, x = a[k], y = b[k];
+      if (typeof x === 'number') return (x - y) * dir;
+      return String(x).localeCompare(String(y)) * dir;
+    });
+
+    const colDefs = [
+      { key: 'id', label: 'session', align: 'left' },
+      { key: 'image', label: 'image', align: 'left' },
+      { key: 'status', label: 'status', align: 'left' },
+      { key: 'age', label: 'uptime / parked', align: 'right' },
+      { key: 'ckpt', label: 'ckpts', align: 'right' },
+      { key: 'spend', label: 'spend / budget', align: 'right' },
+      { key: 'last', label: 'last event', align: 'left' }
+    ];
+
+    const stackVals = [
+      [38, 22, 8], [44, 26, 8], [40, 20, 9], [52, 30, 9], [48, 27, 10], [61, 34, 10], [58, 30, 11],
+      [66, 38, 11], [62, 33, 12], [71, 40, 12], [68, 36, 13], [77, 42, 13], [82, 45, 14], [79, 41, 14]
+    ];
+    const nrpVals = [24, 30, 27, 41, 38, 50, 47, 58, 55, 66, 63, 74, 82, 78];
+
+    const roleStyle = {
+      Owner: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+      Admin: { color: '#39404C', bg: '#FFFFFF', border: '#39404C' },
+      Developer: { color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4' },
+      Viewer: { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2' },
+      Billing: { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2' }
+    };
+
+    const docs = ['Quickstart: your first plug-pull', 'What happens at a budget cap', 'ks fork reference', 'Troubleshooting: resume is slow', 'Limits and quotas'];
+    const q = s.supportQ.trim().toLowerCase();
+    const supportResults = q ? docs.filter((d) => d.toLowerCase().includes(q)) : [];
+
+    return {
+      navDisplay: s.narrow ? 'none' : 'flex',
+      nav: navItems.map(([label, page]) => ({
+        label: label,
+        color: s.page === page ? '#16130F' : '#39404C',
+        bg: s.page === page ? '#EFEBE1' : 'transparent',
+        weight: s.page === page ? '600' : '400',
+        dot: s.page === page ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ page: page })
+      })),
+      title: m.title, subtitle: m.sub, action: m.action, hasAction: !!m.action,
+
+      isSessions: s.page === 'sessions', isFleet: s.page === 'fleet', isGateway: s.page === 'gateway',
+      isUsage: s.page === 'usage', isBilling: s.page === 'billing', isTeam: s.page === 'team',
+      isKeys: s.page === 'keys', isCompliance: s.page === 'compliance', isSettings: s.page === 'settings',
+
+      filters: ['all', 'running', 'parked', 'checkpointing', 'aborted', 'failed'].map((f) => ({
+        label: f,
+        bg: s.filter === f ? '#16130F' : '#FFFFFF',
+        color: s.filter === f ? '#FBFAF7' : '#39404C',
+        border: s.filter === f ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ filter: f })
+      })),
+      cols: colDefs.map((c) => ({
+        label: c.label, align: c.align,
+        color: s.sort.key === c.key ? '#16130F' : '#7A6F60',
+        caret: s.sort.key === c.key ? (s.sort.dir === 'asc' ? ' ↑' : ' ↓') : '',
+        onClick: () => this.setState((st) => ({ sort: { key: c.key, dir: st.sort.key === c.key && st.sort.dir === 'desc' ? 'asc' : 'desc' } }))
+      })),
+      rows: sorted.map((r) => {
+        const p = this.pill(r.status);
+        const pct = Math.min(100, (r.spend / r.cap) * 100);
+        const sel = s.selected.indexOf(r.id) !== -1;
+        return {
+          id: r.id, image: r.image, status: r.status, age: r.age, ckpt: r.ckpt, last: r.last,
+          spend: '$' + r.spend.toFixed(2), pct: pct.toFixed(1) + '%',
+          barColor: pct >= 80 ? '#7A2530' : '#39404C',
+          pillColor: p.color, pillBg: p.bg, pillBorder: p.border, pillDot: p.dot,
+          rowBg: sel ? '#FDF9F8' : 'transparent',
+          boxBg: sel ? '#7A2530' : '#FFFFFF',
+          boxBorder: sel ? '#7A2530' : '#C9C2B2',
+          onSelect: () => this.setState((st) => ({
+            selected: st.selected.indexOf(r.id) === -1 ? st.selected.concat([r.id]) : st.selected.filter((x) => x !== r.id)
+          }))
+        };
+      }),
+      hasSelection: s.selected.length > 0,
+      selCount: s.selected.length,
+      pageLabel: sorted.length + ' of 1,284 sessions',
+
+      parked: [
+        { id: 's_2c19', name: 'aider · schema-backfill', age: '2d 04h', size: '1.4 GB', reason: 'budget reached', warm: true },
+        { id: 's_3d80', name: 'claude-code · api-v3-rewrite', age: '9d 02h', size: '2.1 GB', reason: 'parked by rk', warm: false },
+        { id: 's_51ac', name: 'codex · flaky-test-hunt', age: '14d 08h', size: '0.9 GB', reason: 'idle timeout', warm: false },
+        { id: 's_77e2', name: 'goose · docs-sweep', age: '21d 03h', size: '1.1 GB', reason: 'parked by priya', warm: false },
+        { id: 's_19bb', name: 'claude-code · billing-migration', age: '33d 11h', size: '3.4 GB', reason: 'budget reached', warm: true },
+        { id: 's_04c7', name: 'aider · dependency-bump', age: '41d 06h', size: '0.6 GB', reason: 'idle timeout', warm: false }
+      ].map((p) => Object.assign({}, p, { reasonColor: p.warm ? '#7A2530' : '#39404C' })),
+
+      wakeRules: [
+        { name: 'Nightly regression sweep', trigger: 'cron 0 2 * * *', state: 'active', dot: '#7A2530', stateColor: '#7A2530' },
+        { name: 'Wake on PR opened', trigger: 'webhook · github.pull_request', state: 'active', dot: '#7A2530', stateColor: '#7A2530' },
+        { name: 'Wake on incident page', trigger: 'webhook · pagerduty', state: 'paused', dot: '#C9C2B2', stateColor: '#7A6F60' }
+      ],
+
+      keys: [
+        { provider: 'Anthropic', masked: 'sk-ant-···· 9f2c', added: '2026-05-11', used: '2 min ago' },
+        { provider: 'OpenAI', masked: 'sk-···· 4a71', added: '2026-05-11', used: '41 min ago' },
+        { provider: 'Google', masked: 'AIza···· c08d', added: '2026-07-02', used: 'never' }
+      ],
+      vkeys: [
+        { session: 's_7f3a', key: 'vk_···· a41c', exp: 'on session end' },
+        { session: 's_08fa', key: 'vk_···· 77b0', exp: 'on session end' },
+        { session: 's_9a04', key: 'vk_···· 2e59', exp: 'on session end' },
+        { session: 's_3d80', key: 'vk_···· 0d13', exp: 'expired at park' }
+      ],
+      managedBg: s.managed ? '#7A2530' : '#EFEBE1',
+      managedBorder: s.managed ? '#7A2530' : '#D8D2C4',
+      managedLeft: s.managed ? '21px' : '2px',
+      toggleManaged: () => this.setState({ managed: !s.managed }),
+
+      ranges: [7, 14, 30].map((r) => ({
+        label: 'last ' + r + ' d',
+        bg: s.range === r ? '#16130F' : '#FFFFFF',
+        color: s.range === r ? '#FBFAF7' : '#39404C',
+        border: s.range === r ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ range: r })
+      })),
+      rangeLabel: 'last ' + s.range + ' days',
+      stacks: stackVals.map((v, i) => ({
+        a: (v[0] / 2) + '%', b: (v[1] / 2) + '%', c: (v[2] / 2) + '%',
+        title: 'day ' + (i + 1) + ' · $' + (v[0] + v[1] + v[2])
+      })),
+      nrp: nrpVals.map((v, i) => ({ h: v + '%', title: 'day ' + (i + 1) })),
+      byImage: [
+        { name: 'claude-code', pct: '68%', value: '$1,842', color: '#7A2530' },
+        { name: 'codex', pct: '41%', value: '$1,104', color: '#39404C' },
+        { name: 'aider', pct: '22%', value: '$596', color: '#39404C' },
+        { name: 'goose', pct: '14%', value: '$381', color: '#39404C' },
+        { name: 'kimi', pct: '5%', value: '$142', color: '#39404C' }
+      ],
+
+      topupBg: s.topup ? '#7A2530' : '#EFEBE1',
+      topupBorder: s.topup ? '#7A2530' : '#D8D2C4',
+      topupLeft: s.topup ? '21px' : '2px',
+      toggleTopup: () => this.setState({ topup: !s.topup }),
+      budgets: [
+        { scope: 'Organization', spend: '$418.00', cap: '$500', pct: '83.6%', color: '#7A2530', alert: '80%', dot: '#7A2530' },
+        { scope: 'Default per session', spend: '$128.40', cap: '$200', pct: '64.2%', color: '#39404C', alert: '75%', dot: '#A69E8E' },
+        { scope: 'rk@acme.eng', spend: '$212.10', cap: '$300', pct: '70.7%', color: '#39404C', alert: '90%', dot: '#A69E8E' },
+        { scope: 'CI service account', spend: '$61.40', cap: '$150', pct: '40.9%', color: '#39404C', alert: '80%', dot: '#A69E8E' }
+      ],
+      invoices: [
+        { id: 'INV-2026-07', period: 'Jul 1 to Jul 31', amount: '$3,410.22', status: 'paid', color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4' },
+        { id: 'INV-2026-06', period: 'Jun 1 to Jun 30', amount: '$2,988.04', status: 'paid', color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4' },
+        { id: 'INV-2026-05', period: 'May 1 to May 31', amount: '$1,744.90', status: 'paid', color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4' },
+        { id: 'INV-2026-08', period: 'Aug 1 to Aug 9', amount: '$1,102.60', status: 'open', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' }
+      ],
+
+      members: [
+        { name: 'Ravi Krishnan', email: 'rk@acme.eng', initials: 'RK', role: 'Owner', sessions: 41, spend: '$212.10', active: '2 min ago' },
+        { name: 'Priya Nair', email: 'priya@acme.eng', initials: 'PN', role: 'Admin', sessions: 28, spend: '$104.80', active: '18 min ago' },
+        { name: 'Tom Alderman', email: 'tom@acme.eng', initials: 'TA', role: 'Developer', sessions: 63, spend: '$88.20', active: '1 h ago' },
+        { name: 'Sofia Reyes', email: 'sofia@acme.eng', initials: 'SR', role: 'Developer', sessions: 19, spend: '$41.60', active: 'yesterday' },
+        { name: 'CI service account', email: 'ci@acme.eng', initials: 'CI', role: 'Developer', sessions: 208, spend: '$61.40', active: '4 min ago' },
+        { name: 'Dana Okafor', email: 'dana@acme.eng', initials: 'DO', role: 'Billing', sessions: 0, spend: '$0.00', active: '3 d ago' }
+      ].map((mm) => {
+        const r = roleStyle[mm.role];
+        return Object.assign({}, mm, { roleColor: r.color, roleBg: r.bg, roleBorder: r.border });
+      }),
+      audit: [
+        { actor: 'rk@acme.eng', action: 'session.kill', target: 's_61d7', ts: '2026-08-09 11:04:22Z', ip: '81.2.44.10', actionColor: '#7A2530' },
+        { actor: 'priya@acme.eng', action: 'budget.raise', target: 'org · $400 to $500', ts: '2026-08-09 10:51:07Z', ip: '81.2.44.19', actionColor: '#7A2530' },
+        { actor: 'ci@acme.eng', action: 'session.run', target: 's_9a04', ts: '2026-08-09 10:22:19Z', ip: '10.4.0.7', actionColor: '#39404C' },
+        { actor: 'rk@acme.eng', action: 'session.fork', target: 's_7f3a@40 · 3 forks', ts: '2026-08-09 10:22:19Z', ip: '81.2.44.10', actionColor: '#39404C' },
+        { actor: 'priya@acme.eng', action: 'key.rotate', target: 'anthropic', ts: '2026-08-08 16:40:55Z', ip: '81.2.44.19', actionColor: '#7A2530' },
+        { actor: 'tom@acme.eng', action: 'member.invite', target: 'sofia@acme.eng', ts: '2026-08-08 09:12:41Z', ip: '81.2.44.31', actionColor: '#39404C' },
+        { actor: 'system', action: 'session.abort', target: 's_44be · host lost', ts: '2026-08-08 04:18:02Z', ip: 'internal', actionColor: '#7A6F60' }
+      ],
+
+      apiKeys: [
+        { name: 'CI pipeline', key: 'ksk_live_···· 8f21', scopes: 'sessions:write, ledger:read', used: '4 min ago', keyColor: '#16130F', usedColor: '#39404C' },
+        { name: 'Local dev', key: 'ksk_test_···· 3b09', scopes: 'sessions:write', used: '2 d ago', keyColor: '#16130F', usedColor: '#39404C' },
+        { name: 'Grafana exporter', key: 'ksk_live_···· c740', scopes: 'usage:read', used: '11 min ago', keyColor: '#16130F', usedColor: '#39404C' },
+        { name: 'Old laptop', key: 'ksk_live_···· 5d18', scopes: 'sessions:write', used: 'never', keyColor: '#7A6F60', usedColor: '#A69E8E' }
+      ],
+      keyCopyLabel: s.keyCopied ? 'copied' : 'copy',
+      copyKey: () => {
+        if (navigator.clipboard) navigator.clipboard.writeText('ksk_live_7f3a2c19bd44e061a8f5').catch(() => {});
+        this.setState({ keyCopied: true });
+        setTimeout(() => this.setState({ keyCopied: false }), 1400);
+      },
+
+      retention: [
+        { scope: 'Checkpoints, default', value: '90 days', color: '#39404C', bg: '#FFFFFF', border: '#D8D2C4' },
+        { scope: 'Event ledgers', value: '7 years', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { scope: 'Replay proofs', value: '7 years', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { scope: 'Legal hold LH-19', value: 'indefinite', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' }
+      ],
+      compRows: [
+        { name: 'SIEM webhook', detail: 'splunk · https://acme.splunkcloud···', status: 'active', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { name: 'SSO', detail: 'okta saml · 6 members mapped', status: 'active', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { name: 'SCIM provisioning', detail: 'okta · nightly sync', status: 'active', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { name: 'Region pinning', detail: 'eu-central-1 · enforced at scheduler', status: 'active', color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+        { name: 'Sovereign deploy', detail: 'on-premises · not yet available', status: 'planned', color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2' }
+      ],
+
+      notifs: [
+        'Budget reaches its alert threshold',
+        'A session is aborted by infrastructure',
+        'A checkpoint fails to write',
+        'Weekly usage summary'
+      ].map((label, i) => ({
+        label: label,
+        bg: s.notifs[i] ? '#7A2530' : '#EFEBE1',
+        border: s.notifs[i] ? '#7A2530' : '#D8D2C4',
+        left: s.notifs[i] ? '19px' : '2px',
+        onClick: () => this.setState((st) => {
+          const n = st.notifs.slice();
+          n[i] = !n[i];
+          return { notifs: n };
+        })
+      })),
+      supportQ: s.supportQ,
+      onSupportQ: (e) => this.setState({ supportQ: e.target.value }),
+      hasSupportResults: supportResults.length > 0,
+      supportResults: supportResults,
+      dz: s.dz,
+      onDz: (e) => this.setState({ dz: e.target.value }),
+      dzDisabled: s.dz !== 'acme-eng',
+      dzBg: s.dz === 'acme-eng' ? '#7A2530' : '#E2DDD1',
+      dzColor: s.dz === 'acme-eng' ? '#FBFAF7' : '#A69E8E',
+      dzCursor: s.dz === 'acme-eng' ? 'pointer' : 'not-allowed'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 26px; flex-wrap: wrap;">
+        <a href="KeepState.dc.html" style="font-size: 14px; color: #39404C;">Product</a>
+        <a href="Pricing.dc.html" style="font-size: 14px; color: #39404C;">Pricing</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Enterprise.dc.html" style="font-size: 14px; color: #16130F; font-weight: 500;">Enterprise</a>
+        <a href="#pack" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Security review pack</a>
+      </div>
+    </nav>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 72px 28px 48px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Enterprise</span>
+    </div>
+    <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(40px, 5.6vw, 64px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 15em;">Two buyers, one purchase.</h1>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0; max-width: 44em; text-wrap: pretty;">Durability is an engineering purchase and an audit purchase at the same time. Both columns below describe the same system, so nobody has to translate for the other.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px;">
+      <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 30px 28px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 16px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">Platform</span>
+        </div>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.3; margin: 0 0 20px;">Your engineers get durability and 40 to 60 percent lower token delivery cost.</p>
+        <div style="display: grid; gap: 14px;">
+          <sc-for list="{{ platform }}" as="p" hint-placeholder-count="5">
+            <div style="display: flex; gap: 11px; align-items: flex-start;">
+              <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+              <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ p }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </article>
+
+      <article style="background: #39404C; border: 1px solid #39404C; border-radius: 5px; padding: 30px 28px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 16px;">
+          <span style="width: 7px; height: 7px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #D9B8B8;">Compliance</span>
+        </div>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.3; color: #FBFAF7; margin: 0 0 20px;">Your auditors get deterministic replay, sequence lineage, and retention measured in years.</p>
+        <div style="display: grid; gap: 14px;">
+          <sc-for list="{{ compliance }}" as="c" hint-placeholder-count="5">
+            <div style="display: flex; gap: 11px; align-items: flex-start;">
+              <span style="width: 5px; height: 5px; background: #D9B8B8; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+              <p style="font-size: 14px; line-height: 1.6; color: #E6E3DC; margin: 0;">{{ c }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 72px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 28px;">Service levels, written down.</h2>
+    <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px;">
+          <thead>
+            <tr style="background: #FBFAF7;">
+              <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 12px 18px; border-bottom: 1px solid #D8D2C4;">surface</th>
+              <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 12px 18px; border-bottom: 1px solid #D8D2C4;">availability</th>
+              <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 12px 18px; border-bottom: 1px solid #D8D2C4;">credit at breach</th>
+              <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 12px 18px; border-bottom: 1px solid #D8D2C4;">measured by</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ sla }}" as="r" hint-placeholder-count="4">
+              <tr style="border-bottom: 1px solid #EDE9DF;" style-hover="background: #FBFAF7;">
+                <td style="padding: 14px 18px; font-size: 14px; color: #16130F;">{{ r.surface }}</td>
+                <td style="padding: 14px 18px; font-family: 'JetBrains Mono', monospace; color: #7A2530; text-align: right; font-variant-numeric: tabular-nums;">{{ r.uptime }}</td>
+                <td style="padding: 14px 18px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ r.credit }}</td>
+                <td style="padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60;">{{ r.by }}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size: 13px; color: #7A6F60; margin: 14px 2px 0;">Checkpoint durability is a data claim, not an uptime claim, and it is gated separately on the <a href="Proof.dc.html">Proof</a> page.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 72px 28px 0;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; align-items: start;">
+      <div>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">Where your sessions can live.</h2>
+        <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 26px; max-width: 34em;">Region pinning is enforced at the scheduler, so a checkpoint cannot be written outside the region you pinned. Planned regions are labeled planned until a gate says otherwise.</p>
+        <div style="display: grid; gap: 0; border-top: 1px solid #D8D2C4;">
+          <sc-for list="{{ regions }}" as="r" hint-placeholder-count="7">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 2px; border-bottom: 1px solid #EDE9DF;">
+              <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                <span style="width: 6px; height: 6px; background: {{ r.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F;">{{ r.code }}</span>
+                <span style="font-size: 13px; color: #7A6F60;">{{ r.city }}</span>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: {{ r.color }}; background: {{ r.bg }}; border: 1px solid {{ r.border }}; border-radius: 100px; padding: 3px 10px; white-space: nowrap;">{{ r.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div id="pack" style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 28px 26px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 14px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">Security review pack</span>
+        </div>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.25; margin: 0 0 14px;">Everything procurement asks for, in one download.</p>
+        <p style="font-size: 14px; line-height: 1.65; color: #39404C; margin: 0 0 20px;">No form, no call first. Read it, then decide whether to talk to us.</p>
+        <div style="display: grid; gap: 10px; margin-bottom: 22px;">
+          <sc-for list="{{ pack }}" as="p" hint-placeholder-count="5">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px;">
+              <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                <span style="font-size: 13px; color: #16130F;">{{ p.name }}</span>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; white-space: nowrap;">{{ p.meta }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <a href="#pack" style="display: block; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 13px 18px; text-align: center; text-decoration: none;">Download the pack</a>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 14px 0 0; text-align: center;">SOC 2 Type II: in progress, audit window closes Q4 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 72px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">The real key never enters a guest, an image, or a snapshot.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 30px; max-width: 44em;">Your provider keys live in a vault outside the isolation boundary. The gateway mints a virtual key scoped to one session, and that is the only credential a VM ever sees. A checkpoint of that VM therefore contains no secret worth stealing.</p>
+    <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 30px 26px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px; align-items: stretch;">
+        <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 4px; padding: 20px; text-align: center;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530; margin: 0 0 8px;">BYOK vault</p>
+          <p style="font-size: 12px; line-height: 1.55; color: #39404C; margin: 0;">your real provider key, encrypted, outside the boundary</p>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 20px; text-align: center;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F; margin: 0 0 8px;">gateway</p>
+          <p style="font-size: 12px; line-height: 1.55; color: #39404C; margin: 0;">mints a virtual key scoped to one session, meters, enforces exactly-once</p>
+        </div>
+        <div style="background: #16130F; border-radius: 4px; padding: 20px; text-align: center;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D9B8B8; margin: 0 0 8px;">micro-VM</p>
+          <p style="font-size: 12px; line-height: 1.55; color: #C9C4BA; margin: 0;">the agent, its filesystem, its tools. Sees the virtual key only</p>
+        </div>
+        <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 4px; padding: 20px; text-align: center;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39404C; margin: 0 0 8px;">checkpoint store</p>
+          <p style="font-size: 12px; line-height: 1.55; color: #39404C; margin: 0;">encrypted at rest, region-pinned, no live credential inside</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: #16130F; margin-top: 76px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 76px 28px;">
+      <div style="max-width: 44em;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 22px;">Our own build is governed by the same audit discipline we sell.</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #C9C4BA; margin: 0 0 30px;">Gates before evidence, evidence before claims, <span style="color: #D9B8B8;">no claim without a tag</span>. The constitution that produces the ledger you are buying is public.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#pack" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Talk to us</a>
+          <a href="Proof.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Read the constitution</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 30px 0 0;">keepstate.ai · the durable agent session cloud</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  renderVals() {
+    const statusStyle = {
+      available: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', dot: '#7A2530' },
+      planned: { color: '#7A6F60', bg: '#FFFFFF', border: '#C9C2B2', dot: '#C9C2B2' },
+      sovereign: { color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4', dot: '#39404C' }
+    };
+    const regions = [
+      { code: 'us-east-1', city: 'Virginia', status: 'available' },
+      { code: 'us-west-2', city: 'Oregon', status: 'available' },
+      { code: 'eu-west-1', city: 'Dublin', status: 'available' },
+      { code: 'eu-central-1', city: 'Frankfurt', status: 'sovereign' },
+      { code: 'ap-northeast-1', city: 'Tokyo', status: 'available' },
+      { code: 'ap-south-1', city: 'Mumbai', status: 'planned' },
+      { code: 'on-premises', city: 'your data center, enterprise only', status: 'planned' }
+    ];
+
+    return {
+      platform: [
+        'Any harness, any model. Your agent code does not change; the image does.',
+        'Warm resume under 100 ms, cold under 90 s, on any provider.',
+        'Cache-aware routing and stored-response replay, so an interrupted call is never bought twice.',
+        'Org and per-session budgets with checkpoint-on-exceed. A cap parks work, it never kills it.',
+        'Fleet view of parked agents, waking on schedule or on webhook.'
+      ],
+      compliance: [
+        'Deterministic replay re-executes a run from checkpointed state, byte for byte.',
+        'Sequence lineage on every event: what was called, in what order, with which checkpoint as parent.',
+        'Retention policy editor measured in years, with legal hold that removes the delete path entirely.',
+        'Audit bundle export as a signed archive, scoped to the sessions and range you name.',
+        'SIEM webhook, SSO and SCIM, region pinning enforced at the scheduler.'
+      ],
+      sla: [
+        { surface: 'API and control plane', uptime: '99.95%', credit: '10 to 30%', by: 'external probe, 1 min' },
+        { surface: 'Gateway', uptime: '99.95%', credit: '10 to 30%', by: 'external probe, 1 min' },
+        { surface: 'Checkpoint store, read', uptime: '99.99%', credit: '25 to 50%', by: 'external probe, 1 min' },
+        { surface: 'Console', uptime: '99.9%', credit: 'none', by: 'external probe, 5 min' }
+      ],
+      regions: regions.map((r) => {
+        const s = statusStyle[r.status];
+        return {
+          code: r.code, city: r.city,
+          status: r.status === 'sovereign' ? 'sovereign, available' : r.status,
+          color: s.color, bg: s.bg, border: s.border, dot: s.dot
+        };
+      }),
+      pack: [
+        { name: 'Data processing agreement', meta: 'PDF · v4.1' },
+        { name: 'Subprocessor list', meta: 'PDF · updated monthly' },
+        { name: 'Architecture overview', meta: 'PDF · 14 pages' },
+        { name: 'Penetration test summary', meta: 'PDF · 2026-05' },
+        { name: 'Claims file export', meta: 'CSV · live' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

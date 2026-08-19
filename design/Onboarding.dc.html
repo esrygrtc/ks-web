@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 3px; background: #D8D2C4; border-radius: 2px; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: #7A2530; transform: rotate(45deg); cursor: pointer; border: none; }
+  input[type="range"]::-moz-range-thumb { width: 13px; height: 13px; background: #7A2530; border: none; cursor: pointer; }
+  @keyframes ksPulse { 0% { transform: rotate(45deg) scale(0.5); opacity: 0; } 100% { transform: rotate(45deg) scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="border-bottom: 1px solid #D8D2C4;">
+    <div style="max-width: 1080px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 500;">KeepState</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 7px; height: 7px; background: {{ d.fill }}; border: 1px solid {{ d.stroke }}; transform: rotate(45deg); display: block;"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: {{ d.color }};">{{ d.label }}</span>
+          </div>
+        </sc-for>
+        <a href="Console Overview.dc.html" style="font-size: 13px; color: #7A6F60;">Skip for now</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex: 1; max-width: 1080px; width: 100%; margin: 0 auto; padding: 56px 28px 80px;">
+
+    <sc-if value="{{ isOne }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 16px;">Step 1 of 3</p>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.6vw, 50px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 16px;">Where should your agent live?</h1>
+        <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 36px; max-width: 44em;">You can move it onto our infrastructure and get durability, or leave it exactly where it is and take the ledger only. The second is a real answer, not a downgrade path.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; margin-bottom: 34px;">
+          <sc-for list="{{ homes }}" as="h" hint-placeholder-count="2">
+            <button type="button" onClick="{{ h.onClick }}" style="text-align: left; background: {{ h.bg }}; border: 1px solid {{ h.border }}; border-radius: 5px; padding: 26px 24px; cursor: pointer; display: flex; flex-direction: column; gap: 14px; font-family: Inter, sans-serif;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="width: 8px; height: 8px; background: {{ h.dot }}; transform: rotate(45deg); display: block;"></span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: {{ h.eyebrow }};">{{ h.tag }}</span>
+                </div>
+                <span style="width: 15px; height: 15px; border: 1px solid {{ h.radio }}; border-radius: 100px; display: flex; align-items: center; justify-content: center;"><span style="width: 7px; height: 7px; background: {{ h.radioFill }}; transform: rotate(45deg); display: block;"></span></span>
+              </div>
+              <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.2; margin: 0; color: #16130F;">{{ h.title }}</p>
+              <p style="font-size: 14px; line-height: 1.65; color: #39404C; margin: 0;">{{ h.body }}</p>
+              <div style="display: grid; gap: 7px; margin-top: 2px;">
+                <sc-for list="{{ h.rows }}" as="r" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 9px; align-items: flex-start;">
+                    <span style="width: 4px; height: 4px; background: {{ h.dot }}; transform: rotate(45deg); display: block; margin-top: 6px; flex: 0 0 auto;"></span>
+                    <span style="font-size: 13px; line-height: 1.55; color: #39404C;">{{ r }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+
+        <button type="button" onClick="{{ next }}" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 13px 24px; cursor: pointer;">Continue</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTwo }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 16px;">Step 2 of 3</p>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.6vw, 50px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 16px;">What is it running, and on whose keys?</h1>
+        <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 36px; max-width: 44em;">All of this is changeable later from the console. The budget especially: set it low today and raise it when you trust the meter.</p>
+
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 14px;">Image</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 172px), 1fr)); gap: 12px; margin-bottom: 36px;">
+          <sc-for list="{{ images }}" as="im" hint-placeholder-count="6">
+            <button type="button" onClick="{{ im.onClick }}" style="text-align: left; background: {{ im.bg }}; border: 1px solid {{ im.border }}; border-radius: 4px; padding: 16px 16px 18px; cursor: pointer; font-family: Inter, sans-serif;">
+              <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 9px;">
+                <span style="width: 6px; height: 6px; background: {{ im.dot }}; transform: rotate(45deg); display: block;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F;">{{ im.name }}</span>
+              </div>
+              <p style="font-size: 12px; line-height: 1.5; color: #7A6F60; margin: 0;">{{ im.note }}</p>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px;">
+          <div>
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 14px;">Provider keys</p>
+            <div style="display: grid; gap: 12px;">
+              <sc-for list="{{ keyOptions }}" as="k" hint-placeholder-count="2">
+                <button type="button" onClick="{{ k.onClick }}" style="text-align: left; background: {{ k.bg }}; border: 1px solid {{ k.border }}; border-radius: 4px; padding: 18px; cursor: pointer; font-family: Inter, sans-serif; display: flex; gap: 13px; align-items: flex-start;">
+                  <span style="width: 15px; height: 15px; border: 1px solid {{ k.radio }}; border-radius: 100px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-top: 2px;"><span style="width: 7px; height: 7px; background: {{ k.radioFill }}; transform: rotate(45deg); display: block;"></span></span>
+                  <span style="min-width: 0;">
+                    <span style="display: block; font-size: 15px; font-weight: 500; color: #16130F; margin-bottom: 5px;">{{ k.title }}</span>
+                    <span style="display: block; font-size: 13px; line-height: 1.6; color: #39404C;">{{ k.body }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.6; color: #7A6F60; margin: 14px 0 0;">the real key never enters a guest, an image, or a snapshot</p>
+          </div>
+
+          <div>
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 14px;">Default budget per session</p>
+            <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 22px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 28px; color: #7A2530; font-variant-numeric: tabular-nums;">${{ budget }}</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">cap per session</span>
+              </div>
+              <input type="range" min="10" max="500" step="10" value="{{ budget }}" onChange="{{ onBudget }}" aria-label="Default budget per session" />
+              <p style="font-size: 13px; line-height: 1.6; color: #39404C; margin: 16px 0 0;">At the cap the session checkpoints and parks. Nothing is killed and nothing is lost. Raise the cap to wake it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px;">
+          <button type="button" onClick="{{ next }}" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 13px 24px; cursor: pointer;">Continue</button>
+          <button type="button" onClick="{{ back }}" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 23px; cursor: pointer;">Back</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isThree }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 16px;">Step 3 of 3</p>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.6vw, 50px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 16px;">Two lines, then pull the plug.</h1>
+        <p style="font-size: 16px; line-height: 1.7; color: #39404C; margin: 0 0 34px; max-width: 44em;">The checklist below ticks as it happens. Nothing here is a demo: it is your account, your workspace, and a real kill.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: start;">
+          <div style="display: grid; gap: 14px;">
+            <div style="background: #16130F; border-radius: 5px; padding: 18px 20px; position: relative;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378; margin: 0 0 12px;">install</p>
+              <button type="button" onClick="{{ copyInstall }}" style="position: absolute; top: 15px; right: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 9px; cursor: pointer;">{{ installLabel }}</button>
+              <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">curl -fsSL https://keepstate.ai/install | sh</code>
+            </div>
+            <div style="background: #16130F; border-radius: 5px; padding: 18px 20px; position: relative;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378; margin: 0 0 12px;">run</p>
+              <button type="button" onClick="{{ copyRun }}" style="position: absolute; top: 15px; right: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #C9C4BA; background: transparent; border: 1px solid #3A352E; border-radius: 3px; padding: 3px 9px; cursor: pointer;">{{ runLabel }}</button>
+              <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">{{ runCmd }}</code>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 2px 2px 0;">the CLI is waiting for this machine · session will attach automatically</p>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Your first plug-pull</p>
+            <p style="font-size: 12px; color: #7A6F60; margin: 0 0 20px;">ticks live as each one lands</p>
+            <div style="display: grid; gap: 0;">
+              <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+                <div style="display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid #EDE9DF;">
+                  <span style="width: 9px; height: 9px; background: {{ c.fill }}; border: 1px solid {{ c.stroke }}; transform: rotate(45deg); display: block; margin-top: 5px; flex: 0 0 auto; animation: {{ c.anim }};"></span>
+                  <div style="min-width: 0;">
+                    <p style="font-size: 14px; line-height: 1.5; color: {{ c.color }}; margin: 0 0 3px;">{{ c.label }}</p>
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">{{ c.detail }}</p>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+              <a href="Console Overview.dc.html" style="display: block; font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 13px 18px; text-align: center; text-decoration: none; margin-top: 22px;">Open the console</a>
+            </sc-if>
+            <sc-if value="{{ waiting }}" hint-placeholder-val="{{ true }}">
+              <button type="button" onClick="{{ simulate }}" style="width: 100%; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 18px; cursor: pointer; margin-top: 22px;">{{ simLabel }}</button>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px;">
+          <button type="button" onClick="{{ back }}" style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 12px 23px; cursor: pointer;">Back</button>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080}}">
+class Component extends DCLogic {
+  state = { step: 0, home: 'cloud', image: 'claude-code', keys: 'managed', budget: 50, ticks: 0, installed: false, ran: false, running: false };
+
+  componentWillUnmount() { clearInterval(this.timer); }
+
+  simulate() {
+    if (this.state.running) return;
+    this.setState({ running: true, ticks: 0 });
+    this.timer = setInterval(() => {
+      this.setState((s) => {
+        if (s.ticks >= 5) { clearInterval(this.timer); return { running: false }; }
+        return { ticks: s.ticks + 1 };
+      });
+    }, 900);
+  }
+
+  copy(text, key) {
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+    this.setState({ [key]: true });
+    setTimeout(() => this.setState({ [key]: false }), 1400);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const runCmd = 'ks run --image ' + s.image + ' --workspace . --budget ' + s.budget;
+
+    const items = [
+      { label: 'CLI installed and authenticated', detail: 'ks 0.14.2 · device code confirmed' },
+      { label: 'Session started', detail: 's_7f3a · checkpointing every 5m' },
+      { label: 'First checkpoint written', detail: 'c_0000 · 840 MB · base' },
+      { label: 'Plug pulled', detail: 'kill -9 · no graceful shutdown' },
+      { label: 'Resumed mid-sentence', detail: 'restored in 87s · nonce match · 0 bytes lost' }
+    ];
+
+    return {
+      dots: ['Home', 'Image and keys', 'First run'].map((label, i) => ({
+        label: label,
+        fill: i <= s.step ? '#7A2530' : '#FBFAF7',
+        stroke: i <= s.step ? '#7A2530' : '#C9C2B2',
+        color: i === s.step ? '#16130F' : '#7A6F60'
+      })),
+      isOne: s.step === 0, isTwo: s.step === 1, isThree: s.step === 2,
+      next: () => this.setState({ step: Math.min(2, s.step + 1) }),
+      back: () => this.setState({ step: Math.max(0, s.step - 1) }),
+
+      homes: [
+        {
+          key: 'cloud', tag: 'recommended', title: 'KeepState Cloud',
+          body: 'Your agent runs inside a snapshot-able micro-VM on our infrastructure. This is the version where the plug-pull demo works.',
+          rows: ['Atomic checkpoints of filesystem, memory, and tool state', 'Fork, resume, and replay from any freeze', 'Warm resume under 100 ms'],
+          sel: s.home === 'cloud'
+        },
+        {
+          key: 'gateway', tag: 'no migration', title: 'Gateway-only',
+          body: 'Keep your agent exactly where it is. Point its provider calls at us and take the ledger without moving anything.',
+          rows: ['Exactly-once billing and stored-response replay', 'Budgets, caps, and the audit ledger', 'Upgrade to durability whenever you like'],
+          sel: s.home === 'gateway'
+        }
+      ].map((h) => ({
+        tag: h.tag, title: h.title, body: h.body, rows: h.rows,
+        bg: h.sel ? '#F6ECEA' : '#FFFFFF',
+        border: h.sel ? '#E4CFCC' : '#D8D2C4',
+        dot: h.sel ? '#7A2530' : '#A69E8E',
+        eyebrow: h.sel ? '#7A2530' : '#7A6F60',
+        radio: h.sel ? '#7A2530' : '#C9C2B2',
+        radioFill: h.sel ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ home: h.key })
+      })),
+
+      images: [
+        { name: 'claude-code', note: 'absorption proven · G-133' },
+        { name: 'codex', note: 'absorption proven · G-134' },
+        { name: 'kimi', note: 'community wrap · not yet gated' },
+        { name: 'aider', note: 'observed 3 of 4 · G-135' },
+        { name: 'goose', note: 'absorption proven · G-136' },
+        { name: 'custom', note: 'bring a Dockerfile' }
+      ].map((im) => ({
+        name: im.name, note: im.note,
+        bg: s.image === im.name ? '#F6ECEA' : '#FFFFFF',
+        border: s.image === im.name ? '#E4CFCC' : '#D8D2C4',
+        dot: s.image === im.name ? '#7A2530' : '#C9C2B2',
+        onClick: () => this.setState({ image: im.name })
+      })),
+
+      keyOptions: [
+        { key: 'managed', title: 'Managed inference', body: 'Zero config. We broker the call at a 4 percent spread, with cache-aware routing and stored-response replay included.' },
+        { key: 'byok', title: 'Bring your own keys', body: 'Your keys stay in a vault outside the isolation boundary. We meter durability only, and the token meter never appears on your bill.' }
+      ].map((k) => ({
+        title: k.title, body: k.body,
+        bg: s.keys === k.key ? '#F6ECEA' : '#FFFFFF',
+        border: s.keys === k.key ? '#E4CFCC' : '#D8D2C4',
+        radio: s.keys === k.key ? '#7A2530' : '#C9C2B2',
+        radioFill: s.keys === k.key ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ keys: k.key })
+      })),
+
+      budget: s.budget,
+      onBudget: (e) => this.setState({ budget: Number(e.target.value) }),
+
+      runCmd: runCmd,
+      installLabel: s.installed ? 'copied' : 'copy',
+      runLabel: s.ran ? 'copied' : 'copy',
+      copyInstall: () => this.copy('curl -fsSL https://keepstate.ai/install | sh', 'installed'),
+      copyRun: () => this.copy(runCmd, 'ran'),
+
+      checklist: items.map((it, i) => {
+        const on = i < s.ticks;
+        return {
+          label: it.label, detail: on ? it.detail : 'waiting',
+          fill: on ? '#7A2530' : '#FBFAF7',
+          stroke: on ? '#7A2530' : '#C9C2B2',
+          color: on ? '#16130F' : '#A69E8E',
+          anim: on ? 'ksPulse 260ms ease-out' : 'none'
+        };
+      }),
+      done: s.ticks >= 5,
+      waiting: s.ticks < 5,
+      simulate: () => this.simulate(),
+      simLabel: s.running ? 'watching for events' : 'Simulate the run'
+    };
+  }
+}
+</script>
+</body>
+</html>

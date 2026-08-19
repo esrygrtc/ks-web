@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 2px; border-radius: 2px; }
+  @keyframes ksBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 40; background: rgba(251,250,247,0.95); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <div style="padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-family: Newsreader, Georgia, serif; font-size: 18px; font-weight: 500;">KeepState</span>
+        </div>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; border: 1px solid #D8D2C4; border-radius: 3px; padding: 3px 8px;">acme-eng</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <button type="button" onClick="{{ openPalette }}" style="display: flex; align-items: center; gap: 10px; font-family: Inter, sans-serif; font-size: 12px; color: #7A6F60; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 11px; cursor: pointer;" style-hover="border-color: #16130F;">
+          <span>Search</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; border: 1px solid #D8D2C4; border-radius: 2px; padding: 1px 5px;">⌘K</span>
+        </button>
+        <div style="display: flex; align-items: center; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39404C; border: 1px solid #D8D2C4; border-radius: 3px; padding: 6px 10px; background: #FFFFFF;">
+          <span style="color: #7A6F60;">org budget</span>
+          <span style="font-variant-numeric: tabular-nums;">$418 / $500</span>
+          <span style="width: 46px; height: 4px; background: #EDE9DF; border-radius: 2px; display: block; overflow: hidden;"><span style="display: block; height: 100%; width: 84%; background: #7A2530;"></span></span>
+        </div>
+        <div style="width: 28px; height: 28px; border-radius: 100px; background: #EFEBE1; border: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #39404C;">RK</div>
+      </div>
+    </div>
+  </header>
+
+  <div style="display: flex; align-items: stretch; flex: 1; min-height: 0;">
+
+    <nav style="width: 208px; flex: 0 0 auto; border-right: 1px solid #D8D2C4; padding: 20px 12px; display: {{ navDisplay }}; flex-direction: column; gap: 2px; position: sticky; top: 53px; align-self: flex-start; max-height: calc(100vh - 53px); overflow-y: auto;">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="10">
+        <a href="{{ n.href }}" style="display: flex; align-items: center; gap: 9px; font-size: 13px; color: {{ n.color }}; background: {{ n.bg }}; border-radius: 3px; padding: 8px 10px; text-decoration: none; font-weight: {{ n.weight }};">
+          <span style="width: 5px; height: 5px; background: {{ n.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>{{ n.label }}
+        </a>
+      </sc-for>
+      <div style="border-top: 1px solid #D8D2C4; margin: 14px 0 10px;"></div>
+      <a href="Component Sheet.dc.html" style="font-size: 12px; color: #7A6F60; padding: 6px 10px; text-decoration: none;">Component sheet</a>
+      <a href="KeepState.dc.html" style="font-size: 12px; color: #7A6F60; padding: 6px 10px; text-decoration: none;">Public site</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 22px 22px 60px;">
+
+      <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #7A6F60; margin-bottom: 16px;">
+        <a href="#" style="color: #39404C;">Sessions</a><span>/</span>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">s_7f3a</span>
+      </nav>
+
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 20px 22px; margin-bottom: 18px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;">
+              <h1 style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin: 0;">s_7f3a</h1>
+              <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #7A2530; background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 100px; padding: 4px 11px;">
+                <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: block;"></span>running
+              </span>
+            </div>
+            <p style="font-size: 13px; color: #39404C; margin: 0 0 4px;">payments-migration</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; margin: 0;">claude-code · vm.large · eu-west · up {{ uptime }} · 41 checkpoints · every 5m</p>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #16130F; border: 1px solid #16130F; border-radius: 3px; padding: 9px 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;" style-hover="background: #2A2622;"><span style="width: 6px; height: 6px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>Attach</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #7A2530; background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 3px; padding: 9px 15px; cursor: pointer;" style-hover="background: #EFDFDC;">Checkpoint</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 15px; cursor: pointer;" style-hover="border-color: #16130F;">Park</button>
+            <button type="button" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 9px 15px; cursor: pointer;" style-hover="border-color: #16130F;">Fork</button>
+            <button type="button" onClick="{{ openKill }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 9px 13px; cursor: pointer;" style-hover="background: #EFEBE1; color: #7A2530;">Kill</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 18px; margin-top: 20px; padding-top: 18px; border-top: 1px solid #EDE9DF;">
+          <div>
+            <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Spend / budget</p>
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 7px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 17px; color: #16130F; font-variant-numeric: tabular-nums;">$128.40</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60;">/ $200</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #7A6F60; border: 1px solid #C9C2B2; border-radius: 2px; padding: 1px 5px;">ESTIMATED</span>
+            </div>
+            <div style="height: 5px; background: #EDE9DF; border-radius: 3px; overflow: hidden;"><div style="height: 100%; width: 64.2%; background: #39404C;"></div></div>
+          </div>
+          <div>
+            <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Tokens not re-purchased</p>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 17px; color: #7A2530; font-variant-numeric: tabular-nums;">3.9M</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 1px 5px;">MEASURED</span>
+            </div>
+          </div>
+          <div>
+            <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Last checkpoint</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 17px; color: #16130F; margin: 0;">c_0041 · 38s ago</p>
+          </div>
+          <div>
+            <p style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; margin: 0 0 8px;">Resume latency (warm)</p>
+            <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A6F60; background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 3px; padding: 5px 9px;">
+              <span style="width: 5px; height: 5px; background: #A69E8E; transform: rotate(45deg); display: block;"></span>unavailable (never resumed)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 4px; border-bottom: 1px solid #D8D2C4; margin-bottom: 20px; overflow-x: auto;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+          <button type="button" onClick="{{ t.onClick }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; background: transparent; border: none; border-bottom: 2px solid {{ t.line }}; color: {{ t.color }}; padding: 10px 14px; cursor: pointer; white-space: nowrap;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ isTimeline }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;">
+              <p style="font-size: 13px; font-weight: 600; margin: 0;">Checkpoint timeline</p>
+              <p style="font-size: 12px; color: #7A6F60; margin: 0;">click a diamond to inspect, fork, or resume</p>
+            </div>
+            <div style="overflow-x: auto;">
+              <div style="min-width: 660px; position: relative;">
+                <div style="display: flex; align-items: center; gap: 0; padding: 26px 4px 10px; position: relative;">
+                  <div style="position: absolute; left: 8px; right: 8px; top: 42px; height: 1px; background: #D8D2C4;"></div>
+                  <sc-for list="{{ marks }}" as="m" hint-placeholder-count="9">
+                    <button type="button" onClick="{{ m.onClick }}" title="{{ m.title }}" style="flex: 1; background: transparent; border: none; padding: 0; cursor: pointer; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 9px;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: {{ m.labelColor }}; white-space: nowrap;">{{ m.label }}</span>
+                      <span style="width: {{ m.size }}; height: {{ m.size }}; background: {{ m.fill }}; border: 1px solid {{ m.stroke }}; transform: rotate(45deg); display: block;"></span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; margin-top: 18px; padding-top: 18px; border-top: 1px solid #EDE9DF; align-items: start;">
+              <div style="border: 1px solid #D8D2C4; border-radius: 4px; padding: 16px 18px; background: #FBFAF7;">
+                <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+                  <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; margin: 0;">{{ sel.id }} · step {{ sel.step }}</p>
+                </div>
+                <div style="display: grid; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-bottom: 16px;">
+                  <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">age</span><span style="color: #39404C;">{{ sel.age }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">size</span><span style="color: #39404C;">{{ sel.size }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">dedup delta</span><span style="color: #39404C;">{{ sel.delta }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 12px;"><span style="color: #7A6F60;">retention</span><span style="color: #39404C;">{{ sel.retention }}</span></div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 8px 13px; cursor: pointer;">Fork from here</button>
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 13px; cursor: pointer;">Resume from here</button>
+                </div>
+              </div>
+              <p style="font-size: 13px; line-height: 1.7; color: #39404C; margin: 0;">Every diamond is a full freeze: filesystem, model memory, and tool state written as one atomic snapshot. Storage is content-addressed, so a 1.2 GB checkpoint five minutes after the last one costs about 41 MB.</p>
+            </div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 4px;">Lineage</p>
+            <p style="font-size: 12px; color: #7A6F60; margin: 0 0 18px;">3 branches from c_0040</p>
+            <div style="display: grid; gap: 10px;">
+              <sc-for list="{{ branches }}" as="b" hint-placeholder-count="3">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; align-items: center; border: 1px solid #D8D2C4; border-radius: 4px; padding: 12px 14px;">
+                  <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #16130F;">{{ b.id }}</span>
+                    <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ b.pillColor }}; background: {{ b.pillBg }}; border: 1px solid {{ b.pillBorder }}; border-radius: 100px; padding: 3px 9px;">{{ b.status }}</span>
+                  </div>
+                  <div style="background: #16130F; border-radius: 3px; padding: 8px 11px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">{{ b.steer }}</div>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; flex-wrap: wrap;">
+                    <span style="font-variant-numeric: tabular-nums;">{{ b.spend }}</span>
+                    <span>{{ b.steps }} steps</span>
+                    <a href="#" style="color: #7A2530;">open</a>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTerminal }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #16130F; border: 1px solid #2A2622; border-radius: 5px; overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid #2A2622;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378;">s_7f3a · tmux attached · read-write</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #8A8378;">{{ uptime }}</span>
+              <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            </div>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #EFEBE1; padding: 16px; height: 340px; overflow-y: auto; overflow-x: hidden;" ref="{{ termRef }}">
+            <sc-for list="{{ termLines }}" as="l" hint-placeholder-count="8">
+              <div style="word-break: break-word;"><span style="white-space: pre-wrap; color: {{ l.color }};">{{ l.text }}</span></div>
+            </sc-for>
+            <div><span style="display: inline-block; width: 7px; height: 12px; background: #D9B8B8; vertical-align: -2px; animation: ksBlink 1s step-end infinite;"></span></div>
+          </div>
+          <div style="display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid #2A2622; flex-wrap: wrap;">
+            <input type="text" value="{{ steer }}" onChange="{{ onSteer }}" onKeyDown="{{ onSteerKey }}" placeholder="steer the agent, or type a shell command" style="flex: 1 1 200px; min-width: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #EFEBE1; background: #1E1A16; border: 1px solid #3A352E; border-radius: 3px; padding: 11px 12px; outline: none;" style-focus="border-color: #7A2530;" />
+            <button type="button" onClick="{{ sendSteer }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 11px 18px; cursor: pointer; flex: 0 0 auto;">Send</button>
+          </div>
+        </div>
+        <p style="font-size: 12px; color: #7A6F60; margin: 12px 2px 0;">Steering is recorded in the ledger as an event, with its sequence number, so replay reproduces it exactly.</p>
+      </sc-if>
+
+      <sc-if value="{{ isLedger }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+          <div style="padding: 16px 20px; border-bottom: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div>
+              <p style="font-size: 13px; font-weight: 600; margin: 0 0 3px;">Ledger</p>
+              <p style="font-size: 12px; color: #7A6F60; margin: 0;">every call, in sequence. Retries are marked and cost nothing.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Export CSV</button>
+              <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; color: #39404C; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Export JSONL</button>
+            </div>
+          </div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 820px;">
+              <thead>
+                <tr style="background: #FBFAF7;">
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">seq</th>
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">type</th>
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">tokens</th>
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">cache read</th>
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">latency</th>
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 10px 14px; border-bottom: 1px solid #D8D2C4;">mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ ledger }}" as="e" hint-placeholder-count="8">
+                  <tr style="border-bottom: 1px solid #EDE9DF; background: {{ e.rowBg }};" style-hover="background: #FBFAF7;">
+                    <td style="padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: #7A6F60; text-align: right; font-variant-numeric: tabular-nums;">{{ e.seq }}</td>
+                    <td style="padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: #16130F; white-space: nowrap;">{{ e.type }}</td>
+                    <td style="padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ e.tokens }}</td>
+                    <td style="padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ e.cache }}</td>
+                    <td style="padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: #39404C; text-align: right; font-variant-numeric: tabular-nums;">{{ e.latency }}</td>
+                    <td style="padding: 10px 14px; white-space: nowrap;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ e.modeColor }}; background: {{ e.modeBg }}; border: 1px solid {{ e.modeBorder }}; border-radius: 3px; padding: 3px 8px;">{{ e.mode }}</span>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMeter }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px;">
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 18px;">This session, by meter</p>
+            <div style="display: grid; gap: 0;">
+              <sc-for list="{{ meters }}" as="m" hint-placeholder-count="4">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 6px 16px; padding: 14px 0; border-top: 1px solid #EDE9DF; align-items: baseline;">
+                  <div>
+                    <p style="font-size: 13px; color: #16130F; margin: 0 0 3px;">{{ m.label }}</p>
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">{{ m.detail }}</p>
+                  </div>
+                  <div style="display: flex; align-items: baseline; gap: 9px; justify-content: flex-end; flex-wrap: wrap;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: {{ m.color }}; font-variant-numeric: tabular-nums;">{{ m.value }}</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: {{ m.badgeColor }}; border: 1px solid {{ m.badgeBorder }}; border-radius: 2px; padding: 1px 5px;">{{ m.badge }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px;">
+            <p style="font-size: 13px; font-weight: 600; margin: 0 0 6px;">Not re-purchased</p>
+            <p style="font-size: 12px; color: #7A6F60; margin: 0 0 20px;">tokens served from the store instead of the provider</p>
+            <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 42px; color: #7A2530; letter-spacing: -0.03em;">3.9M</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #16130F; border: 1px solid #16130F; border-radius: 2px; padding: 2px 6px;">MEASURED</span>
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 5px; height: 96px; margin-bottom: 12px;">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="14">
+                <span title="{{ b.title }}" style="flex: 1; height: {{ b.h }}; background: {{ b.color }}; border-radius: 1px; display: block;"></span>
+              </sc-for>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">last 14 hours · gateway meter</p>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isArtifacts }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px;">
+          <sc-for list="{{ artifacts }}" as="a" hint-placeholder-count="6">
+            <article style="background: {{ a.bg }}; border: 1px solid {{ a.border }}; border-radius: 5px; padding: 18px;">
+              <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+                <span style="width: 7px; height: 7px; background: {{ a.dot }}; transform: rotate(45deg); display: block;"></span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F;">{{ a.id }}</span>
+              </div>
+              <sc-if value="{{ a.preserved }}" hint-placeholder-val="{{ false }}">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0 0 12px;">preserved under ruling</p>
+              </sc-if>
+              <div style="display: grid; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">size</span><span style="color: #39404C;">{{ a.size }}</span></div>
+                <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">age</span><span style="color: #39404C;">{{ a.age }}</span></div>
+                <div style="display: flex; justify-content: space-between; gap: 10px;"><span style="color: #7A6F60;">retention</span><span style="color: {{ a.retColor }};">{{ a.retention }}</span></div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Resume</button>
+                <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 7px 12px; cursor: pointer;">Fork</button>
+                <sc-if value="{{ a.deletable }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" style="font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #7A6F60; background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 7px 10px; cursor: pointer;" style-hover="color: #7A2530; border-color: #E4CFCC;">Delete</button>
+                </sc-if>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+        <p style="font-size: 12px; color: #7A6F60; margin: 16px 2px 0;">Checkpoints under a legal hold render no delete affordance at all, in the console or the API.</p>
+      </sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ killOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeKill }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(22,19,15,0.42); display: flex; align-items: center; justify-content: center; padding: 20px;">
+      <div onClick="{{ stop }}" style="width: 100%; max-width: 460px; background: #FBFAF7; border: 1px solid #D8D2C4; border-radius: 6px; box-shadow: 0 30px 70px -30px rgba(22,19,15,0.6); padding: 24px;">
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 22px; margin: 0 0 12px;">Kill session s_7f3a</p>
+        <p style="font-size: 13px; line-height: 1.65; color: #39404C; margin: 0 0 18px;">The VM stops now. Checkpoints through c_0041 remain and stay resumable; work since the last checkpoint, about 38 seconds, is lost.</p>
+        <label for="kill-confirm" style="display: block; font-size: 12px; color: #39404C; margin-bottom: 6px;">Type <span style="font-family: 'JetBrains Mono', monospace; color: #16130F;">s_7f3a</span> to confirm</label>
+        <input id="kill-confirm" type="text" value="{{ confirmText }}" onChange="{{ onConfirm }}" placeholder="s_7f3a" style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 12px; outline: none; margin-bottom: 16px;" style-focus="border-color: #7A2530;" />
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" disabled="{{ killDisabled }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: {{ killColor }}; background: {{ killBg }}; border: 1px solid {{ killBg }}; border-radius: 3px; padding: 10px 16px; cursor: {{ killCursor }};">Kill session</button>
+          <button type="button" onClick="{{ closeKill }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 10px 16px; cursor: pointer;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePalette }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(22,19,15,0.42); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 20px 20px;">
+      <div onClick="{{ stop }}" style="width: 100%; max-width: 560px; background: #FBFAF7; border: 1px solid #D8D2C4; border-radius: 6px; box-shadow: 0 30px 70px -30px rgba(22,19,15,0.6); overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <input type="text" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search sessions, checkpoints, docs" autoFocus="{{ true }}" style="flex: 1; min-width: 0; font-family: Inter, sans-serif; font-size: 15px; color: #16130F; background: transparent; border: none; outline: none;" />
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7A6F60; border: 1px solid #D8D2C4; border-radius: 3px; padding: 2px 6px;">esc</span>
+        </div>
+        <div style="max-height: 320px; overflow-y: auto; padding: 8px;">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border-radius: 4px; cursor: pointer;" style-hover="background: #EFEBE1;">
+              <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; width: 74px; flex: 0 0 auto;">{{ r.kind }}</span>
+                <span style="font-size: 14px; color: #16130F; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.label }}</span>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; flex: 0 0 auto;">{{ r.hint }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+class Component extends DCLogic {
+  state = {
+    tab: 0, sel: 40, elapsed: 4 * 3600 + 58 * 60 + 12,
+    steer: '', extra: [], killOpen: false, confirmText: '',
+    paletteOpen: false, query: '', narrow: false
+  };
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!this.reduced) {
+      this.tick = setInterval(() => this.setState((s) => ({ elapsed: s.elapsed + 1 })), 1000);
+    }
+    this.onResize = () => this.setState({ narrow: window.innerWidth < 860 });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        this.setState((s) => ({ paletteOpen: !s.paletteOpen }));
+      }
+      if (e.key === 'Escape') this.setState({ paletteOpen: false, killOpen: false });
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.tick);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onKey);
+  }
+
+  componentDidUpdate() {
+    if (this.termEl) this.termEl.scrollTop = this.termEl.scrollHeight;
+  }
+
+  fmt(s) {
+    const p = (n) => String(n).padStart(2, '0');
+    return p(Math.floor(s / 3600)) + ':' + p(Math.floor((s % 3600) / 60)) + ':' + p(s % 60);
+  }
+
+  send() {
+    const v = this.state.steer.trim();
+    if (!v) return;
+    this.setState((s) => ({
+      steer: '',
+      extra: s.extra.concat([
+        { text: '> ' + v, tone: 'cmd' },
+        { text: 'steer accepted · seq 1418 · recorded in ledger', tone: 'dim' }
+      ])
+    }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const tabLabels = ['Timeline', 'Terminal', 'Ledger', 'Meter', 'Artifacts'];
+
+    const ckpts = [
+      { n: 0, id: 'c_0000', step: 0, age: '4h 58m', size: '840 MB', delta: 'base', retention: '30 days' },
+      { n: 8, id: 'c_0008', step: 8, age: '4h 18m', size: '1.0 GB', delta: '+62 MB', retention: '30 days' },
+      { n: 16, id: 'c_0016', step: 16, age: '3h 34m', size: '1.1 GB', delta: '+38 MB', retention: '30 days' },
+      { n: 24, id: 'c_0024', step: 24, age: '2h 46m', size: '1.1 GB', delta: '+29 MB', retention: '30 days' },
+      { n: 32, id: 'c_0032', step: 32, age: '1h 52m', size: '1.2 GB', delta: '+44 MB', retention: '30 days' },
+      { n: 40, id: 'c_0040', step: 40, age: '2d 04h', size: '1.2 GB', delta: '+41 MB', retention: '7 years, legal hold' },
+      { n: 41, id: 'c_0041', step: 41, age: '38s', size: '1.2 GB', delta: '+12 MB', retention: '30 days' }
+    ];
+    const sel = ckpts.find((c) => c.n === s.sel) || ckpts[5];
+
+    const termBase = [
+      { text: '$ ks attach s_7f3a', tone: 'cmd' },
+      { text: 'attached to tmux session · 312 files touched', tone: 'dim' },
+      { text: '● running tests: packages/payments', tone: 'work' },
+      { text: '  PASS  src/ledger/entry.test.ts (41 tests)', tone: 'body' },
+      { text: '  PASS  src/ledger/reconcile.test.ts (18 tests)', tone: 'body' },
+      { text: '● rewriting adapter for tenant-scoped keys', tone: 'work' },
+      { text: '  edited src/adapters/stripe.ts (+214 -88)', tone: 'body' },
+      { text: 'checkpoint c_0041 written · 1.2 GB · dedup 19x', tone: 'dim' }
+    ];
+    const tones = { cmd: '#FBFAF7', dim: '#8A8378', work: '#D9B8B8', body: '#EFEBE1' };
+
+    const ledger = [
+      { seq: 1402, type: 'model.call', tokens: '18,204', cache: '162,880', latency: '2.9s', mode: 'live' },
+      { seq: 1403, type: 'tool.bash', tokens: '—', cache: '—', latency: '0.4s', mode: 'live' },
+      { seq: 1404, type: 'model.call', tokens: '0', cache: '181,084', latency: '0.1s', mode: 'replayed' },
+      { seq: 1405, type: 'tool.edit', tokens: '—', cache: '—', latency: '0.2s', mode: 'live' },
+      { seq: 1406, type: 'checkpoint', tokens: '—', cache: '—', latency: '1.1s', mode: 'ckpt' },
+      { seq: 1407, type: 'model.call', tokens: '21,551', cache: '199,300', latency: '3.4s', mode: 'live' },
+      { seq: 1408, type: 'model.call', tokens: '0', cache: '199,300', latency: '0.1s', mode: 'replayed' },
+      { seq: 1409, type: 'tool.bash', tokens: '—', cache: '—', latency: '11.8s', mode: 'live' }
+    ];
+    const modeStyle = {
+      live: { color: '#39404C', bg: '#FFFFFF', border: '#D8D2C4', label: 'live' },
+      replayed: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC', label: 'replayed from store, 0 new tokens' },
+      ckpt: { color: '#16130F', bg: '#EFEBE1', border: '#D8D2C4', label: 'checkpoint' }
+    };
+
+    const navItems = [
+      ['Overview', 'Console Overview.dc.html'], ['Sessions', '#'], ['Fleet', '#'], ['Checkpoints', '#'],
+      ['Gateway', '#'], ['Usage', '#'], ['Billing', '#'], ['Team & Audit', '#'], ['API Keys', '#'], ['Settings', '#']
+    ];
+
+    const all = [
+      { kind: 'session', label: 's_7f3a · payments-migration', hint: 'running' },
+      { kind: 'checkpoint', label: 'c_0040 · step 40, 1.2 GB', hint: 'fork' },
+      { kind: 'action', label: 'Park all sessions on claude-code', hint: 'bulk' },
+      { kind: 'docs', label: 'Quickstart: your first plug-pull', hint: 'docs' },
+      { kind: 'audit', label: 'Audit log, last 24 hours', hint: 'team' }
+    ];
+    const q = s.query.trim().toLowerCase();
+
+    const barVals = [22, 31, 28, 44, 39, 52, 61, 48, 70, 66, 81, 74, 92, 88];
+
+    return {
+      navDisplay: s.narrow ? 'none' : 'flex',
+      nav: navItems.map(([label, href]) => ({
+        label: label, href: href,
+        color: label === 'Sessions' ? '#16130F' : '#39404C',
+        bg: label === 'Sessions' ? '#EFEBE1' : 'transparent',
+        weight: label === 'Sessions' ? '600' : '400',
+        dot: label === 'Sessions' ? '#7A2530' : 'transparent'
+      })),
+      uptime: this.fmt(s.elapsed),
+      tabs: tabLabels.map((label, i) => ({
+        label: label,
+        color: i === s.tab ? '#16130F' : '#7A6F60',
+        line: i === s.tab ? '#7A2530' : 'transparent',
+        onClick: () => this.setState({ tab: i })
+      })),
+      isTimeline: s.tab === 0, isTerminal: s.tab === 1, isLedger: s.tab === 2,
+      isMeter: s.tab === 3, isArtifacts: s.tab === 4,
+
+      marks: ckpts.map((c) => ({
+        label: c.id,
+        title: c.id + ' · ' + c.size,
+        size: c.n === s.sel ? '15px' : '10px',
+        fill: c.n === s.sel ? '#7A2530' : (c.n === 40 ? '#7A2530' : '#FBFAF7'),
+        stroke: c.n === s.sel ? '#7A2530' : (c.n === 40 ? '#7A2530' : '#C9C2B2'),
+        labelColor: c.n === s.sel ? '#7A2530' : '#A69E8E',
+        onClick: () => this.setState({ sel: c.n })
+      })),
+      sel: sel,
+
+      branches: [
+        { id: 's_7f3a/f1', status: 'running', steer: '--steer "one big migration"', spend: '$41.20', steps: 62 },
+        { id: 's_7f3a/f2', status: 'parked', steer: '--steer "keep legacy adapter"', spend: '$18.90', steps: 44 },
+        { id: 's_7f3a/f3', status: 'failed', steer: '--steer "split by tenant"', spend: '$6.10', steps: 12 }
+      ].map((b) => {
+        const map = {
+          running: { color: '#7A2530', bg: '#F6ECEA', border: '#E4CFCC' },
+          parked: { color: '#39404C', bg: '#EFEBE1', border: '#D8D2C4' },
+          failed: { color: '#FBFAF7', bg: '#16130F', border: '#16130F' }
+        }[b.status];
+        return Object.assign({}, b, { pillColor: map.color, pillBg: map.bg, pillBorder: map.border });
+      }),
+
+      termRef: (el) => { this.termEl = el; },
+      termLines: termBase.concat(s.extra).map((l) => ({ text: l.text, color: tones[l.tone] })),
+      steer: s.steer,
+      onSteer: (e) => this.setState({ steer: e.target.value }),
+      onSteerKey: (e) => { if (e.key === 'Enter') this.send(); },
+      sendSteer: () => this.send(),
+
+      ledger: ledger.map((e) => {
+        const m = modeStyle[e.mode];
+        return {
+          seq: e.seq, type: e.type, tokens: e.tokens, cache: e.cache, latency: e.latency,
+          mode: m.label, modeColor: m.color, modeBg: m.bg, modeBorder: m.border,
+          rowBg: e.mode === 'replayed' ? '#FDF9F8' : 'transparent'
+        };
+      }),
+
+      meters: [
+        { label: 'Session-minutes', detail: 'vm.large · 298 min', value: '$44.70', color: '#16130F', badge: 'MEASURED', badgeColor: '#16130F', badgeBorder: '#16130F' },
+        { label: 'Checkpoint storage', detail: '41 checkpoints · 1.9 GB after dedup', value: '$2.85', color: '#16130F', badge: 'MEASURED', badgeColor: '#16130F', badgeBorder: '#16130F' },
+        { label: 'Managed tokens', detail: '8.1M in · 412K out', value: '$80.85', color: '#16130F', badge: 'ESTIMATED', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' },
+        { label: 'Value not re-purchased', detail: '3.9M tokens at list rate', value: '$389.00', color: '#7A2530', badge: 'ESTIMATED', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' }
+      ],
+      bars: barVals.map((v, i) => ({
+        h: v + '%',
+        color: i >= barVals.length - 3 ? '#7A2530' : '#D8D2C4',
+        title: v + '% of peak'
+      })),
+
+      artifacts: ckpts.slice().reverse().map((c) => {
+        const preserved = c.n === 40;
+        return {
+          id: c.id, size: c.size, age: c.age, retention: c.retention,
+          preserved: preserved, deletable: !preserved,
+          bg: preserved ? '#F6ECEA' : '#FFFFFF',
+          border: preserved ? '#E4CFCC' : '#D8D2C4',
+          dot: preserved ? '#7A2530' : '#A69E8E',
+          retColor: preserved ? '#7A2530' : '#39404C'
+        };
+      }),
+
+      killOpen: s.killOpen,
+      openKill: () => this.setState({ killOpen: true, confirmText: '' }),
+      closeKill: () => this.setState({ killOpen: false }),
+      confirmText: s.confirmText,
+      onConfirm: (e) => this.setState({ confirmText: e.target.value }),
+      killDisabled: s.confirmText !== 's_7f3a',
+      killBg: s.confirmText === 's_7f3a' ? '#7A2530' : '#E2DDD1',
+      killColor: s.confirmText === 's_7f3a' ? '#FBFAF7' : '#A69E8E',
+      killCursor: s.confirmText === 's_7f3a' ? 'pointer' : 'not-allowed',
+
+      paletteOpen: s.paletteOpen,
+      openPalette: () => this.setState({ paletteOpen: true }),
+      closePalette: () => this.setState({ paletteOpen: false, query: '' }),
+      stop: (e) => e.stopPropagation(),
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      results: q ? all.filter((r) => (r.label + ' ' + r.kind).toLowerCase().includes(q)) : all
+    };
+  }
+}
+</script>
+</body>
+</html>

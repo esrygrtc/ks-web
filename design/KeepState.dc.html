@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  @keyframes ksPulse { 0% { transform: rotate(45deg) scale(0.6); opacity: 0; } 60% { transform: rotate(45deg) scale(1.18); opacity: 1; } 100% { transform: rotate(45deg) scale(1); opacity: 1; } }
+  @keyframes ksBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251, 250, 247, 0.92); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block; animation: ksPulse 700ms ease-out both;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500; letter-spacing: -0.01em;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap;">
+        <a href="#product" style="font-size: 14px; color: #39404C; text-decoration: none;">Product</a>
+        <a href="#whynow" style="font-size: 14px; color: #39404C; text-decoration: none;">Why now</a>
+        <a href="Manifesto.dc.html" style="font-size: 14px; color: #39404C; text-decoration: none;">Manifesto</a>
+        <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Docs</a>
+        <a href="#partner" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Start building</a>
+      </div>
+    </nav>
+  </header>
+
+  <section id="top" style="max-width: 1180px; margin: 0 auto; padding: 72px 28px 64px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 56px; align-items: start;">
+      <div style="max-width: 32em;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 22px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">The durable agent session cloud</span>
+        </div>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(42px, 6.4vw, 74px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 26px;">Your agents never start over.</h1>
+        <p style="font-size: 18px; line-height: 1.62; color: #39404C; margin: 0 0 18px; text-wrap: pretty;">KeepState runs your AI agents inside snapshot-able micro-VMs. One API: run, checkpoint, fork, resume, replay. Any model, any harness.</p>
+        <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.55; color: #16130F; margin: 0 0 34px; padding-left: 16px; border-left: 2px solid #D8D2C4;">An agent that dies at hour five is a bill. An agent that resumes is an employee.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#partner" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Start building</a>
+          <a href="#demo" style="font-size: 15px; font-weight: 500; color: #16130F; background: transparent; border: 1px solid #D8D2C4; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Watch the plug get pulled</a>
+        </div>
+      </div>
+
+      <div id="demo" style="position: relative;">
+        <div style="background: #16130F; border: 1px solid #2A2622; border-radius: 7px; padding: 20px 22px 24px; box-shadow: 0 18px 40px -22px rgba(22, 19, 15, 0.45); position: relative; overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2A2622; padding-bottom: 13px; margin-bottom: 16px;">
+            <span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378;">ks · live session</span>
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          </div>
+          <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.55; height: 250px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none;" ref="{{ termRef }}">
+            <sc-for list="{{ lines }}" as="line" hint-placeholder-count="4">
+              <div style="word-break: break-word; color: #EFEBE1;">
+                <span style="white-space: pre-wrap; color: {{ line.color }};">{{ line.text }}</span>
+                <sc-if value="{{ line.mark }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); margin: 0 6px 0 2px; vertical-align: middle;"></span></sc-if>
+                <span style="color: {{ line.color2 }};">{{ line.text2 }}</span>
+                <sc-if value="{{ line.cursor }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; width: 7px; height: 14px; background: #D9B8B8; vertical-align: -2px; margin-left: 3px; animation: ksBlink 1s step-end infinite;"></span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="position: absolute; inset: 0; background: #7A2530; pointer-events: none; opacity: 0; opacity: {{ flash }};"></div>
+        </div>
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #8A8378; margin: 12px 2px 0; letter-spacing: 0.04em;">recorded session · replayed on loop</p>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showPartners }}" hint-placeholder-val="{{ true }}">
+  <section style="background: #EFEBE1; border-top: 1px solid #D8D2C4; border-bottom: 1px solid #D8D2C4;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 26px 28px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; justify-content: space-between;">
+      <p style="margin: 0; font-size: 14px; color: #39404C; font-weight: 500;">Backed by builders. Run by design partners.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 14px; flex: 1 1 460px;">
+        <div style="height: 38px; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">design partner</div>
+        <div style="height: 38px; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">design partner</div>
+        <div style="height: 38px; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">design partner</div>
+        <div style="height: 38px; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">design partner</div>
+        <div style="height: 38px; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">design partner</div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 84px 28px 0;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 18px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">The problem</span>
+    </div>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 44px; max-width: 20em;">Agents die mid-task. You pay twice.</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 22px;">
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px 28px; box-shadow: 0 12px 26px -20px rgba(22, 19, 15, 0.35);">
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 30px; color: #7A2530; margin: 0 0 10px; letter-spacing: -0.02em;">hour 5</p>
+        <p style="font-size: 14px; font-weight: 600; color: #16130F; margin: 0 0 12px;">where the 6-hour run dies</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">Sandbox crash, rate limit, provider blip. Everything gone. Restart from zero.</p>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px 28px; box-shadow: 0 12px 26px -20px rgba(22, 19, 15, 0.35);">
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 30px; color: #7A2530; margin: 0 0 10px; letter-spacing: -0.02em;">50–70%</p>
+        <p style="font-size: 14px; font-weight: 600; color: #16130F; margin: 0 0 12px;">of the token bill is replay</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">The same context, re-sent to the model step after step after step.</p>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px 28px; box-shadow: 0 12px 26px -20px rgba(22, 19, 15, 0.35);">
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 30px; color: #7A2530; margin: 0 0 10px; letter-spacing: -0.02em;">5 systems</p>
+        <p style="font-size: 14px; font-weight: 600; color: #16130F; margin: 0 0 12px;">duct-taped per team</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">Framework, sandbox, workflow engine, state store, per-vendor caches.</p>
+      </div>
+    </div>
+    <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 20px; line-height: 1.5; color: #16130F; text-align: center; margin: 44px auto 0; max-width: 30em;">Every serious agent team rebuilds this privately. None of them wants to.</p>
+  </section>
+
+  <section id="product" style="max-width: 1180px; margin: 0 auto; padding: 88px 28px 0;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 18px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">The product</span>
+    </div>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 30px; max-width: 20em;">One API. Autosave for AI agents.</h2>
+    <div style="background: #16130F; border-radius: 5px; padding: 18px 24px; margin-bottom: 30px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 15px; color: #EFEBE1; letter-spacing: 0.06em; overflow-x: auto; white-space: nowrap;">run · checkpoint · fork · resume · replay</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 232px), 1fr)); gap: 18px;">
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;">run</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; flex: 1;">Point any agent at KeepState. Same models, same code.</p>
+        <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A2530; background: #F6ECEA; border-radius: 3px; padding: 8px 10px; display: block; overflow-x: auto; white-space: nowrap;">ks run --image claude-code</code>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;">checkpoint</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; flex: 1;">Filesystem + model memory + tool state. One atomic snapshot.</p>
+        <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A2530; background: #F6ECEA; border-radius: 3px; padding: 8px 10px; display: block; overflow-x: auto; white-space: nowrap;">ks save s_7f3a</code>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;">fork</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; flex: 1;">Branch step 40 into six universes. Keep the winner.</p>
+        <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A2530; background: #F6ECEA; border-radius: 3px; padding: 8px 10px; display: block; overflow-x: auto; white-space: nowrap;">ks fork s_7f3a@40 -n 6</code>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;">resume</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; flex: 1;">Warm resume under 100 ms. Cold under 90 s. On any provider.</p>
+        <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A2530; background: #F6ECEA; border-radius: 3px; padding: 8px 10px; display: block; overflow-x: auto; white-space: nowrap;">ks wake s_7f3a</code>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 22px 20px 24px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;">replay</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0; flex: 1;">Re-execute what actually happened. Evidence, not logs.</p>
+        <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #7A2530; background: #F6ECEA; border-radius: 3px; padding: 8px 10px; display: block; overflow-x: auto; white-space: nowrap;">ks replay s_7f3a</code>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 88px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 44px; max-width: 20em;">Three states. One freeze.</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 52px; align-items: start;">
+      <div>
+        <div style="display: flex; align-items: stretch; gap: 10px; flex-wrap: nowrap;">
+          <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 14px; text-align: center;">
+            <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #16130F; margin: 0; letter-spacing: 0.02em;">filesystem</p>
+          </div>
+          <div style="flex: 0 0 auto; display: flex; align-items: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 16px; color: #9A9384;">+</div>
+          <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 14px; text-align: center;">
+            <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #16130F; margin: 0; letter-spacing: 0.02em;">KV cache</p>
+          </div>
+          <div style="flex: 0 0 auto; display: flex; align-items: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 16px; color: #9A9384;">+</div>
+          <div style="flex: 1 1 84px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 4px; padding: 18px 14px; text-align: center;">
+            <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #16130F; margin: 0; letter-spacing: 0.02em;">tool state</p>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: center; padding: 14px 0;">
+          <span style="display: block; width: 1px; height: 34px; background: #D8D2C4; position: relative;"></span>
+        </div>
+        <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 4px; padding: 22px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+          <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; color: #7A2530; margin: 0; letter-spacing: 0.02em;">one atomic checkpoint</p>
+        </div>
+        <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 16px 0 0;">Kill it anywhere. Resume anywhere. The world and the memory can never disagree.</p>
+      </div>
+      <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0; max-width: 34em; text-wrap: pretty;">Claude Code's own resume is a quest log: your notes survive, the world resets. KeepState is a save state: the running tests, the dev server, the half-finished thought, frozen mid-frame and thawed intact.</p>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 88px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 34px; max-width: 22em;">Every checkpoint is a door to six futures.</h2>
+    <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px;">
+      <svg viewBox="0 0 620 210" style="width: 100%; height: auto; display: block; overflow: visible;" role="img" aria-label="Session timeline with checkpoints branching into three forks">
+        <line x1="14" y1="40" x2="606" y2="40" stroke="#D8D2C4" stroke-width="1"></line>
+        <path d="M300 40 C 380 40, 400 80, 520 80" fill="none" stroke="#7A2530" stroke-width="1.5" stroke-dasharray="260" stroke-dashoffset="{{ forkOffset }}" style="transition: stroke-dashoffset 900ms ease-out;"></path>
+        <path d="M300 40 C 380 40, 400 130, 520 130" fill="none" stroke="#7A2530" stroke-width="1.5" stroke-dasharray="280" stroke-dashoffset="{{ forkOffset }}" style="transition: stroke-dashoffset 900ms ease-out 120ms;"></path>
+        <path d="M300 40 C 380 40, 400 180, 520 180" fill="none" stroke="#7A2530" stroke-width="1.5" stroke-dasharray="300" stroke-dashoffset="{{ forkOffset }}" style="transition: stroke-dashoffset 900ms ease-out 240ms;"></path>
+        <rect x="56" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 62 40)"></rect>
+        <rect x="174" y="34" width="12" height="12" fill="#7A2530" transform="rotate(45 180 40)"></rect>
+        <rect x="294" y="32" width="16" height="16" fill="#7A2530" transform="rotate(45 302 40)"></rect>
+        <rect x="414" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 420 40)"></rect>
+        <rect x="534" y="34" width="12" height="12" fill="#D8D2C4" transform="rotate(45 540 40)"></rect>
+        <rect x="514" y="74" width="12" height="12" fill="#7A2530" transform="rotate(45 520 80)"></rect>
+        <rect x="514" y="124" width="12" height="12" fill="#7A2530" transform="rotate(45 520 130)"></rect>
+        <rect x="514" y="174" width="12" height="12" fill="#7A2530" transform="rotate(45 520 180)"></rect>
+        <text x="284" y="20" font-family="'JetBrains Mono', monospace" font-size="11" fill="#7A2530">step 40</text>
+      </svg>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; margin-top: 22px;">
+        <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "one big migration"</div>
+        <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "keep legacy adapter"</div>
+        <div style="background: #16130F; border-radius: 4px; padding: 12px 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #D9B8B8; overflow-x: auto; white-space: nowrap;">--steer "split by tenant"</div>
+      </div>
+    </div>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 26px 0 0; max-width: 42em; text-wrap: pretty;">Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 88px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 44px; max-width: 22em;">The token bill drops the week you switch.</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 48px; align-items: center;">
+      <div>
+        <p id="econ" style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: clamp(64px, 9vw, 104px); line-height: 1; color: #7A2530; margin: 0 0 14px; letter-spacing: -0.04em;">{{ econLabel }}</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #39404C; margin: 0; max-width: 22em;">cost on the identical trace, measured, not vibed.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="display: flex; gap: 12px; padding: 16px 0; border-top: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+          <p style="font-size: 15px; line-height: 1.6; color: #16130F; margin: 0;">Cache-aware routing across providers.</p>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 16px 0; border-top: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+          <p style="font-size: 15px; line-height: 1.6; color: #16130F; margin: 0;">Stored-response replay: never pay twice for an interrupted call.</p>
+        </div>
+        <div style="display: flex; gap: 12px; padding: 16px 0; border-top: 1px solid #D8D2C4; border-bottom: 1px solid #D8D2C4;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+          <p style="font-size: 15px; line-height: 1.6; color: #16130F; margin: 0;">Budget caps: ten forks can't detonate your card.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: #39404C; margin-top: 88px;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 76px 28px;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+        <span style="width: 7px; height: 7px; background: #D9B8B8; transform: rotate(45deg); display: block;"></span>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #D9B8B8;">Governance</span>
+      </div>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 26px; max-width: 28em;">Logs tell you what the agent said it did. Replay re-executes what it actually did.</h2>
+      <p style="font-size: 17px; line-height: 1.7; color: #E6E3DC; margin: 0 0 26px; max-width: 40em; text-wrap: pretty;">Deterministic replay from checkpointed state. Audit trails with sequence lineage. Deposition-grade evidence for the compliance officer, zero extra work for the engineer.</p>
+      <span style="display: inline-block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; color: #FBFAF7; border: 1px solid #5A616C; border-radius: 3px; padding: 7px 12px;">Enterprise: sovereign deploys, retention, SSO.</span>
+    </div>
+  </section>
+
+  <section id="whynow" style="max-width: 1180px; margin: 0 auto; padding: 88px 28px 0;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 18px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Why now</span>
+    </div>
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 40px; max-width: 20em;">Counting the OOMs of agent-hours.</h2>
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 40px; padding: 22px 0; border-top: 1px solid #D8D2C4; align-items: start;">
+        <div style="display: flex; gap: 12px; align-items: baseline;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 17px; color: #7A2530; margin: 0;">2× every ~7 months</p>
+        </div>
+        <p style="font-size: 16px; line-height: 1.6; color: #39404C; margin: 0;">Agent task horizons keep doubling. Minutes became hours. Hours become days.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 40px; padding: 22px 0; border-top: 1px solid #D8D2C4; align-items: start;">
+        <div style="display: flex; gap: 12px; align-items: baseline;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 17px; color: #7A2530; margin: 0;">The #1 AI cost line</p>
+        </div>
+        <p style="font-size: 16px; line-height: 1.6; color: #39404C; margin: 0;">Inference-time compute now outweighs everything else in the agent economy.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 40px; padding: 22px 0; border-top: 1px solid #D8D2C4; border-bottom: 1px solid #D8D2C4; align-items: start;">
+        <div style="display: flex; gap: 12px; align-items: baseline;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+          <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 17px; color: #7A2530; margin: 0;">Agents got hands</p>
+        </div>
+        <p style="font-size: 16px; line-height: 1.6; color: #39404C; margin: 0;">MCP standardized tools. Long tasks became the default, not the demo.</p>
+      </div>
+    </div>
+    <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 19px; line-height: 1.55; color: #16130F; margin: 32px 0 0; max-width: 34em;">What the 2024 forecasts called unhobbling is now a workload. Its substrate is unowned.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 100px 28px 96px;">
+    <div style="max-width: 62ch; margin: 0 auto;">
+      <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+        <span style="width: 10px; height: 10px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      </div>
+      <p style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4vw, 44px); line-height: 1.16; letter-spacing: -0.02em; margin: 0 0 30px; text-align: center;">fal taxes generative media. KeepState taxes agent-hours.</p>
+      <p style="font-size: 18px; line-height: 1.75; color: #39404C; margin: 0 0 28px; text-wrap: pretty;">Every long-running task in the world is becoming a session: metered, durable, forkable, replayable. We are building the layer that keeps that state, the way the caravanserai kept the caravans: the place where long journeys checkpoint for the night and continue at dawn. The open session protocol is named han in its honor.</p>
+      <a href="Manifesto.dc.html" style="font-size: 16px; font-weight: 500; color: #7A2530;">Read the manifesto: The Session Economy →</a>
+    </div>
+  </section>
+
+  <section id="partner" style="background: #16130F;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 84px 28px;">
+      <div style="max-width: 46em;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.4vw, 50px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 24px;">Send us one trace of your longest run.</h2>
+        <p style="font-size: 18px; line-height: 1.7; color: #C9C4BA; margin: 0 0 34px; text-wrap: pretty;">Within two weeks we <span style="color: #D9B8B8;">pull the plug on your agent, live</span>, and hand you the cost model of what you'd save.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#partner" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Become a design partner</a>
+          <a href="#docs" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Read the docs</a>
+        </div>
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 34px 0 0;">keepstate.ai · the durable agent session cloud</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="docs" style="border-top: 1px solid #D8D2C4;">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 60px 28px 40px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 36px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 4px;">Product</p>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Docs</a>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">CLI</a>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Status</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 4px;">Company</p>
+          <a href="Manifesto.dc.html" style="font-size: 14px; color: #39404C; text-decoration: none;">Manifesto</a>
+          <a href="#partner" style="font-size: 14px; color: #39404C; text-decoration: none;">Careers</a>
+          <p style="font-size: 13px; line-height: 1.5; color: #7A6F60; margin: -4px 0 0;">Hiring engineer #1: virtualization and storage</p>
+          <a href="#partner" style="font-size: 14px; color: #39404C; text-decoration: none;">Contact</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 4px;">Protocol</p>
+          <p style="font-size: 14px; line-height: 1.5; color: #39404C; margin: 0;">han, the open session protocol</p>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Spec</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530; margin: 0 0 4px;">Legal</p>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Terms</a>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Privacy</a>
+          <a href="#docs" style="font-size: 14px; color: #39404C; text-decoration: none;">Security</a>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; margin-top: 48px; padding-top: 22px; border-top: 1px solid #D8D2C4;">
+        <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <p style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; color: #7A6F60; margin: 0;">© KeepState</p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showPartners&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;typingSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:26,&quot;min&quot;:8,&quot;max&quot;:60,&quot;step&quot;:2,&quot;unit&quot;:&quot;ms/char&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero terminal&quot;},&quot;terminalLoop&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero terminal&quot;}}">
+class Component extends DCLogic {
+  state = { lines: [], flash: 0, forkOffset: 320, econ: 0 };
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this.reduced) {
+      this.setState({ lines: this.finalFrame(), forkOffset: 0, econ: 45 });
+      return;
+    }
+    this.alive = true;
+    this.loop();
+    this.observe();
+  }
+
+  componentWillUnmount() {
+    this.alive = false;
+    clearTimeout(this.t);
+  }
+
+  componentDidUpdate() {
+    const el = this.termEl;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  observe() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        if (e.target.id === 'econ') this.countUp();
+        else this.setState({ forkOffset: 0 });
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.4 });
+    const svg = document.querySelector('svg[role="img"]');
+    const econ = document.getElementById('econ');
+    if (svg) io.observe(svg);
+    if (econ) io.observe(econ);
+    this.io = io;
+  }
+
+  countUp() {
+    const dur = 700, t0 = performance.now();
+    const step = (now) => {
+      if (!this.alive) return;
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      this.setState({ econ: Math.round(eased * 45) });
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  finalFrame() {
+    return [
+      { text: '$ ks run --image claude-code --workspace ./payments-migration', tone: 'cmd' },
+      { text: 'session s_7f3a started · checkpointing every 5m', tone: 'dim' },
+      { text: '[agent working · 04:58:12 elapsed · 312 files touched]', tone: 'work' },
+      { text: '$ kill -9 14203            # the plug, pulled', tone: 'cmd' },
+      { text: '$ ks resume s_7f3a', tone: 'cmd' },
+      { text: 'restored in 87s · nonce match', tone: 'ok', mark: true, text2: '· 0 bytes lost' },
+      { text: '[agent resumes mid-sentence]', tone: 'work' }
+    ];
+  }
+
+  wait(ms) {
+    return new Promise((r) => { this.t = setTimeout(r, ms); });
+  }
+
+  push(line) {
+    this.setState((s) => ({ lines: s.lines.concat([line]) }));
+  }
+
+  patchLast(patch) {
+    this.setState((s) => {
+      const lines = s.lines.slice();
+      lines[lines.length - 1] = Object.assign({}, lines[lines.length - 1], patch);
+      return { lines: lines };
+    });
+  }
+
+  async type(text, tone) {
+    const speed = this.props.typingSpeed ?? 26;
+    this.push({ text: '', tone: tone });
+    for (let i = 1; i <= text.length; i++) {
+      if (!this.alive) return;
+      this.patchLast({ text: text.slice(0, i) });
+      await this.wait(speed);
+    }
+  }
+
+  fmt(s) {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    const p = (n) => String(n).padStart(2, '0');
+    return p(h) + ':' + p(m) + ':' + p(sec);
+  }
+
+  async loop() {
+    while (this.alive) {
+      this.setState({ lines: [], flash: 0 });
+      await this.wait(700);
+      await this.type('$ ks run --image claude-code --workspace ./payments-migration', 'cmd');
+      await this.wait(300);
+      this.push({ text: 'session s_7f3a started · checkpointing every 5m', tone: 'dim' });
+      await this.wait(420);
+      let elapsed = 4 * 3600 + 58 * 60 + 12;
+      this.push({ text: '[agent working · ' + this.fmt(elapsed) + ' elapsed · 312 files touched]', tone: 'work' });
+      for (let i = 0; i < 22; i++) {
+        if (!this.alive) return;
+        await this.wait(110);
+        elapsed += 1;
+        this.patchLast({ text: '[agent working · ' + this.fmt(elapsed) + ' elapsed · 312 files touched]' });
+      }
+      await this.wait(260);
+      await this.type('$ kill -9 14203            # the plug, pulled', 'cmd');
+      this.setState({ flash: 0.55 });
+      await this.wait(90);
+      this.setState({ flash: 0 });
+      await this.wait(620);
+      await this.type('$ ks resume s_7f3a', 'cmd');
+      await this.wait(520);
+      this.push({ text: 'restored in 87s · nonce match', tone: 'ok', mark: true, text2: '· 0 bytes lost' });
+      await this.wait(340);
+      this.push({ text: '[agent resumes mid-sentence]', tone: 'work' });
+      await this.wait(4000);
+      if (this.props.terminalLoop === false) return;
+    }
+  }
+
+  renderVals() {
+    const tones = { cmd: '#FBFAF7', dim: '#8A8378', work: '#D9B8B8', ok: '#EFEBE1' };
+    const last = this.state.lines.length - 1;
+    return {
+      termRef: (el) => { this.termEl = el; },
+      showPartners: this.props.showPartners ?? true,
+      flash: this.state.flash,
+      forkOffset: this.state.forkOffset,
+      econLabel: '−' + this.state.econ + '%',
+      lines: this.state.lines.map((l, i) => ({
+        text: l.text,
+        text2: l.text2 || '',
+        mark: !!l.mark,
+        color: tones[l.tone] || '#EFEBE1',
+        color2: '#8A8378',
+        cursor: !this.reduced && i === last
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

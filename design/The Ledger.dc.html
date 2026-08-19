@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap;">
+        <a href="Manifesto.dc.html" style="font-size: 14px; color: #39404C;">Manifesto</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Docs.dc.html" style="font-size: 14px; color: #39404C;">Docs</a>
+        <div style="display: flex; gap: 3px; background: #EFEBE1; border-radius: 3px; padding: 3px;">
+          <sc-for list="{{ views }}" as="v" hint-placeholder-count="3">
+            <button type="button" onClick="{{ v.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; background: {{ v.bg }}; color: {{ v.color }}; border: none; border-radius: 2px; padding: 6px 11px; cursor: pointer;">{{ v.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 44px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">The Ledger</span>
+        </div>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 15em;">An engineering notebook we happen to publish.</h1>
+        <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">No thought leadership, no listicles, no reposted benchmarks. Things we measured, things we got wrong, and the occasional argument about where agent infrastructure is going. Every number in every post cites the gate that produced it.</p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #7A6F60; margin: 0;">18 posts · written by the 6 people who build it · no guest posts, ever</p>
+      </section>
+
+      <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
+          <sc-for list="{{ tags }}" as="t" hint-placeholder-count="5">
+            <button type="button" onClick="{{ t.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; background: {{ t.bg }}; color: {{ t.color }}; border: 1px solid {{ t.border }}; border-radius: 100px; padding: 6px 13px; cursor: pointer;">{{ t.label }}</button>
+          </sc-for>
+        </div>
+
+        <article style="border-bottom: 1px solid #D8D2C4; padding-bottom: 34px; margin-bottom: 12px;">
+          <button type="button" onClick="{{ lead.onOpen }}" style="width: 100%; background: transparent; border: none; padding: 0; cursor: pointer; text-align: left;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 100px; padding: 4px 10px;">{{ lead.tag }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ lead.date }} · {{ lead.read }}</span>
+            </div>
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 4vw, 42px); line-height: 1.08; letter-spacing: -0.022em; font-weight: 400; color: #16130F; margin: 0 0 16px; max-width: 26em;">{{ lead.title }}</h2>
+            <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 16px; max-width: 44em;">{{ lead.excerpt }}</p>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0;">{{ lead.author }}</p>
+          </button>
+        </article>
+
+        <div style="display: grid; gap: 0;">
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="6">
+            <article style="border-bottom: 1px solid #D8D2C4;">
+              <button type="button" onClick="{{ p.onOpen }}" style="width: 100%; background: transparent; border: none; padding: 24px 2px; cursor: pointer; text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px 32px; align-items: start;">
+                <div style="min-width: 0;">
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <span style="width: 6px; height: 6px; background: {{ p.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ p.tagColor }};">{{ p.tag }}</span>
+                  </div>
+                  <h3 style="font-family: Newsreader, Georgia, serif; font-size: 23px; line-height: 1.22; font-weight: 500; color: #16130F; margin: 0;">{{ p.title }}</h3>
+                </div>
+                <p style="font-size: 14.5px; line-height: 1.65; color: #39404C; margin: 0;">{{ p.excerpt }}</p>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.7; color: #7A6F60; margin: 0; text-align: right;">{{ p.date }}<br />{{ p.read }}</p>
+              </button>
+            </article>
+          </sc-for>
+        </div>
+
+        <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px; margin-top: 34px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+          <div style="min-width: 0; max-width: 34em;">
+            <p style="font-size: 14px; font-weight: 600; margin: 0 0 8px;">The Session Economy</p>
+            <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0;">Five essays on where agent infrastructure is going. One email per essay. Nothing else.</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: nowrap; flex: 1 1 280px; min-width: 0;">
+            <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@company.com" aria-label="email address" style="flex: 1 1 0; min-width: 0; font-family: Inter, sans-serif; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid {{ emailBorder }}; border-radius: 3px; padding: 11px 13px; outline: none;" style-focus="border-color: #7A2530;" />
+            <button type="button" onClick="{{ subscribe }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 11px 17px; cursor: pointer; flex: 0 0 auto;">{{ subLabel }}</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <section style="max-width: 760px; margin: 0 auto; padding: 40px 28px 0;">
+        <button type="button" onClick="{{ back }}" style="font-family: Inter, sans-serif; font-size: 13px; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 14px; cursor: pointer; margin-bottom: 34px;">← The Ledger</button>
+
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; border: 1px solid #E4CFCC; background: #F6ECEA; border-radius: 100px; padding: 4px 10px;">{{ post.tag }}</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ post.date }} · {{ post.read }}</span>
+        </div>
+
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 4.6vw, 46px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 20px;">{{ post.title }}</h1>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0 0 40px;">{{ post.author }}</p>
+
+        <sc-for list="{{ post.blocks }}" as="b" hint-placeholder-count="8">
+          <div>
+            <sc-if value="{{ b.isText }}" hint-placeholder-val="{{ true }}">
+              <p style="font-size: 17.5px; line-height: 1.78; color: #39404C; margin: 0 0 24px; text-wrap: pretty;">{{ b.text }}</p>
+            </sc-if>
+            <sc-if value="{{ b.isHead }}" hint-placeholder-val="{{ false }}">
+              <h2 style="font-family: Newsreader, Georgia, serif; font-size: 27px; line-height: 1.2; font-weight: 500; margin: 38px 0 16px;">{{ b.text }}</h2>
+            </sc-if>
+            <sc-if value="{{ b.isPull }}" hint-placeholder-val="{{ false }}">
+              <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 22px; line-height: 1.45; color: #16130F; margin: 32px 0; padding-left: 22px; border-left: 2px solid #E4CFCC;">{{ b.text }}</p>
+            </sc-if>
+            <sc-if value="{{ b.isCode }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #16130F; border-radius: 5px; padding: 18px 20px; margin: 0 0 26px;">
+                <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.8; color: #EFEBE1; margin: 0; overflow-x: auto; white-space: pre;">{{ b.text }}</pre>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isTable }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden; margin: 0 0 26px;">
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 400px;">
+                    <thead>
+                      <tr style="background: #FBFAF7;">
+                        <sc-for list="{{ b.head }}" as="h" hint-placeholder-count="3">
+                          <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">{{ h }}</th>
+                        </sc-for>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="4">
+                        <tr style="border-bottom: 1px solid #EDE9DF;">
+                          <td style="padding: 12px 16px; font-size: 13.5px; color: #16130F;">{{ r.a }}</td>
+                          <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #39404C; font-variant-numeric: tabular-nums;">{{ r.b }}</td>
+                          <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: {{ r.cColor }}; font-variant-numeric: tabular-nums;">{{ r.c }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isNote }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 5px; padding: 20px 22px; margin: 0 0 26px;">
+                <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 10px;">
+                  <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">{{ b.label }}</span>
+                </div>
+                <p style="font-size: 15.5px; line-height: 1.72; color: #16130F; margin: 0;">{{ b.text }}</p>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <div style="border-top: 1px solid #D8D2C4; margin-top: 40px; padding-top: 26px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+          <p style="font-size: 14px; line-height: 1.65; color: #39404C; margin: 0; max-width: 34em;">Every number here comes from a gate run. If one disagrees with your own measurement, that is a finding and we will publish the correction.</p>
+          <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530; white-space: nowrap;">
+            <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ post.gate }}
+          </a>
+        </div>
+      </section>
+
+      <section style="max-width: 760px; margin: 0 auto; padding: 40px 28px 90px;">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">next in the ledger</p>
+        <div style="display: grid; gap: 0;">
+          <sc-for list="{{ related }}" as="r" hint-placeholder-count="2">
+            <button type="button" onClick="{{ r.onOpen }}" style="width: 100%; background: transparent; border: none; border-top: 1px solid #D8D2C4; padding: 18px 2px; cursor: pointer; text-align: left; display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+              <span style="font-family: Newsreader, Georgia, serif; font-size: 19px; line-height: 1.3; color: #16130F;">{{ r.title }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; white-space: nowrap;">{{ r.date }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isChangelog }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <section style="max-width: 1000px; margin: 0 auto; padding: 68px 28px 40px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Changelog</span>
+        </div>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.8vw, 52px); line-height: 1.05; letter-spacing: -0.024em; font-weight: 400; margin: 0 0 22px; max-width: 17em;">Every fix cites the entry that asked for it and the gate that holds it.</h1>
+        <p style="font-size: 16.5px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">Terse on purpose. If a line matters to you, its backlog entry and its gate are both links, so you can read the argument rather than trust the summary.</p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #7A6F60; margin: 0;">current: ks 0.14.2 · keepstate v0.1.1 · 41 releases</p>
+      </section>
+
+      <section style="max-width: 1000px; margin: 0 auto; padding: 0 28px 90px;">
+        <div style="display: grid; gap: 22px;">
+          <sc-for list="{{ releases }}" as="rel" hint-placeholder-count="4">
+            <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+              <div style="padding: 20px 24px; border-bottom: 1px solid #EDE9DF; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
+                  <span style="width: 8px; height: 8px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #16130F; margin: 0;">{{ rel.version }}</p>
+                  <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0;">{{ rel.date }}</p>
+                </div>
+                <p style="font-size: 13.5px; line-height: 1.55; color: #39404C; margin: 0; max-width: 30em;">{{ rel.summary }}</p>
+              </div>
+              <div>
+                <sc-for list="{{ rel.entries }}" as="e" hint-placeholder-count="4">
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px 20px; padding: 15px 24px; border-bottom: 1px solid #EDE9DF; align-items: baseline;">
+                    <div style="display: flex; align-items: baseline; gap: 10px; min-width: 0;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ e.kindColor }}; background: {{ e.kindBg }}; border: 1px solid {{ e.kindBorder }}; border-radius: 2px; padding: 3px 7px; white-space: nowrap; flex: 0 0 auto;">{{ e.kind }}</span>
+                    </div>
+                    <p style="font-size: 14px; line-height: 1.6; color: #16130F; margin: 0;">{{ e.text }}</p>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end;">
+                      <a href="#" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ e.backlog }}</a>
+                      <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A2530; white-space: nowrap;">
+                        <span style="width: 4px; height: 4px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ e.gate }}
+                      </a>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+
+        <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px; margin-top: 22px;">
+          <p style="font-size: 13.5px; line-height: 1.7; color: #39404C; margin: 0; max-width: 52em;">Entries marked <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530;">finding</span> came from something breaking in production. They link to the incident write-up on <a href="Status.dc.html">Status</a> rather than to a backlog ticket, because the ticket was written after the fact.</p>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { view: 'index', post: 0, tag: 'all', email: '', sub: '' };
+
+  postData() {
+    return [
+      {
+        tag: 'measurement', date: '2026-08-04', read: '9 min read', dot: '#7A2530', tagColor: '#7A2530',
+        title: 'We measured dedup at 19x, then tried to break it.',
+        excerpt: 'A checkpoint every five minutes should be ruinous. It is not, and the reason is boring: agents touch a tiny fraction of a filesystem per step. Here is the soak, the pathological cases we built to defeat it, and the one workload where the ratio collapses to 2.4x.',
+        author: 'Ravi Krishnan · virtualization',
+        gate: 'G-114',
+        blocks: [
+          { t: 'text', v: 'The first version of our pricing page had a footnote apologizing for storage costs. We assumed a 1.2 GB freeze every five minutes meant 14 GB an hour, and we designed a cadence slider so customers could trade safety for money. Then we measured it, and the slider became pointless.' },
+          { t: 'head', v: 'What we expected' },
+          { t: 'text', v: 'A running agent modifies its workspace continuously: it edits files, installs packages, writes logs, runs tests that produce artifacts. Naively, each snapshot is a new copy of a machine that has changed since the last one. We budgeted for that, and the budget was wrong by more than an order of magnitude.' },
+          { t: 'head', v: 'What the soak showed' },
+          { t: 'text', v: 'Thirty days, 41 GB of raw snapshot volume, one long-running claude-code session working through a payments migration. After content-addressed deduplication the store held 2.2 GB. The ratio is 19x, and the shape of it is more interesting than the number.' },
+          { t: 'table', head: ['workload', 'raw', 'after dedup'], rows: [
+            { a: 'Code migration, 41 checkpoints', b: '41.0 GB', c: '2.2 GB', cColor: '#7A2530' },
+            { a: 'Test-heavy loop, 88 checkpoints', b: '96.4 GB', c: '4.1 GB', cColor: '#7A2530' },
+            { a: 'Dependency churn, 30 checkpoints', b: '38.2 GB', c: '9.6 GB', cColor: '#39404C' },
+            { a: 'Video transcode, 22 checkpoints', b: '61.0 GB', c: '25.4 GB', cColor: '#39404C' }
+          ] },
+          { t: 'text', v: 'The last row is the one worth staring at. A workload whose whole purpose is writing large novel binaries defeats content addressing entirely, because there is nothing to share between snapshots. Dedup is not a property of our storage engine. It is a property of what your agent does, and we should say so on the pricing page rather than quoting our best case.' },
+          { t: 'pull', v: 'Dedup is not a property of our storage engine. It is a property of what your agent does.' },
+          { t: 'head', v: 'Trying to break it on purpose' },
+          { t: 'text', v: 'We wrote three adversarial workloads. One writes a gigabyte of random bytes between every checkpoint, one rewrites the same file with a one-byte change at a random offset, and one runs a package manager in a loop. The random-bytes case is the honest floor: 2.4x, essentially just intra-snapshot compression.' },
+          { t: 'code', v: '$ ks soak --profile adversarial-random --checkpoints 20\nraw 20.4 GB · stored 8.5 GB · ratio 2.4x\n$ ks soak --profile one-byte-rewrite --checkpoints 20\nraw 19.8 GB · stored 0.31 GB · ratio 63.9x' },
+          { t: 'note', label: 'what this changed', v: 'The claims file now scopes the dedup number to its measurement: 19x on our own soak, with a stated floor of 2.4x on write-heavy binary workloads. The cadence slider stayed in the product, but the default cadence got more aggressive, because for the workloads people actually run the storage cost of safety is close to noise.' }
+        ]
+      },
+      {
+        tag: 'postmortem', date: '2026-07-20', read: '6 min read', dot: '#7A2530', tagColor: '#7A2530',
+        title: 'The status page was green for 31 hours on no data at all.',
+        excerpt: 'Our console was healthy. The probe watching it was dead. Because a missing result was treated as a passing result, we published a claim of health for more than a day with nothing behind it. This is the incident that produced our first UI law.',
+        author: 'Priya Nair · platform',
+        gate: 'G-160',
+        blocks: [
+          { t: 'text', v: 'On 2 July a credential rotation broke the external probe that watches our console. The console itself was fine throughout. What broke was our ability to know that, and worse, our willingness to claim it anyway.' },
+          { t: 'head', v: 'The bug was one line of rendering' },
+          { t: 'text', v: 'The dashboard asked the probe store for the last result. When there was no result, the query returned nothing, and the rendering code treated nothing as an absence of failures. Absence of failures rendered green.' },
+          { t: 'code', v: '// before\nconst failures = await probe.failuresSince(day);\nreturn failures.length === 0 ? "operational" : "degraded";' },
+          { t: 'text', v: 'This is not an exotic mistake. It is the default shape of almost every status dashboard, because the query that asks "what went wrong" cannot distinguish nothing went wrong from nobody was looking. We had written that code, reviewed it, and shipped it, and it lied for 31 hours before anyone noticed.' },
+          { t: 'pull', v: 'The query that asks what went wrong cannot distinguish nothing went wrong from nobody was looking.' },
+          { t: 'head', v: 'The law that came out of it' },
+          { t: 'text', v: 'Missing instrumentation reports as unavailable, never as zero. A zero is a measurement. That sentence is now the first UI law in our design system, it is enforced by a gate, and it changed roughly forty places in the console: every metric card, every uptime bar, every dollar figure on a billing page.' },
+          { t: 'text', v: 'The visible consequence is that our own status page is uglier than it was. Two days in July render gray on the console uptime strip, permanently, because we genuinely do not know what happened on those days. We could backfill them from internal telemetry and nobody would ever know. We are not going to.' },
+          { t: 'note', label: 'filed as', v: 'F-063, and the incident write-up is INC-013 on the status page. The law is the reason every unavailable chip on this site looks the way it does.' }
+        ]
+      },
+      {
+        tag: 'argument', date: '2026-07-08', read: '11 min read', dot: '#A69E8E', tagColor: '#7A6F60',
+        title: 'A quest log is not a save state.',
+        excerpt: 'Most agent frameworks offer resume. Almost all of them mean: replay your notes into a fresh world. The distinction is not pedantry, it decides whether an agent can hold a dev server, a debugger, and a half-finished thought across an interruption.',
+        author: 'Ravi Krishnan · virtualization',
+        gate: 'G-107',
+        blocks: [
+          { t: 'text', v: 'Every long-running agent product has a resume feature. When you read the implementations, almost all of them do the same thing: they persist a transcript, and on resume they replay that transcript into a brand new process. Your notes survive. The world resets.' },
+          { t: 'head', v: 'Why the distinction matters' },
+          { t: 'text', v: 'Consider what a coding agent has in flight at hour five: a dev server on port 3000 with warm caches, a test runner mid-suite, a debugger attached to a process, forty files edited but not committed, a package install half finished, and a model that has built up an understanding of the codebase across two hundred tool calls.' },
+          { t: 'text', v: 'A transcript replay recovers exactly one of those things. Everything else has to be rebuilt, and the agent does not know it needs rebuilding, so it spends its first twenty steps discovering that the world does not match its notes.' },
+          { t: 'pull', v: 'The agent spends its first twenty steps discovering that the world does not match its notes.' },
+          { t: 'head', v: 'What a save state requires' },
+          { t: 'text', v: 'Three states, frozen as one write: the filesystem, the model memory, and the tool state. The atomicity is the hard part and it is not optional. If the filesystem is captured at t and the model memory at t plus 40 ms, you have built a machine that wakes up remembering a file it never wrote.' },
+          { t: 'text', v: 'We learned that the expensive way. Our first implementation acknowledged a checkpoint when two of three states were durable, which produced nine sessions across three customers that woke into a world slightly behind their own memory. It is written up as F-061 and it is the reason our constitution contains the line "assert the fact, not the residue".' },
+          { t: 'note', label: 'the honest caveat', v: 'This only works if your harness keeps its state inside the process we host. A harness that stores conversation state in a provider-side store is outside what a snapshot can reach, and we cannot freeze what we do not host. One of our four pilots failed for exactly this reason, and we published it.' }
+        ]
+      },
+      {
+        tag: 'measurement', date: '2026-06-30', read: '7 min read', dot: '#7A2530', tagColor: '#7A2530',
+        title: 'Where the 45 percent actually came from.',
+        excerpt: 'One partner, one trace, a token bill that fell by nearly half. We broke the saving into its three parts, and the largest one is not the clever one.',
+        author: 'Priya Nair · platform',
+        gate: 'G-140',
+        blocks: [
+          { t: 'text', v: 'We put a number on our homepage: the token bill drops 45 percent on an identical trace. It is labeled as an observation from one partner rather than a proven claim, and this post is the arithmetic behind it, because a number without arithmetic is marketing.' },
+          { t: 'table', head: ['source of saving', 'share', 'mechanism'], rows: [
+            { a: 'Not restarting after a crash', b: '31%', c: 'durability', cColor: '#7A2530' },
+            { a: 'Stored-response replay on retries', b: '9%', c: 'gateway', cColor: '#39404C' },
+            { a: 'Cache-aware routing', b: '5%', c: 'gateway', cColor: '#39404C' }
+          ] },
+          { t: 'text', v: 'The boring part dominates. Two thirds of the saving is simply not paying twice for work that was already done, which happens because the run does not restart. The routing cleverness we spent the most engineering time on contributes the least.' },
+          { t: 'pull', v: 'The routing cleverness we spent the most engineering time on contributes the least.' },
+          { t: 'text', v: 'This has an uncomfortable implication for anyone whose agents rarely crash: if your six-hour runs finish reliably today, the durability third of that saving does not apply to you, and you should expect something closer to 14 percent. We would rather say that here than have you discover it after switching.' },
+          { t: 'note', label: 'what we will not do', v: 'We will not quote 45 percent as a general figure. It is one workload, on managed inference, with a crash rate typical of long agent runs in mid-2026. Send us a trace and we will meter yours instead of extrapolating from theirs.' }
+        ]
+      },
+      {
+        tag: 'argument', date: '2026-06-18', read: '8 min read', dot: '#A69E8E', tagColor: '#7A6F60',
+        title: 'Agent-hours are the unit nobody owns.',
+        excerpt: 'Requests, then tokens, now hours. Each shift in the unit of compute created a company. This one has not yet, and the reason is that durability is unglamorous infrastructure work that nobody wants to do.',
+        author: 'Ravi Krishnan · virtualization',
+        gate: 'G-140',
+        blocks: [
+          { t: 'text', v: 'Cloud compute was billed in instance-hours, then in requests, then in tokens. Each of those shifts produced a company that owned the meter. The current shift, from tokens to agent-hours, is well underway and the meter is unowned.' },
+          { t: 'head', v: 'Why the unit changed' },
+          { t: 'text', v: 'A token is a stateless unit. An agent-hour is not: it carries a filesystem, a memory, a set of running processes, and an accumulating bill. That makes it much harder to host and much more valuable to hold, which is the usual signature of infrastructure worth building.' },
+          { t: 'text', v: 'The evidence that the shift is real is mundane. Task horizons have roughly doubled every seven months. Inference-time compute now outweighs training for a growing share of the industry. MCP standardized tool use, so long tasks became the default rather than the demo.' },
+          { t: 'pull', v: 'Every serious agent team rebuilds this privately. None of them wants to.' },
+          { t: 'head', v: 'The part we are least sure about' },
+          { t: 'text', v: 'The obvious counterargument is that model providers absorb this themselves. They have the incentive and the capital, and a provider-side session store would be simpler for customers than a separate durability layer. Our bet is that nobody wants their durability tied to one provider, and that a neutral layer that works across all of them is worth more than a convenient one that does not. That is a bet, not a measurement, and we have no gate for it.' },
+          { t: 'note', label: 'stated as opinion', v: 'This post contains no measured claims about the market. The three trend statements above are cited on the homepage with sources; the argument built on them is ours, and it may be wrong.' }
+        ]
+      },
+      {
+        tag: 'engineering', date: '2026-06-05', read: '5 min read', dot: '#A69E8E', tagColor: '#7A6F60',
+        title: 'Warm resume in 90 milliseconds, and why cold takes 900 times longer.',
+        excerpt: 'The gap between our two resume paths is three orders of magnitude, and customers keep asking why. The short answer is that one of them moves a gigabyte across a network.',
+        author: 'Ravi Krishnan · virtualization',
+        gate: 'G-101, G-102',
+        blocks: [
+          { t: 'text', v: 'We publish two resume figures: warm under 100 ms, cold under 90 s. People reasonably ask what makes them so different, and whether the cold path can be made to look like the warm one.' },
+          { t: 'text', v: 'A warm resume happens when the checkpoint is still on the host that took it. The page cache is populated, the snapshot is local, and restoring is mostly a matter of remapping memory and letting the VM continue. There is no network in the path at all.' },
+          { t: 'code', v: 'warm:  map snapshot (local) -> verify nonce -> resume vCPU\n       p50 41 ms · p95 87 ms\ncold:  fetch blobs (network) -> reassemble -> map -> verify -> resume\n       p50 62 s · p95 81 s' },
+          { t: 'text', v: 'A cold resume has to fetch a deduplicated blob set across a network, reassemble it, and only then do the fast part. Dedup helps here in a way that surprised us: a resume onto a host that has recently run a similar image already holds most of the blobs, which is why the p50 is well under the p95.' },
+          { t: 'head', v: 'What we are doing about it' },
+          { t: 'text', v: 'The target for the next quarter is a cold p95 of 40 s, and the honest way to get there is prefetching blobs to likely hosts before anyone asks for a resume. That is speculative work with a real storage cost, so it will be measured and gated rather than announced.' },
+          { t: 'note', label: 'a number we do not have', v: 'We cannot tell you what a cold resume costs on your workload, because it depends on your image and your region, and we have not metered you. The console renders that field as unavailable rather than guessing.' }
+        ]
+      },
+      {
+        tag: 'postmortem', date: '2026-05-22', read: '4 min read', dot: '#7A2530', tagColor: '#7A2530',
+        title: 'A customer found our double-billing bug before we did.',
+        excerpt: 'Exactly-once enforcement lived partly in the client SDK. A retry from an older version bypassed the store check. 2,140 calls across 14 organizations were bought twice, and a design partner reading their own ledger noticed first.',
+        author: 'Priya Nair · platform',
+        gate: 'G-121',
+        blocks: [
+          { t: 'text', v: 'On 27 June a design partner emailed us a screenshot of their own ledger with two rows highlighted: the same model call, billed twice, four seconds apart. They had found it by reading the thing we built to make billing legible.' },
+          { t: 'head', v: 'The mistake was trusting the client' },
+          { t: 'text', v: 'Our exactly-once guarantee was enforced in two places: the gateway, and the SDK that talks to it. An older SDK version issued retries by a path that skipped the store lookup, so the gateway saw a fresh request rather than a retry and bought tokens that were already paid for.' },
+          { t: 'pull', v: 'Any guarantee enforced in a client is a guarantee you have asked your customer to keep on your behalf.' },
+          { t: 'text', v: 'Because the ledger held both rows, we could compute the exact refund for every affected organization rather than estimating. All 14 were credited within 48 hours, including the eleven who had not noticed and would probably never have asked.' },
+          { t: 'head', v: 'The fix, and the law' },
+          { t: 'text', v: 'Enforcement moved entirely to the gateway. The SDK cannot bypass it now, because the SDK is no longer trusted with the decision. The constitution gained: exactly-once is enforced at the gateway, never trusted from the client.' },
+          { t: 'note', label: 'the thing we are proud of', v: 'Not the fix. The fact that a customer could audit us using our own product, and that the evidence was good enough to compute a refund from. That is what the ledger is for, including when we are the ones who got it wrong.' }
+        ]
+      }
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const kindStyle = {
+      added: { kindColor: '#39404C', kindBg: '#EFEBE1', kindBorder: '#D8D2C4' },
+      changed: { kindColor: '#39404C', kindBg: '#FFFFFF', kindBorder: '#D8D2C4' },
+      fixed: { kindColor: '#7A2530', kindBg: '#F6ECEA', kindBorder: '#E4CFCC' },
+      finding: { kindColor: '#FBFAF7', kindBg: '#16130F', kindBorder: '#16130F' }
+    };
+
+    const all = this.postData();
+    const filtered = s.tag === 'all' ? all : all.filter((p) => p.tag === s.tag);
+    const lead = filtered[0] || all[0];
+    const rest = filtered.slice(1);
+    const current = all[s.post];
+
+    const blockFlags = (b) => ({
+      isText: b.t === 'text', isHead: b.t === 'head', isPull: b.t === 'pull',
+      isCode: b.t === 'code', isTable: b.t === 'table', isNote: b.t === 'note',
+      text: b.v, label: b.label || '', head: b.head || [], rows: b.rows || []
+    });
+
+    return {
+      views: [
+        { key: 'index', label: 'the ledger' },
+        { key: 'post', label: 'a post' },
+        { key: 'changelog', label: 'changelog' }
+      ].map((v) => ({
+        label: v.label,
+        bg: s.view === v.key ? '#16130F' : 'transparent',
+        color: s.view === v.key ? '#FBFAF7' : '#7A6F60',
+        onClick: () => this.setState({ view: v.key })
+      })),
+      isIndex: s.view === 'index', isPost: s.view === 'post', isChangelog: s.view === 'changelog',
+      back: () => this.setState({ view: 'index' }),
+
+      tags: ['all', 'measurement', 'postmortem', 'argument', 'engineering'].map((t) => ({
+        label: t === 'all' ? 'all posts' : t,
+        bg: s.tag === t ? '#16130F' : '#FFFFFF',
+        color: s.tag === t ? '#FBFAF7' : '#39404C',
+        border: s.tag === t ? '#16130F' : '#D8D2C4',
+        onClick: () => this.setState({ tag: t })
+      })),
+
+      lead: Object.assign({}, lead, { onOpen: () => this.setState({ view: 'post', post: all.indexOf(lead) }) }),
+      posts: rest.map((p) => Object.assign({}, p, { onOpen: () => this.setState({ view: 'post', post: all.indexOf(p) }) })),
+
+      post: Object.assign({}, current, { blocks: current.blocks.map(blockFlags) }),
+      related: all.filter((p, i) => i !== s.post).slice(0, 2).map((p) => ({
+        title: p.title, date: p.date,
+        onOpen: () => this.setState({ view: 'post', post: all.indexOf(p) })
+      })),
+
+      email: s.email,
+      emailBorder: s.sub === 'error' ? '#7A2530' : '#D8D2C4',
+      subLabel: s.sub === 'ok' ? 'subscribed' : 'Subscribe',
+      onEmail: (e) => this.setState({ email: e.target.value, sub: '' }),
+      subscribe: () => this.setState({ sub: /.+@.+\..+/.test(s.email) ? 'ok' : 'error' }),
+
+      releases: [
+        {
+          version: 'ks 0.14.2', date: '2026-08-08', summary: 'Resume path hardening and one honest regression note.',
+          entries: [
+            Object.assign({ kind: 'fixed', text: 'Cold resume no longer retries the whole blob set when one blob fails; only the missing blob is refetched.', backlog: 'KS-812', gate: 'G-102' }, kindStyle.fixed),
+            Object.assign({ kind: 'finding', text: 'Audit bundle export omitted steering events issued from a phone. Found by a customer reviewer, not by us.', backlog: 'F-064', gate: 'G-118' }, kindStyle.finding),
+            Object.assign({ kind: 'changed', text: 'Default checkpoint cadence is now 5m rather than 10m, since dedup makes the storage difference negligible for most workloads.', backlog: 'KS-798', gate: 'G-114' }, kindStyle.changed),
+            Object.assign({ kind: 'added', text: 'ks soak --profile accepts adversarial workloads, so you can measure dedup on your own shape rather than trusting ours.', backlog: 'KS-771', gate: 'G-114' }, kindStyle.added)
+          ]
+        },
+        {
+          version: 'ks 0.14.0', date: '2026-07-24', summary: 'Fork ergonomics, and the migration lock incident fix.',
+          entries: [
+            Object.assign({ kind: 'finding', text: 'A schema migration blocked the control-plane read path for 22 minutes. Migrations that can block reads now run online or not at all.', backlog: 'F-067', gate: 'G-161' }, kindStyle.finding),
+            Object.assign({ kind: 'added', text: 'ks fork accepts repeated --steer flags, one per fork, so a fan-out can be steered in a single command.', backlog: 'KS-740', gate: 'G-126' }, kindStyle.added),
+            Object.assign({ kind: 'changed', text: 'Fork sub-budgets are now enforced against the parent pool at mint time rather than at first call.', backlog: 'KS-752', gate: 'G-126' }, kindStyle.changed)
+          ]
+        },
+        {
+          version: 'ks 0.13.4', date: '2026-07-05', summary: 'The unavailable-not-zero release. Forty screens changed.',
+          entries: [
+            Object.assign({ kind: 'finding', text: 'Status page rendered operational for 31 hours on no probe data. Missing instrumentation now reports as unavailable everywhere.', backlog: 'F-063', gate: 'G-160' }, kindStyle.finding),
+            Object.assign({ kind: 'changed', text: 'Every metric surface in the console distinguishes a measured zero from an absent measurement, including billing figures.', backlog: 'KS-703', gate: 'G-160' }, kindStyle.changed),
+            Object.assign({ kind: 'added', text: 'status.json exposes the same fields as the footer system line, so you can page on them yourself.', backlog: 'KS-711', gate: 'G-160' }, kindStyle.added)
+          ]
+        },
+        {
+          version: 'ks 0.13.0', date: '2026-06-28', summary: 'Exactly-once moved out of the SDK entirely.',
+          entries: [
+            Object.assign({ kind: 'finding', text: 'A retry from an older SDK bypassed the store check and re-purchased tokens. 2,140 calls across 14 organizations, all credited.', backlog: 'F-062', gate: 'G-121' }, kindStyle.finding),
+            Object.assign({ kind: 'changed', text: 'Exactly-once enforcement is now entirely gateway-side. The SDK cannot bypass it because it no longer makes the decision.', backlog: 'KS-688', gate: 'G-121' }, kindStyle.changed),
+            Object.assign({ kind: 'fixed', text: 'Ledger rows for replayed calls display the stored-response provenance rather than a zero-token live call.', backlog: 'KS-690', gate: 'G-121' }, kindStyle.fixed)
+          ]
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

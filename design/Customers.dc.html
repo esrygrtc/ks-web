@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <a href="Product Pages.dc.html" style="font-size: 14px; color: #39404C;">Product</a>
+        <a href="Pricing.dc.html" style="font-size: 14px; color: #39404C;">Pricing</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Enterprise.dc.html" style="font-size: 14px; color: #39404C;">Enterprise</a>
+        <a href="#partner" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 9px 16px; border-radius: 3px; text-decoration: none;">Become a design partner</a>
+      </div>
+    </nav>
+  </header>
+
+  <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <section style="max-width: 1180px; margin: 0 auto; padding: 68px 28px 44px;">
+        <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+          <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Customers</span>
+        </div>
+        <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(38px, 5.4vw, 60px); line-height: 1.04; letter-spacing: -0.025em; font-weight: 400; margin: 0 0 24px; max-width: 16em;">Four pilots, four numbers we measured.</h1>
+        <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not. Names are withheld until each partner clears its own logo; the measurements are not.</p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #7A6F60; margin: 0;">4 pilots · 2 still running · 1 ended without a durability win, published anyway </p>
+      </section>
+
+      <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px;">
+          <sc-for list="{{ cases }}" as="c" hint-placeholder-count="4">
+            <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px; display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                <div style="height: 40px; flex: 1 1 130px; min-width: 0; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">logo pending clearance</div>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ c.pillColor }}; background: {{ c.pillBg }}; border: 1px solid {{ c.pillBorder }}; border-radius: 100px; padding: 4px 10px; white-space: nowrap;">{{ c.stage }}</span>
+              </div>
+
+              <div>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7A6F60; margin: 0 0 6px;">{{ c.sector }}</p>
+                <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ c.workload }}</p>
+              </div>
+
+              <div>
+                <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 30px; color: #7A2530; letter-spacing: -0.02em;">{{ c.metric }}</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: {{ c.badgeColor }}; border: 1px solid {{ c.badgeBorder }}; border-radius: 2px; padding: 2px 6px;">{{ c.badge }}</span>
+                </div>
+                <p style="font-size: 13px; line-height: 1.55; color: #7A6F60; margin: 0;">{{ c.metricNote }}</p>
+              </div>
+
+              <blockquote style="margin: 0; padding-left: 16px; border-left: 2px solid #D8D2C4; flex: 1;">
+                <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.55; color: #16130F; margin: 0 0 10px;">{{ c.quote }}</p>
+                <footer style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ c.attrib }}</footer>
+              </blockquote>
+
+              <button type="button" onClick="{{ c.onOpen }}" style="font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; color: #16130F; background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 3px; padding: 11px 16px; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 12px;" style-hover="border-color: #16130F;">
+                <span>Read the pilot report</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A2530;">{{ c.reportId }} →</span>
+              </button>
+            </article>
+          </sc-for>
+        </div>
+
+        <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 26px 24px; margin-top: 18px;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530;">why the logos are blank</span>
+          </div>
+          <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0; max-width: 50em;">Every pilot has a signed report and a named contact. None has finished its own internal approval to appear here, so the slots stay honestly empty rather than filled with marks nobody agreed to. The numbers came from our meters and can be reproduced from the reports.</p>
+        </div>
+      </section>
+
+      <section id="partner" style="background: #16130F; margin-top: 76px;">
+        <div style="max-width: 1180px; margin: 0 auto; padding: 72px 28px;">
+          <div style="max-width: 44em;">
+            <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 400; color: #FBFAF7; margin: 0 0 22px;">Send us one trace of your longest run.</h2>
+            <p style="font-size: 17px; line-height: 1.7; color: #C9C4BA; margin: 0 0 30px;">Within two weeks we <span style="color: #D9B8B8;">pull the plug on your agent, live</span>, and hand you the cost model of what you would save. You get the report either way, including the version where we do not help.</p>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+              <a href="#partner" style="font-size: 15px; font-weight: 500; color: #FBFAF7; background: #7A2530; padding: 13px 22px; border-radius: 3px; text-decoration: none;">Become a design partner</a>
+              <a href="Proof.dc.html" style="font-size: 15px; font-weight: 500; color: #FBFAF7; border: 1px solid #4A443C; padding: 12px 21px; border-radius: 3px; text-decoration: none;">Read the claims file</a>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8378; margin: 30px 0 0;">keepstate.ai · the durable agent session cloud</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width: 900px; margin: 0 auto; padding: 40px 28px 90px;">
+      <button type="button" onClick="{{ back }}" style="font-family: Inter, sans-serif; font-size: 13px; color: #39404C; background: transparent; border: 1px solid #D8D2C4; border-radius: 3px; padding: 8px 14px; cursor: pointer; margin-bottom: 28px;">← All customers</button>
+
+      <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+        <div style="padding: 34px 34px 26px; border-bottom: 1px solid #EDE9DF;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px;">
+            <div style="min-width: 0;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 12px;">pilot report · {{ rep.id }}</p>
+              <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.8vw, 40px); line-height: 1.1; letter-spacing: -0.022em; font-weight: 400; margin: 0 0 10px; max-width: 22em;">{{ rep.title }}</h1>
+              <p style="font-size: 14px; color: #7A6F60; margin: 0;">{{ rep.sector }} · {{ rep.window }}</p>
+            </div>
+            <div style="height: 46px; width: 150px; flex: 0 0 auto; border: 1px dashed #C9C2B2; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9384; background: repeating-linear-gradient(135deg, rgba(22,19,15,0.03) 0 4px, transparent 4px 8px);">logo pending clearance</div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 16px;">
+            <sc-for list="{{ rep.facts }}" as="f" hint-placeholder-count="4">
+              <div>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; margin: 0 0 7px;">{{ f.k }}</p>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #16130F; margin: 0;">{{ f.v }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding: 30px 34px; border-bottom: 1px solid #EDE9DF;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 16px;">summary</p>
+          <p style="font-size: 16px; line-height: 1.75; color: #39404C; margin: 0; max-width: 46em;">{{ rep.summary }}</p>
+        </div>
+
+        <div style="padding: 30px 34px; border-bottom: 1px solid #EDE9DF;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 18px;">results</p>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 620px;">
+              <thead>
+                <tr style="background: #FBFAF7;">
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">measure</th>
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">before</th>
+                  <th style="text-align: right; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">after</th>
+                  <th style="text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7A6F60; padding: 11px 16px; border-bottom: 1px solid #D8D2C4;">provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ rep.rows }}" as="r" hint-placeholder-count="5">
+                  <tr style="border-bottom: 1px solid #EDE9DF;">
+                    <td style="padding: 12px 16px; font-size: 13.5px; color: #16130F;">{{ r.measure }}</td>
+                    <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: #7A6F60; text-align: right; font-variant-numeric: tabular-nums;">{{ r.before }}</td>
+                    <td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; color: {{ r.afterColor }}; text-align: right; font-variant-numeric: tabular-nums;">{{ r.after }}</td>
+                    <td style="padding: 12px 16px; white-space: nowrap;">
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: {{ r.badgeColor }}; border: 1px solid {{ r.badgeBorder }}; border-radius: 2px; padding: 2px 6px;">{{ r.badge }}</span>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size: 13px; line-height: 1.65; color: #7A6F60; margin: 16px 0 0; max-width: 46em;">{{ rep.provenanceNote }}</p>
+        </div>
+
+        <div style="padding: 30px 34px; border-bottom: 1px solid #EDE9DF;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 18px;">method</p>
+          <div style="display: grid; gap: 0; max-width: 48em;">
+            <sc-for list="{{ rep.method }}" as="m" hint-placeholder-count="4">
+              <div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid #EDE9DF;">
+                <span style="width: 6px; height: 6px; background: #7A2530; transform: rotate(45deg); display: block; margin-top: 7px; flex: 0 0 auto;"></span>
+                <p style="font-size: 14.5px; line-height: 1.65; color: #39404C; margin: 0;">{{ m }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding: 30px 34px; border-bottom: 1px solid #EDE9DF; background: #FBFAF7;">
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 16px;">what did not work</p>
+          <p style="font-size: 15.5px; line-height: 1.75; color: #16130F; margin: 0; max-width: 46em;">{{ rep.negative }}</p>
+        </div>
+
+        <div style="padding: 30px 34px;">
+          <blockquote style="margin: 0 0 26px; padding-left: 20px; border-left: 2px solid #E4CFCC; max-width: 44em;">
+            <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 19px; line-height: 1.55; color: #16130F; margin: 0 0 12px;">{{ rep.quote }}</p>
+            <footer style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ rep.attrib }}</footer>
+          </blockquote>
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7A2530;">
+              <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ rep.gate }}
+            </a>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">signed by both parties · {{ rep.signed }}</span>
+          </div>
+        </div>
+      </article>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 22px;">
+        <p style="font-size: 13.5px; line-height: 1.65; color: #7A6F60; margin: 0; max-width: 40em;">Reports are written from meter output, not from interviews. If a figure here disagrees with your own measurement, that is a finding and we will publish the correction.</p>
+        <a href="#partner" style="font-size: 14px; font-weight: 500; color: #FBFAF7; background: #7A2530; border-radius: 3px; padding: 11px 18px; text-decoration: none; white-space: nowrap;">Run your own pilot</a>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { open: -1 };
+
+  data() {
+    const measured = { badge: 'MEASURED', badgeColor: '#16130F', badgeBorder: '#16130F' };
+    const estimated = { badge: 'ESTIMATED', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' };
+    const stages = {
+      running: { pillColor: '#7A2530', pillBg: '#F6ECEA', pillBorder: '#E4CFCC' },
+      complete: { pillColor: '#39404C', pillBg: '#EFEBE1', pillBorder: '#D8D2C4' }
+    };
+
+    return [
+      Object.assign({
+        sector: 'Payments infrastructure',
+        workload: 'A six-hour schema migration across 40 services, run nightly by one agent.',
+        metric: '$4,100/mo',
+        metricNote: 'not re-purchased, at their own provider rates',
+        quote: 'The migration used to die around hour five and we would pay for the whole thing again in the morning. Now the crash is a line in a log.',
+        attrib: 'Staff engineer, platform',
+        reportId: 'PR-004',
+        stage: 'pilot running'
+      }, estimated, stages.running),
+      Object.assign({
+        sector: 'Developer tooling',
+        workload: 'Fan-out refactors: one freeze forked six ways, best branch merged.',
+        metric: '6.2x',
+        metricNote: 'refactor attempts per engineer-day, before and after',
+        quote: 'We stopped arguing about which instruction to try. We run all six and read the tests.',
+        attrib: 'Head of engineering',
+        reportId: 'PR-003',
+        stage: 'pilot running'
+      }, measured, stages.running),
+      Object.assign({
+        sector: 'Regulated fintech',
+        workload: 'Agent-driven reconciliation with a compliance review at every release.',
+        metric: '11 days → 2 h',
+        metricNote: 'time to produce an audit bundle for one run',
+        quote: 'Our auditor asked for the evidence and we gave them a reproduction instead of a transcript. That conversation ended early.',
+        attrib: 'Director, engineering compliance',
+        reportId: 'PR-002',
+        stage: 'pilot complete'
+      }, measured, stages.complete),
+      Object.assign({
+        sector: 'Research lab',
+        workload: 'Long-horizon evaluation runs, 30 to 60 hours per trial.',
+        metric: 'no durability win',
+        metricNote: 'their harness kept state outside the VM',
+        quote: 'KeepState could not freeze what it does not host. The billing ledger was still worth it, but the resume story was not ours yet.',
+        attrib: 'Research engineer',
+        reportId: 'PR-001',
+        stage: 'pilot complete'
+      }, measured, stages.complete)
+    ];
+  }
+
+  reports() {
+    const M = { badge: 'MEASURED', badgeColor: '#16130F', badgeBorder: '#16130F' };
+    const E = { badge: 'ESTIMATED', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' };
+
+    return [
+      {
+        id: 'PR-004',
+        title: 'A nightly migration that stopped dying at hour five.',
+        sector: 'Payments infrastructure',
+        window: '14 days, 2026-07-08 to 2026-07-22',
+        facts: [
+          { k: 'agent', v: 'claude-code' }, { k: 'sessions', v: '41' },
+          { k: 'longest run', v: '06:41:22' }, { k: 'kills survived', v: '19' }
+        ],
+        summary: 'The partner ran an unchanged nightly migration on KeepState for two weeks alongside their existing sandbox. Nineteen interruptions occurred, seventeen from provider rate limits and two from host loss. Every one resumed. On their previous setup each would have restarted the run from zero, re-sending the accumulated context to the model.',
+        rows: [
+          Object.assign({ measure: 'Runs completed without restart', before: '9 of 14', after: '14 of 14', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Tokens re-sent after interruption', before: '41.2M', after: '0', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Value of tokens not re-purchased', before: 'n/a', after: '$4,100 / mo', afterColor: '#7A2530' }, E),
+          Object.assign({ measure: 'Median resume, cold', before: 'n/a', after: '81 s', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Checkpoint storage after dedup', before: 'n/a', after: '18.4 GB', afterColor: '#16130F' }, M)
+        ],
+        provenanceNote: 'Token counts come from the gateway meter on both sides: their previous provider invoices for the before column, our meter for the after. The dollar figure is estimated because it applies their published rates to measured token counts.',
+        method: [
+          'The same migration script, unchanged, pointed at KeepState with a five-minute checkpoint cadence.',
+          'Interruptions were not simulated. We counted the ones that happened, and separately performed two deliberate kill -9 tests at hour five.',
+          'The before column is their own 14 days immediately prior, taken from provider invoices rather than estimates.',
+          'No engineer on their side changed prompts, tools, or model choice during the window.'
+        ],
+        negative: 'Two resumes took longer than our published 90-second bound, at 104 s and 118 s, both when the checkpoint crossed a region boundary. We report those as failures against our own claim and pinned their sessions to one region for the remainder of the pilot.',
+        quote: 'The migration used to die around hour five and we would pay for the whole thing again in the morning. Now the crash is a line in a log.',
+        attrib: 'Staff engineer, platform',
+        gate: 'G-101, G-107, G-121',
+        signed: '2026-07-24'
+      },
+      {
+        id: 'PR-003',
+        title: 'Forking replaced arguing about which instruction to try.',
+        sector: 'Developer tooling',
+        window: '21 days, 2026-06-15 to 2026-07-06',
+        facts: [
+          { k: 'agent', v: 'claude-code, aider' }, { k: 'forks created', v: '1,284' },
+          { k: 'engineers', v: '6' }, { k: 'budget pool', v: 'one, org-wide' }
+        ],
+        summary: 'The team used fork as their default refactor workflow: freeze at the decision point, branch six ways with different steering, merge the branch whose tests pass. The interesting result was behavioral rather than technical. Attempts per engineer-day rose sharply because attempts stopped being expensive to abandon.',
+        rows: [
+          Object.assign({ measure: 'Refactor attempts per engineer-day', before: '1.4', after: '8.7', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Median forks per decision point', before: '1', after: '6', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Storage cost of a fork at rest', before: 'n/a', after: '$0.004 / day', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Budget overruns from fan-out', before: 'n/a', after: '0', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Branches discarded', before: 'n/a', after: '1,072 of 1,284', afterColor: '#16130F' }, M)
+        ],
+        provenanceNote: 'Attempt counts are measured from their event ledgers, not self-reported. The discarded-branch figure is included deliberately: most forks are meant to be thrown away, and a low number would mean the tool was not being used as intended.',
+        method: [
+          'Fork was introduced in week one with no process guidance, so usage patterns were theirs rather than ours.',
+          'The before column covers the four weeks prior, counted from their git history and CI runs.',
+          'A single org-wide budget pool was set at their existing monthly spend, deliberately not raised for the pilot.',
+          'Aider sessions were included even though absorption on aider is only observed, not proven.'
+        ],
+        negative: 'On aider, one fork in four woke with stale tool state and had to be discarded and re-forked. That is the same 3-of-4 result our compatibility matrix reports, reproduced independently by a customer. It is a limitation of where aider keeps state, and we have not fixed it.',
+        quote: 'We stopped arguing about which instruction to try. We run all six and read the tests.',
+        attrib: 'Head of engineering',
+        gate: 'G-126, G-135',
+        signed: '2026-07-09'
+      },
+      {
+        id: 'PR-002',
+        title: 'An audit bundle in two hours instead of eleven days.',
+        sector: 'Regulated fintech',
+        window: '30 days, 2026-05-04 to 2026-06-03',
+        facts: [
+          { k: 'agent', v: 'codex' }, { k: 'sessions audited', v: '212' },
+          { k: 'retention', v: '7 years' }, { k: 'region', v: 'eu-central-1, pinned' }
+        ],
+        summary: 'The partner needed to answer a supervisory question about what an agent did to a reconciliation ledger on a specific date. Previously this meant an engineer reconstructing intent from application logs over roughly two working weeks. With deterministic replay they re-executed the run from its checkpoint and handed over the reproduction plus the signed bundle.',
+        rows: [
+          Object.assign({ measure: 'Time to produce an audit bundle', before: '11 days', after: '2 h 10 m', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Engineer hours per request', before: '38', after: '0.5', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Replays reproduced byte-identical', before: 'n/a', after: '212 of 212', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Checkpoints under legal hold', before: 'n/a', after: '19', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Annualized compliance cost', before: 'n/a', after: '−$180,000', afterColor: '#7A2530' }, E)
+        ],
+        provenanceNote: 'Timings are measured from ticket open to bundle delivery in their own tracker. The cost figure is estimated: it applies their blended engineering rate to the measured hours saved and assumes the same request volume continues.',
+        method: [
+          'One real supervisory request was answered both ways in parallel, the old process and replay, without telling either team the other was running.',
+          'The 212 replays were run in a single batch at the end of the window to test determinism at volume, not just on the audited session.',
+          'Their compliance officer, not an engineer, judged whether the bundle answered the question.',
+          'Region pinning was enforced from day one because their data cannot leave the EU.'
+        ],
+        negative: 'The first bundle we generated omitted steering events issued from a phone, because our export scoped to API-originated events only. Their reviewer caught it, not us. It is filed as F-064, the export path was fixed, and the gate that would have caught it now exists.',
+        quote: 'Our auditor asked for the evidence and we gave them a reproduction instead of a transcript. That conversation ended early.',
+        attrib: 'Director, engineering compliance',
+        gate: 'G-118',
+        signed: '2026-06-11'
+      },
+      {
+        id: 'PR-001',
+        title: 'A pilot where durability did not help.',
+        sector: 'Research lab',
+        window: '18 days, 2026-04-02 to 2026-04-20',
+        facts: [
+          { k: 'agent', v: 'custom harness' }, { k: 'trials', v: '64' },
+          { k: 'trial length', v: '30 to 60 h' }, { k: 'outcome', v: 'gateway only' }
+        ],
+        summary: 'The lab ran long-horizon evaluation trials with a harness that keeps conversation state in a provider-side store rather than in the process. A checkpoint cannot capture state it does not host, so on resume the agent had its filesystem back but not its memory of the conversation. We published this outcome rather than quietly ending the pilot.',
+        rows: [
+          Object.assign({ measure: 'Trials resumed with full state', before: 'n/a', after: '0 of 64', afterColor: '#7A2530' }, M),
+          Object.assign({ measure: 'Trials resumed with filesystem only', before: 'n/a', after: '64 of 64', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Tokens not re-purchased via gateway', before: '0', after: '8.8M', afterColor: '#16130F' }, M),
+          Object.assign({ measure: 'Interrupted calls billed twice', before: '2,140', after: '0', afterColor: '#7A2530' }, M),
+          { measure: 'Cost of a lost trial', before: 'unavailable (never metered)', after: 'unavailable (never metered)', afterColor: '#7A6F60', badge: 'UNAVAILABLE', badgeColor: '#7A6F60', badgeBorder: '#C9C2B2' }
+        ],
+        provenanceNote: 'The last row stays unavailable because neither side ever instrumented the cost of a discarded trial. We could estimate it, and an estimate would have flattered us, so it renders as absent instead.',
+        method: [
+          'The harness was moved onto KeepState unchanged, which is the only honest test of transparent absorption.',
+          'When resumes came back without model memory we stopped and diagnosed rather than patching the harness to make the pilot look better.',
+          'The pilot converted to gateway-only mode for the remaining twelve days, which is where the token result comes from.',
+          'No claim about their workload appears on our site, and no compatibility row claims their harness is absorbed.'
+        ],
+        negative: 'The entire durability thesis failed here, and it failed for a reason we should have predicted before starting: we did not ask where their harness kept conversation state. Our qualification checklist now asks that question first, and the compatibility matrix gained a door-held column because of this pilot.',
+        quote: 'KeepState could not freeze what it does not host. The billing ledger was still worth it, but the resume story was not ours yet.',
+        attrib: 'Research engineer',
+        gate: 'G-121',
+        signed: '2026-04-28'
+      }
+    ];
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cards = this.data();
+    const reps = this.reports();
+
+    return {
+      isIndex: s.open === -1,
+      isReport: s.open !== -1,
+      back: () => this.setState({ open: -1 }),
+      cases: cards.map((c, i) => Object.assign({}, c, { onOpen: () => this.setState({ open: i }) })),
+      rep: reps[s.open === -1 ? 0 : s.open]
+    };
+  }
+}
+</script>
+</body>
+</html>

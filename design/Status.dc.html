@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FBFAF7; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: #7A2530; text-decoration: none; }
+  a:hover { color: #16130F; text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid #7A2530; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</helmet>
+
+<div style="background: #FBFAF7; color: #16130F; font-family: Inter, Helvetica, Arial, sans-serif; min-height: 100vh;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.94); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid #D8D2C4;">
+    <nav style="max-width: 1180px; margin: 0 auto; padding: 15px 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;">
+      <a href="KeepState.dc.html" style="display: flex; align-items: center; gap: 10px; color: #16130F; text-decoration: none;">
+        <span style="width: 9px; height: 9px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+        <span style="font-family: Newsreader, Georgia, serif; font-size: 21px; font-weight: 500;">KeepState</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap;">
+        <a href="Security.dc.html" style="font-size: 14px; color: #39404C;">Security</a>
+        <a href="Proof.dc.html" style="font-size: 14px; color: #39404C;">Proof</a>
+        <a href="Docs.dc.html" style="font-size: 14px; color: #39404C;">Docs</a>
+        <div style="display: flex; gap: 3px; background: #EFEBE1; border-radius: 3px; padding: 3px;">
+          <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+            <button type="button" onClick="{{ m.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; background: {{ m.bg }}; color: {{ m.color }}; border: none; border-radius: 2px; padding: 6px 10px; cursor: pointer;">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 60px 28px 40px;">
+    <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 20px;">
+      <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7A2530;">Status</span>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 22px;">
+      <span style="width: 13px; height: 13px; border-radius: 100px; background: {{ head.dot }}; display: block; margin-top: 14px; flex: 0 0 auto;"></span>
+      <h1 style="font-family: Newsreader, Georgia, serif; font-size: clamp(34px, 4.8vw, 52px); line-height: 1.06; letter-spacing: -0.024em; font-weight: 400; margin: 0; max-width: 20em;">{{ head.title }}</h1>
+    </div>
+    <p style="font-size: 17px; line-height: 1.7; color: #39404C; margin: 0 0 22px; max-width: 44em; text-wrap: pretty;">{{ head.body }}</p>
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #7A6F60; margin: 0;">{{ systemLine }}</p>
+  </section>
+
+  <sc-if value="{{ hasIncident }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px 32px;">
+      <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-left: 3px solid #7A2530; border-radius: 5px; padding: 24px 26px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 7px; height: 7px; background: #7A2530; transform: rotate(45deg); display: block;"></span>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7A2530; margin: 0;">open incident · {{ live.id }}</p>
+          </div>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60; margin: 0;">opened {{ live.opened }} · updated {{ live.updated }}</p>
+        </div>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 24px; line-height: 1.25; margin: 0 0 14px;">{{ live.title }}</p>
+        <p style="font-size: 15px; line-height: 1.7; color: #39404C; margin: 0 0 20px; max-width: 48em;">{{ live.body }}</p>
+        <div style="display: grid; gap: 0; max-width: 50em;">
+          <sc-for list="{{ live.updates }}" as="u" hint-placeholder-count="3">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 6px 20px; padding: 12px 0; border-top: 1px solid #E4CFCC; align-items: baseline;">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A2530; margin: 0;">{{ u.at }}</p>
+              <p style="font-size: 14px; line-height: 1.6; color: #39404C; margin: 0;">{{ u.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 0 28px;">
+    <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+      <div style="padding: 18px 22px; border-bottom: 1px solid #D8D2C4; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0;">Uptime, last 90 days</p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60; margin: 0;">external probe · 1 minute interval</p>
+      </div>
+      <sc-for list="{{ surfaces }}" as="s" hint-placeholder-count="4">
+        <div style="padding: 20px 22px; border-bottom: 1px solid #EDE9DF;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <span style="width: 6px; height: 6px; background: {{ s.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+              <p style="font-size: 14.5px; font-weight: 500; color: #16130F; margin: 0;">{{ s.name }}</p>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: {{ s.pillColor }}; background: {{ s.pillBg }}; border: 1px solid {{ s.pillBorder }}; border-radius: 100px; padding: 3px 9px; white-space: nowrap;">{{ s.state }}</span>
+            </div>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{ s.figColor }}; margin: 0; font-variant-numeric: tabular-nums;">{{ s.uptime }}</p>
+          </div>
+          <div style="display: flex; gap: 2px; align-items: stretch; height: 30px;">
+            <sc-for list="{{ s.bars }}" as="b" hint-placeholder-count="45">
+              <span title="{{ b.title }}" style="flex: 1; min-width: 0; background: {{ b.color }}; border-radius: 1px; display: block;"></span>
+            </sc-for>
+          </div>
+          <p style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7A6F60; margin: 8px 0 0;">{{ s.note }}</p>
+        </div>
+      </sc-for>
+      <div style="padding: 14px 22px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7A6F60;"><span style="width: 9px; height: 9px; background: #4F7A52; display: block; border-radius: 1px;"></span>operational</span>
+        <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7A6F60;"><span style="width: 9px; height: 9px; background: #7A2530; display: block; border-radius: 1px;"></span>degraded or down</span>
+        <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7A6F60;"><span style="width: 9px; height: 9px; background: #D8D2C4; display: block; border-radius: 1px;"></span>no data recorded</span>
+      </div>
+    </div>
+    <p style="font-size: 13px; line-height: 1.65; color: #7A6F60; margin: 14px 2px 0; max-width: 46em;">A day with no probe data renders gray, not green. Checkpoint durability is a data claim rather than an uptime claim and is gated separately on <a href="Proof.dc.html">Proof</a>.</p>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 64px 28px 0;">
+    <h2 style="font-family: Newsreader, Georgia, serif; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 14px;">Incident history.</h2>
+    <p style="font-size: 15px; line-height: 1.65; color: #39404C; margin: 0 0 30px; max-width: 44em;">Every incident is written up the way we write internal findings: what failed, what the evidence showed, and what law changed as a result. A postmortem that changes no law is an apology, not a finding.</p>
+
+    <div style="display: grid; gap: 14px;">
+      <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+        <article style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; overflow: hidden;">
+          <button type="button" onClick="{{ h.onToggle }}" style="width: 100%; background: transparent; border: none; padding: 20px 24px; cursor: pointer; text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px 20px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 11px; min-width: 0;">
+              <span style="width: 7px; height: 7px; background: {{ h.dot }}; transform: rotate(45deg); display: block; flex: 0 0 auto;"></span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A2530;">{{ h.id }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A6F60;">{{ h.date }}</span>
+            </div>
+            <span style="font-size: 15px; font-weight: 500; color: #16130F;">{{ h.title }}</span>
+            <span style="display: flex; align-items: center; justify-content: flex-end; gap: 14px; flex-wrap: wrap;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">{{ h.duration }}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #7A6F60;">{{ h.sign }}</span>
+            </span>
+          </button>
+          <sc-if value="{{ h.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 4px 24px 26px; max-width: 62em;">
+              <div style="background: #FBFAF7; border: 1px solid #EDE9DF; border-radius: 4px; padding: 16px 18px; margin-bottom: 22px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.75; color: #39404C; margin: 0;">{{ h.preamble }}</p>
+              </div>
+              <div style="display: grid; gap: 0;">
+                <sc-for list="{{ h.sections }}" as="sec" hint-placeholder-count="3">
+                  <div style="padding: 16px 0; border-top: 1px solid #EDE9DF;">
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A6F60; margin: 0 0 10px;">{{ sec.head }}</p>
+                    <p style="font-size: 15px; line-height: 1.75; color: #39404C; margin: 0;">{{ sec.body }}</p>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background: #F6ECEA; border: 1px solid #E4CFCC; border-radius: 4px; padding: 18px 20px; margin-top: 20px;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A2530; margin: 0 0 10px;">law changed</p>
+                <p style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.55; color: #16130F; margin: 0 0 12px;">{{ h.law }}</p>
+                <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                  <a href="Proof.dc.html" style="display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #7A2530;">
+                    <span style="width: 5px; height: 5px; background: #7A2530; transform: rotate(45deg); display: inline-block;"></span>{{ h.gate }}
+                  </a>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7A6F60;">filed as {{ h.finding }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1180px; margin: 0 auto; padding: 56px 28px 90px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px;">
+      <div style="background: #EFEBE1; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 10px;">Subscribe to incidents</p>
+        <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0 0 16px;">One email when an incident opens, one when it closes. Nothing else on this list.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: nowrap;">
+          <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@company.com" aria-label="email address" style="flex: 1 1 0; min-width: 0; font-family: Inter, sans-serif; font-size: 13px; color: #16130F; background: #FFFFFF; border: 1px solid {{ emailBorder }}; border-radius: 3px; padding: 10px 12px; outline: none;" style-focus="border-color: #7A2530;" />
+          <button type="button" onClick="{{ subscribe }}" style="font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; color: #FBFAF7; background: #7A2530; border: none; border-radius: 3px; padding: 10px 16px; cursor: pointer; flex: 0 0 auto;">Subscribe</button>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{ subColor }}; margin: 10px 0 0; min-height: 15px;">{{ subNote }}</p>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 10px;">Machine-readable</p>
+        <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0 0 16px;">Poll it, page on it, put it in your own dashboard. Same fields as the footer system line.</p>
+        <div style="background: #16130F; border-radius: 4px; padding: 13px 15px;">
+          <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #EFEBE1; display: block; overflow-x: auto; white-space: nowrap;">curl keepstate.ai/status.json</code>
+        </div>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #D8D2C4; border-radius: 5px; padding: 24px;">
+        <p style="font-size: 13px; font-weight: 600; margin: 0 0 10px;">What counts as an incident</p>
+        <p style="font-size: 13.5px; line-height: 1.65; color: #39404C; margin: 0;">Any degradation a customer could notice, whether or not anyone reported it. Four of the incidents below were opened by our own probes before a single ticket arrived, and we still publish them.</p>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
+class Component extends DCLogic {
+  state = { mode: 'operational', open: -1, email: '', sub: '' };
+
+  bars(pattern) {
+    const out = [];
+    for (let i = 0; i < 45; i++) {
+      const p = pattern[i];
+      out.push({
+        color: p === 'x' ? '#7A2530' : (p === '-' ? '#D8D2C4' : '#4F7A52'),
+        title: 'day ' + (45 - i) + (p === 'x' ? ' · degraded' : (p === '-' ? ' · no data recorded' : ' · operational'))
+      });
+    }
+    return out;
+  }
+
+  pattern(bad, gaps) {
+    let p = '';
+    for (let i = 0; i < 45; i++) {
+      p += bad.indexOf(i) !== -1 ? 'x' : (gaps.indexOf(i) !== -1 ? '-' : 'o');
+    }
+    return p;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const degraded = s.mode === 'incident';
+    const dark = s.mode === 'unavailable';
+
+    const heads = {
+      operational: {
+        title: 'All systems operational. The ledger agrees.',
+        body: 'Every surface is answering its probe, and no customer-visible degradation is open. The figures below come from an external probe rather than from our own service reporting on itself.',
+        dot: '#4F7A52'
+      },
+      incident: {
+        title: 'One incident open: elevated resume latency in eu-west.',
+        body: 'Cold resumes in one region are exceeding our published 90-second bound. Checkpoints, running sessions, and billing are unaffected. This page updates before the postmortem exists.',
+        dot: '#7A2530'
+      },
+      unavailable: {
+        title: 'Status unavailable. We cannot see ourselves right now.',
+        body: 'The probe that produces this page is not reporting, so every field below reads unavailable rather than green. Your sessions may well be fine; we are declining to claim it without a measurement.',
+        dot: '#A69E8E'
+      }
+    };
+
+    const lines = {
+      operational: 'keepstate v0.1.1 · api 99.98% (30d) · gateway 99.99% (30d) · doctor 7/7 · no open incidents · eu-central-1',
+      incident: 'keepstate v0.1.1 · api 99.98% (30d) · gateway unavailable · doctor 7/7 · 1 open incident: checkpoint latency · eu-central-1',
+      unavailable: 'keepstate v0.1.1 · api unavailable · gateway unavailable · doctor unavailable · incidents unavailable · eu-central-1'
+    };
+
+    const pills = {
+      ok: { pillColor: '#39404C', pillBg: '#FFFFFF', pillBorder: '#D8D2C4', dot: '#4F7A52', state: 'operational', figColor: '#16130F' },
+      bad: { pillColor: '#7A2530', pillBg: '#F6ECEA', pillBorder: '#E4CFCC', dot: '#7A2530', state: 'degraded', figColor: '#7A2530' },
+      none: { pillColor: '#7A6F60', pillBg: '#EFEBE1', pillBorder: '#D8D2C4', dot: '#A69E8E', state: 'unavailable', figColor: '#7A6F60' }
+    };
+
+    const surfaceDefs = [
+      { name: 'API and control plane', uptime: '99.98%', note: '2 incidents in 90 days · last 2026-07-19', bad: [26, 41], gaps: [] },
+      { name: 'Gateway', uptime: '99.99%', note: '1 incident in 90 days · last 2026-06-27', bad: [44], gaps: [] },
+      { name: 'Console', uptime: '99.91%', note: '3 incidents in 90 days · probe gap 2026-07-02, published as no data', bad: [12, 30, 38], gaps: [39, 40] },
+      { name: 'Checkpoint store, read', uptime: '100.00%', note: 'no incidents in 90 days', bad: [], gaps: [] }
+    ];
+
+    const surfaces = surfaceDefs.map((d, i) => {
+      let style = pills.ok;
+      let uptime = d.uptime;
+      let bad = d.bad.slice();
+      if (dark) {
+        style = pills.none;
+        uptime = 'unavailable';
+      } else if (degraded && i === 1) {
+        style = pills.bad;
+        bad = bad.concat([0, 1]);
+        uptime = 'unavailable';
+      }
+      const gaps = dark ? [0, 1, 2] : d.gaps;
+      return {
+        name: d.name, uptime: uptime, note: d.note,
+        state: style.state, pillColor: style.pillColor, pillBg: style.pillBg, pillBorder: style.pillBorder,
+        dot: style.dot, figColor: style.figColor,
+        bars: this.bars(this.pattern(dark ? [] : bad, gaps))
+      };
+    });
+
+    const history = [
+      {
+        id: 'INC-014', date: '2026-07-19', title: 'Control plane returned 503 for 22 minutes.', duration: '22 m',
+        preamble: '2026-07-19 14:02 UTC. Opened by our own probe 40 seconds before the first ticket. Running sessions and checkpoints were never affected; the console and the API could not be reached.',
+        sections: [
+          { head: 'what failed', body: 'A schema migration on the session index acquired a lock the read path also needed. Every control-plane request queued behind it and then timed out. The data plane, which does not touch that index, kept running sessions and writing checkpoints throughout.' },
+          { head: 'what the evidence showed', body: 'The ledger recorded 41 checkpoints written during the outage window, which is the number we expected from the cadence of the sessions running at the time. No session was killed, no checkpoint was lost, and no customer lost work. What customers lost was the ability to see any of that, which is its own kind of failure.' },
+          { head: 'what we did', body: 'Rolled the migration back inside 22 minutes, then reapplied it the following night as an online change with the read path excluded from the lock.' }
+        ],
+        law: 'A migration that can block the read path runs online or does not run.',
+        gate: 'G-161', finding: 'F-067', dot: '#7A2530'
+      },
+      {
+        id: 'INC-013', date: '2026-07-02', title: 'Console probe stopped reporting for 31 hours.', duration: '31 h',
+        preamble: '2026-07-02 03:11 UTC. Not a customer-facing outage. The console was healthy; the probe watching it was not, so we could not prove the console was healthy.',
+        sections: [
+          { head: 'what failed', body: 'A credential rotation broke the external probe. It stopped submitting results and, because our dashboard treated a missing result as a passing result, the status page kept rendering green for 31 hours on no data at all.' },
+          { head: 'what the evidence showed', body: 'There was no evidence, which was exactly the problem. We had displayed a claim of health for more than a day with nothing behind it. Those days are now rendered gray on this page rather than retroactively filled in.' },
+          { head: 'what we did', body: 'The probe was fixed in 40 minutes once noticed. The rendering law took a week and touched every dashboard we own, including the console.' }
+        ],
+        law: 'Missing instrumentation reports as unavailable, never as zero, and never as healthy. A zero is a measurement.',
+        gate: 'G-160', finding: 'F-063', dot: '#7A2530'
+      },
+      {
+        id: 'INC-012', date: '2026-06-27', title: 'A gateway retry billed a call the store had already served.', duration: '4 h 10 m',
+        preamble: '2026-06-27 09:44 UTC. Found by a design partner reading their own ledger, not by us. 2,140 calls were affected across 14 organizations.',
+        sections: [
+          { head: 'what failed', body: 'Exactly-once enforcement lived partly in the client SDK. A retry issued by an older SDK version bypassed the store check and bought tokens that had already been paid for.' },
+          { head: 'what the evidence showed', body: 'The ledger held both rows, the original and the duplicate, which is how the partner found it and how we could compute the exact refund without asking anyone to estimate. Every affected organization was credited within 48 hours, whether or not they had noticed.' },
+          { head: 'what we did', body: 'Moved enforcement entirely to the gateway. The SDK now cannot bypass it, because the SDK is no longer trusted with the decision.' }
+        ],
+        law: 'Exactly-once is enforced at the gateway, never trusted from the client.',
+        gate: 'G-121', finding: 'F-062', dot: '#7A2530'
+      },
+      {
+        id: 'INC-011', date: '2026-06-14', title: 'Checkpoints acknowledged before the KV cache was durable.', duration: '6 d',
+        preamble: '2026-06-14 11:20 UTC. The longest and worst incident we have had. Six days during which a checkpoint could report success while one of its three states was still in flight.',
+        sections: [
+          { head: 'what failed', body: 'The acknowledgement fired when the filesystem and tool state were durable, without waiting on the model memory. In the rare case where a kill landed in that window, a resume produced an agent whose memory predated its own files.' },
+          { head: 'what the evidence showed', body: 'Nine sessions across three organizations hit the window. All nine were detectable after the fact from a nonce mismatch in the ledger, which is how we found every one of them rather than waiting for reports. Two customers had already noticed and assumed their agent was confused.' },
+          { head: 'what we did', body: 'Told all three organizations before publishing anything, including the one that had not noticed. Then made acknowledgement wait on all three states and added the nonce check to the resume path as a permanent gate.' }
+        ],
+        law: 'A checkpoint is not acknowledged until all three states are durable. Assert the fact, not the residue.',
+        gate: 'G-107', finding: 'F-061', dot: '#7A2530'
+      }
+    ];
+
+    return {
+      modes: ['operational', 'incident', 'unavailable'].map((m) => ({
+        label: m,
+        bg: s.mode === m ? '#16130F' : 'transparent',
+        color: s.mode === m ? '#FBFAF7' : '#7A6F60',
+        onClick: () => this.setState({ mode: m })
+      })),
+      head: heads[s.mode],
+      systemLine: lines[s.mode],
+      hasIncident: degraded,
+      live: {
+        id: 'INC-015', title: 'Elevated resume latency in eu-west.',
+        opened: '2026-08-10 09:12 UTC', updated: '11 minutes ago',
+        body: 'Cold resumes in eu-west are averaging 140 seconds against a published bound of 90. Warm resumes, checkpoint writes, and billing are unaffected. Sessions pinned to other regions are not involved.',
+        updates: [
+          { at: '11:41 UTC', text: 'Cause identified: a storage tier in eu-west is serving reads at roughly half its normal throughput. We are draining new sessions to eu-central-1 while it recovers.' },
+          { at: '10:18 UTC', text: 'Confirmed the bound is being missed rather than the probe being wrong. We measured 31 resumes by hand across the region.' },
+          { at: '09:12 UTC', text: 'Opened by probe. Investigating. No action needed from customers; nothing is being killed and nothing is at risk of loss.' }
+        ]
+      },
+      surfaces: surfaces,
+      history: history.map((h, i) => Object.assign({}, h, {
+        open: s.open === i,
+        sign: s.open === i ? '−' : '+',
+        onToggle: () => this.setState({ open: s.open === i ? -1 : i })
+      })),
+      email: s.email,
+      emailBorder: s.sub === 'error' ? '#7A2530' : '#D8D2C4',
+      subNote: s.sub === 'ok' ? 'subscribed · incidents only' : (s.sub === 'error' ? 'enter a valid address' : ''),
+      subColor: s.sub === 'error' ? '#7A2530' : '#7A6F60',
+      onEmail: (e) => this.setState({ email: e.target.value, sub: '' }),
+      subscribe: () => this.setState({ sub: /.+@.+\..+/.test(s.email) ? 'ok' : 'error' })
+    };
+  }
+}
+</script>
+</body>
+</html>
