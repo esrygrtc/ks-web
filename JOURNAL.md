@@ -120,3 +120,18 @@
   "CI GREEN" line in the session transcript was false. Verdicts now
   read the conclusion field. web-2-green was deleted and re-tagged
   twice, landing on the commit whose pipeline is actually green.
+
+## 2026-08-20 — Phase W3 GREEN: docs, search, and the Ledger
+- sync-docs joins sync-claims: quickstart/limits/CLI/API/troubleshooting/
+  changelog all generated from product sources, snapshot-vendored,
+  hash-checked. The real CLI is the only CLI documented; the composite's
+  aspirational syntax went to BACKLOG G9 as roadmap input.
+- Gate W3 GREEN incl. a live-browser leg (Pagefind returns quickstart
+  for "resume"; a copy button click yields real clipboard bytes).
+  First run RED because /docs had no search box: the gate found it.
+- Sabotage GREEN: corrupted sync hash cannot pass.
+- Upstream: one product-repo docs commit (OPERATOR troubleshooting row
+  caught up with v0.1.1). Legal pages shipped draft-marked (G8 ruling);
+  founder legal review required before cutover.
+- Next: tag web-3-green; Phase W4 (forms, functions, console shell)
+  needs the leads storage account (~cents/mo) and the email decision.

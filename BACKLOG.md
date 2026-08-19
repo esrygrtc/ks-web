@@ -76,3 +76,16 @@ Security and Enterprise pages state SOC 2 "not yet claimed" and pen test
 "window closes Q4 2026") that no record in either repo supports. If the
 records exist, the founder supplies them at content review and the pages
 change; the site does not state them first.
+
+### G8 (resolved by ruling-in-default). Legal pages shipped at W3
+Designed in Legal & Support.dc.html but scheduled in no phase; the W4
+forms need Terms/Privacy to exist. Shipped draft-marked ("Draft ·
+effective upon launch · under founder legal review"), noindexed, with
+composite dates and vendor counts refused. FOUNDER LEGAL REVIEW REQUIRED
+before cutover.
+
+### G9. The design's docs assume a CLI the product does not have
+ks steer, fork <session>@<step>, repeatable --steer strings, dollar
+budgets, run-level --checkpoint cadence, doctor --bundle. The docs ship
+the real CLI only (synced from the binary). This list is product
+roadmap input: each item is a designed UX the product could grow into.
