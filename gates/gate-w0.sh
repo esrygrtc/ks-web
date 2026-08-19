@@ -92,7 +92,7 @@ echo "$PRODBODY" | grep -q "$NONCE" \
 echo "--- 3. infra idempotency ---"
 R1=$(bash infra/create-swa.sh 2>&1); S1=$?
 R2=$(bash infra/create-swa.sh 2>&1); S2=$?
-N=$(az staticwebapp list -g keepstate-web-rg --query 'length(@)' -o tsv)
+N=$(az staticwebapp list -g ks-web-rg --query 'length(@)' -o tsv)
 [ "$S1" -eq 0 ] && [ "$S2" -eq 0 ] && pass "infra script exits 0 twice" || fail "infra script rc=$S1/$S2"
 [ "$N" = "1" ] && pass "still exactly one SWA after re-runs (n=$N)" || fail "SWA count $N, want 1"
 echo "$R2" | grep -q '^exists:' && pass "second run reports exists, creates nothing" || fail "second run did not report exists"

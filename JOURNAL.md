@@ -64,3 +64,14 @@
   production, infra re-ran idempotently. Sabotage GREEN: broken page
   PR failed CI, merge state BLOCKED, merge refused.
 - Next action: tag web-0-green; Phase W1 (component sheet) on founder go.
+
+## 2026-08-19 — Naming migration: the estate is ks-* everywhere
+- Founder switched CLI to admin; executed the recreate-move-regrant-
+  delete sequence. az resource move printed ResourceGroupNotInExpectedState
+  yet the move had succeeded (verified: SWA in ks-web-rg, old groups
+  gone, site 200 throughout). Lesson: verify state, not error text.
+- ks now holds exactly two role assignments, both ks-* groups. ADR-W1
+  exception paragraph closed. infra/create-swa.sh and gate-w0 updated
+  to the new group name; the push testing this doubles as proof the
+  deployment token survived the move.
+- Founder to switch CLI back to ks; then Phase W1 begins.

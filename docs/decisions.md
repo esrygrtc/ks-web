@@ -8,9 +8,9 @@
 
 | Resource | Name | Group | Tier / cost | Created by |
 |---|---|---|---|---|
-| Resource group | `keepstate-web-rg` | — | $0 | admin, 2026-08-19 |
-| Resource group | `keepstate-rg` | — | $0 | admin, 2026-08-19 |
-| Static Web App | `ks-web` | `keepstate-web-rg` | Standard, ~$9/mo | ks, `infra/create-swa.sh` |
+| Resource group | `ks-web-rg` | — | $0 | admin, 2026-08-19 |
+| Resource group | `ks-rg` | — | $0 | admin, 2026-08-19 |
+| Static Web App | `ks-web` | `ks-web-rg` | Standard, ~$9/mo | ks, `infra/create-swa.sh` |
 
 Default hostname: `icy-wave-0eefe5403.7.azurestaticapps.net`.
 
@@ -20,10 +20,12 @@ KS scope is structurally impossible, not merely forbidden. `ks` cannot
 create new resource groups; that is an admin moment by design.
 
 **Naming law (founder, 2026-08-19).** Azure resource names never contain
-"keepstate"; the abbreviation `ks` is used everywhere. The two resource
-groups pre-date the rule and cannot be renamed (Azure has no RG rename)
-nor recreated by `ks` (no subscription-level right). Recorded as a
-standing exception until the founder chooses to recreate them as admin.
+"keepstate"; the abbreviation `ks` is used everywhere. The original
+`keepstate-*` groups pre-dated the rule; the founder logged in as admin
+the same day and the estate was migrated: new `ks-web-rg`/`ks-rg`
+created, the SWA moved (zero downtime, hostname unchanged), Owner
+re-granted to ks on the new groups only, old groups deleted. The
+exception no longer exists; the naming law now holds everywhere.
 
 **Why SWA Standard, not Free.** Custom OAuth for the W4 console shell,
 the SLA, and per-PR staging environments are Standard features. ~$9/mo
