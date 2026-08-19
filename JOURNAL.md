@@ -21,3 +21,27 @@
   West Europe, resource group; GitHub repo esrygrtc/keepstate-web).
   No Azure resource exists yet. Next action: on founder approval, run
   scaffold + infra scripts + pipeline, then gate W0 + sabotage.
+
+## 2026-08-19 — Azure operator account created; admin handover pending
+- Founder directive: pause web phases, create a KS-scoped Azure user as
+  admin, touch NOTHING else on Azure. Executed exactly three things:
+  1. Entra user `ks@devplaybliss.onmicrosoft.com` ("KeepState Ops",
+     objectId 3c753fa4-b4e5-4a0c-9900-52520305277c), password change
+     forced at first sign-in. First create attempt failed on Entra's
+     password-cannot-contain-username rule (prefix "Ks-"); retried with
+     a compliant generator.
+  2. Resource groups `keepstate-web-rg` and `keepstate-rg` (westeurope,
+     $0) — the scopes the rights attach to. Website resources go in the
+     first; future product infra (customer VMs) in the second.
+  3. Owner for ks on those two groups ONLY. Verified: exactly two role
+     assignments, zero directory roles. Subscription assignment count
+     unchanged apart from ks.
+- Credentials: ~/Desktop/ks-azure-login.txt (mode 600), password never
+  entered the conversation or the repo. Founder deletes it after first
+  sign-in.
+- Known limit by design: ks cannot create NEW resource groups; a future
+  RG is an admin moment. Everything W0-W6 needs fits in the two groups.
+- Next action: founder logs out of admin az, logs in as ks; then resume
+  Phase W0 (SWA Standard ~$9/mo in keepstate-web-rg awaits approval,
+  which the founder has implicitly queued but I will re-confirm cost at
+  creation time per the tripwire).
