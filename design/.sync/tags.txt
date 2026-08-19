@@ -1,0 +1,11 @@
+gate-0-green|gate-0 green
+gate-1-green|gate-1 green: a microVM died mid-count and woke up mid-sentence
+gate-2a-green|gate-2a green: ksd carries sessions across kill-and-resume, twice in a row
+gate-2b-green|gate-2b green: checkpoints are portable, forkable, crash-consistent objects
+gate-3-green|gate-3 green: a real specimen was frozen mid-thought and resumed, billed once
+gate-4-green|gate-4 green: one command, an agent killed with its own daemon, back at work in 25 seconds
+gate-5-green|gate-5 green: three branches, one checkpoint, three histories that differ only by their steer
+gate-6-green|gate-6 green: durability measured as a rate, 25/25 with a Wilson interval that admits what 25 trials can carry
+gate-7-green|gate-7 green: a second agent and a second machine, with zero core changes
+v0.1.0-mvp|KeepState v0.1.0-mvp — the durable agent session cloud
+v0.1.1|KeepState v0.1.1 — the five wrap defects, fixed under the Patch Law

@@ -11,9 +11,27 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 
+// Source resolution: live product repo when present (builder machine,
+// gate); otherwise the vendored snapshot in design/.sync/ (CI runners:
+// the product repo is private, and this pipeline holds no secrets).
+// The snapshot is written by every live run, so CI verifies exactly
+// what the last sync saw; FRESHNESS against the live repo is the
+// gate's job, hand-edit detection is everyone's job.
+import { existsSync, mkdirSync } from 'node:fs';
 const REPO = process.env.KS_PRODUCT_REPO ?? '/Users/c/keepstate';
-const md = readFileSync(`${REPO}/docs/claims.md`, 'utf8');
-const tagsRaw = execSync(`git -C ${REPO} tag -l --format='%(refname:short)|%(contents:subject)'`, { encoding: 'utf8' });
+const SNAP = new URL('../design/.sync/', import.meta.url).pathname;
+const live = existsSync(`${REPO}/docs/claims.md`);
+const md = live ? readFileSync(`${REPO}/docs/claims.md`, 'utf8') : readFileSync(`${SNAP}claims.md`, 'utf8');
+const tagsRaw = live
+  ? execSync(`git -C ${REPO} tag -l --format='%(refname:short)|%(contents:subject)'`, { encoding: 'utf8' })
+  : readFileSync(`${SNAP}tags.txt`, 'utf8');
+if (live) {
+  mkdirSync(SNAP, { recursive: true });
+  writeFileSync(`${SNAP}claims.md`, md);
+  writeFileSync(`${SNAP}tags.txt`, tagsRaw);
+} else {
+  console.error('sync-claims: product repo absent; regenerating from the vendored snapshot (hand-edit check only)');
+}
 let tags; // dedash below, after its definition
 
 const dedash = (s) => s
