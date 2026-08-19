@@ -9,15 +9,40 @@
 </button>
 <div data-cmdk-overlay class="hidden fixed inset-0 bg-ink/40 items-start justify-center pt-[18vh] z-50">
   <div class="bg-white border border-sand rounded-5 shadow-e2 w-[560px] max-w-[90vw] p-2">
-    <input type="text" data-cmdk-input placeholder="Type to search"
+    <input type="text" data-cmdk-input placeholder="Type to search" autocomplete="off"
       class="w-full font-sans text-14 text-ink px-3 py-2.5 border-0 focus:outline-none" />
+    <div data-cmdk-results class="max-h-[320px] overflow-y-auto border-t border-parchment"></div>
     <p class="font-mono text-11 text-taupe px-3 py-2 border-t border-parchment m-0">
-      search index arrives with the docs; esc closes
+      static index, built at compile time; esc closes
     </p>
   </div>
 </div>
 <script>
   const overlay = document.querySelector('[data-cmdk-overlay]');
+  let pagefind = null;
+  const ensureIndex = async () => {
+    if (pagefind) return pagefind;
+    try { pagefind = await import('/pagefind/pagefind.js'); await pagefind.init(); } catch { pagefind = null; }
+    return pagefind;
+  };
+  const resultsEl = () => overlay?.querySelector('[data-cmdk-results]');
+  let seq = 0;
+  document.querySelector('[data-cmdk-input]')?.addEventListener('input', async (e) => {
+    const q = e.target.value.trim();
+    const el = resultsEl(); if (!el) return;
+    const my = ++seq;
+    if (!q) { el.innerHTML = ''; return; }
+    const pf = await ensureIndex();
+    if (!pf) { el.innerHTML = '<p class="font-mono text-11 text-taupe px-3 py-2 m-0">search unavailable (index not built)</p>'; return; }
+    const search = await pf.search(q);
+    if (my !== seq) return;
+    const items = await Promise.all(search.results.slice(0, 8).map((r) => r.data()));
+    el.innerHTML = items.length
+      ? items.map((d) => `<a href="${d.url}" class="block px-3 py-2 no-underline hover:bg-parchment">
+          <span class="block text-13 text-ink font-medium">${d.meta?.title ?? d.url}</span>
+          <span class="block text-12 text-taupe">${d.excerpt}</span></a>`).join('')
+      : '<p class="font-mono text-11 text-taupe px-3 py-2 m-0">nothing found</p>';
+  });
   const show = (on) => { overlay?.classList.toggle('hidden', !on); overlay?.classList.toggle('flex', on);
     if (on) overlay?.querySelector('[data-cmdk-input]')?.focus(); };
   document.querySelector('[data-cmdk-open]')?.addEventListener('click', () => show(true));

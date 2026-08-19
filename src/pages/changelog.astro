@@ -1,0 +1,40 @@
+---
+// The changelog renders the product repository's own tag messages via
+// sync-docs. Releases first, then the nine gates that built the MVP.
+import Site from '../layouts/Site.astro';
+import docs from '../generated/docs.json';
+const releases = docs.changelog.filter((c) => c.tag.startsWith('v'));
+const gates = docs.changelog.filter((c) => c.tag.startsWith('gate-')).reverse();
+---
+<Site title="Changelog · KeepState" description="Every release and every green gate, rendered from the product repository's own tag messages.">
+  <main class="max-w-[860px] mx-auto px-7 py-14">
+    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mb-2">Changelog</p>
+    <h1 class="font-serif text-34 font-medium mt-0 mb-3">Tags, not promises.</h1>
+    <p class="text-15 text-slate leading-relaxed mb-10">
+      Rendered from the product repository's own tag messages. A release
+      appears here when it is tagged, with the notes it was tagged with.
+    </p>
+    {releases.map((r) => (
+      <article class="mb-10 bg-white border border-sand rounded-5 p-6">
+        <div class="flex items-baseline gap-3 flex-wrap mb-3">
+          <h2 class="font-mono text-20 text-claret m-0">{r.tag}</h2>
+          <span class="font-mono text-12 text-taupe">{r.date}</span>
+        </div>
+        <pre class="whitespace-pre-wrap font-mono text-12 leading-relaxed text-slate bg-paper border border-parchment rounded-4 p-4 overflow-x-auto m-0">{r.body}</pre>
+      </article>
+    ))}
+    <h2 class="font-serif text-22 mt-0 mb-4">The nine gates</h2>
+    <div class="grid gap-0 border border-sand rounded-4 bg-white overflow-hidden mb-6">
+      {gates.map((g) => (
+        <div class="flex items-baseline gap-4 px-4 py-3 border-b border-parchment last:border-0">
+          <span class="flex items-center gap-2 font-mono text-12 text-claret w-40 shrink-0">
+            <span class="w-[6px] h-[6px] bg-claret rotate-45 block"></span>{g.tag}
+          </span>
+          <span class="text-13 text-slate">{g.body.split('\n')[0]}</span>
+          <span class="font-mono text-11 text-taupe ml-auto shrink-0">{g.date}</span>
+        </div>
+      ))}
+    </div>
+    <p class="text-13 text-slate">Each gate's raw output lives in the product repository's phase documents; the claims they license live on <a href="/proof" class="text-claret">Proof</a>.</p>
+  </main>
+</Site>

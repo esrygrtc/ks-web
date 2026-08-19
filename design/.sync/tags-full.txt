@@ -1,0 +1,237 @@
+%TAG%|gate-0-green|2026-07-28%BODY%gate-0 green
+
+%TAG%|gate-1-green|2026-07-28%BODY%gate-1 green: a microVM died mid-count and woke up mid-sentence
+
+%TAG%|gate-2a-green|2026-07-28%BODY%gate-2a green: ksd carries sessions across kill-and-resume, twice in a row
+
+%TAG%|gate-2b-green|2026-07-28%BODY%gate-2b green: checkpoints are portable, forkable, crash-consistent objects
+
+%TAG%|gate-3-green|2026-07-28%BODY%gate-3 green: a real specimen was frozen mid-thought and resumed, billed once
+
+%TAG%|gate-4-green|2026-07-29%BODY%gate-4 green: one command, an agent killed with its own daemon, back at work in 25 seconds
+
+The demo the company was built to give. `ks demo --task fixture --kill-at 3m
+--headless` boots a real Claude Code specimen on a vendored four-bug repo,
+checkpoints it, then hard-kills BOTH the microVM and ksd itself — the daemon
+that supervises it — restarts the daemon, and resumes. Measured downtime:
+25.2 seconds, of which Firecracker's own snapshot/load was 4 milliseconds.
+The specimen came back and fixed all four bugs.
+
+29,871 tokens were not re-purchased: work already paid for when the kill
+landed, served from the gateway's store instead of bought twice. That number
+is MEASURED. The dollar figure beside it is labeled ESTIMATED, because the
+rates are an assumption and the tokens are not.
+
+Sabotage green: with checkpointing disabled the same kill is unsurvivable.
+
+%TAG%|gate-5-green|2026-07-29%BODY%gate-5 green: three branches, one checkpoint, three histories that differ only by their steer
+
+The MVP build plan is complete — gates 0, 1, 2a, 2b, 3, 4 and 5 all green.
+
+Phase 5 solved the deferred child-egress dragon the honest way: a forked
+guest keeps the parent's addressing and never learns it was cloned, while
+per-child network namespaces let identical guest IPs coexist and reach the
+gateway independently. Steering lives only in ksgw, injected into a branch's
+next call and recorded with both pre- and post-steer body hashes — which is
+how the gate proved three siblings differed by their steering and by nothing
+else: base sha256 identical on all three, steered bodies all distinct.
+
+The gate earned its keep. It caught an attribution bug that billed every
+forked child's work to its parent, and two more besides. All three were
+fixed and disclosed before the gate re-ran.
+
+%TAG%|gate-6-green|2026-07-31%BODY%gate-6 green: durability measured as a rate, 25/25 with a Wilson interval that admits what 25 trials can carry
+
+Three findings, none in the core claim. A connection leak that killed any
+session past its ninth checkpoint and that 25 kill-cycles structurally could
+not see — the soak exists because kill-cycles reset the very counters that
+long-lived sessions accumulate. A preservation breach where our own cleanup
+destroyed the artifact a ruling had protected. And a gate that could not read
+its own evidence while the system was healthy: six false alarms and one false
+comfort from a single parser defect.
+
+The fix for the third is a mechanism, not a promise: ks ledger, production Go
+code sharing the writers' types, now the only path a gate may read evidence
+through.
+
+82/82 scheduled checkpoints, one witness nonce strictly monotonic, zero
+cadence gaps, 19.1x dedup, RSS peak growth +0 MiB on both daemons. A
+14.5-hour-old checkpoint woken live in 14.3 s reading COUNT=63 while its
+living twin had reached 4841.
+
+%TAG%|gate-7-green|2026-07-31%BODY%gate-7 green: a second agent and a second machine, with zero core changes
+
+aider 0.86.2 frozen mid-call, killed, resumed. The entire agent-specific
+surface is one exported alias inside the image; git diff --stat over cmd and
+internal since the gate's pinned baseline is empty. A stranger's machine
+reached RAM continuity from a clean clone using only QUICKSTART.md's own
+commands.
+
+Two findings, both about the court rather than the product. The client's
+return is not ours to promise: across four runs the gateway held the response
+4 of 4 while the client came back 3 of 4, so the promise split with the
+behavior. And assert the fact, not the residue: an assertion that checked for
+a file ADR-006 consumes by design could only pass when the client never
+returned, punishing the system for succeeding.
+
+Sabotage green: seq stamping disabled collapsed the gap to 0 and the
+reconciliation assertion failed exactly as it should.
+
+%TAG%|v0.1.0-mvp|2026-07-31%BODY%KeepState v0.1.0-mvp — the durable agent session cloud
+
+An MVP that runs AI agents inside Firecracker microVMs and gives them five
+verbs: run, checkpoint, fork, resume, replay. A live agent is killed mid-task
+— the microVM and the daemon supervising it — and is working again seconds
+later, same session, same memory, mid-sentence.
+
+Frozen at nine green gates. The standing invariant is that no claim outlives
+its gate and no claim precedes one; docs/claims.md is the promise surface and
+gate 7 machine-checks that every row in it cites a tag that exists.
+
+THE NINE GATES
+
+  gate-0-green   the bench can host KVM microVMs
+  gate-1-green   a microVM died mid-count and woke up mid-sentence
+  gate-2a-green  ksd carries sessions across kill-and-resume, twice in a row
+  gate-2b-green  checkpoints are portable, forkable, crash-consistent objects
+  gate-3-green   a real specimen was frozen mid-thought and resumed, billed once
+  gate-4-green   one command, an agent killed with its own daemon, back at work in 25 seconds
+  gate-5-green   three branches, one checkpoint, three histories that differ only by their steer
+  gate-6-green   durability measured as a rate, 25/25 with a Wilson interval that admits what 25 trials can carry
+  gate-7-green   a second agent and a second machine, with zero core changes
+
+MEASURED, NOT ASSERTED
+
+  Resume success rate      25/25 fresh kill-and-resume cycles;
+                           Wilson 95% CI [86.7%, 100.0%]   (gate-6-green)
+  Downtime                 19.8 s this release's rehearsal; 25.2 s in gate 4;
+                           13.7 s for an agent session in gate 7.
+                           Chunk reassembly dominates; the VMM needs ~4 ms.
+  Storage                  82 checkpoints in 4,233 MiB against 80,952 MiB
+                           naive — 19.1x dedup            (gate-6-green)
+  Daemon memory            7-hour soak, 82 checkpoints: ksd +0 MiB,
+                           ksgw +0 MiB peak RSS growth    (gate-6-green)
+  Core changes for agent 2 zero — git diff over cmd/ and internal/ empty
+                           since the gate's pinned baseline (gate-7-green)
+
+REPRODUCIBLE EVIDENCE
+
+  Preserved artifact soak-20712ae21ba9, held under the Phase 6 preservation
+  ruling of 2026-07-30 at /var/lib/keepstate/preserved/ on the build bench:
+  587 chunks, 741 MiB, self-contained (manifest plus its own chunks).
+  Verified at release: 587 of 587 manifest-referenced chunks present, none
+  missing; spot-checked chunks hash to their own names, since a chunk's name
+  is the sha256 of its uncompressed bytes. This is the ~14.5-hour-old
+  checkpoint that gate 6 woke in 14.3 s — a checkpoint does not go stale.
+
+  QUICKSTART.md is executable evidence: gate 7 extracts its commands
+  mechanically and runs them on a machine that has never built KeepState.
+
+WHAT IS NOT CLAIMED
+
+  One provider path, one host, aarch64 only, resume in seconds rather than
+  sub-second, and a client-retry story that differs per agent — for aider the
+  gateway held the interrupted response 4 of 4 times while the client walked
+  back through 3 of 4. See docs/limitations.md, where every limit cites the
+  measurement or names the gate that does not exist, and BACKLOG.md, which
+  records five defects found during the release wrap and deliberately not
+  fixed under a docs-only scope law.
+
+  No LICENSE file: all rights reserved by default, pending a founder decision
+  between an open protocol and a hosted core, recorded in BACKLOG.md.
+
+START HERE
+
+  README.md         what this is, and the nine tags
+  QUICKSTART.md     clean clone to your first kill-and-resume, ~20 minutes
+  OPERATOR.md       cold start to healthy bench in literal commands
+  DEMO_SCRIPT.md    the on-camera run, beat by beat
+  docs/claims.md    every claim and the gate tag that proves it
+
+%TAG%|v0.1.1|2026-07-31%BODY%KeepState v0.1.1 — the five wrap defects, fixed under the Patch Law
+
+A patch release. No new claims: docs/claims.md is unchanged, every gate tag
+still means what it meant, and nothing here promises anything v0.1.0-mvp did
+not already prove.
+
+THE PATCH LAW, recorded in CLAUDE.md before any code changed
+
+  A bug is fixed when its BACKLOG reproduction command is run RED before the
+  change and GREEN after it, and a permanent regression guard exists. Fix,
+  reproduction, and guard land in the SAME commit. No silent fixes.
+
+EACH ENTRY, ITS COMMIT, AND ITS GUARD
+
+  #1  ks ps reported running for dead VMMs
+      commit 389777c fix #1: ks ps reports verified liveness, not remembered intent
+  #2  ks demo --help booted a demo
+      commit 7e55ef5 fix #2: --help answered before any side effect, on every subcommand
+  #3  no garbage collection
+      commit 09166a9 fix #3: ks gc, per ADR-011 — deletes only what a resume can rebuild
+  #4  no human-triggered kill
+      commit d78706a fix #4: ks demo --kill-at manual waits for the human to pull the trigger
+  #5  PRESERVED marker had an unexpanded date
+      commit 51d7569 fix #5: PRESERVED marker records a real timestamp, and doctor checks that it does
+
+  #1  guard: guards.sh #1 boots a session, proves it reads running, kills it,
+      proves it reads dead, and requires the state.reconciled audit record.
+  #2  guard: guards.sh #2 runs --help across all 17 verbs asserting usage,
+      exit 0, and zero change in process and session counts; usage_test.go.
+  #3  guard: guards.sh #3 builds a bench with a live session, a terminated
+      one, and the preserved artifact, then requires the collected session to
+      RESUME with its overlay rebuilt; doctor check 9 watches preserved/.
+  #4  guard: guards.sh #4 asserts the demo is still blocked 20s after arming,
+      then kills by hand and requires the resume.
+  #5  guard: doctor check 8 rejects markers with unexpanded format verbs, no
+      ruling, or no parseable timestamp; the shipped marker is a test case.
+
+  Full suite: 29 guards, 0 failures.
+
+MEASURED
+
+  Reclaimed          session tree 82 G -> 15 G by ks gc (ADR-011)
+  Demo downtime      19.0 s, re-rehearsed headless on the patched binaries
+  Manual-kill demo   20.7 s, human kill detected and resumed
+  Doctor             9/9 — the count is now derived, not hardcoded
+
+REGRESSION SWEEP
+
+  Green: gates 0, 1, 2a, 2b, 3, 4, 5.
+  Gates 2a, 2b, 3 and 5 first went RED and were green on re-run from a clean
+  bench; the causes were the daemon restart race (BACKLOG #6), a client that
+  did not retry while the gateway held the response, and one branch's steered
+  call not landing in the window. None was a behavioral regression.
+
+  Gate 6 was NOT re-run, by explicit determination: its claim rests on ksd's
+  checkpoint path, internal/soak/ has a zero-line diff since v0.1.0-mvp, and
+  the only new functions in manager.go are the two liveness helpers.
+
+  Gate 7 is RED and BLOCKED on a human ruling. Neither failure is a v0.1.1
+  regression, and BLOCKED.md carries the options and a recommendation:
+    B1 pins a baseline from ADR-010 and demands an empty core diff, so ANY
+       patch fails it permanently — a ratchet nobody intended.
+    B6 catches a real defect introduced during the v0.1.0 release wrap: the
+       compatibility matrix is a table in the anti-claims section and its
+       header row cites no tag. claims.md was deliberately NOT edited —
+       B6 audits that file, and editing it to pass the audit during the same
+       session that runs the audit is what rule 7 forbids.
+
+FOUND AND DELIBERATELY NOT FIXED (scope law: the five entries, nothing else)
+
+  #6  ksd exits instead of waiting when its port is briefly still held.
+  #7  internal/ksd/netid.go is not gofmt-clean (drift from Phase 5).
+  #8  gate 7's B1 baseline pin (see BLOCKED.md).
+  #9  claims.md fails its own B6 check (see BLOCKED.md).
+  #10 ksgw writes the meter into a table it no longer has, silently. A whole
+      demo served ten calls and the billing ledger recorded none, with zero
+      errors logged. The most serious entry on the list: the meter is the
+      evidence behind the billed-at-most-once claim.
+
+FOUNDER DECISION RECORDED
+
+  The core stays unlicensed, all rights reserved. The han protocol is
+  extracted to its own repository under Apache-2.0 the day the first design
+  partner is live — an event, not a date, because a protocol with no
+  implementers is documentation with a patent grant attached. Reasoning in
+  BACKLOG.md.
+

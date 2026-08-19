@@ -1,0 +1,32 @@
+---
+// Generated from the product OPERATOR manual's own symptom table.
+import Docs from '../../layouts/Docs.astro';
+import docs from '../../generated/docs.json';
+const mono = (s) => s.replace(/`([^`]+)`/g, '<code>$1</code>');
+---
+<Docs title="Troubleshooting · KeepState docs" description="Symptoms, what they mean, and what to do, synced from the operator manual.">
+  <h1>Troubleshooting</h1>
+  <p>
+    <code>ks doctor</code> is the first move, always: it is the executable
+    form of every hazard this project has hit, and every gate calls it
+    first. The table is synced from the operator manual.
+  </p>
+  <table>
+    <thead><tr><th>Symptom</th><th>What it means</th><th>What to do</th></tr></thead>
+    <tbody>
+      {docs.trouble.map((t) => (
+        <tr>
+          <td set:html={mono(t.symptom)} />
+          <td set:html={mono(t.meaning)} />
+          <td set:html={mono(t.action)} />
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    Stuck past that? The product's blocked protocol applies to humans too:
+    after three genuinely different failed hypotheses, stop and write down
+    the symptom, the hypotheses, and the evidence. Then
+    <a href="/contact">send it to us</a>.
+  </p>
+</Docs>

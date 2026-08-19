@@ -1,0 +1,14 @@
+---
+import { getCollection, render } from 'astro:content';
+import Docs from '../../layouts/Docs.astro';
+export async function getStaticPaths() {
+  const entries = await getCollection('docs');
+  return entries.map((e) => ({ params: { slug: e.id.replace(/\.mdx?$/, '') }, props: { entry: e } }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+<Docs title={`${entry.data.title} · KeepState docs`} description={entry.data.description ?? `KeepState documentation: ${entry.data.title}`} headings={headings}>
+  <h1>{entry.data.title}</h1>
+  <Content />
+</Docs>

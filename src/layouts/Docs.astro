@@ -1,0 +1,87 @@
+---
+// The three-column docs layout: section nav, content, on-page TOC.
+// Code blocks arrive with build-time copy buttons (rehype-copy); the
+// script below makes them work and keeps the label honest.
+import Site from './Site.astro';
+import { getCollection } from 'astro:content';
+interface Props { title: string; description: string; headings?: { depth: number; slug: string; text: string }[] }
+const { title, description, headings = [] } = Astro.props;
+const entries = await getCollection('docs');
+const sections = ['Start', 'Concepts', 'Guides', 'Reference', 'Operations'];
+// Generated reference pages live as .astro files; they register here so
+// the nav is one list, not two systems.
+const extra = [
+  { section: 'Start', order: 0, title: 'Overview', href: '/docs/' },
+  { section: 'Reference', order: 30, title: 'CLI reference', href: '/docs/cli/' },
+  { section: 'Reference', order: 31, title: 'API reference', href: '/docs/api/' },
+  { section: 'Operations', order: 50, title: 'Troubleshooting', href: '/docs/troubleshooting/' },
+];
+const nav = sections.map((s) => ({
+  section: s,
+  items: [
+    ...entries.filter((e) => e.data.section === s).map((e) => ({ order: e.data.order, title: e.data.title, href: `/docs/${e.id.replace(/\.mdx?$/, '')}/` })),
+    ...extra.filter((x) => x.section === s),
+  ].sort((a, b) => a.order - b.order),
+})).filter((s) => s.items.length);
+const current = Astro.url.pathname;
+---
+<Site title={title} description={description} footer="docs">
+  <div class="max-w-[1280px] mx-auto px-7 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_180px] gap-10 py-10">
+    <nav class="lg:sticky lg:top-24 self-start" aria-label="docs sections">
+      {nav.map((s) => (
+        <div class="mb-5">
+          <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mb-2">{s.section}</p>
+          <ul class="list-none m-0 p-0 grid gap-1">
+            {s.items.map((i) => (
+              <li><a href={i.href} aria-current={current === i.href ? 'page' : undefined}
+                class={`text-13 no-underline py-0.5 inline-block ${current === i.href ? 'text-claret font-medium' : 'text-slate hover:text-ink'}`}>{i.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+    <article class="docs-prose min-w-0" data-pagefind-body>
+      <slot />
+      <div class="mt-12 pt-5 border-t border-parchment flex items-center gap-3 flex-wrap">
+        <p class="text-13 text-slate m-0">Did this work? The quickstart is gate-tested; if it failed, that is a finding: <a href="/contact" class="text-claret">report it</a>.</p>
+      </div>
+    </article>
+    <aside class="hidden lg:block lg:sticky lg:top-24 self-start" aria-label="on this page">
+      {headings.filter((h) => h.depth === 2).length > 0 && (
+        <>
+          <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mb-2">On this page</p>
+          <ul class="list-none m-0 p-0 grid gap-1.5">
+            {headings.filter((h) => h.depth === 2).map((h) => (
+              <li><a href={`#${h.slug}`} class="text-12 text-slate no-underline hover:text-ink leading-snug inline-block">{h.text}</a></li>
+            ))}
+          </ul>
+        </>
+      )}
+    </aside>
+  </div>
+</Site>
+<style is:global>
+  .docs-prose h1 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.34); font-weight: 500; margin: 0 0 10px; }
+  .docs-prose h2 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.22); font-weight: 500; margin: 34px 0 8px; }
+  .docs-prose h3 { font-size: theme(fontSize.15); font-weight: 600; margin: 22px 0 6px; }
+  .docs-prose p, .docs-prose li { font-size: theme(fontSize.14); line-height: 1.65; color: theme(colors.slate); }
+  .docs-prose a { color: theme(colors.claret); }
+  .docs-prose code { font-family: theme(fontFamily.mono); font-size: theme(fontSize.12); background: theme(colors.parchment); border-radius: theme(borderRadius.2); padding: 1px 4px; }
+  .docs-prose pre { position: relative; background: theme(colors.ink); border: 1px solid theme(colors.inkBorder); border-radius: theme(borderRadius.5); padding: 14px 16px; overflow-x: auto; }
+  .docs-prose pre code { background: none; padding: 0; color: theme(colors.parchment); font-size: theme(fontSize.12); line-height: 1.65; }
+  .docs-prose table { border-collapse: collapse; width: 100%; font-size: theme(fontSize.13); }
+  .docs-prose th { font-family: theme(fontFamily.mono); font-size: theme(fontSize.11); text-transform: uppercase; letter-spacing: 0.08em; color: theme(colors.taupe); text-align: left; border-bottom: 1px solid theme(colors.sand); padding: 8px 10px; }
+  .docs-prose td { border-bottom: 1px solid theme(colors.parchment); padding: 8px 10px; vertical-align: top; }
+  .docs-prose blockquote { border-left: 2px solid theme(colors.shell); margin: 0; padding: 2px 0 2px 14px; font-style: italic; }
+  .ks-copy { position: absolute; top: 8px; right: 8px; font-family: theme(fontFamily.mono); font-size: theme(fontSize.10); color: theme(colors.termMuted); background: theme(colors.ink); border: 1px solid theme(colors.inkSoft); border-radius: theme(borderRadius.2); padding: 2px 7px; cursor: pointer; }
+  .ks-copy:hover { color: theme(colors.parchment); }
+</style>
+<script>
+  document.querySelectorAll('.ks-copy').forEach((b) => {
+    b.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(b.getAttribute('data-copy') ?? '');
+      const old = b.textContent; b.textContent = 'copied';
+      setTimeout(() => (b.textContent = old), 1200);
+    });
+  });
+</script>

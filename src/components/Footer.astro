@@ -15,11 +15,13 @@ const columns = [
   { head: 'Product', links: [
     ['Sessions', '/product/sessions'], ['Fork', '/product/fork'],
     ['Gateway & Cost', '/product/gateway-cost'], ['Governance & Replay', '/product/governance-replay'],
-    ['Pricing', '/pricing'], ['Compatibility', '/compatibility'] ] },
-  { head: 'Developers', links: [ ['Proof', '/proof'], ['Status', '/status'] ] },
+    ['Pricing', '/pricing'], ['Compatibility', '/compatibility'], ['Changelog', '/changelog'] ] },
+  { head: 'Developers', links: [
+    ['Documentation', '/docs'], ['Quickstart', '/docs/quickstart'], ['CLI Reference', '/docs/cli'],
+    ['API Reference', '/docs/api'], ['Proof', '/proof'], ['Status', '/status'], ['Support', '/support'] ] },
   { head: 'Company', links: [
     ['Manifesto', '/manifesto'], ['About', '/about'], ['Customers', '/customers'],
-    ['Enterprise', '/enterprise'], ['Careers', '/careers'], ['Press', '/press'] ] },
+    ['Enterprise', '/enterprise'], ['Careers', '/careers'], ['The Ledger', '/ledger'], ['Press', '/press'] ] },
   { head: 'Programs & Trust', links: [
     ['Grants', '/grants'], ['Security', '/security'], ['Contact', '/contact'] ] },
 ];
@@ -33,7 +35,8 @@ const epigraphs = [
 // Deterministic per-build rotation: the day picks the law.
 const epigraph = epigraphs[new Date().getUTCDate() % epigraphs.length];
 const systemLine = 'keepstate v0.1.1 · api unavailable · gateway unavailable · doctor unavailable · incidents unavailable · westeurope';
-const legal = ['Terms', 'Privacy', 'DPA', 'Subprocessors', 'Acceptable Use'];
+const legal = [['Terms', '/legal/terms'], ['Privacy', '/legal/privacy'], ['DPA', '/legal/dpa'],
+  ['Subprocessors', '/legal/subprocessors'], ['Acceptable Use', '/legal/acceptable-use']];
 ---
 <footer class="border-t border-sand bg-paper mt-16">
   {variant === 'marketing' && (
@@ -90,8 +93,8 @@ const legal = ['Terms', 'Privacy', 'DPA', 'Subprocessors', 'Acceptable Use'];
       <p class="font-mono text-11 text-taupe m-0" data-system-line>{systemLine}</p>
     </div>
     <div class="flex items-center gap-3.5 flex-wrap">
-      {variant !== 'console' && legal.map((l) => (
-        <span class="font-mono text-12 text-stone" title="arrives with the docs phase">{l}</span>
+      {variant !== 'console' && legal.map(([label, href]) => (
+        <a href={href} class="font-mono text-12 text-stone no-underline hover:text-ink py-1">{label}</a>
       ))}
       <p class="font-mono text-12 text-termMuted m-0">© 2026 KeepState, Inc. · Every claim on this site cites its evidence: <a href="/proof" class="text-blush no-underline hover:underline">/proof</a></p>
     </div>

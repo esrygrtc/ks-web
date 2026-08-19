@@ -1,0 +1,29 @@
+---
+// Generated API inventory: routes from the daemon's own server.go.
+import Docs from '../../layouts/Docs.astro';
+import docs from '../../generated/docs.json';
+---
+<Docs title="API reference · KeepState docs" description="The ksd daemon's HTTP surface, synced from its route table.">
+  <h1>API reference</h1>
+  <p>
+    The daemon listens on <code>127.0.0.1:7440</code> inside the bench
+    host. The CLI is a thin client over these {docs.routes.length} routes;
+    anything the CLI does, the API does. Full request and response schemas
+    arrive with the han protocol documentation.
+  </p>
+  <table>
+    <thead><tr><th>Method</th><th>Path</th></tr></thead>
+    <tbody>
+      {docs.routes.map((r) => (
+        <tr><td><code>{r.method}</code></td><td><code>{r.path}</code></td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    Sessions are created with <code>POST /sessions</code>, frozen with
+    <code>POST /sessions/&lbrace;id&rbrace;/checkpoint</code>, woken with
+    <code>POST /sessions/&lbrace;id&rbrace;/resume</code>, branched with
+    <code>POST /sessions/&lbrace;id&rbrace;/fork</code>. <code>POST /gc</code>
+    plans by default and deletes only with <code>?apply=1</code>.
+  </p>
+</Docs>

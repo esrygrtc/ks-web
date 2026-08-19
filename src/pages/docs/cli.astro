@@ -1,0 +1,23 @@
+---
+// Generated CLI reference: verbs and usage text come from the product's
+// own cmd/keepstate/usage.go via sync-docs. Never retyped: if the CLI
+// changes, this page changes on the next sync or goes stale loudly.
+import Docs from '../../layouts/Docs.astro';
+import docs from '../../generated/docs.json';
+---
+<Docs title="CLI reference · KeepState docs" description="Every ks verb with its usage text, synced from the product binary's own help strings.">
+  <h1>CLI reference</h1>
+  <p>
+    Every verb below is real: the synopsis and usage text are synced from
+    the binary's own help strings ({docs.verbs.length} verbs,
+    {docs.productVersion}). Ask any verb what it does with
+    <code>ks &lt;verb&gt; --help</code>; it prints usage and does nothing else.
+  </p>
+  {docs.verbs.map((v) => (
+    <section id={v.verb}>
+      <h2>ks {v.verb}</h2>
+      <p>{v.synopsis}</p>
+      <pre data-copy-wrapped="true">{v.usage}<button type="button" class="ks-copy" data-copy={v.usage}>copy</button></pre>
+    </section>
+  ))}
+</Docs>
