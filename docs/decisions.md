@@ -41,3 +41,41 @@ environment; merge to main -> named `staging` environment,
 automatically; production slot deploys ONLY from `workflow_dispatch`.
 There is no automatic path to production, which makes the manual
 approval a property of the workflow graph rather than a policy.
+
+## ADR-W2 — The leads path: durable before delivered (2026-08-20)
+
+**Status:** accepted, Phase W4.
+
+**Resources added** (the second half of the constitution's expected
+day-zero bill):
+
+| Resource | Name | Group | Tier / cost | Created by |
+|---|---|---|---|---|
+| Storage account | `kswebleads` | `ks-web-rg` | Standard_LRS, ~cents/mo | ks, `infra/create-storage.sh` |
+| Tables | `leads`, `grants`, `subscribers`, `contact` | in `kswebleads` | included | same script |
+
+**The law of the leads path.** Every form handler writes its Table row
+FIRST, then attempts email, then records the email outcome on the row
+(`sent`, `failed:<reason>`, or `unconfigured`). Email failure changes
+nothing the submitter sees: a lost lead is a lost session, and email is
+a notification, never a dependency. The honeypot pretends success and
+stores nothing: a bot is not a lead. Rate limiting is per IP-hash per
+form, five per ten minutes, and the 429 says the earlier submissions
+are safe.
+
+**Email provider is the founder's moment.** The notify step speaks a
+Resend-compatible HTTP API and reads KS_EMAIL_KEY / KS_EMAIL_TO /
+KS_EMAIL_FROM / KS_EMAIL_API from SWA settings, all unset today. Until
+the founder sets them, emailStatus records `unconfigured` and gate W4's
+email-arrival leg aborts with exit-75 semantics: a trial that cannot be
+held, not a falsified claim.
+
+**Auth is SWA's built-in GitHub provider.** No custom registration, no
+client secret, no cost: /.auth/login/github ships with Standard. The
+console shell reads /.auth/me client-side and renders three honest
+states (signed-out, invite-pending, auth-unavailable).
+
+**The connection string** went from `az storage account
+show-connection-string` straight into SWA app settings without entering
+the conversation, the repo, or logs, same discipline as the deployment
+token.
