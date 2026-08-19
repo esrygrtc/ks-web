@@ -18,7 +18,12 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
+      # The evidence source: Proof/Compatibility content is verified fresh
+      # against the PUBLIC product repo on every merge (UI Law 4). A stale
+      # or hand-edited proof.json fails CI here.
+      - run: git clone --quiet https://github.com/esrygrtc/ks.git /tmp/ks
       - run: npm run lint
+        env: { KS_PRODUCT_REPO: /tmp/ks }
       - run: npx vitest run
       - run: npm run build
       - run: npm run lint:post
