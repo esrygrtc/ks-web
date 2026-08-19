@@ -1,0 +1,34 @@
+# Verbatim lines carried from design/KeepState.dc.html (dedashed)
+The durable agent session cloud
+Your agents never start over.
+KeepState runs your AI agents inside snapshot-able micro-VMs. One API: run, checkpoint, fork, resume, replay. Any model, any harness.
+An agent that dies at hour five is a bill. An agent that resumes is an employee.
+Watch the plug get pulled
+Every checkpoint is a door to six futures.
+Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices.
+Claude Code's own resume is a quest log: your notes survive, the world resets. KeepState is a save state: the running tests, the dev server, the half-finished thought, frozen mid-frame and thawed intact.
+Agents die mid-task. You pay twice.
+Sandbox crash, rate limit, provider blip. Everything gone. Restart from zero.
+The same context, re-sent to the model step after step after step.
+Framework, sandbox, workflow engine, state store, per-vendor caches.
+Every serious agent team rebuilds this privately. None of them wants to.
+One API. Autosave for AI agents.
+run · checkpoint · fork · resume · replay
+Three states. One freeze.
+Branch step 40 into six universes. Keep the winner.
+Cache-aware routing across providers.
+Stored-response replay: never pay twice for an interrupted call.
+Budget caps: ten forks can't detonate your card.
+The token bill drops the week you switch.
+Counting the OOMs of agent-hours.
+Agent task horizons keep doubling. Minutes became hours. Hours become days.
+Inference-time compute now outweighs everything else in the agent economy.
+MCP standardized tools. Long tasks became the default, not the demo.
+What the 2024 forecasts called unhobbling is now a workload. Its substrate is unowned.
+fal taxes generative media. KeepState taxes agent-hours.
+Every long-running task in the world is becoming a session: metered, durable, forkable, replayable. We are building the layer that keeps that state, the way the caravanserai kept the caravans: the place where long journeys checkpoint for the night and continue at dawn. The open session protocol is named han in its honor.
+Read the manifesto: The Session Economy →
+Send us one trace of your longest run.
+Within two weeks we pull the plug on your agent, live, and hand you the cost model of what you'd save.
+Become a design partner
+keepstate.ai · the durable agent session cloud

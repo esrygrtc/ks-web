@@ -1,0 +1,116 @@
+---
+// Status: there is no live feed yet, so this page ships the structure and
+// the law, not the numbers. UI Law 3: with no feed every status field
+// renders UNAVAILABLE; green is impossible until an external probe
+// reports. The composite's operational sample data (99.98%, INC-011..014,
+// green bars) is deliberately NOT shipped; the copy carried verbatim is
+// the composite's own unavailable-state copy and its incident philosophy.
+import Site from '../layouts/Site.astro';
+import StatusChip from '../components/StatusChip.astro';
+
+const surfaces = [
+  'API and control plane',
+  'Gateway',
+  'Console',
+  'Checkpoint store, read',
+];
+// 45 columns, same as the composite's uptime strip; every day renders
+// "no data recorded" because no probe has recorded a day yet.
+const days = Array.from({ length: 45 }, (_, i) => 45 - i);
+const systemLine = 'keepstate v0.1.1 · api unavailable · gateway unavailable · doctor unavailable · incidents unavailable · westeurope';
+---
+<Site
+  title="Status · KeepState"
+  description="KeepState system status. No probe is reporting yet, so every field renders unavailable; green is impossible without live data."
+  footer="marketing"
+>
+  <main class="w-full">
+    <section class="max-w-[1180px] mx-auto px-7 pt-14 pb-8">
+      <div class="flex items-center gap-[9px] mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Status</span>
+      </div>
+      <div class="flex items-start gap-4 flex-wrap mb-5">
+        <span class="w-[13px] h-[13px] rounded-pill bg-stone block mt-3.5 shrink-0"></span>
+        <h1 class="font-serif text-34 leading-[1.06] tracking-[-0.024em] font-normal m-0 max-w-[20em]">Status unavailable. We cannot see ourselves right now.</h1>
+      </div>
+      <p class="text-16 leading-[1.7] text-slate mt-0 mb-3 max-w-[44em] [text-wrap:pretty]">The probe that produces this page is not reporting, so every field below reads unavailable rather than green. Your sessions may well be fine; we are declining to claim it without a measurement.</p>
+      <p class="text-14 leading-[1.7] text-taupe mt-0 mb-5 max-w-[44em]">The external probe that will feed this page arrives with monitoring. Until it reports, every field here renders its unavailable state.</p>
+      <div class="flex items-center gap-3.5 flex-wrap">
+        <StatusChip />
+        <p class="font-mono text-12 leading-[1.7] text-taupe m-0">{systemLine}</p>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="bg-white border border-sand rounded-5 overflow-hidden">
+        <div class="px-[22px] py-[18px] border-b border-sand flex items-center justify-between gap-3.5 flex-wrap">
+          <p class="text-13 font-semibold m-0">Uptime, last 90 days</p>
+          <p class="font-mono text-11 text-taupe m-0">external probe · arrives with monitoring</p>
+        </div>
+        {surfaces.map((name) => (
+          <div class="px-[22px] py-5 border-b border-track">
+            <div class="flex items-baseline justify-between gap-3.5 flex-wrap mb-3">
+              <div class="flex items-center gap-2.5 min-w-0 flex-wrap">
+                <span class="w-[6px] h-[6px] bg-stone rotate-45 block shrink-0"></span>
+                <p class="text-14 font-medium text-ink m-0">{name}</p>
+                <span class="font-mono text-10 tracking-[0.06em] text-taupe bg-parchment border border-sand rounded-pill px-[9px] py-[3px] whitespace-nowrap">unavailable</span>
+              </div>
+              <StatusChip />
+            </div>
+            <div class="flex gap-[2px] items-stretch h-[30px]">
+              {days.map((d) => (
+                <span title={`day ${d} · no data recorded`} class="flex-1 min-w-0 bg-sand rounded-2 block"></span>
+              ))}
+            </div>
+            <p class="font-mono text-10 text-taupe mt-2 mb-0">no probe data recorded</p>
+          </div>
+        ))}
+        <div class="px-[22px] py-3.5 flex items-center gap-[18px] flex-wrap">
+          <span class="inline-flex items-center gap-[7px] font-mono text-10 text-taupe"><span class="w-[9px] h-[9px] bg-moss block rounded-2"></span>operational</span>
+          <span class="inline-flex items-center gap-[7px] font-mono text-10 text-taupe"><span class="w-[9px] h-[9px] bg-claret block rounded-2"></span>degraded or down</span>
+          <span class="inline-flex items-center gap-[7px] font-mono text-10 text-taupe"><span class="w-[9px] h-[9px] bg-sand block rounded-2"></span>no data recorded</span>
+        </div>
+      </div>
+      <p class="text-13 leading-[1.65] text-taupe mt-3.5 mb-0 max-w-[46em]">A day with no probe data renders gray, not green. Checkpoint durability is a data claim rather than an uptime claim and is gated separately on <a href="/proof" class="text-claret no-underline hover:underline underline-offset-2">Proof</a>.</p>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <h2 class="font-serif text-26 leading-[1.1] tracking-[-0.02em] font-normal mt-0 mb-3.5">Incident history.</h2>
+      <p class="text-15 leading-[1.65] text-slate mt-0 mb-7 max-w-[44em]">Every incident is written up the way we write internal findings: what failed, what the evidence showed, and what law changed as a result. A postmortem that changes no law is an apology, not a finding.</p>
+      <div class="border border-dashed border-sandDeep rounded-5 bg-white p-6 max-w-lg">
+        <p class="font-serif text-17 text-ink mt-0 mb-1.5">No incidents published yet.</p>
+        <p class="text-13 text-slate leading-[1.65] m-0">This history begins when the monitoring feed does. Nothing is backfilled and nothing is invented.</p>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-14 pb-6">
+      <div class="grid gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))]">
+        <div class="bg-parchment border border-sand rounded-5 p-6">
+          <p class="text-13 font-semibold mt-0 mb-2.5">Subscribe to incidents</p>
+          <p class="text-13 leading-[1.65] text-slate mt-0 mb-4">One email when an incident opens, one when it closes. Nothing else on this list.</p>
+          <form method="post" action="/api/subscribe" class="flex gap-2">
+            <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input
+              type="email" name="email" required placeholder="you@company.com" aria-label="email address"
+              class="flex-1 min-w-0 font-sans text-13 text-ink bg-white border border-sand rounded-3 px-3 py-2.5 focus:outline-none focus:border-claret"
+            />
+            <button type="submit" class="font-sans text-13 font-medium text-paper bg-claret border-0 rounded-3 px-4 py-2.5 cursor-pointer shrink-0 hover:bg-claretDeep">Subscribe</button>
+          </form>
+        </div>
+        <div class="bg-white border border-sand rounded-5 p-6">
+          <p class="text-13 font-semibold mt-0 mb-2.5">Machine-readable</p>
+          <p class="text-13 leading-[1.65] text-slate mt-0 mb-4">Poll it, page on it, put it in your own dashboard. Same fields as the footer system line.</p>
+          <div class="bg-ink rounded-4 px-[15px] py-[13px]">
+            <code class="font-mono text-12 text-parchment block overflow-x-auto whitespace-nowrap">curl keepstate.ai/status.json</code>
+          </div>
+          <p class="font-mono text-11 text-taupe mt-2.5 mb-0">endpoint arrives with monitoring</p>
+        </div>
+        <div class="bg-white border border-sand rounded-5 p-6">
+          <p class="text-13 font-semibold mt-0 mb-2.5">What counts as an incident</p>
+          <p class="text-13 leading-[1.65] text-slate m-0">Any degradation a customer could notice, whether or not anyone reported it.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Site>

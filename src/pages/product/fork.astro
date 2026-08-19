@@ -1,0 +1,81 @@
+---
+// Product page: Fork. Built from design/Product Pages.dc.html (tab 1).
+// The composite's illustrative metrics (64 forks per call, the 200-fork
+// fan-out gate G-126) have no proof.json equivalent and are replaced by
+// the measured gate-5 / gate-6 facts, each with an evidence link.
+import Product from './_Product.astro';
+
+const metrics = [
+  {
+    label: 'Branches from one checkpoint',
+    value: '3',
+    note: 'three disks, three lineage chains; a file written in A absent from B and C',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-5',
+    evidenceTag: 'gate-5-green',
+  },
+  {
+    label: 'Pre-steer bodies across branches',
+    value: 'byte-identical',
+    note: 'hash 6d7c898a; only the steer differed, guests never touched',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-5',
+    evidenceTag: 'gate-5-green',
+  },
+  {
+    label: 'Storage across 82 checkpoints',
+    value: '19.1x dedup',
+    note: '4,233 MiB actual vs 80,952 MiB naive; content-addressed, shared with the parent',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-6',
+    evidenceTag: 'gate-6-green',
+  },
+];
+const gates = [
+  { tag: 'gate-2b-green', href: '/proof#gate-2b' },
+  { tag: 'gate-5-green', href: '/proof#gate-5' },
+];
+---
+<Product
+  slug="fork"
+  title="Fork · KeepState"
+  description="A fork is a new conversation with an old world as its parent: branch a freeze into parallel universes, run them at once, and keep the winner."
+  eyebrow="Fork"
+  headline="Every checkpoint is a door to six futures."
+  standfirst="A fork is a new conversation with an old world as its parent. Branch a freeze from two days ago into six universes, run them at once, and keep the one whose tests you believe."
+  metrics={metrics}
+  evidenceLine="Fork divergence and steering isolation are gated on every release; the raw output is public."
+  gates={gates}
+  ctaHead="Stop gambling on one instruction."
+  ctaBody="Run all of them from the same freeze and keep the winner."
+>
+  <div>
+    <div class="bg-white border border-sand rounded-5 px-6 py-[26px]">
+      <svg viewBox="0 0 620 210" class="w-full h-auto block" role="img" aria-label="Session timeline branching into three forks at one checkpoint">
+        <line x1="14" y1="40" x2="606" y2="40" class="stroke-sand" stroke-width="1"></line>
+        <path d="M300 40 C 380 40, 400 80, 520 80" fill="none" class="stroke-claret" stroke-width="1.5"></path>
+        <path d="M300 40 C 380 40, 400 130, 520 130" fill="none" class="stroke-claret" stroke-width="1.5"></path>
+        <path d="M300 40 C 380 40, 400 180, 520 180" fill="none" class="stroke-claret" stroke-width="1.5"></path>
+        <rect x="56" y="34" width="12" height="12" class="fill-claret" transform="rotate(45 62 40)"></rect>
+        <rect x="174" y="34" width="12" height="12" class="fill-claret" transform="rotate(45 180 40)"></rect>
+        <rect x="294" y="32" width="16" height="16" class="fill-claret" transform="rotate(45 302 40)"></rect>
+        <rect x="414" y="34" width="12" height="12" class="fill-sand" transform="rotate(45 420 40)"></rect>
+        <rect x="534" y="34" width="12" height="12" class="fill-sand" transform="rotate(45 540 40)"></rect>
+        <rect x="514" y="74" width="12" height="12" class="fill-claret" transform="rotate(45 520 80)"></rect>
+        <rect x="514" y="124" width="12" height="12" class="fill-claret" transform="rotate(45 520 130)"></rect>
+        <rect x="514" y="174" width="12" height="12" class="fill-claret" transform="rotate(45 520 180)"></rect>
+        <text x="284" y="20" class="fill-claret font-mono text-11">c_0040</text>
+      </svg>
+      <div class="grid gap-3 mt-[22px] grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]">
+        <div class="bg-ink rounded-4 px-3.5 py-3 font-mono text-11 text-blush overflow-x-auto whitespace-nowrap">--steer "one big migration"</div>
+        <div class="bg-ink rounded-4 px-3.5 py-3 font-mono text-11 text-blush overflow-x-auto whitespace-nowrap">--steer "keep legacy adapter"</div>
+        <div class="bg-ink rounded-4 px-3.5 py-3 font-mono text-11 text-blush overflow-x-auto whitespace-nowrap">--steer "split by tenant"</div>
+      </div>
+      <p class="font-mono text-11 text-taupe mt-3 mb-0">the three steers above are the gate-5 fixture: three branches, one checkpoint, three histories that differ only by their steer</p>
+    </div>
+    <div class="grid gap-10 mt-[34px] grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+      <p class="text-16 leading-[1.75] text-slate m-0">Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices, and a shared budget pool means a fan-out cannot exceed the cap you already set.</p>
+      <p class="text-16 leading-[1.75] text-slate m-0">This is the difference between steering an agent and gambling on it. You stop choosing which instruction to try and run all of them from the same starting state, then keep the one that produced tests you believe.</p>
+    </div>
+  </div>
+</Product>

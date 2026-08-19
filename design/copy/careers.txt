@@ -1,0 +1,10 @@
+# Careers: verbatim lines carried from design/Careers.dc.html
+Not a values page. An actual document, versioned in the repository, that decides arguments. It is short, it has been amended eleven times, and every amendment came from something breaking. If you would find that suffocating, this is a useful thing to know early.
+Hosts sleep; ledgers don’t.
+Assert the fact, not the residue.
+What gates watch stays true; what nothing watches drifts.
+You write the thing that would catch the failure before you write the thing that might fail. Not tests in the ordinary sense: a gate is a check that runs on every release and whose red state removes a public claim from the website automatically.
+Every company has these. Most make you discover them in month three, which wastes a year of your life and ours.
+We are six people. There is no platform team to hand a problem to, and no design partner will be impressed by your org chart.
+One role is genuinely open today. We are not going to list eight speculative openings to look larger than we are.
+Send a finding instead of a resume. Read the claims file, find something we got wrong or cannot yet prove, and write it up the way we write findings: what you looked at, what the evidence showed, what should change. That is the actual work, and it is the only application we have never ignored.

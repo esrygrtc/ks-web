@@ -1,0 +1,13 @@
+# verbatim lines carried from design/Customers.dc.html (dedashed), one per line
+Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not.
+Names are withheld until each partner clears its own logo; the measurements are not.
+Reports are written from meter output, not from interviews. If a figure here disagrees with your own measurement, that is a finding and we will publish the correction.
+Read the pilot report
+signed by both parties
+Run your own pilot
+Send us one trace of your longest run.
+Within two weeks we pull the plug on your agent, live
+and hand you the cost model of what you would save. You get the report either way, including the version where we do not help.
+Become a design partner
+Read the claims file
+keepstate.ai · the durable agent session cloud

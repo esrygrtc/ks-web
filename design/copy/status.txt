@@ -1,0 +1,14 @@
+# Verbatim lines carried from design/Status.dc.html. Only the composite's
+# unavailable-state copy and its incident philosophy ship; the operational
+# sample data (percentages, INC-011..014, green bars) is not carried.
+Status unavailable. We cannot see ourselves right now.
+The probe that produces this page is not reporting, so every field below reads unavailable rather than green. Your sessions may well be fine; we are declining to claim it without a measurement.
+Uptime, last 90 days
+A day with no probe data renders gray, not green.
+Incident history.
+Every incident is written up the way we write internal findings: what failed, what the evidence showed, and what law changed as a result. A postmortem that changes no law is an apology, not a finding.
+Subscribe to incidents
+One email when an incident opens, one when it closes. Nothing else on this list.
+Poll it, page on it, put it in your own dashboard. Same fields as the footer system line.
+What counts as an incident
+Any degradation a customer could notice, whether or not anyone reported it.

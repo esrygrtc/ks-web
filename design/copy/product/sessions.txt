@@ -1,0 +1,2 @@
+Kill it anywhere. Resume anywhere.
+A session is a micro-VM we can freeze. The freeze is one write, not three:

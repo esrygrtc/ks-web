@@ -1,0 +1,36 @@
+---
+// Press: no composite exists (BACKLOG G2); ships as a simple
+// Manifesto-layout text page per the founder's default. Brand basics
+// only; the downloadable kit is honestly not ready and says so.
+import Site from '../layouts/Site.astro';
+---
+<Site
+  title="Press · KeepState"
+  description="Brand basics for writing about KeepState: the one-word name, the claret diamond mark, and where every public claim is verified."
+>
+  <main class="max-w-[1180px] mx-auto px-7 pt-20 pb-24 w-full">
+    <div class="max-w-[62ch]">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Press</span>
+      </div>
+      <h1 class="font-serif text-34 leading-tight tracking-tight font-normal mt-0 mb-7">Writing about KeepState.</h1>
+
+      <h2 class="font-serif text-22 font-normal mt-0 mb-3">The name</h2>
+      <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-7">The name is one word: <strong class="text-ink">KeepState</strong>. Capital K, capital S, no space. Not Keepstate, not Keep State, not keepstate except in the domain, which is <code class="font-mono text-14 bg-parchment rounded-2 px-1">keepstate.ai</code>.</p>
+
+      <h2 class="font-serif text-22 font-normal mt-0 mb-3">The mark</h2>
+      <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-7">The mark is a claret diamond <span class="w-[9px] h-[9px] bg-claret rotate-45 inline-block mx-1" aria-hidden="true"></span> : a small square rotated forty-five degrees, in the house claret, usually set beside the wordmark in a serif face. It appears everywhere on this site exactly as it should appear in print.</p>
+
+      <h2 class="font-serif text-22 font-normal mt-0 mb-3">Facts and numbers</h2>
+      <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-7">Before quoting a number about KeepState, check the <a href="/proof" class="text-claret no-underline hover:text-ink hover:underline underline-offset-2">Proof page</a>. Every public claim we make cites the gate that proves it, and that page also lists what we deliberately do not claim. If a sentence about the product is not on it, we have not proven it, and we would rather you said so.</p>
+
+      <h2 class="font-serif text-22 font-normal mt-0 mb-3">Press kit</h2>
+      <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-7">A downloadable kit with logo files and boilerplate is being assembled and is not available yet. We would rather say that plainly than link a zip that does not exist.</p>
+
+      <div class="border-t border-sand pt-6">
+        <p class="font-serif text-17 leading-relaxed text-slate m-0">Press inquiries go through the <a href="/contact" class="text-claret no-underline hover:text-ink hover:underline underline-offset-2">contact page</a>.</p>
+      </div>
+    </div>
+  </main>
+</Site>

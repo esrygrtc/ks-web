@@ -1,0 +1,300 @@
+---
+// Enterprise: two buyers, one purchase. Sections carried from the design
+// composite (dedashed). Numbers policy: measured numbers appear only if
+// they exist in src/generated/proof.json and carry a badge or an evidence
+// link to /proof; SLA availability targets and credits are contractual
+// OFFERS (spec), labeled as such; the composite's unproven marketing
+// numbers (40 to 60 percent, sub-100 ms warm resume) are not shipped.
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import MetricCard from '../components/MetricCard.astro';
+import MonoTable from '../components/MonoTable.astro';
+
+const platform = [
+  {
+    text: 'Bring the harness you run today. Your agent code does not change; the image does.',
+    href: '/compatibility',
+    tag: 'per-agent evidence',
+  },
+  {
+    text: 'Resume is measured, not promised: 14-25 s of downtime, checkpoint to prompt, on the bench.',
+    href: '/proof#gate-6',
+    tag: 'gate-6-green',
+    badge: 'MEASURED' as const,
+  },
+  {
+    text: 'Cache-aware routing and stored-response replay, so an interrupted call is never bought twice.',
+    href: '/proof#gate-3',
+    tag: 'gate-3-green',
+  },
+  { text: 'Org and per-session budgets with checkpoint-on-exceed. A cap parks work, it never kills it.' },
+  { text: 'Fleet view of parked agents, waking on schedule or on webhook.' },
+];
+
+const compliance = [
+  {
+    text: 'Deterministic replay re-executes a run from checkpointed state, byte for byte.',
+    href: '/proof#gate-5',
+    tag: 'gate-5-green',
+  },
+  {
+    text: 'Sequence lineage on every event: what was called, in what order, with which checkpoint as parent.',
+    href: '/proof#gate-5',
+    tag: 'gate-5-green',
+  },
+  { text: 'Retention policy editor measured in years, with legal hold that removes the delete path entirely.' },
+  { text: 'Audit bundle export as a signed archive, scoped to the sessions and range you name.' },
+  { text: 'SIEM webhook, SSO and SCIM, region pinning enforced at the scheduler.' },
+];
+
+// Availability targets and credits are the terms an enterprise agreement
+// signs: offers that bind us, not measurements of history.
+const sla = [
+  { surface: 'API and control plane', uptime: '99.95%', credit: '10 to 30%', by: 'external probe, 1 min' },
+  { surface: 'Gateway', uptime: '99.95%', credit: '10 to 30%', by: 'external probe, 1 min' },
+  { surface: 'Checkpoint store, read', uptime: '99.99%', credit: '25 to 50%', by: 'external probe, 1 min' },
+  { surface: 'Console', uptime: '99.9%', credit: 'none', by: 'external probe, 5 min' },
+];
+
+// No region gate is green yet, so per the design's own rule every row is
+// labeled planned until a gate says otherwise.
+const regions = [
+  { code: 'us-east-1', city: 'Virginia', status: 'planned' },
+  { code: 'us-west-2', city: 'Oregon', status: 'planned' },
+  { code: 'eu-west-1', city: 'Dublin', status: 'planned' },
+  { code: 'eu-central-1', city: 'Frankfurt', status: 'planned, sovereign' },
+  { code: 'ap-northeast-1', city: 'Tokyo', status: 'planned' },
+  { code: 'ap-south-1', city: 'Mumbai', status: 'planned' },
+  { code: 'on-premises', city: 'your data center, enterprise only', status: 'planned' },
+];
+
+const pack = [
+  { name: 'Data processing agreement', meta: 'in preparation' },
+  { name: 'Subprocessor list', meta: 'in preparation' },
+  { name: 'Architecture overview', meta: 'in preparation' },
+  { name: 'Penetration test summary', meta: 'not yet commissioned' },
+  { name: 'Claims file export', meta: 'live at /proof', href: '/proof' },
+];
+
+const boundary = [
+  { name: 'BYOK vault', desc: 'your real provider key, encrypted, outside the boundary', box: 'bg-blushBg border border-shell', head: 'text-claret', body: 'text-slate' },
+  { name: 'gateway', desc: 'mints a virtual key scoped to one session, meters, enforces exactly-once', box: 'bg-white border border-sand', head: 'text-ink', body: 'text-slate' },
+  { name: 'micro-VM', desc: 'the agent, its filesystem, its tools. Sees the virtual key only', box: 'bg-ink', head: 'text-blush', body: 'text-borderMuted' },
+  { name: 'checkpoint store', desc: 'encrypted at rest, region-pinned, no live credential inside', box: 'bg-parchment border border-sand', head: 'text-slate', body: 'text-slate' },
+];
+---
+<Site
+  title="Enterprise · KeepState"
+  description="One system described for both buyers: engineering and audit. Deterministic replay, sequence lineage, region pinning, BYOK key isolation, and service levels written down as offers."
+>
+  <main>
+    <section class="max-w-[1180px] mx-auto px-7 pt-16 pb-12">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="font-mono text-11 font-semibold uppercase tracking-[0.16em] text-claret">Enterprise</span>
+      </div>
+      <h1 class="font-serif text-34 font-medium leading-tight tracking-tight mt-0 mb-6">Two buyers, one purchase.</h1>
+      <p class="text-17 leading-relaxed text-slate m-0 max-w-3xl">
+        Durability is an engineering purchase and an audit purchase at the same
+        time. Both columns below describe the same system, so nobody has to
+        translate for the other.
+      </p>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="grid gap-5 md:grid-cols-2">
+        <article class="bg-white border border-sand rounded-5 p-7">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+            <span class="font-mono text-11 uppercase tracking-[0.1em] text-claret">Platform</span>
+          </div>
+          <p class="font-serif text-22 leading-snug mt-0 mb-5">Your engineers get durability and a token bill that never buys the same call twice.</p>
+          <div class="grid gap-3.5">
+            {platform.map((p) => (
+              <div class="flex gap-3 items-start">
+                <span class="w-[5px] h-[5px] bg-stone rotate-45 block mt-[7px] shrink-0"></span>
+                <p class="text-14 leading-relaxed text-slate m-0">
+                  {p.text}
+                  {p.badge && <> <Badge kind={p.badge} /></>}
+                  {p.href && (
+                    <> <a href={p.href} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline whitespace-nowrap"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>{p.tag}</a></>
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article class="bg-slate rounded-5 p-7">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-[7px] h-[7px] bg-blush rotate-45 block"></span>
+            <span class="font-mono text-11 uppercase tracking-[0.1em] text-blush">Compliance</span>
+          </div>
+          <p class="font-serif text-22 leading-snug text-paper mt-0 mb-5">Your auditors get deterministic replay, sequence lineage, and retention measured in years.</p>
+          <div class="grid gap-3.5">
+            {compliance.map((c) => (
+              <div class="flex gap-3 items-start">
+                <span class="w-[5px] h-[5px] bg-blush rotate-45 block mt-[7px] shrink-0"></span>
+                <p class="text-14 leading-relaxed text-parchment m-0">
+                  {c.text}
+                  {c.href && (
+                    <> <a href={c.href} class="inline-flex items-center gap-1.5 font-mono text-11 text-blush no-underline hover:underline whitespace-nowrap"><span class="w-[5px] h-[5px] bg-blush rotate-45 inline-block"></span>{c.tag}</a></>
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <h2 class="font-serif text-26 font-normal mt-0 mb-2">Service levels, written down.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-5 max-w-3xl">
+        These numbers are offers, not measurements: the availability targets an
+        enterprise agreement signs and the credits that fire when we miss them.
+        Measured availability starts publishing on <a href="/status" class="text-claret">Status</a> the day there is a
+        live feed, and never before.
+      </p>
+      <div class="max-w-4xl mb-4">
+        <MonoTable
+          headers={['surface', 'availability', 'credit at breach', 'measured by']}
+          align={['l', 'r', 'r', 'l']}
+          caption="contractual offers · they bind us, they do not describe history"
+        >
+          {sla.map((r) => (
+            <tr>
+              <td class="text-ink text-14">{r.surface}</td>
+              <td class="num text-claret">{r.uptime}</td>
+              <td class="num text-slate">{r.credit}</td>
+              <td class="font-mono text-12 text-taupe">{r.by}</td>
+            </tr>
+          ))}
+        </MonoTable>
+      </div>
+      <p class="text-13 leading-relaxed text-taupe mt-0 mb-8 max-w-3xl">
+        Checkpoint durability is a data claim, not an uptime claim, and it is
+        gated separately on the <a href="/proof" class="text-claret">Proof</a> page.
+      </p>
+
+      <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mt-0 mb-3">what is measured already, on the bench</p>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl">
+        <MetricCard
+          label="kill-and-resume durability"
+          value="25/25"
+          badge="MEASURED"
+          evidenceHref="/proof#gate-6"
+          evidenceTag="gate-6-green"
+          note="fresh cycles; Wilson 95% CI [86.7%, 100.0%], which is all 25 trials can carry"
+        />
+        <MetricCard
+          label="checkpoint dedup, 82 checkpoints"
+          value="19.1x"
+          badge="MEASURED"
+          evidenceHref="/proof#gate-6"
+          evidenceTag="gate-6-green"
+          note="4,233 MiB stored vs 80,952 MiB naive"
+        />
+        <MetricCard
+          label="daemon RSS growth, 7 h soak"
+          value="+0 MiB"
+          badge="MEASURED"
+          evidenceHref="/proof#gate-6"
+          evidenceTag="gate-6-green"
+          note="ksd and ksgw peak growth under sustained load"
+        />
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <div class="grid gap-10 md:grid-cols-2 items-start">
+        <div>
+          <h2 class="font-serif text-26 font-normal mt-0 mb-3">Where your sessions can live.</h2>
+          <p class="text-15 leading-relaxed text-slate mt-0 mb-6 max-w-xl">
+            Region pinning is enforced at the scheduler, so a checkpoint cannot
+            be written outside the region you pinned. Planned regions are
+            labeled planned until a gate says otherwise.
+          </p>
+          <div class="grid border-t border-sand">
+            {regions.map((r) => (
+              <div class="flex items-center justify-between gap-4 py-3 px-0.5 border-b border-track">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="w-[6px] h-[6px] bg-sandDeep rotate-45 block shrink-0"></span>
+                  <span class="font-mono text-13 text-ink">{r.code}</span>
+                  <span class="text-13 text-taupe">{r.city}</span>
+                </div>
+                <span class="font-mono text-10 tracking-[0.08em] text-taupe bg-white border border-sandDeep rounded-pill px-2.5 py-1 whitespace-nowrap">{r.status}</span>
+              </div>
+            ))}
+          </div>
+          <p class="font-mono text-11 text-taupe mt-3 mb-0">no region gate is green yet, so every row honestly reads planned</p>
+        </div>
+
+        <div id="pack" class="bg-white border border-sand rounded-5 p-7">
+          <div class="flex items-center gap-2 mb-3.5">
+            <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+            <span class="font-mono text-11 uppercase tracking-[0.1em] text-claret">Security review pack</span>
+          </div>
+          <p class="font-serif text-22 leading-snug mt-0 mb-3.5">Everything procurement asks for, in one download.</p>
+          <p class="text-14 leading-relaxed text-slate mt-0 mb-5">No form, no call first. Read it, then decide whether to talk to us.</p>
+          <div class="grid gap-2.5 mb-5">
+            {pack.map((p) => (
+              <div class="flex items-center justify-between gap-3.5 border border-sand rounded-4 px-3.5 py-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span class="w-[5px] h-[5px] bg-stone rotate-45 block shrink-0"></span>
+                  <span class="text-13 text-ink">{p.name}</span>
+                </div>
+                {p.href
+                  ? <a href={p.href} class="font-mono text-11 text-claret whitespace-nowrap">{p.meta}</a>
+                  : <span class="font-mono text-11 text-taupe whitespace-nowrap">{p.meta}</span>}
+              </div>
+            ))}
+          </div>
+          <div class="grid gap-2.5">
+            <Button disabled>Download the pack · not yet assembled</Button>
+            <Button href="/contact" variant="secondary">Ask for the drafts by hand</Button>
+          </div>
+          <p class="font-mono text-11 text-taupe mt-3.5 mb-0 text-center">SOC 2 Type II · not yet claimed · this line gets a date only when an audit window opens</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <h2 class="font-serif text-26 font-normal mt-0 mb-3 max-w-3xl">The real key never enters a guest, an image, or a snapshot.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-7 max-w-3xl">
+        Your provider keys live in a vault outside the isolation boundary. The
+        gateway mints a virtual key scoped to one session, and that is the only
+        credential a VM ever sees. A checkpoint of that VM therefore contains
+        no secret worth stealing.
+      </p>
+      <div class="bg-white border border-sand rounded-5 p-7">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+          {boundary.map((b) => (
+            <div class={`${b.box} rounded-4 p-5 text-center`}>
+              <p class={`font-mono text-12 ${b.head} mt-0 mb-2`}>{b.name}</p>
+              <p class={`text-12 leading-relaxed ${b.body} m-0`}>{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-ink mt-16">
+      <div class="max-w-[1180px] mx-auto px-7 py-16">
+        <div class="max-w-2xl">
+          <h2 class="font-serif text-34 font-normal leading-tight text-paper mt-0 mb-5">Our own build is governed by the same audit discipline we sell.</h2>
+          <p class="text-17 leading-relaxed text-borderMuted mt-0 mb-7">
+            Gates before evidence, evidence before claims, <span class="text-blush">no claim without a tag</span>. The constitution that produces the ledger you are buying is public.
+          </p>
+          <div class="flex gap-3.5 flex-wrap">
+            <Button href="/contact">Talk to us</Button>
+            <a href="/#partner" class="text-15 font-medium text-paper border border-inkSoft hover:border-termMuted rounded-3 px-5 py-2.5 no-underline inline-flex items-center">Become a design partner</a>
+            <a href="/proof" class="text-15 font-medium text-paper border border-inkSoft hover:border-termMuted rounded-3 px-5 py-2.5 no-underline inline-flex items-center">Read the constitution</a>
+          </div>
+          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-7 mb-0">keepstate.ai · the durable agent session cloud</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Site>

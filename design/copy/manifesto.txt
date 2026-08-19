@@ -1,0 +1,8 @@
+# Verbatim lines carried from design/Manifesto.dc.html (composite had no em dashes; nothing dedashed)
+The Session Economy
+Compute used to be billed in requests, then in tokens.
+It is now billed in agent-hours: long, stateful, interruptible work that behaves less like an API call and more like an employee's afternoon.
+That unit has no home. Frameworks orchestrate it, sandboxes host it, nothing keeps it.
+We think the durable session is the primitive the whole agent economy will be built on, and that the company which keeps that state gets to meter it.
+The full argument is being written down; leave an address and we will send it when it is finished.
+Get the manifesto when it ships

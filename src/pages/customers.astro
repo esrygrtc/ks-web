@@ -1,0 +1,186 @@
+---
+// Customers: the pilot-report template, shipped honestly empty.
+// UI Law 3 (constitution scope fence): no invented customers, no invented
+// testimonials. The design is a report template; until a pilot finishes
+// and clears publication, every card below is an explicit placeholder and
+// every metric slot renders the unavailable state (UI Law 1).
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+import MonoTable from '../components/MonoTable.astro';
+
+const slots = [
+  {
+    n: '01',
+    will: "A real workload, run unchanged for at least two weeks, in the partner's own stack.",
+    quote: 'The quote that sits here belongs to a partner who has not signed yet.',
+  },
+  {
+    n: '02',
+    will: 'One headline number from our meters, badged MEASURED or ESTIMATED, reproducible from the report.',
+    quote: 'No stand-in words. The border waits for a sentence someone actually said.',
+  },
+  {
+    n: '03',
+    will: 'The stage of the pilot, running or complete, with the report signed by both parties.',
+    quote: 'A quote appears only after the partner reads the report and signs it.',
+  },
+  {
+    n: '04',
+    will: 'The version where we did not help, published anyway, if that is how it ends.',
+    quote: 'If a pilot ends badly, its quote still runs. That is the deal.',
+  },
+];
+
+const anatomy = [
+  { k: 'summary', v: 'What ran, for how long, what interrupted it, and what happened next.' },
+  { k: 'results', v: 'A before and after table. Every row carries MEASURED or ESTIMATED, or renders unavailable.' },
+  { k: 'method', v: 'How each number was taken, so the partner can reproduce it from their own side.' },
+  { k: 'what did not work', v: 'The section that makes the rest believable. It is never optional.' },
+];
+
+const illustrationRows = [
+  'Runs completed without restart',
+  'Tokens re-sent after interruption',
+  'Time to produce an audit bundle',
+];
+---
+<Site
+  title="Customers · KeepState"
+  description="Pilot reports with measured numbers will be published here. None has shipped yet, so every card is an explicit placeholder: no invented logo, no invented quote, no invented number."
+>
+  <main>
+    <section class="max-w-[1180px] mx-auto px-7 pt-16 pb-11">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="font-mono text-11 font-semibold uppercase tracking-[0.16em] text-claret">Customers</span>
+      </div>
+      <h1 class="font-serif text-34 font-medium leading-tight tracking-tight mt-0 mb-6 max-w-2xl">
+        The pilot reports will be published here. None has shipped yet.
+      </h1>
+      <p class="text-17 leading-relaxed text-slate mt-0 mb-5 max-w-3xl">
+        Every report published on this page will open the way the template
+        opens: "Each pilot ran a real workload for at least two weeks and ended
+        with a report we hand over whether the number flatters us or not." No
+        pilot has finished and cleared publication, so what follows is the
+        template itself, labeled as the template.
+      </p>
+      <p class="font-mono text-12 leading-relaxed text-taupe m-0">
+        pilot reports published: none yet · the cards below are placeholders, each marked as one
+      </p>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {slots.map((s) => (
+          <article class="bg-white border border-sand rounded-5 p-6 flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <div class="h-10 flex-1 min-w-0 border border-dashed border-sandDeep rounded-3 bg-cream flex items-center justify-center font-mono text-9 uppercase tracking-[0.1em] text-stone text-center px-2">
+                reserved for a real logo
+              </div>
+              <span class="font-mono text-10 tracking-[0.06em] text-taupe bg-white border border-sandDeep rounded-pill px-2.5 py-1 whitespace-nowrap">placeholder</span>
+            </div>
+
+            <div>
+              <p class="font-mono text-11 uppercase tracking-[0.08em] text-taupe mt-0 mb-1.5">slot {s.n} · open</p>
+              <p class="text-14 leading-relaxed text-slate m-0">{s.will}</p>
+            </div>
+
+            <div>
+              <div class="mb-1.5">
+                <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
+                  <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
+                  unavailable (no pilot yet)
+                </span>
+              </div>
+              <p class="text-13 leading-relaxed text-taupe m-0">the headline number lands here, badged, or it does not land at all</p>
+            </div>
+
+            <blockquote class="m-0 pl-4 border-l-2 border-sand flex-1">
+              <p class="font-serif italic text-15 leading-relaxed text-ink mt-0 mb-2">{s.quote}</p>
+              <footer class="font-mono text-11 text-taupe">attribution · none yet</footer>
+            </blockquote>
+
+            <div aria-disabled="true" class="flex items-center justify-between gap-3 text-14 font-medium text-stone bg-disabledBg border border-disabledBd rounded-3 px-4 py-2.5">
+              <span>Read the pilot report</span>
+              <span class="font-mono text-11">PR-{s.n} · not yet written</span>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="bg-parchment border border-sand rounded-5 p-6 mt-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+          <span class="font-mono text-10 uppercase tracking-[0.1em] text-claret">why the cards are blank</span>
+        </div>
+        <p class="text-15 leading-relaxed text-slate m-0 max-w-3xl">
+          No pilot has finished and cleared publication, so there is no logo,
+          no quote, and no number on this page. The slots stay honestly empty
+          rather than filled with marks nobody agreed to. The rule stands from
+          day one: Names are withheld until each partner clears its own logo;
+          the measurements are not.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <h2 class="font-serif text-26 font-normal mt-0 mb-2">What every pilot report will contain.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-7 max-w-3xl">
+        The template is fixed before the first pilot signs, so no report can
+        quietly drop the part that hurts.
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-7">
+        {anatomy.map((a) => (
+          <div class="bg-white border border-sand rounded-4 p-5">
+            <p class="font-mono text-10 uppercase tracking-[0.12em] text-claret mt-0 mb-2">{a.k}</p>
+            <p class="text-13 leading-relaxed text-slate m-0">{a.v}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="max-w-3xl mb-7">
+        <MonoTable
+          headers={['measure', 'before', 'after', 'provenance']}
+          align={['l', 'r', 'r', 'l']}
+          caption="template illustration · no pilot has produced a value, so every cell renders unavailable"
+        >
+          {illustrationRows.map((m) => (
+            <tr>
+              <td class="text-ink">{m}</td>
+              <td class="num text-taupe">unavailable</td>
+              <td class="num text-taupe">unavailable</td>
+              <td>
+                <span class="font-mono text-9 tracking-[0.12em] text-taupe border border-sandDeep rounded-2 px-1.5 py-0.5">UNAVAILABLE</span>
+              </td>
+            </tr>
+          ))}
+        </MonoTable>
+      </div>
+
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <p class="text-13 leading-relaxed text-taupe m-0 max-w-2xl">
+          Reports are written from meter output, not from interviews. If a
+          figure here disagrees with your own measurement, that is a finding
+          and we will publish the correction.
+        </p>
+        <Button href="/contact">Run your own pilot</Button>
+      </div>
+    </section>
+
+    <section class="bg-ink mt-16">
+      <div class="max-w-[1180px] mx-auto px-7 py-16">
+        <div class="max-w-2xl">
+          <h2 class="font-serif text-34 font-normal leading-tight text-paper mt-0 mb-5">Send us one trace of your longest run.</h2>
+          <p class="text-17 leading-relaxed text-borderMuted mt-0 mb-7">
+            Within two weeks we <span class="text-blush">pull the plug on your agent, live</span>, and hand you the cost model of what you would save. You get the report either way, including the version where we do not help.
+          </p>
+          <div class="flex gap-3.5 flex-wrap">
+            <Button href="/#partner">Become a design partner</Button>
+            <a href="/proof" class="text-15 font-medium text-paper border border-inkSoft hover:border-termMuted rounded-3 px-5 py-2.5 no-underline inline-flex items-center">Read the claims file</a>
+          </div>
+          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-7 mb-0">keepstate.ai · the durable agent session cloud</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Site>

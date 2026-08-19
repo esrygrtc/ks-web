@@ -1,0 +1,2 @@
+Logs tell you what the agent said it did. Replay re-executes what it actually did.
+Deterministic replay from checkpointed state. Audit trails with sequence lineage. Deposition-grade evidence for the compliance officer, zero extra work for the engineer.

@@ -1,0 +1,12 @@
+# Verbatim lines carried from design/Security.dc.html (dedashed) into /security
+The real key never enters a guest, an image, or a snapshot.
+A checkpoint is a copy of a running machine, which makes every secret inside that machine a copy too. So we keep secrets out of the machine. What follows is the architecture, stated as policy rather than as reassurance.
+The guest is the only place your agent's code runs, and it is the only place that never holds a durable credential. A stolen checkpoint yields a filesystem and a conversation, not a way to spend your money.
+These are not aspirations. Each one is enforced in code, and where a gate watches it, the gate is named.
+A provider key is never written into a guest.
+Virtual keys are scoped to one session and die with it.
+Checkpoint keys are per-organization and rotated on a 90-day schedule. Enterprise customers may hold the root key themselves, in which case we cannot read a checkpoint even under subpoena.
+No badge appears on this site until the certificate exists. There is no reserved slot waiting to be filled, because a reserved slot is a claim.
+Report anything that looks like a way past the boundary. We answer within one business day, fix or explain within thirty, and publish the finding in the archive with your name on it unless you ask us not to.
+The honest version of a threat model names what it does not cover. These are the three places we consider ourselves most exposed today.
+Read it before you talk to us.

@@ -1,0 +1,12 @@
+# Verbatim lines carried from design/Grants.dc.html (dedashed) into /grants
+KeepState Grants: compute for the people building the agents.
+The harnesses we wrap were written by people who were not paid to make our product work. Grants are how we settle that: session credits, engineering time, and a compatibility row of your own so your users can see the freeze holds.
+You wrote the agent people actually use. We wrap it, gate it, and keep the wrap current at your release cadence rather than ours.
+Long-horizon agent studies need sessions that outlive the machine. A trial that dies at hour 40 is not a result, it is a lost week.
+No institutional affiliation required and no proposal review board. If you are learning to build agents, the meter should not be the thing that stops you.
+Day-0 support is a promise: new harness releases get a wrapped image within 48 hours.
+Not a logo, not a case study, not an exclusivity clause. Three things, all of which we would want anyway:
+Tell us when the freeze does not hold for your harness. A failed absorption is a finding we publish, and it is worth more to us than a testimonial.
+Names appear only where the grantee asked for them. The rest are described by what they build.
+Four questions. A human reads it, and you get a yes or a no with a reason, never silence.
+No pitch deck, no call required. If we need more we will ask one question by email.

@@ -1,0 +1,279 @@
+---
+// Careers: built from design/Careers.dc.html. The composite's copy is
+// carried verbatim (it already writes its asides with middots, so there
+// was nothing to dedash). The composite's expand/collapse role articles
+// ship as native <details> elements so the page stays static; the first
+// role starts open, matching the composite's default state. Salary and
+// equity figures are OFFERS from the founder's spec, not claims.
+import Site from '../layouts/Site.astro';
+
+const epigraphs = [
+  {
+    text: 'Hosts sleep; ledgers don’t.',
+    meta: 'constitution art. 2 · why the event ledger outlives every process we run',
+    card: 'bg-blushBg border-shell', dot: 'bg-claret', body: 'text-ink', metaCls: 'text-termMuted',
+  },
+  {
+    text: 'Assert the fact, not the residue.',
+    meta: 'constitution art. 4 · added after F-061, a checkpoint that acknowledged too early',
+    card: 'bg-ink border-ink', dot: 'bg-blush', body: 'text-paper', metaCls: 'text-termMuted',
+  },
+  {
+    text: 'What gates watch stays true; what nothing watches drifts.',
+    meta: 'constitution art. 7 · the reason a claim without a gate cannot ship to the site',
+    card: 'bg-white border-sand', dot: 'bg-claret', body: 'text-ink', metaCls: 'text-taupe',
+  },
+];
+
+const practices = [
+  {
+    n: 'practice 01', title: 'Gates before evidence',
+    body: 'You write the thing that would catch the failure before you write the thing that might fail. Not tests in the ordinary sense: a gate is a check that runs on every release and whose red state removes a public claim from the website automatically.',
+    cost: 'costs about a day per feature · buys the ability to say a number out loud',
+  },
+  {
+    n: 'practice 02', title: 'ADRs before code',
+    body: 'Any decision that would be expensive to reverse gets a short written record first: the options, the one chosen, and what would make us change our minds. Eleven of them have since been reversed, which is the point of writing the reversal condition down.',
+    cost: 'costs an hour · buys not relitigating the same argument in six months',
+  },
+  {
+    n: 'practice 03', title: 'Journals between sessions',
+    body: 'Work is handed off in writing, including to your own future self. This is the same discipline our product sells: state that survives the process ending. A person who leaves for a week should not take the context with them.',
+    cost: 'costs ten minutes a day · buys a team that survives a holiday',
+  },
+  {
+    n: 'practice 04', title: 'No claim without a tag',
+    body: 'Nothing goes on the marketing site, in a deck, or into a customer email unless it cites the gate run that proves it. If the number cannot be gated, it gets softened to an observation, with its scope stated. This has killed several good slides.',
+    cost: 'costs some marketing punch · buys a claims file competitors cannot copy',
+  },
+];
+
+const warnings = [
+  'We are six people. There is no platform team to hand a problem to, and no design partner will be impressed by your org chart.',
+  'The constitution will occasionally tell you no when you are right. The correct move is to amend it in writing, which is slower than being right loudly.',
+  'We publish our own defects with dates on them. If having your mistake in a public archive would keep you up at night, this will be uncomfortable.',
+  'Compensation is competitive for London but not for a US hyperscaler. Equity is real and early, and early equity is a lottery ticket, not a plan.',
+];
+
+const roles = [
+  {
+    open: true,
+    tag: 'engineer #1 · open now',
+    title: 'Virtualization and storage',
+    line: 'Own the freeze: micro-VM snapshotting, the content-addressed checkpoint store, and the resume path.',
+    meta: 'London or GMT ±3 · senior',
+    job: 'You own the part of the product that either works or does not. Micro-VM snapshot and restore, the content-addressed store behind it, and the resume path that has to hold three states in agreement. Today this is one person’s code and it needs to become a system that a second person can safely change.',
+    first: [
+      'Take the cold resume p95 from 87 s toward 40 s without weakening the atomicity guarantee.',
+      'Write the gates that would have caught F-061 before it shipped, not after.',
+      'Cut the dedup ratio claim loose from our own soak and prove it on three customer workloads.',
+    ],
+    fit: [
+      'You have worked close to the metal on hypervisors, kernels, filesystems, or a storage engine, and can argue about fsync semantics with feeling.',
+      'You have shipped something where correctness mattered more than throughput, and you have the scar to prove it.',
+      'You would rather write the gate than the announcement.',
+    ],
+    terms: [
+      ['level', 'senior to staff'],
+      ['salary', '£130,000 to £165,000'],
+      ['equity', '0.5% to 1.5%'],
+      ['location', 'London hybrid, or remote GMT ±3'],
+    ],
+    card: 'bg-blushBg border-shell', rule: 'border-shell', dot: 'bg-claret', tagCls: 'text-claret',
+  },
+  {
+    open: false,
+    tag: 'not open yet',
+    title: 'Everything else',
+    line: 'Roles we will genuinely need next, listed so you can tell us when you are the person.',
+    meta: 'no requisition · no timeline promised',
+    job: 'These are real gaps rather than aspirational headcount. We are not interviewing for them, we have no budget approved for them, and we would rather say that plainly than collect resumes for a pipeline. If one of them is obviously you, write to findings@keepstate.ai and we will keep the thread rather than a database row.',
+    first: [
+      'Gateway and inference routing, once managed inference is more than a spread on someone else’s API.',
+      'Developer experience, when the CLI has more surface than one person can gate.',
+      'A first non-engineering hire, whenever the design partner conversations outgrow the founders.',
+    ],
+    fit: [
+      'You are comfortable with an honest maybe rather than a process.',
+      'You would read the claims file for fun.',
+      'You do not need a job description to know what you would fix first.',
+    ],
+    terms: [
+      ['status', 'not open'],
+      ['process', 'a conversation, not a funnel'],
+      ['contact', 'findings@keepstate.ai'],
+      ['timeline', 'unavailable (no requisition)'],
+    ],
+    card: 'bg-white border-sand', rule: 'border-track', dot: 'bg-stone', tagCls: 'text-taupe',
+  },
+];
+---
+<Site
+  title="Careers · KeepState"
+  description="We work under a written constitution. One role is genuinely open today; the practices, the reasons not to join, and the terms are all in writing."
+>
+  <main>
+    <section class="max-w-[1180px] mx-auto px-7 pt-16 pb-12">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Careers</span>
+      </div>
+      <h1 class="font-serif text-34 leading-tight tracking-tight font-normal mt-0 mb-6 max-w-[15em]">We work under a written constitution.</h1>
+      <p class="text-17 leading-relaxed text-slate mt-0 mb-5 max-w-[44em]">Not a values page. An actual document, versioned in the repository, that decides arguments. It is short, it has been amended eleven times, and every amendment came from something breaking. If you would find that suffocating, this is a useful thing to know early.</p>
+      <a href="/proof" class="text-15 font-medium text-claret no-underline hover:text-ink hover:underline underline-offset-2">Read the public claims file before applying →</a>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="grid gap-4 md:grid-cols-3">
+        {epigraphs.map((e) => (
+          <blockquote class={`border rounded-5 p-7 m-0 flex flex-col gap-5 ${e.card}`}>
+            <span class={`w-[9px] h-[9px] rotate-45 block ${e.dot}`}></span>
+            <p class={`font-serif italic text-22 leading-snug m-0 flex-1 ${e.body}`}>{e.text}</p>
+            <footer class={`font-mono text-10 leading-relaxed tracking-[0.06em] ${e.metaCls}`}>{e.meta}</footer>
+          </blockquote>
+        ))}
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-16">
+      <h2 class="font-serif text-26 leading-tight tracking-tight font-normal mt-0 mb-3">How the work actually goes.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-7 max-w-[44em]">Four practices, in the order they happen. None of them is optional, and all of them slow the first week down and speed up every week after.</p>
+      <div class="border-t border-sand">
+        {practices.map((p) => (
+          <div class="grid gap-3 md:grid-cols-3 md:gap-x-10 py-6 px-0.5 border-b border-sand items-start">
+            <div class="flex gap-3 items-start">
+              <span class="w-[7px] h-[7px] bg-claret rotate-45 block mt-2 shrink-0"></span>
+              <div>
+                <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-2">{p.n}</p>
+                <p class="text-17 font-medium leading-snug text-ink m-0">{p.title}</p>
+              </div>
+            </div>
+            <p class="text-15 leading-relaxed text-slate m-0">{p.body}</p>
+            <p class="font-mono text-11 leading-relaxed text-taupe m-0">{p.cost}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="bg-slate mt-16">
+      <div class="max-w-[1180px] mx-auto px-7 py-14">
+        <div class="grid gap-10 md:grid-cols-2 items-start">
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="w-[7px] h-[7px] bg-blush rotate-45 block"></span>
+              <span class="text-11 font-semibold tracking-[0.16em] uppercase text-blush">The honest part</span>
+            </div>
+            <h2 class="font-serif text-26 leading-tight tracking-tight font-normal text-paper mt-0 mb-5">Reasons not to join us.</h2>
+            <p class="text-16 leading-relaxed text-parchment m-0">Every company has these. Most make you discover them in month three, which wastes a year of your life and ours.</p>
+          </div>
+          <div class="grid gap-3">
+            {warnings.map((w) => (
+              <div class="bg-paper/5 border border-paper/25 rounded-4 px-5 py-4">
+                <p class="text-14 leading-relaxed text-parchment m-0">{w}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles" class="max-w-[1180px] mx-auto px-7 pt-16">
+      <div class="flex items-baseline justify-between gap-4 flex-wrap mb-6">
+        <div>
+          <h2 class="font-serif text-26 leading-tight tracking-tight font-normal mt-0 mb-2.5">Open roles.</h2>
+          <p class="text-15 leading-relaxed text-slate m-0 max-w-[40em]">One role is genuinely open today. We are not going to list eight speculative openings to look larger than we are.</p>
+        </div>
+        <p class="font-mono text-11 text-taupe m-0">team of 6 · London and remote in GMT ±3</p>
+      </div>
+
+      <div class="grid gap-3.5">
+        {roles.map((r) => (
+          <details class={`group border rounded-5 overflow-hidden ${r.card}`} open={r.open}>
+            <summary class="list-none [&::-webkit-details-marker]:hidden cursor-pointer px-6 py-6 grid gap-3 md:grid-cols-3 md:gap-x-6 items-center">
+              <span class="block min-w-0">
+                <span class="flex items-center gap-2.5 mb-2">
+                  <span class={`w-[7px] h-[7px] rotate-45 block shrink-0 ${r.dot}`}></span>
+                  <span class={`font-mono text-10 tracking-[0.1em] uppercase ${r.tagCls}`}>{r.tag}</span>
+                </span>
+                <span class="font-serif text-22 leading-snug text-ink block">{r.title}</span>
+              </span>
+              <span class="block text-14 leading-relaxed text-slate">{r.line}</span>
+              <span class="flex items-center md:justify-end gap-4 flex-wrap">
+                <span class="font-mono text-11 text-taupe">{r.meta}</span>
+                <span class="font-mono text-14 text-taupe" aria-hidden="true">
+                  <span class="group-open:hidden">+</span>
+                  <span class="hidden group-open:inline">−</span>
+                </span>
+              </span>
+            </summary>
+            <div class="px-6 pb-7">
+              <div class={`grid gap-8 md:grid-cols-2 items-start pt-5 border-t ${r.rule}`}>
+                <div>
+                  <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-3">the job</p>
+                  <p class="text-15 leading-relaxed text-slate mt-0 mb-5">{r.job}</p>
+                  <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-3">first three months</p>
+                  <div class="grid">
+                    {r.first.map((ff) => (
+                      <div class={`flex gap-3 items-start py-2.5 border-t ${r.rule}`}>
+                        <span class="w-[5px] h-[5px] bg-claret rotate-45 block mt-2 shrink-0"></span>
+                        <p class="text-14 leading-relaxed text-slate m-0">{ff}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-3">you probably fit if</p>
+                  <div class="grid mb-5">
+                    {r.fit.map((fi) => (
+                      <div class={`flex gap-3 items-start py-2.5 border-t ${r.rule}`}>
+                        <span class="w-[5px] h-[5px] bg-stone rotate-45 block mt-2 shrink-0"></span>
+                        <p class="text-14 leading-relaxed text-slate m-0">{fi}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="bg-white border border-sand rounded-4 px-5 py-4">
+                    <div class="grid gap-2 mb-4">
+                      {r.terms.map(([k, v]) => (
+                        <div class="flex items-baseline justify-between gap-3.5">
+                          <span class="font-mono text-11 text-taupe">{k}</span>
+                          <span class="font-mono text-12 text-ink text-right">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <a href="#roles" class="block text-14 font-medium text-paper bg-claret rounded-3 px-4 py-3 text-center no-underline hover:bg-claretDeep">Apply for this role</a>
+                    <p class="text-12 leading-relaxed text-taupe mt-3 mb-0 text-center">Read our <a href="/proof" class="text-claret no-underline hover:underline">public claims file</a> before applying.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="bg-parchment border border-sand rounded-5 px-6 py-6 mt-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+          <span class="font-mono text-10 tracking-[0.1em] uppercase text-claret">nothing fits</span>
+        </div>
+        <p class="text-15 leading-relaxed text-slate mt-0 mb-4 max-w-[50em]">Send a finding instead of a resume. Read the claims file, find something we got wrong or cannot yet prove, and write it up the way we write findings: what you looked at, what the evidence showed, what should change. That is the actual work, and it is the only application we have never ignored.</p>
+        <div class="bg-ink rounded-4 px-4 py-3 max-w-[30em]">
+          <code class="font-mono text-12 text-parchment block overflow-x-auto whitespace-nowrap">findings@keepstate.ai</code>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-ink mt-20">
+      <div class="max-w-[1180px] mx-auto px-7 py-16">
+        <div class="max-w-[44em]">
+          <h2 class="font-serif text-34 leading-tight tracking-tight font-normal text-paper mt-0 mb-5">Our own build is governed by the same audit discipline we sell.</h2>
+          <p class="text-17 leading-relaxed text-borderMuted mt-0 mb-7">Gates before evidence, evidence before claims, <span class="text-blush">no claim without a tag</span>. If that sounds like a good week rather than a burden, we should talk.</p>
+          <div class="flex gap-3.5 flex-wrap">
+            <a href="#roles" class="text-15 font-medium text-paper bg-claret px-5 py-3 rounded-3 no-underline hover:bg-claretDeep">See the open role</a>
+            <a href="/proof" class="text-15 font-medium text-paper border border-inkSoft px-5 py-3 rounded-3 no-underline hover:border-termMuted">Read the claims file</a>
+          </div>
+          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-7 mb-0">keepstate.ai · the durable agent session cloud</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Site>

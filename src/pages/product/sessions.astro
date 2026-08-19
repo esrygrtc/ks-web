@@ -1,0 +1,95 @@
+---
+// Product page: Sessions. Built from design/Product Pages.dc.html (tab 0).
+// The composite's illustrative metrics (< 100 ms, < 90 s, 4,000 kills,
+// 41 MB, 1.2 GB, restored in 87s) are replaced by the measured
+// equivalents in src/generated/proof.json, each with an evidence link.
+import Product from './_Product.astro';
+import Terminal from '../../components/Terminal.astro';
+
+const metrics = [
+  {
+    label: 'Kill-and-resume cycles',
+    value: '25/25',
+    note: 'fresh cycles; Wilson 95% CI [86.7%, 100.0%]',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-6',
+    evidenceTag: 'gate-6-green',
+  },
+  {
+    label: 'Measured downtime across a kill',
+    value: '25.2 s',
+    note: 'one command; the agent killed with its own daemon',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-4',
+    evidenceTag: 'gate-4-green',
+  },
+  {
+    label: 'A ~14.5 h-old checkpoint woken in',
+    value: '14.3 s',
+    note: 'COUNT=63 while its living twin read 4841',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-6',
+    evidenceTag: 'gate-6-green',
+  },
+];
+const gates = [
+  { tag: 'gate-4-green', href: '/proof#gate-4' },
+  { tag: 'gate-6-green', href: '/proof#gate-6' },
+];
+---
+<Product
+  slug="sessions"
+  title="Sessions · KeepState"
+  description="Your agent runs inside a micro-VM KeepState can freeze whole: filesystem, model memory, and tool state captured as one atomic snapshot."
+  eyebrow="Sessions"
+  headline="Kill it anywhere. Resume anywhere."
+  standfirst="Your agent runs inside a micro-VM we can freeze whole. Filesystem, model memory, and tool state are captured as one atomic snapshot, so the world it wakes into and the world it remembers are the same world."
+  metrics={metrics}
+  evidenceLine="Resume durability and downtime are gated on every release; the raw output is public."
+  gates={gates}
+  ctaHead="Pull the plug on your own agent."
+  ctaBody="Free credits cover a six-hour run and the kill that would have ended it."
+>
+  <div class="grid gap-11 items-start grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))]">
+    <div>
+      <div class="flex items-stretch gap-2.5">
+        <div class="flex-1 min-w-0 bg-white border border-sand rounded-4 px-3 py-[18px] text-center">
+          <p class="font-mono text-12 text-ink m-0">filesystem</p>
+        </div>
+        <div class="flex-none flex items-center font-mono text-16 text-stone">+</div>
+        <div class="flex-1 min-w-0 bg-white border border-sand rounded-4 px-3 py-[18px] text-center">
+          <p class="font-mono text-12 text-ink m-0">KV cache</p>
+        </div>
+        <div class="flex-none flex items-center font-mono text-16 text-stone">+</div>
+        <div class="flex-1 min-w-0 bg-white border border-sand rounded-4 px-3 py-[18px] text-center">
+          <p class="font-mono text-12 text-ink m-0">tool state</p>
+        </div>
+      </div>
+      <div class="flex justify-center py-3.5">
+        <span class="block w-px h-[34px] bg-sand"></span>
+      </div>
+      <div class="bg-blushBg border border-shell rounded-4 p-[22px] flex items-center justify-center gap-3">
+        <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+        <p class="font-mono text-14 text-claret m-0">one atomic checkpoint</p>
+      </div>
+      <p class="text-14 leading-[1.6] text-slate mt-4 mb-0">Kill it anywhere. Resume anywhere. The world and the memory can never disagree.</p>
+    </div>
+    <div>
+      <p class="text-16 leading-[1.75] text-slate mt-0 mb-5">A session is a micro-VM we can freeze. The freeze is one write, not three: if the filesystem were captured at one instant and the model memory a beat later, the agent would wake remembering a file that does not exist.</p>
+      <p class="text-16 leading-[1.75] text-slate mt-0 mb-6">
+        Storage is content-addressed, so aggressive checkpointing stays cheap: 82 checkpoints cost 4,233 MiB where naive copies would cost 80,952 MiB, a 19.1x dedup, and the daemons grew +0 MiB RSS across the 7 h soak that measured it
+        <a href="/proof#gate-6" class="inline-flex items-center gap-1.5 font-mono text-12 text-claret no-underline hover:underline ml-1"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>gate-6-green</a>.
+        That is why the cadence can be aggressive enough to make a crash boring.
+      </p>
+      <Terminal session="ks demo" copy="ks demo --kill-at 3m --headless">$ ks demo --kill-at 3m --headless
+<span class="text-termMuted">agent up · working on the fixture task</span>
+<span class="text-termMuted">kill · the microVM and ksd killed together</span>
+<span class="text-blush">resumed · specimen finished the task · measured downtime 25.2 s</span>
+<span class="text-termMuted">doctor clean · exit 0</span></Terminal>
+      <p class="font-mono text-11 text-taupe mt-2 mb-0">
+        the run above is the gate-4 record, not a mock
+        <a href="/proof#gate-4" class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline ml-1"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>gate-4-green</a>
+      </p>
+    </div>
+  </div>
+</Product>

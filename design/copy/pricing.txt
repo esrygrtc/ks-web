@@ -1,0 +1,12 @@
+# Verbatim lines carried from design/Pricing.dc.html (dedashed; none needed changes)
+Three meters, one bill.
+You pay for the minutes a VM is awake, the storage its checkpoints occupy after dedup, and, if you use ours, the tokens we broker. Nothing else. Bring your own provider keys and the third meter disappears.
+Usage rates are the same on every paid tier. Volume commitments move them; nothing else does.
+Move the sliders. Everything this produces is an estimate, and it says so, because we have not measured your workload.
+Billed while a VM is awake, by the second, at the size you asked for. A parked session bills none of this.
+Only if you use our inference. Bring your own keys and this meter does not appear on your bill; we meter durability only.
+Questions with money in them.
+The session checkpoints, then parks. Nothing is killed and nothing is lost. Raise the cap and it wakes from the freeze it took on the way down. We do not silently kill work you paid to produce.
+Storage only. A parked agent is a document: its checkpoints occupy deduplicated space and nothing else. Waking it costs session-minutes again from the moment it resumes.
+One real plug-pull, on us.
+Free credits cover a full six-hour run and the kill that would have ended it. You will see the resume before you see an invoice.

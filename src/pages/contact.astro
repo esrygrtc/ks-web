@@ -1,0 +1,69 @@
+---
+// Contact: no composite exists (BACKLOG G2); ships as a simple
+// Manifesto-layout text page per the founder's default. No placeholder
+// email addresses: the routes that exist are linked, and everything
+// else goes through the form (backend arrives at W4 per WEBPLAN).
+import Site from '../layouts/Site.astro';
+import Field from '../components/Field.astro';
+import Button from '../components/Button.astro';
+
+const routes = [
+  {
+    head: 'Design partners',
+    body: 'If you want to build on KeepState early, use the design-partner intake on the home page.',
+    label: 'Design-partner intake', href: '/#partner',
+  },
+  {
+    head: 'Grants',
+    body: 'Research and open-source credits have their own program and their own form.',
+    label: 'The grants program', href: '/grants',
+  },
+  {
+    head: 'Security disclosures',
+    body: 'Vulnerability reports follow the disclosure process on the security page. Please do not send them through the general form.',
+    label: 'How to report a vulnerability', href: '/security',
+  },
+];
+---
+<Site
+  title="Contact · KeepState"
+  description="How to reach KeepState: design-partner intake, the grants program, security disclosures, and a form for everything else."
+>
+  <main class="max-w-[1180px] mx-auto px-7 pt-20 pb-24 w-full">
+    <div class="max-w-[62ch]">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Contact</span>
+      </div>
+      <h1 class="font-serif text-34 leading-tight tracking-tight font-normal mt-0 mb-7">Reaching us.</h1>
+      <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-8">Three kinds of message have a dedicated door; everything else goes through the form below and lands with a person.</p>
+
+      <div class="grid gap-4 mb-10">
+        {routes.map((r) => (
+          <div class="bg-white border border-sand rounded-4 px-5 py-4">
+            <p class="text-14 font-medium text-ink mt-0 mb-1">{r.head}</p>
+            <p class="text-14 leading-relaxed text-slate mt-0 mb-2">{r.body}</p>
+            <a href={r.href} class="text-14 font-medium text-claret no-underline hover:text-ink hover:underline underline-offset-2">{r.label} →</a>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="font-serif text-22 font-normal mt-0 mb-3">Everything else</h2>
+      <form method="post" action="/api/contact" class="grid gap-4 bg-white border border-sand rounded-5 p-6">
+        <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <Field label="Name" name="name" placeholder="Your name" />
+        <Field label="Email" name="email" type="email" placeholder="you@company.com" />
+        <label class="block">
+          <span class="block text-12 font-medium text-slate mb-1.5">Message</span>
+          <textarea
+            name="message" rows="6" placeholder="What can we help with?"
+            class="w-full font-sans text-14 text-ink bg-white border border-sand rounded-3 px-3 py-2.5 focus:outline-none focus:ring-0 focus:border-ink resize-y"
+          ></textarea>
+        </label>
+        <div>
+          <Button type="submit">Send</Button>
+        </div>
+      </form>
+    </div>
+  </main>
+</Site>

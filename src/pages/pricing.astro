@@ -1,0 +1,352 @@
+---
+import Site from '../layouts/Site.astro';
+import Badge from '../components/Badge.astro';
+
+// Tiers, meter rates, quotas and FAQ terms are OFFERS from
+// design/Pricing.dc.html: spec, not claims; rendered verbatim.
+// The only MEASURED numbers on this page (19.1x dedup and the soak
+// storage row) come from src/generated/proof.json and carry evidence
+// links to /proof#gate-6. Calculator outputs are ESTIMATED (UI Law 2)
+// and can never render NaN or a fake 0 (UI Law 1): invalid input
+// renders the unavailable chip instead.
+
+const tiers = [
+  {
+    name: 'Free', price: 'One real plug-pull', sub: 'On us, no card.',
+    rows: ['Trial credits for a full six-hour run', '24-hour checkpoint retention', 'Community support', 'Gateway-only mode available'],
+    cta: 'Start free', href: '#partner',
+    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe',
+    price_c: 'text-ink', sub_c: 'text-slate', body_c: 'text-slate',
+    cta_c: 'text-ink bg-white border-sand hover:border-ink',
+  },
+  {
+    name: 'Developer', price: '$29 / mo', sub: 'Plus usage on three meters.',
+    rows: ['30-day checkpoint retention', 'Unlimited forks and replays', 'Personal budgets and caps', 'Email support'],
+    cta: 'Start building', href: '#partner',
+    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe',
+    price_c: 'text-ink', sub_c: 'text-slate', body_c: 'text-slate',
+    cta_c: 'text-ink bg-white border-sand hover:border-ink',
+  },
+  {
+    name: 'Team', price: '$49 / seat / mo', sub: 'Plus usage. Shared everything.',
+    rows: ['Shared budgets and org caps', 'Fleet view of parked agents', 'Roles and audit log', '90-day checkpoint retention'],
+    cta: 'Start a team', href: '#partner',
+    card: 'bg-blushBg border-shell', dot: 'bg-claret', eyebrow: 'text-claret',
+    price_c: 'text-ink', sub_c: 'text-slate', body_c: 'text-slate',
+    cta_c: 'text-paper bg-claret border-claret hover:bg-claretDeep hover:border-claretDeep',
+  },
+  {
+    name: 'Enterprise', price: 'Talk to us', sub: 'Procurement, not a checkout.',
+    rows: ['SSO and SCIM', 'Sovereign regions', 'Replay retention in years', 'Security review pack, one download'],
+    cta: 'Contact sales', href: '/enterprise',
+    card: 'bg-slate border-slate', dot: 'bg-blush', eyebrow: 'text-blush',
+    price_c: 'text-paper', sub_c: 'text-parchment', body_c: 'text-parchment',
+    cta_c: 'text-ink bg-paper border-paper hover:bg-parchment hover:border-parchment',
+  },
+];
+
+const meters = [
+  {
+    name: 'Session-minutes', rate: '$0.011 / min · vm.large',
+    body: 'Billed while a VM is awake, by the second, at the size you asked for. A parked session bills none of this.',
+    note: 'vm.small 0.004 · vm.large 0.011 · vm.xl 0.024',
+  },
+  {
+    name: 'Checkpoint storage', rate: '$0.09 / GB-month',
+    body: 'Measured after deduplication, not before. Content-addressed dedup measured at 19.1x on our own soak.',
+    evidence: '/proof#gate-6',
+    note: 'soak, 82 checkpoints: 4,233 MiB actual vs 80,952 MiB naive',
+  },
+  {
+    name: 'Managed tokens', rate: '4% spread',
+    body: 'Only if you use our inference. Bring your own keys and this meter does not appear on your bill; we meter durability only.',
+    note: 'BYOK keys never enter a guest, an image, or a snapshot',
+  },
+];
+
+const faqs = [
+  { q: 'What happens when a budget cap is reached?', a: 'The session checkpoints, then parks. Nothing is killed and nothing is lost. Raise the cap and it wakes from the freeze it took on the way down. We do not silently kill work you paid to produce.' },
+  { q: 'How do budgets work across forks?', a: 'A cap set on a parent applies to the whole lineage. Ten forks of a two-day-old freeze draw on one pool, so a fan-out cannot detonate your card. Each fork also carries its own optional sub-cap.' },
+  { q: 'Do credits expire?', a: 'Trial credits expire 60 days after signup. Purchased credits do not expire while the account is active. Unused purchased credits are refundable pro rata within the first 30 days.' },
+  { q: 'What do I pay for a parked session?', a: 'Storage only. A parked agent is a document: its checkpoints occupy deduplicated space and nothing else. Waking it costs session-minutes again from the moment it resumes.' },
+  { q: 'Do I pay twice for an interrupted model call?', a: 'No. An interrupted call is stored and replayed from the store on retry. That row appears in your ledger as replayed with zero new tokens, and the gateway enforces it rather than trusting the client.' },
+];
+
+// Server-rendered defaults use the same formula (from the design spec)
+// as the inline script below, so the no-JS page shows the same estimate.
+const s = { agents: 12, hours: 8, cadence: 5 };
+const days = 30, vmRate = 0.011, gbMonth = 0.09;
+const hoursMonth = s.agents * s.hours * days;
+const compute = hoursMonth * 60 * vmRate;
+const ckptsPerAgent = (s.hours * 60 / s.cadence) * days;
+const gb = s.agents * Math.max(1.2, (ckptsPerAgent * 0.041) / 19);
+const storage = gb * gbMonth;
+const tokens = hoursMonth * 1.9;
+const total = compute + storage + tokens;
+const notRepurchased = hoursMonth * 2.4;
+const money = (n: number) => '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+---
+<Site title="Pricing · KeepState" description="Three meters, one bill: session-minutes while a VM is awake, checkpoint storage after dedup, and managed tokens only if you use our inference.">
+  <main>
+    <section class="max-w-[1180px] mx-auto px-7 pt-16 pb-12">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Pricing</span>
+      </div>
+      <h1 class="font-serif text-34 leading-tight tracking-tight font-normal mt-0 mb-6 max-w-[14em]">Three meters, one bill.</h1>
+      <p class="text-17 leading-relaxed text-slate m-0 max-w-[42em]">You pay for the minutes a VM is awake, the storage its checkpoints occupy after dedup, and, if you use ours, the tokens we broker. Nothing else. Bring your own provider keys and the third meter disappears.</p>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="grid gap-[18px] md:grid-cols-2 xl:grid-cols-4">
+        {tiers.map((t) => (
+          <article class={`border rounded-5 px-6 py-[26px] flex flex-col gap-4 ${t.card}`}>
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class={`w-[7px] h-[7px] rotate-45 block ${t.dot}`}></span>
+                <p class={`font-mono text-11 tracking-[0.1em] uppercase m-0 ${t.eyebrow}`}>{t.name}</p>
+              </div>
+              <p class={`font-serif text-26 leading-tight mt-0 mb-2 ${t.price_c}`}>{t.price}</p>
+              <p class={`text-13 leading-snug m-0 ${t.sub_c}`}>{t.sub}</p>
+            </div>
+            <div class="grid gap-2 flex-1">
+              {t.rows.map((r) => (
+                <div class="flex gap-2.5 items-start">
+                  <span class={`w-[5px] h-[5px] rotate-45 block mt-1.5 shrink-0 ${t.dot}`}></span>
+                  <p class={`text-13 leading-snug m-0 ${t.body_c}`}>{r}</p>
+                </div>
+              ))}
+            </div>
+            <a href={t.href} class={`text-14 font-medium border rounded-3 px-4 py-2.5 text-center no-underline ${t.cta_c}`}>{t.cta}</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[76px]">
+      <h2 class="font-serif text-26 md:text-34 font-normal tracking-tight mt-0 mb-3">The three meters, in plain rows.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-8 max-w-[40em]">Usage rates are the same on every paid tier. Volume commitments move them; nothing else does.</p>
+      <div class="bg-white border border-sand rounded-5 overflow-hidden">
+        {meters.map((m) => (
+          <div class="grid gap-x-7 gap-y-2.5 md:grid-cols-3 px-6 py-[22px] border-b border-track last:border-b-0 items-start">
+            <div class="flex gap-[11px] items-start">
+              <span class="w-[7px] h-[7px] bg-claret rotate-45 block mt-1.5 shrink-0"></span>
+              <div>
+                <p class="text-15 font-semibold mt-0 mb-1">{m.name}</p>
+                <p class="font-mono text-12 text-claret m-0">{m.rate}</p>
+              </div>
+            </div>
+            <p class="text-14 leading-relaxed text-slate m-0">
+              {m.body}
+              {m.evidence && (
+                <a href={m.evidence} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline ml-1.5">
+                  <span class="w-[6px] h-[6px] bg-claret rotate-45 inline-block"></span>gate-6
+                </a>
+              )}
+            </p>
+            <p class="font-mono text-11 leading-relaxed text-taupe m-0">
+              {m.note}
+              {m.evidence && (
+                <a href={m.evidence} class="text-claret no-underline hover:underline ml-1.5">· evidence</a>
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[76px]">
+      <h2 class="font-serif text-26 md:text-34 font-normal tracking-tight mt-0 mb-3">What it would cost you.</h2>
+      <p class="text-15 leading-relaxed text-slate mt-0 mb-7 max-w-[40em]">Move the sliders. Everything this produces is an estimate, and it says so, because we have not measured your workload.</p>
+
+      <div class="grid gap-5 lg:grid-cols-2 items-start">
+        <div class="bg-white border border-sand rounded-5 px-6 py-[26px]">
+          <div class="grid gap-[26px]">
+            <div>
+              <div class="flex items-baseline justify-between gap-3 mb-3">
+                <label for="pc-agents" class="text-13 font-medium text-ink">Concurrent agents</label>
+                <span id="pc-agents-val" class="font-mono text-14 text-claret tabular-nums">{s.agents}</span>
+              </div>
+              <input id="pc-agents" type="range" min="1" max="200" step="1" value={s.agents} class="w-full accent-claret" />
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-3 mb-3">
+                <label for="pc-hours" class="text-13 font-medium text-ink">Hours per agent per day</label>
+                <span id="pc-hours-val" class="font-mono text-14 text-claret tabular-nums">{s.hours}</span>
+              </div>
+              <input id="pc-hours" type="range" min="1" max="24" step="1" value={s.hours} class="w-full accent-claret" />
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-3 mb-3">
+                <label for="pc-cad" class="text-13 font-medium text-ink">Checkpoint cadence</label>
+                <span id="pc-cad-val" class="font-mono text-14 text-claret">every {s.cadence}m</span>
+              </div>
+              <input id="pc-cad" type="range" min="1" max="60" step="1" value={s.cadence} class="w-full accent-claret" />
+              <p class="font-mono text-11 text-taupe mt-2.5 mb-0">dedup measured at <a href="/proof#gate-6" class="text-claret no-underline hover:underline">19.1x</a>, so cadence costs less than it reads</p>
+            </div>
+            <div>
+              <p class="text-13 font-medium text-ink mt-0 mb-3">Inference</p>
+              <div class="flex gap-1 bg-parchment rounded-3 p-[3px] w-fit">
+                <button type="button" id="pc-managed" class="font-sans text-12 font-medium bg-ink text-paper border-0 rounded-2 px-3.5 py-2 cursor-pointer">Managed</button>
+                <button type="button" id="pc-byok" class="font-sans text-12 font-medium text-slate border-0 rounded-2 px-3.5 py-2 cursor-pointer">BYOK</button>
+              </div>
+              <p id="pc-keynote" class="text-12 leading-snug text-taupe mt-3 mb-0">We broker inference at a 4 percent spread, with cache-aware routing and stored-response replay included.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-ink rounded-5 px-[26px] py-7">
+          <div class="flex items-center justify-between gap-3 mb-[22px] flex-wrap">
+            <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted m-0">monthly, all meters</p>
+            <Badge kind="ESTIMATED" />
+          </div>
+          <p class="mt-0 mb-1.5">
+            <span id="pc-total" data-pc-value class="font-mono text-34 leading-none text-paper tracking-tight tabular-nums">{money(total)}</span>
+            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable (invalid input)</span>
+          </p>
+          <p class="mt-0 mb-[26px]">
+            <span id="pc-subtitle" data-pc-value class="font-mono text-12 text-termMuted">{hoursMonth.toLocaleString('en-US')} agent-hours per month</span>
+            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+          </p>
+          <div class="grid gap-0">
+            <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
+              <span class="font-mono text-12 text-termMuted">session-minutes</span>
+              <span>
+                <span id="pc-compute" data-pc-value class="font-mono text-13 text-parchment tabular-nums">{money(compute)}</span>
+                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
+              <span class="font-mono text-12 text-termMuted">checkpoint storage</span>
+              <span>
+                <span id="pc-storage" data-pc-value class="font-mono text-13 text-parchment tabular-nums">{money(storage)}</span>
+                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
+              <span class="font-mono text-12 text-termMuted">managed tokens</span>
+              <span>
+                <span id="pc-tokens" data-pc-value class="font-mono text-13 text-parchment tabular-nums">{money(tokens)}</span>
+                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
+              <span class="font-mono text-12 text-blush">tokens not re-purchased</span>
+              <span>
+                <span id="pc-saved" data-pc-value class="font-mono text-13 text-blush tabular-nums">&minus;{money(notRepurchased)}</span>
+                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+              </span>
+            </div>
+          </div>
+          <div class="border-t border-inkBorder mt-1.5 pt-[18px]">
+            <p id="pc-savingline" class="text-13 leading-relaxed text-borderMuted m-0">The last row is money you would otherwise have spent re-sending context. It is an estimate at list rates until we meter your real trace.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[76px]">
+      <h2 class="font-serif text-26 md:text-34 font-normal tracking-tight mt-0 mb-7">Questions with money in them.</h2>
+      <div class="border-t border-sand">
+        {faqs.map((f, i) => (
+          <details class="group border-b border-sand" open={i === 0}>
+            <summary class="list-none cursor-pointer flex items-center justify-between gap-4 py-5 px-1 [&::-webkit-details-marker]:hidden">
+              <span class="flex items-center gap-3 min-w-0">
+                <span class="w-[6px] h-[6px] bg-sandDeep group-open:bg-claret rotate-45 block shrink-0"></span>
+                <span class="font-sans text-16 font-medium text-ink">{f.q}</span>
+              </span>
+              <span class="font-mono text-14 text-taupe shrink-0"><span class="group-open:hidden">+</span><span class="hidden group-open:inline">&minus;</span></span>
+            </summary>
+            <p class="text-15 leading-relaxed text-slate mt-0 mb-[22px] pl-[18px] max-w-[46em]">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="partner" class="bg-ink mt-[84px]">
+      <div class="max-w-[1180px] mx-auto px-7 py-[76px]">
+        <div class="max-w-[44em]">
+          <h2 class="font-serif text-26 md:text-34 font-normal tracking-tight text-paper mt-0 mb-[22px]">One real plug-pull, on us.</h2>
+          <p class="text-17 leading-relaxed text-borderMuted mt-0 mb-7">Free credits cover a full six-hour run and the kill that would have ended it. You will see the resume before you see an invoice.</p>
+          <div class="flex gap-3.5 flex-wrap">
+            <a href="/#partner" class="text-15 font-medium text-paper bg-claret px-[22px] py-3 rounded-3 no-underline hover:bg-claretDeep">Start building</a>
+            <a href="/enterprise" class="text-15 font-medium text-paper border border-inkSoft px-[21px] py-3 rounded-3 no-underline hover:border-termMuted">Talk to us about Enterprise</a>
+          </div>
+          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-7 mb-0">keepstate.ai · the durable agent session cloud</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var byok = false;
+      var money = function (n) { return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 }); };
+      // UI Law 1 for calculators: an invalid reading never renders 0 or
+      // NaN; it flips every output to the unavailable chip.
+      var read = function (el) {
+        if (!el) return null;
+        var n = Number(el.value), lo = Number(el.min), hi = Number(el.max);
+        return Number.isFinite(n) && n >= lo && n <= hi ? n : null;
+      };
+      var setUnavailable = function (bad) {
+        document.querySelectorAll('[data-pc-value]').forEach(function (el) { el.classList.toggle('hidden', bad); });
+        document.querySelectorAll('[data-pc-unavail]').forEach(function (el) {
+          el.classList.toggle('hidden', !bad);
+          el.classList.toggle('inline-flex', bad);
+        });
+      };
+      var render = function () {
+        var a = read($('pc-agents')), h = read($('pc-hours')), c = read($('pc-cad'));
+        $('pc-agents-val').textContent = a === null ? '?' : String(a);
+        $('pc-hours-val').textContent = h === null ? '?' : String(h);
+        $('pc-cad-val').textContent = c === null ? 'every ?' : 'every ' + c + 'm';
+        if (a === null || h === null || c === null || c <= 0) { setUnavailable(true); return; }
+        var days = 30, vmRate = 0.011, gbMonth = 0.09;
+        var hoursMonth = a * h * days;
+        var compute = hoursMonth * 60 * vmRate;
+        var ckptsPerAgent = (h * 60 / c) * days;
+        var gb = a * Math.max(1.2, (ckptsPerAgent * 0.041) / 19);
+        var storage = gb * gbMonth;
+        var tokens = byok ? 0 : hoursMonth * 1.9;
+        var total = compute + storage + tokens;
+        var saved = hoursMonth * 2.4;
+        if (![hoursMonth, compute, storage, tokens, total, saved].every(Number.isFinite)) { setUnavailable(true); return; }
+        setUnavailable(false);
+        $('pc-total').textContent = money(total);
+        $('pc-subtitle').textContent = hoursMonth.toLocaleString('en-US') + ' agent-hours per month';
+        $('pc-compute').textContent = money(compute);
+        $('pc-storage').textContent = money(storage);
+        var t = $('pc-tokens');
+        t.textContent = byok ? 'not metered' : money(tokens);
+        t.classList.toggle('text-termMuted', byok);
+        t.classList.toggle('text-parchment', !byok);
+        $('pc-saved').textContent = '−' + money(saved);
+        $('pc-keynote').textContent = byok
+          ? 'You pay your provider directly. We meter durability only, and the token meter drops off this bill.'
+          : 'We broker inference at a 4 percent spread, with cache-aware routing and stored-response replay included.';
+        $('pc-savingline').textContent = byok
+          ? 'With your own keys the saving lands on your provider invoice, not ours. The ledger still shows every token the store served instead of the model.'
+          : 'The last row is money you would otherwise have spent re-sending context. It is an estimate at list rates until we meter your real trace.';
+      };
+      var setMode = function (v) {
+        byok = v;
+        var on = ['bg-ink', 'text-paper'], off = ['text-slate'];
+        var managed = $('pc-managed'), byokBtn = $('pc-byok');
+        [managed, byokBtn].forEach(function (btn, i) {
+          var active = (i === 1) === v;
+          on.forEach(function (cls) { btn.classList.toggle(cls, active); });
+          off.forEach(function (cls) { btn.classList.toggle(cls, !active); });
+        });
+        render();
+      };
+      ['pc-agents', 'pc-hours', 'pc-cad'].forEach(function (id) {
+        $(id).addEventListener('input', render);
+      });
+      $('pc-managed').addEventListener('click', function () { setMode(false); });
+      $('pc-byok').addEventListener('click', function () { setMode(true); });
+      render();
+    })();
+  </script>
+</Site>

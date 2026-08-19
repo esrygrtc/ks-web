@@ -1,0 +1,79 @@
+---
+// Product page: Governance & Replay. Built from design/Product Pages.dc.html
+// (tab 3). The composite's illustrative metrics (500/500 replays, gate
+// G-118, "retention indefinite") have no proof.json equivalent and are
+// replaced by the measured gate-2b / gate-3 facts, each evidence-linked.
+import Product from './_Product.astro';
+
+const metrics = [
+  {
+    label: 'Checkpoint after a crash mid-publish',
+    value: 'byte-identical',
+    note: 'crash injected mid-publish; no torn manifest visible',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-2b',
+    evidenceTag: 'gate-2b-green',
+  },
+  {
+    label: 'Restores from a corrupt checkpoint',
+    value: 'refused',
+    note: 'one flipped byte: restore refused, no firecracker started',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-2b',
+    evidenceTag: 'gate-2b-green',
+  },
+  {
+    label: 'Ledger gap found on reconcile',
+    value: 'exactly 1',
+    note: 'guest seq and host head converged at 5; ledger.reconciled recorded it',
+    badge: 'MEASURED' as const,
+    evidenceHref: '/proof#gate-3',
+    evidenceTag: 'gate-3-green',
+  },
+];
+const gates = [
+  { tag: 'gate-2b-green', href: '/proof#gate-2b' },
+  { tag: 'gate-3-green', href: '/proof#gate-3' },
+  { tag: 'gate-5-green', href: '/proof#gate-5' },
+];
+const govRows = [
+  { title: 'deterministic replay', body: 'Re-execute the run from the freeze that preceded it, byte for byte.' },
+  { title: 'sequence lineage', body: 'Every event names its parent checkpoint, so order is provable rather than asserted.' },
+  { title: 'audit bundle', body: 'A signed archive scoped to the sessions and range your reviewer named.' },
+];
+---
+<Product
+  slug="governance-replay"
+  title="Governance & Replay · KeepState"
+  description="Deterministic replay from checkpointed state turns an audit from an interview into a reproduction; the evidence is a byproduct of how sessions already work."
+  eyebrow="Governance and replay"
+  headline="Logs tell you what the agent said it did. Replay re-executes what it actually did."
+  standfirst="Deterministic replay from checkpointed state turns an audit from an interview into a reproduction. The engineer does nothing extra; the evidence is a byproduct of how sessions already work."
+  metrics={metrics}
+  evidenceLine="Crash consistency and lineage are gated on every release, and a red gate removes the claim from this site automatically."
+  gates={gates}
+  ctaHead="Give your auditors a reproduction, not a transcript."
+  ctaBody="Deterministic replay, sequence lineage, and retention measured in years."
+>
+  <div>
+    <div class="bg-slate rounded-5 px-[34px] py-10">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="w-[7px] h-[7px] bg-blush rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-blush">The flight recorder</span>
+      </div>
+      <p class="text-17 leading-[1.75] text-parchment mt-0 mb-[26px] max-w-[42em]">Deterministic replay from checkpointed state. Audit trails with sequence lineage. Deposition-grade evidence for the compliance officer, zero extra work for the engineer.</p>
+      <div class="grid gap-3.5 grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]">
+        {govRows.map((g) => (
+          <div class="bg-paper/5 border border-white/20 rounded-4 p-[18px]">
+            <p class="font-mono text-11 text-blush mt-0 mb-2">{g.title}</p>
+            <p class="text-13 leading-[1.6] text-borderMuted m-0">{g.body}</p>
+          </div>
+        ))}
+      </div>
+      <a href="/enterprise" class="inline-block font-mono text-11 tracking-[0.08em] text-paper border border-white/20 rounded-3 px-3 py-[7px] mt-[22px] no-underline hover:border-blush hover:text-paper hover:no-underline">Enterprise: sovereign deploys, retention, SSO.</a>
+    </div>
+    <div class="mt-[34px] max-w-[44em]">
+      <p class="text-16 leading-[1.75] text-slate m-0">A log is the agent's account of itself, written by the thing under investigation. A replay re-executes the run from the freeze that preceded it, so the evidence is produced by the system rather than narrated by it. Every event carries the checkpoint it descended from, which is what makes the reproduction exact rather than approximate.</p>
+    </div>
+  </div>
+</Product>
