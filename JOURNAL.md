@@ -104,3 +104,19 @@
   records (W-2), careers salary terms.
 - Next: tag web-2-green, push, deploy staging for founder review;
   Phase W3 (docs + Ledger) on founder go.
+
+## 2026-08-19 — W2 postscript: two pipeline lessons before the tag settled
+- check-sync could not run on GitHub runners: it read the builder's
+  local product repo path. First fix (clone in CI) died on a fact that
+  changed under us: esrygrtc/ks is PRIVATE now (it was public in July;
+  gate 7's quickstart cloned it anonymously). Final architecture:
+  sync-claims vendors its sources into design/.sync on every live run;
+  CI regenerates from the snapshot (hand-edit detection, secretless);
+  freshness against the live repo stays gate-w2's local assertion.
+- PRODUCT-SIDE FLAG for the founder: the private flip breaks the
+  product's own public-quickstart story (claims.md cites a stranger's
+  clean clone). Not this repo's scope; reported, not touched.
+- gh run watch --exit-status returns 0 for already-completed runs; one
+  "CI GREEN" line in the session transcript was false. Verdicts now
+  read the conclusion field. web-2-green was deleted and re-tagged
+  twice, landing on the commit whose pipeline is actually green.
