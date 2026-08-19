@@ -1,0 +1,8 @@
+# Verbatim lines carried from design/Legal & Support.dc.html (Privacy Policy)
+What personal data we hold, why, and for how long. Session contents are covered separately by the data processing agreement, because there we are a processor acting on your instructions rather than a controller.
+We collect the minimum to run accounts and bill them: identity from your login provider, contact details, and usage telemetry. We do not sell data, we do not run advertising trackers, and we do not train on your session contents.
+Two categories, kept deliberately separate. Account data is about you: name, email, organization, login provider identity, billing details, and the audit trail of actions you take in the console. Session data is what your agents do, and for that we are a processor under the DPA rather than a controller.
+No advertising or cross-site tracking pixels anywhere on this site or in the console.
+A short list of subprocessors, published separately and updated whenever it changes. Each one has a stated purpose, a region, and a data category. We give 30 days notice before adding a subprocessor that handles session contents, so you can object.
+Account data is stored in the EU. Session contents live in the region you pinned, enforced at the scheduler rather than by policy, which means a checkpoint cannot be written outside it even by mistake.
+Access, correction, deletion, portability, and objection, exercised by emailing privacy@keepstate.ai. We answer within 30 days. Deletion of account data does not delete session contents, which are yours to delete through the console or the API, and we will tell you which ones are blocked by a legal hold.

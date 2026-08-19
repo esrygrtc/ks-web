@@ -1,0 +1,49 @@
+---
+// Privacy Policy: body carried verbatim from the Legal & Support
+// composite. All commitments are forward-looking policy; the draft
+// banner in _Legal marks that nothing is effective before launch.
+import Legal from './_Legal.astro';
+
+const standfirst = 'What personal data we hold, why, and for how long. Session contents are covered separately by the data processing agreement, because there we are a processor acting on your instructions rather than a controller.';
+const plain = 'We collect the minimum to run accounts and bill them: identity from your login provider, contact details, and usage telemetry. We do not sell data, we do not run advertising trackers, and we do not train on your session contents.';
+
+const sections = [
+  { n: '1', head: 'What we collect', paras: [
+    'Two categories, kept deliberately separate. Account data is about you: name, email, organization, login provider identity, billing details, and the audit trail of actions you take in the console. Session data is what your agents do, and for that we are a processor under the DPA rather than a controller.',
+  ], table: { head: ['category', 'retention', 'basis'], rows: [
+    ['Account and contact data', 'life of account + 6 y', 'contract'],
+    ['Billing records', '7 years', 'legal obligation'],
+    ['Console audit log', 'plan retention', 'legitimate interest'],
+    ['Product telemetry', '13 months', 'legitimate interest'],
+    ['Session contents', 'your retention policy', 'processor, see DPA'],
+  ] } },
+  { n: '2', head: 'What we do not do', paras: [
+    'This section exists because the absences matter more than the presences.',
+  ], list: [
+    'No advertising or cross-site tracking pixels anywhere on this site or in the console.',
+    'No sale or sharing of personal data with third parties for their own purposes.',
+    'No model training on your session contents, by us or by any subprocessor.',
+    'No dark patterns in consent: analytics are off until you opt in, and the console works identically either way.',
+  ] },
+  { n: '3', head: 'Who else touches it', paras: [
+    'A short list of subprocessors, published separately and updated whenever it changes. Each one has a stated purpose, a region, and a data category. We give 30 days notice before adding a subprocessor that handles session contents, so you can object.',
+  ] },
+  { n: '4', head: 'Where it lives', paras: [
+    'Account data is stored in the EU. Session contents live in the region you pinned, enforced at the scheduler rather than by policy, which means a checkpoint cannot be written outside it even by mistake.',
+  ] },
+  { n: '5', head: 'Your rights', paras: [
+    'Access, correction, deletion, portability, and objection, exercised by emailing privacy@keepstate.ai. We answer within 30 days. Deletion of account data does not delete session contents, which are yours to delete through the console or the API, and we will tell you which ones are blocked by a legal hold.',
+  ] },
+  { n: '6', head: 'Contact and complaints', paras: [
+    'Our data protection contact is privacy@keepstate.ai. If we handle a request badly you may complain to the Information Commissioner’s Office in the UK, or to your own supervisory authority in the EU.',
+  ], note: 'The privacy inbox and supervisory-authority details are part of the draft under founder legal review; they are confirmed before this policy takes effect at launch.' },
+];
+---
+<Legal
+  title="Privacy Policy · KeepState"
+  description="Draft privacy policy: what personal data KeepState holds, why, for how long, and what it deliberately does not do. Effective upon launch."
+  docTitle="Privacy Policy"
+  standfirst={standfirst}
+  plain={plain}
+  sections={sections}
+/>

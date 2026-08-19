@@ -1,0 +1,9 @@
+# Verbatim lines carried from design/Legal & Support.dc.html (Terms of Service)
+The agreement between your organization and KeepState, Inc. for use of the durable agent session cloud. Written to be read once by a person rather than skimmed by a lawyer.
+You keep ownership of everything your agents produce. We run the infrastructure, meter it honestly, and can suspend an account for non-payment or abuse with notice. Neither side promises the other unlimited liability, and either side can leave with your data intact.
+A summary is not the agreement. Where the two disagree, the clauses below govern.
+KeepState hosts agent sessions in isolated micro-VMs, checkpoints their state, and brokers model calls through a metering gateway. Availability commitments for each surface are stated in the service level agreement and measured by an external probe rather than by our own reporting.
+We do not read your checkpoints except through a break-glass path that notifies your Owners and writes to your audit log.
+You pay for session-minutes, checkpoint storage after deduplication, and, if you use our inference, a spread on brokered tokens. Meter output is authoritative for billing, and your ledgers show the same figures we bill from, line by line.
+Checkpoints under a legal hold survive termination until the hold is lifted, and you will be told which ones.
+Each side’s aggregate liability is capped at the fees paid in the preceding 12 months, except for death or personal injury caused by negligence, fraud, or a breach of confidentiality obligations, where no cap applies. Neither side is liable for indirect or consequential loss.

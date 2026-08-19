@@ -1,0 +1,10 @@
+# Verbatim lines carried from design/Legal & Support.dc.html (Acceptable Use)
+# The composite's enforcement anecdote (two suspended accounts) was refused:
+# nothing has launched, so it never happened.
+What you may not run on KeepState. Short, specific, and written so that a reasonable engineer can tell whether their workload is fine without emailing us.
+Do not attack people, host abuse infrastructure, mine cryptocurrency, or use sessions to launder around a model provider’s terms. An agent acting on your instructions is your responsibility.
+Attacking, scanning, or attempting to gain unauthorized access to systems you do not own or have permission to test.
+Cryptocurrency mining or any workload whose primary output is proof-of-work.
+A long-running agent will do things you did not specifically instruct. That is the nature of the tool, and it does not transfer responsibility to us or to the model. If your agent begins scanning networks because a prompt drifted, the workload is still yours, and budget caps plus the event ledger exist partly so you can see it happening.
+Testing systems you own or have written permission to test is explicitly allowed, including offensive tooling. Tell us in advance if the workload will generate traffic that looks like an attack from our address space, so we do not suspend you for doing legitimate work.
+Where we can, we contact you before acting. Where a workload is actively harming others we suspend first and explain within the hour, and the session is checkpointed rather than destroyed so nothing is lost if we were wrong.

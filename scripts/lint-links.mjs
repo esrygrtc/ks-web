@@ -21,7 +21,9 @@ const resolves = (href) => {
 let bad = 0;
 const linked = new Set(['/']);
 for (const p of pages) {
-  const html = readFileSync(p, 'utf8');
+  // Script bodies are code, not navigation: a template literal like
+  // href="${d.url}" inside CmdK's renderer is not a link on the page.
+  const html = readFileSync(p, 'utf8').replace(/<script[\s\S]*?<\/script>/g, ' ');
   for (const m of html.matchAll(/href="([^"]+)"/g)) {
     const href = m[1];
     if (/^(https?:|mailto:|#)/.test(href)) continue;

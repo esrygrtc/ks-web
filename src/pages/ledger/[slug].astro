@@ -1,0 +1,92 @@
+---
+// A Ledger post, from design/The Ledger.dc.html (isPost branch): serif
+// long-form, standfirst, date. Drafts carry a top banner and a robots
+// noindex (via the Site layout's noindex prop) until founder review.
+// The composite's read-time figures and author names are not shipped;
+// no invented durations, no invented people. The "next in the ledger"
+// rail renders only when other real posts exist.
+import Site from '../../layouts/Site.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const entries = await getCollection('ledger');
+  return entries.map((e) => ({
+    params: { slug: e.id.replace(/\.mdx?$/, '') },
+    props: { entry: e },
+  }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const others = (await getCollection('ledger'))
+  .filter((e) => e.id !== entry.id)
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, 2);
+---
+<Site
+  title={`${entry.data.title} · The Ledger · KeepState`}
+  description={entry.data.standfirst}
+  noindex={entry.data.draft}
+>
+  <main class="w-full">
+    {entry.data.draft && (
+      <div class="bg-blushBg border-b border-shell">
+        <p class="max-w-[760px] mx-auto px-7 py-3 font-mono text-11 tracking-[0.08em] uppercase text-claret m-0">DRAFT · awaiting founder review · not yet an official position</p>
+      </div>
+    )}
+
+    <article class="max-w-[760px] mx-auto px-7 pt-10 pb-0">
+      <a href="/ledger/" class="inline-block font-sans text-13 text-slate no-underline bg-transparent border border-sand rounded-3 px-3.5 py-2 mb-[34px] hover:text-ink">&larr; The Ledger</a>
+
+      <div class="flex items-center gap-3 flex-wrap mb-[18px]">
+        {entry.data.draft && (
+          <span class="font-mono text-10 tracking-[0.1em] uppercase text-claret bg-blushBg border border-shell rounded-pill px-2.5 py-1">DRAFT</span>
+        )}
+        <span class="font-mono text-11 text-taupe">{entry.data.date}</span>
+      </div>
+
+      <h1 class="font-serif text-34 leading-[1.06] tracking-[-0.024em] font-normal mt-0 mb-5">{entry.data.title}</h1>
+      <p class="font-serif italic text-17 leading-[1.6] text-slate mt-0 mb-10 [text-wrap:pretty]">{entry.data.standfirst}</p>
+
+      <div class="ledger-prose">
+        <Content />
+      </div>
+
+      <div class="border-t border-sand mt-10 pt-[26px] flex items-center justify-between gap-[18px] flex-wrap">
+        <p class="text-14 leading-[1.65] text-slate m-0 max-w-[34em]">Every number here comes from a gate run. If one disagrees with your own measurement, that is a finding and we will publish the correction.</p>
+        <a href="/proof" class="inline-flex items-center gap-[7px] font-mono text-12 text-claret no-underline whitespace-nowrap hover:text-ink">
+          <span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>the proof page
+        </a>
+      </div>
+    </article>
+
+    {others.length > 0 && (
+      <section class="max-w-[760px] mx-auto px-7 pt-10 pb-[90px]">
+        <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-4">next in the ledger</p>
+        <div class="grid gap-0">
+          {others.map((r) => (
+            <a href={`/ledger/${r.id.replace(/\.mdx?$/, '')}/`} class="border-t border-sand py-[18px] px-0.5 no-underline flex items-baseline justify-between gap-[18px] flex-wrap">
+              <span class="font-serif text-17 leading-[1.3] text-ink">{r.data.title}</span>
+              <span class="font-mono text-11 text-taupe whitespace-nowrap">{r.data.date}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+    {others.length === 0 && <div class="pb-[90px]"></div>}
+  </main>
+</Site>
+
+<style is:global>
+  .ledger-prose p { font-family: theme(fontFamily.serif); font-size: theme(fontSize.17); line-height: 1.78; color: theme(colors.slate); margin: 0 0 24px; text-wrap: pretty; }
+  .ledger-prose h2 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.26); line-height: 1.2; font-weight: 500; color: theme(colors.ink); margin: 38px 0 16px; }
+  .ledger-prose h3 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.20); line-height: 1.3; font-weight: 500; color: theme(colors.ink); margin: 30px 0 12px; }
+  .ledger-prose a { color: theme(colors.claret); text-decoration: none; }
+  .ledger-prose a:hover { color: theme(colors.ink); text-decoration: underline; text-underline-offset: 3px; }
+  .ledger-prose strong { color: theme(colors.ink); }
+  .ledger-prose blockquote { border-left: 2px solid theme(colors.shell); margin: 32px 0; padding: 2px 0 2px 22px; }
+  .ledger-prose blockquote p { font-style: italic; font-size: theme(fontSize.20); line-height: 1.45; color: theme(colors.ink); margin: 0; }
+  .ledger-prose ul, .ledger-prose ol { margin: 0 0 24px; padding-left: 22px; }
+  .ledger-prose li { font-family: theme(fontFamily.serif); font-size: theme(fontSize.17); line-height: 1.7; color: theme(colors.slate); margin-bottom: 8px; }
+  .ledger-prose code { font-family: theme(fontFamily.mono); font-size: theme(fontSize.13); background: theme(colors.parchment); border-radius: theme(borderRadius.2); padding: 1px 4px; }
+  .ledger-prose pre { position: relative; background: theme(colors.ink); border-radius: theme(borderRadius.5); padding: 18px 20px; margin: 0 0 26px; overflow-x: auto; }
+  .ledger-prose pre code { background: none; padding: 0; color: theme(colors.parchment); font-size: theme(fontSize.12); line-height: 1.8; }
+</style>

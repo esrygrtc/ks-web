@@ -1,0 +1,39 @@
+---
+// Subprocessors: the composite drafted six generic vendor rows and a
+// "six subprocessors" summary. Refused: we list ONLY the vendors this
+// project demonstrably uses today (Azure, GitHub, Anthropic) and say
+// plainly that the list is finalized before launch. The surrounding
+// policy prose (notice periods, deliberate absences, model providers)
+// is carried verbatim from the composite as drafted policy.
+import Legal from './_Legal.astro';
+
+const standfirst = 'Every third party that may process customer data, what it does, and where. Short by design: each addition is a new place your data can be, so we add them reluctantly.';
+const plain = 'Three vendors today: Microsoft Azure, GitHub, and Anthropic. This is a pre-launch draft; the list is reviewed, completed, and versioned before the service takes customer data, and you get 30 days notice before we add any that handle session contents.';
+
+const sections = [
+  { n: '1', head: 'Current list', paras: [
+    'Session contents means workspace data, checkpoints, and event ledgers. Account data means identity, contact, and billing information.',
+  ], table: { head: ['subprocessor', 'purpose', 'data and region'], rows: [
+    ['Microsoft Azure', 'hosting: compute and storage', 'West Europe'],
+    ['GitHub', 'source hosting and CI', 'no customer session data'],
+    ['Anthropic', 'model inference for product sessions', 'session prompts, when routed through the gateway'],
+  ] }, note: 'These are the vendors we demonstrably use today. Categories the composite anticipated (payments, transactional email, error monitoring, support desk) have no chosen vendor yet and are added here, with notice, before launch.' },
+  { n: '2', head: 'What is deliberately absent', paras: [
+    'No analytics vendor by default, because the console works without one. No session recording tool, ever: replaying a customer’s screen is a category of access we have decided not to have. No data warehouse holding session contents for our own analysis.',
+  ] },
+  { n: '3', head: 'Model providers', paras: [
+    'When you use managed inference we route calls to model providers on your behalf. They are not listed as subprocessors of ours because you are choosing them: their terms apply to that call, and your ledger records which provider served it. Bring your own keys and the relationship is directly yours.',
+  ] },
+  { n: '4', head: 'Notification', paras: [
+    'Additions are announced in the changelog and by email to Owners. Session-content subprocessors carry 30 days notice; account-data subprocessors carry 14. Removals are announced too, because a shorter list is worth telling you about.',
+  ] },
+];
+---
+<Legal
+  title="Subprocessors · KeepState"
+  description="The draft subprocessor list: only vendors KeepState demonstrably uses today (Microsoft Azure, GitHub, Anthropic), finalized before launch."
+  docTitle="Subprocessors"
+  standfirst={standfirst}
+  plain={plain}
+  sections={sections}
+/>

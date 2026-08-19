@@ -9,7 +9,7 @@ generated: sync-docs
 # Limitations
 
 What KeepState cannot do at `v0.1.0-mvp`, with the evidence for each. This is
-the companion to [`claims.md`](claims.md): that file lists what is proven and
+the companion to [`claims.md`](/proof): that file lists what is proven and
 names the gate; this one lists what is not, and names the measurement or the
 missing gate.
 
@@ -28,7 +28,7 @@ that is missing.
 through `ksgw`. A second host is not a second provider, and the claim was
 rewritten to say so: *fresh host, fresh daemon*.
 
-**Evidence.** [`claims.md` § Deliberately not claimed](claims.md), first
+**Evidence.** [`claims.md` § Deliberately not claimed](/proof), first
 bullet, which states the rewrite and what earning the original would require:
 a second provider path through `ksgw`, with a gate that freezes and resumes an
 agent on it. `ksgw`'s `-upstream` flag defaults to a single API endpoint
@@ -46,12 +46,12 @@ the microVM's VMM, and `ksd` itself, killed with `-9` · and has never been
 asked to survive *host* loss. There is no multi-host operation, no
 distribution, and no failover.
 
-**Evidence.** [`claims.md`](claims.md) refuses "production-ready" and "scales"
+**Evidence.** [`claims.md`](/proof) refuses "production-ready" and "scales"
 in exactly these words, citing that gate 6 measured one seven-hour soak rather
 than a fleet. `gate-4-green` is the strongest liveness result and it kills two
-processes on one machine ([phase-4](phase-4.md)). The `BlobStore` interface
+processes on one machine (phase-4). The `BlobStore` interface
 exists with a local-filesystem implementation; `internal/store/s3.go` is an
-unimplemented stub (ADR-001 area, [`decisions.md`](decisions.md)).
+unimplemented stub (ADR-001 area, `decisions.md`).
 
 **What would lift it.** A real object-store backend behind the same
 `BlobStore` interface, plus a gate whose sabotage is *the host going away*
@@ -63,10 +63,10 @@ mid-session rather than a process being killed.
 Firecracker binary, the guest kernel, and the guest rootfs base are all
 aarch64, and snapshot restore requires identical pins on both sides.
 
-**Evidence.** [`versions.lock`](../versions.lock) pins
+**Evidence.** `versions.lock` pins
 `firecracker-v1.15.1-aarch64.tgz`, `vmlinux-6.1.155` from the aarch64 CI
 bucket, and `ubuntu-24.04.squashfs` likewise; `ks doctor`'s first check
-verifies all pins intact. [`CLAUDE.md`](../CLAUDE.md) dragon 5 records that
+verifies all pins intact. `CLAUDE.md` dragon 5 records that
 aarch64 snapshot support is real and that x86-era guidance does not transfer.
 No gate has ever run on x86_64.
 
@@ -82,16 +82,16 @@ dominated by chunk reassembly rather than by the hypervisor.
 
 | Run | Downtime | Of which reassembly | Source |
 |---|---|---|---|
-| Counter guest, RAM-only | 1,504-1,645 ms | 1,552-1,586 ms | [phase-6](phase-6.md) soak cycles |
-| Agent session (Claude Code) | 15,276-15,830 ms | 7,610-9,246 ms | [phase-6](phase-6.md) |
-| Agent session (aider), gate 7 | 13,688 ms | · | [phase-7](phase-7.md) |
-| Full demo, agent + daemon killed together | 25,200 ms | · | [phase-4](phase-4.md) |
-| A ~14.5 h-old preserved checkpoint | 14,300 ms | · | [phase-6](phase-6.md) |
+| Counter guest, RAM-only | 1,504-1,645 ms | 1,552-1,586 ms | phase-6 soak cycles |
+| Agent session (Claude Code) | 15,276-15,830 ms | 7,610-9,246 ms | phase-6 |
+| Agent session (aider), gate 7 | 13,688 ms | · | phase-7 |
+| Full demo, agent + daemon killed together | 25,200 ms | · | phase-4 |
+| A ~14.5 h-old preserved checkpoint | 14,300 ms | · | phase-6 |
 
 The VMM's own contribution is about **4 ms** (ADR-008 roadmap,
-[`decisions.md`](decisions.md)): *the VMM needs 4 ms; the rest is ours.*
+`decisions.md`): *the VMM needs 4 ms; the rest is ours.*
 
-**Evidence of the refusal.** [`claims.md`](claims.md) refuses "zero downtime"
+**Evidence of the refusal.** [`claims.md`](/proof) refuses "zero downtime"
 and names what earning it requires: lazy paging or parallel reassembly, with
 the breakdown re-measured.
 
@@ -102,7 +102,7 @@ the completed response is stored and served at zero new cost if the client
 comes back for it. Whether the client comes back is the client's behavior, and
 it varies by agent.
 
-**Evidence.** Gate 7's four runs, tabulated in [phase-7](phase-7.md):
+**Evidence.** Gate 7's four runs, tabulated in phase-7:
 
 | Agent | Interrupted call absorbed on resume | Evidence |
 |---|---|---|
@@ -114,7 +114,7 @@ regardless: 2,556 bytes retained on disk. The gateway can hold the door open
 forever; walking back through it belongs to the client.
 
 **What would lift it.** Nothing KeepState can build alone. The honest form is
-the per-agent compatibility matrix in [`claims.md`](claims.md), updated only
+the per-agent compatibility matrix in [`claims.md`](/proof), updated only
 by gate runs and never by hand.
 
 ## 6. Two agents is evidence of generality, not proof of universality
@@ -123,11 +123,11 @@ by gate runs and never by hand.
 have been frozen and resumed on this bench: Claude Code (`gate-3-green`) and
 aider 0.86.2 (`gate-7-green`).
 
-**Evidence.** [`claims.md`](claims.md) states the refusal and its price: more
+**Evidence.** [`claims.md`](/proof) states the refusal and its price: more
 agents behind the same gate, each with its config surface recorded as an ADR.
 The encouraging half of the result is that aider's entire adaptation surface
 was one line inside the guest image  · 
-`export ANTHROPIC_API_BASE="${ANTHROPIC_BASE_URL:-}"` ([phase-7](phase-7.md),
+`export ANTHROPIC_API_BASE="${ANTHROPIC_BASE_URL:-}"` (phase-7,
 ADR-010) · with `git diff --stat` over `cmd` and `internal` empty since the
 gate's pinned baseline.
 
@@ -137,9 +137,9 @@ gate's pinned baseline.
 observed and **86.7%** supportable at 95% confidence. The claim is the
 interval, not the point.
 
-**Evidence.** [phase-6](phase-6.md): `RESUME SUCCESS RATE: 25/25 = 100.0%,
+**Evidence.** phase-6: `RESUME SUCCESS RATE: 25/25 = 100.0%,
 Wilson 95% CI [86.7%, 100.0%] (denominator: fresh cycles run by this gate)`.
-[`claims.md`](claims.md) states that the claim moves only when the interval
+[`claims.md`](/proof) states that the claim moves only when the interval
 does.
 
 ## 8. Storage: full snapshots, fixed chunking, local filesystem
@@ -147,10 +147,10 @@ does.
 **The limit.** No Firecracker diff snapshots; 4 MiB fixed-size chunks; one
 local chunk store. Dedup does the work that diff snapshots would.
 
-**Evidence.** ADR-001 ([`decisions.md`](decisions.md)) records the decision and
+**Evidence.** ADR-001 (`decisions.md`) records the decision and
 its reasoning. The measurement that justified it: 82 checkpoints occupying
 **4,233 MiB actual against 80,952 MiB naive · 19.1× dedup**
-([phase-6](phase-6.md)). Fixed-size chunking means an insertion that shifts
+(phase-6). Fixed-size chunking means an insertion that shifts
 bytes defeats dedup for the remainder of a region; no workload has yet made
 that cost visible, and none has been constructed to try.
 
@@ -160,9 +160,9 @@ that cost visible, and none has been constructed to try.
 Firecracker and guest kernel. There is no cross-version snapshot migration and
 no format versioning beyond the pins themselves.
 
-**Evidence.** [`CLAUDE.md`](../CLAUDE.md), settled stack: "Snapshot and restore
+**Evidence.** `CLAUDE.md`, settled stack: "Snapshot and restore
 MUST use identical pins," enforced by `ks doctor`'s first check against
-[`versions.lock`](../versions.lock). ADR-003 records why v1.15.1 was chosen
+`versions.lock`. ADR-003 records why v1.15.1 was chosen
 over the newest release: v1.16.1 had no CI artifacts, so the pinned set is the
 newest *self-consistent* one.
 
@@ -173,7 +173,7 @@ reporting dead VMMs as running, `ks demo --help` booting a demo, no garbage
 collection, no human-triggered kill, and a preservation marker with an
 unexpanded date format · were all fixed under the Patch Law, each with its
 reproduction run RED before and GREEN after and a permanent guard in
-`gates/guards.sh`. See [`BACKLOG.md`](../BACKLOG.md).
+`gates/guards.sh`. See `BACKLOG.md`.
 
 **The limit that remains.** `ksd` exits rather than waiting when its port is
 still briefly held by a predecessor, so a too-fast restart can leave the bench
@@ -191,7 +191,7 @@ saying which checkpoints may die (ADR-011).
 **The limit.** The host is a Mac that sleeps. Work depending on wall-clock
 must either pin the host awake or be resumable from written state.
 
-**Evidence.** [`CLAUDE.md`](../CLAUDE.md) § Operational notes, citing the
+**Evidence.** `CLAUDE.md` § Operational notes, citing the
 2026-07-29 soak, whose first launch died when the Mac slept and whose second
 outlived the `caffeinate` meant to protect it. The soak survived because it
 was resumable from its ledger; the protection did not survive at all. This is

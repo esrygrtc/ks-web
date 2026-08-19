@@ -1,0 +1,137 @@
+---
+// Support / help center, from the Legal & Support composite. Honesty
+// edits: the composite's live article search becomes a pointer at the
+// real docs (cmd-K); the "measured median 2 h 40 m" claim and the "18
+// troubleshooting pages" count are refused (no history, no proof.json
+// entry) and replaced with the honest unavailable state; tickets route
+// through the /contact form (the desk backend arrives later).
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+
+const paths = [
+  {
+    tag: 'path 1', title: 'The docs, first',
+    body: 'Every documented procedure is gate-tested on a clean machine before it ships. If one fails for you, that is our defect rather than your mistake.',
+    meta: 'answers now', href: '/docs', label: 'Open the docs →',
+  },
+  {
+    tag: 'path 2', title: 'A finding, not a ticket',
+    body: 'If our own documentation or a published number was wrong, send it to findings and it goes to the front. We publish the correction with your name unless you decline.',
+    meta: 'always answered', href: '/contact', label: 'Send a finding →',
+  },
+  {
+    tag: 'path 3', title: 'Talk to an engineer',
+    body: 'Team and Enterprise tickets are triaged by someone who can read the ledger and reproduce your session. There is no first-line script to get past.',
+    meta: 'no tier-one deflection · ever', href: '/contact', label: 'Open a ticket →',
+  },
+];
+
+const sla = [
+  { k: 'First response', v: '8 business hours', hot: false },
+  { k: 'Something is down', v: '1 hour, any plan', hot: true },
+  { k: 'A finding', v: 'same business day', hot: true },
+];
+
+const kinds = [
+  { label: 'Question', note: 'Answered from the docs where possible, with a link so you can check us.' },
+  { label: 'Finding', note: 'A documented procedure did not work. This jumps the queue: it means a gate missed something.' },
+  { label: 'Billing', note: 'Reconciled against your ledger line by line. Send the session id and we will do the arithmetic.' },
+];
+
+const startHere = [
+  { title: 'Docs overview', href: '/docs' },
+  { title: 'CLI reference', href: '/docs/cli' },
+  { title: 'API reference', href: '/docs/api' },
+  { title: 'Troubleshooting', href: '/docs/troubleshooting' },
+];
+---
+<Site
+  title="Support · KeepState"
+  description="The KeepState help center: gate-tested docs first, findings jump the queue, and tickets reach an engineer who can read your ledger."
+>
+  <main class="max-w-[1180px] mx-auto px-7 py-14 w-full">
+    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mt-0 mb-2">Support</p>
+    <h1 class="font-serif text-34 leading-tight tracking-tight font-medium mt-0 mb-3 max-w-2xl">Search first. The docs are gate-tested; a ticket is not.</h1>
+    <p class="text-15 text-slate leading-relaxed max-w-2xl mt-0 mb-8">If a documented procedure failed you, that is a finding rather than a support question, and it goes to the top of the queue because it means our gates missed something.</p>
+
+    <a href="/docs" class="flex items-center gap-3 bg-white border border-sand rounded-4 px-4 py-3 max-w-2xl no-underline shadow-e1 hover:border-ink mb-3">
+      <span class="w-[7px] h-[7px] bg-claret rotate-45 block shrink-0"></span>
+      <span class="text-14 text-taupe flex-1">Search the docs...</span>
+      <span class="font-mono text-11 text-taupe bg-parchment border border-sand rounded-2 px-1.5 py-0.5">cmd-K</span>
+    </a>
+    <p class="text-12 text-taupe mt-0 mb-6 max-w-2xl">Search lives in the <a href="/docs" class="text-claret no-underline hover:underline underline-offset-2">docs</a>; cmd-K opens it from any docs page.</p>
+
+    <div class="flex items-center gap-x-4 gap-y-1 flex-wrap mb-14">
+      <span class="font-mono text-10 uppercase tracking-[0.14em] text-taupe">start here</span>
+      {startHere.map((a) => (
+        <a href={a.href} class="text-13 text-claret no-underline hover:underline underline-offset-2">{a.title}</a>
+      ))}
+    </div>
+
+    <section class="mb-14">
+      <h2 class="font-serif text-26 font-medium mt-0 mb-4">Three ways in, in order.</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {paths.map((p, i) => (
+          <div class={`border rounded-5 p-5 flex flex-col ${i === 0 ? 'bg-blushBg border-shell' : 'bg-white border-sand'}`}>
+            <p class={`font-mono text-10 uppercase tracking-[0.14em] mt-0 mb-2 ${i === 0 ? 'text-claret' : 'text-taupe'}`}>{p.tag}</p>
+            <p class="font-serif text-17 font-medium text-ink mt-0 mb-2">{p.title}</p>
+            <p class="text-13 text-slate leading-relaxed mt-0 mb-3 flex-1">{p.body}</p>
+            <p class="font-mono text-11 text-taupe mt-0 mb-3">{p.meta}</p>
+            <a href={p.href} class="text-13 font-medium text-claret no-underline hover:underline underline-offset-2">{p.label}</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-14">
+      <div class="bg-white border border-sand rounded-5 p-5">
+        <p class="font-mono text-10 uppercase tracking-[0.14em] text-taupe mt-0 mb-3">response commitments · offers, not history</p>
+        <div class="grid gap-0">
+          {sla.map((s) => (
+            <div class="flex items-baseline justify-between gap-4 py-2 border-b border-parchment last:border-0">
+              <span class="text-13 text-slate">{s.k}</span>
+              <span class={`font-mono text-13 ${s.hot ? 'text-claret' : 'text-ink'}`}>{s.v}</span>
+            </div>
+          ))}
+        </div>
+        <p class="text-12 text-slate mt-3 mb-1">These are commitments, not averages.</p>
+        <p class="text-12 text-taupe m-0">Measured response medians: unavailable. The desk has no history yet; medians are published here once there is something to measure.</p>
+      </div>
+      <div class="bg-parchment border border-sand rounded-5 p-5">
+        <p class="font-mono text-10 uppercase tracking-[0.14em] text-claret mt-0 mb-2">something is down right now</p>
+        <p class="text-13 text-slate leading-relaxed mt-0 mb-3">Check the status page first. If an incident is open we are already working on it and a ticket will not make it faster.</p>
+        <a href="/status" class="text-13 font-medium text-claret no-underline hover:underline underline-offset-2">Status and incident history →</a>
+      </div>
+    </section>
+
+    <section class="max-w-2xl mb-10">
+      <h2 class="font-serif text-26 font-medium mt-0 mb-2">Open a ticket.</h2>
+      <p class="text-14 text-slate leading-relaxed mt-0 mb-5">Symptom, then the evidence you already collected, then what you think is happening. The third part is optional; the second saves a day.</p>
+
+      <div class="grid gap-3 mb-5">
+        {kinds.map((k) => (
+          <div class="flex items-baseline gap-3 bg-white border border-sand rounded-4 px-4 py-3">
+            <span class="font-mono text-11 text-ink bg-parchment border border-sand rounded-pill px-2.5 py-0.5 shrink-0">{k.label}</span>
+            <span class="text-13 text-slate leading-relaxed">{k.note}</span>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-13 text-slate mt-0 mb-4">
+        For evidence: attach the output of <code class="font-mono text-12 bg-parchment rounded-2 px-1">ks doctor</code> and the last lines of <code class="font-mono text-12 bg-parchment rounded-2 px-1">ks logs &lt;session&gt;</code>; that is everything we would ask for.
+      </p>
+
+      <div class="flex items-center gap-4 flex-wrap">
+        <Button href="/contact">Open a ticket via the contact form</Button>
+        <span class="text-12 text-taupe">The dedicated ticket desk arrives with the console; until then every message lands with a person.</span>
+      </div>
+    </section>
+
+    <section class="max-w-2xl border-t border-parchment pt-5">
+      <p class="text-13 text-slate leading-relaxed mt-0 mb-0">
+        What support can see, from the <a href="/legal/dpa" class="text-claret no-underline hover:underline underline-offset-2">data processing agreement</a>:
+        support access happens only when you open a ticket and only through the break-glass path, which notifies your Owners and writes to your audit log.
+      </p>
+    </section>
+  </main>
+</Site>

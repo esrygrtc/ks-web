@@ -1,0 +1,40 @@
+---
+// Acceptable Use Policy: body carried verbatim from the Legal &
+// Support composite, except the enforcement-history anecdote (two
+// suspended accounts, one reinstated in four hours). Nothing has
+// launched, so no account has ever been suspended; that paragraph is
+// refused and replaced with an honest draft note.
+import Legal from './_Legal.astro';
+
+const standfirst = 'What you may not run on KeepState. Short, specific, and written so that a reasonable engineer can tell whether their workload is fine without emailing us.';
+const plain = 'Do not attack people, host abuse infrastructure, mine cryptocurrency, or use sessions to launder around a model provider’s terms. An agent acting on your instructions is your responsibility.';
+
+const sections = [
+  { n: '1', head: 'Prohibited workloads', paras: [
+    'These are grounds for immediate suspension without notice.',
+  ], list: [
+    'Attacking, scanning, or attempting to gain unauthorized access to systems you do not own or have permission to test.',
+    'Hosting malware, phishing infrastructure, spam relays, or command-and-control services.',
+    'Cryptocurrency mining or any workload whose primary output is proof-of-work.',
+    'Generating content that sexually exploits children, or material whose purpose is to incite violence against people.',
+    'Deliberately circumventing a model provider’s usage policies through our gateway.',
+  ] },
+  { n: '2', head: 'Agent autonomy is not a defense', paras: [
+    'A long-running agent will do things you did not specifically instruct. That is the nature of the tool, and it does not transfer responsibility to us or to the model. If your agent begins scanning networks because a prompt drifted, the workload is still yours, and budget caps plus the event ledger exist partly so you can see it happening.',
+  ] },
+  { n: '3', head: 'Security research', paras: [
+    'Testing systems you own or have written permission to test is explicitly allowed, including offensive tooling. Tell us in advance if the workload will generate traffic that looks like an attack from our address space, so we do not suspend you for doing legitimate work.',
+  ] },
+  { n: '4', head: 'Enforcement, and how we behave', paras: [
+    'Where we can, we contact you before acting. Where a workload is actively harming others we suspend first and explain within the hour, and the session is checkpointed rather than destroyed so nothing is lost if we were wrong.',
+  ], note: 'No enforcement history exists: the service has not launched, so no account has ever been suspended under this policy. Enforcement actions will be reported here as they happen.' },
+];
+---
+<Legal
+  title="Acceptable Use Policy · KeepState"
+  description="Draft acceptable use policy: prohibited workloads, agent autonomy, security research, and how enforcement behaves. Effective upon launch."
+  docTitle="Acceptable Use Policy"
+  standfirst={standfirst}
+  plain={plain}
+  sections={sections}
+/>

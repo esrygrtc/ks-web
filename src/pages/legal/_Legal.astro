@@ -1,0 +1,134 @@
+---
+// Shared frame for the five legal documents (underscore = unrouted).
+// Single-column serif document with a left mini-nav, from the Legal &
+// Support composite. Every document is a DRAFT: there is no launch
+// date, so the effective line says so instead of inventing one.
+// Where the composite's copy assumed shipped machinery (PDF packs,
+// version history, enforcement history), the pages carry an honest
+// draft note rather than the invention.
+import Site from '../../layouts/Site.astro';
+
+interface Section {
+  n: string;
+  head: string;
+  paras: string[];
+  list?: string[];
+  table?: { head: string[]; rows: string[][] };
+  note?: string;
+}
+interface Props {
+  title: string;
+  description: string;
+  docTitle: string;
+  standfirst: string;
+  plain: string;
+  sections: Section[];
+}
+const { title, description, docTitle, standfirst, plain, sections } = Astro.props;
+
+const nav = [
+  ['Terms of Service', '/legal/terms'],
+  ['Privacy Policy', '/legal/privacy'],
+  ['Data Processing Agreement', '/legal/dpa'],
+  ['Subprocessors', '/legal/subprocessors'],
+  ['Acceptable Use', '/legal/acceptable-use'],
+];
+const path = Astro.url.pathname.replace(/\/$/, '');
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+{/* Drafts stay out of the index until they are effective at launch. */}
+<Site title={title} description={description} noindex>
+  <main class="max-w-[1180px] mx-auto px-7 py-14 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-[210px_minmax(0,1fr)] gap-10">
+
+      <nav class="md:sticky md:top-24 self-start" aria-label="legal documents">
+        <p class="font-mono text-10 uppercase tracking-[0.14em] text-taupe mt-0 mb-3">Documents</p>
+        <ul class="list-none m-0 p-0 grid gap-1">
+          {nav.map(([label, href]) => (
+            <li>
+              <a href={href} aria-current={path === href ? 'page' : undefined}
+                class={`flex items-center gap-2 text-13 no-underline rounded-3 px-2.5 py-1.5 ${path === href ? 'text-ink font-semibold bg-parchment' : 'text-slate hover:text-ink'}`}>
+                <span class={`w-[5px] h-[5px] rotate-45 block shrink-0 ${path === href ? 'bg-claret' : 'bg-white/0'}`}></span>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="text-12 text-taupe leading-relaxed mt-5 mb-0">
+          Before launch, all five documents will ship together in the
+          <a href="/security" class="text-claret no-underline hover:underline underline-offset-2">security review pack</a>, with no form.
+          PDF downloads and version history arrive with the first effective versions.
+        </p>
+      </nav>
+
+      <article class="max-w-[68ch] min-w-0">
+        <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mt-0 mb-2">Legal / {docTitle}</p>
+        <h1 class="font-serif text-34 leading-tight tracking-tight font-medium mt-0 mb-2">{docTitle}</h1>
+        <p class="font-mono text-11 text-taupe mt-0 mb-6">Draft · effective upon launch · under founder legal review</p>
+
+        <p class="font-serif text-17 leading-relaxed text-slate mt-0 mb-7">{standfirst}</p>
+
+        <div class="bg-parchment border border-sand rounded-4 px-5 py-4 mb-10">
+          <p class="font-mono text-10 uppercase tracking-[0.14em] text-claret mt-0 mb-2">the short version</p>
+          <p class="font-serif text-15 leading-relaxed text-ink mt-0 mb-2">{plain}</p>
+          <p class="text-12 text-taupe m-0">A summary is not the agreement. Where the two disagree, the clauses below govern.</p>
+        </div>
+
+        {sections.map((sec) => (
+          <section class="mb-9" id={slug(sec.head)}>
+            <h2 class="font-serif text-22 font-medium mt-0 mb-3 flex items-baseline gap-3">
+              <span class="font-mono text-12 text-claret shrink-0">{sec.n}</span>
+              {sec.head}
+            </h2>
+            {sec.paras.map((p) => (
+              <p class="font-serif text-15 leading-relaxed text-slate mt-0 mb-3">{p}</p>
+            ))}
+            {sec.list && (
+              <ul class="list-none m-0 p-0 grid gap-2 mb-3">
+                {sec.list.map((li) => (
+                  <li class="flex items-baseline gap-2.5">
+                    <span class="w-[5px] h-[5px] bg-claret rotate-45 block shrink-0 translate-y-[-2px]"></span>
+                    <span class="font-serif text-15 leading-relaxed text-slate">{li}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {sec.table && (
+              <div class="overflow-x-auto mb-3">
+                <table class="w-full border-collapse bg-white border border-sand rounded-4 text-13">
+                  <thead><tr>
+                    {sec.table.head.map((h) => (
+                      <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">{h}</th>
+                    ))}
+                  </tr></thead>
+                  <tbody>
+                    {sec.table.rows.map((r) => (
+                      <tr class="align-top">
+                        {r.map((c) => (
+                          <td class="px-3.5 py-2.5 border-b border-parchment text-slate first:text-ink first:font-medium">{c}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {sec.note && (
+              <div class="bg-blushBg border border-sand rounded-4 px-4 py-3">
+                <p class="font-mono text-10 uppercase tracking-[0.14em] text-claret mt-0 mb-1.5">draft note</p>
+                <p class="text-13 leading-relaxed text-slate m-0">{sec.note}</p>
+              </div>
+            )}
+          </section>
+        ))}
+
+        <div class="border-t border-parchment pt-5 mt-12">
+          <p class="text-13 text-slate leading-relaxed mt-0 mb-0">
+            Material changes are announced 30 days before they take effect, by email to Owners and in the
+            <a href="/changelog" class="text-claret no-underline hover:underline underline-offset-2">changelog</a>. Previous versions stay published.
+          </p>
+        </div>
+      </article>
+    </div>
+  </main>
+</Site>

@@ -36,12 +36,19 @@ const tagsFull = live
 if (live) writeFileSync(`${SNAP}tags-full.txt`, tagsFull);
 if (!live) console.error('sync-docs: product repo absent; regenerating from vendored snapshots');
 
+// Product-internal markdown links point at files that exist in the
+// product repo, not on this site. claims.md maps to /proof (same
+// content, generated); everything else unlinks to its text.
+const relink = (line) => line
+  .replace(/\[([^\]]+)\]\((?:\.\.\/)?(?:docs\/)?claims\.md[^)]*\)/g, '[$1](/proof)')
+  .replace(/\[([^\]]+)\]\((?!https?:\/\/|\/|#)[^)]+\)/g, '$1');
+
 const dedashProse = (md) => {
   let inFence = false;
   return md.split('\n').map((l) => {
     if (l.trim().startsWith('```')) { inFence = !inFence; return l; }
     if (inFence) return l;
-    return l.replace(/\s+—\s+/g, ' · ').replace(/—/g, ' · ')
+    return relink(l).replace(/\s+—\s+/g, ' · ').replace(/—/g, ' · ')
       .replace(/(\d)\s*–\s*(\d)/g, '$1-$2').replace(/–/g, '-');
   }).join('\n');
 };

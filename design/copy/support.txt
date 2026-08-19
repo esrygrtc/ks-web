@@ -1,0 +1,14 @@
+# Verbatim lines carried from design/Legal & Support.dc.html (Support)
+# Refused: "measured median first response last month was 2 h 40 m" (no
+# history, not in proof.json) and "18 troubleshooting pages" (unproven count).
+Search first. The docs are gate-tested; a ticket is not.
+If a documented procedure failed you, that is a finding rather than a support question, and it goes to the top of the queue because it means our gates missed something.
+Every documented procedure is gate-tested on a clean machine before it ships. If one fails for you, that is our defect rather than your mistake.
+If our own documentation or a published number was wrong, send it to findings and it goes to the front. We publish the correction with your name unless you decline.
+Team and Enterprise tickets are triaged by someone who can read the ledger and reproduce your session. There is no first-line script to get past.
+These are commitments, not averages.
+Check the status page first. If an incident is open we are already working on it and a ticket will not make it faster.
+Symptom, then the evidence you already collected, then what you think is happening. The third part is optional; the second saves a day.
+Answered from the docs where possible, with a link so you can check us.
+A documented procedure did not work. This jumps the queue: it means a gate missed something.
+Reconciled against your ledger line by line. Send the session id and we will do the arithmetic.

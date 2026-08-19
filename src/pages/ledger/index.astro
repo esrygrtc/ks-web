@@ -1,0 +1,69 @@
+---
+// The Ledger index, from design/The Ledger.dc.html (isIndex branch).
+// The composite's seven sample posts, their authors, the "18 posts ·
+// written by the 6 people" count, the tag-filter row, and the "Five
+// essays" promise are illustrations/fabrications and are NOT shipped:
+// the list renders the real ledger collection and is honestly short.
+// Drafts render with an explicit DRAFT pill and still link; the post
+// count is computed, never typed. Subscribe posts to /api/subscribe
+// (backend at W4), honeypot included now.
+import Site from '../../layouts/Site.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('ledger')).sort((a, b) =>
+  b.data.date.localeCompare(a.data.date)
+);
+const slug = (id: string) => id.replace(/\.mdx?$/, '');
+---
+<Site
+  title="The Ledger · KeepState"
+  description="KeepState's engineering notebook: things we measured, things we got wrong, and the occasional argument about where agent infrastructure is going."
+>
+  <main class="max-w-[1180px] mx-auto px-7 pt-[68px] pb-[90px] w-full">
+    <section class="mb-11">
+      <div class="flex items-center gap-[9px] mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">The Ledger</span>
+      </div>
+      <h1 class="font-serif text-34 leading-[1.04] tracking-[-0.025em] font-normal mt-0 mb-6 max-w-[15em]">An engineering notebook we happen to publish.</h1>
+      <p class="text-17 leading-[1.7] text-slate mt-0 mb-5 max-w-[44em] [text-wrap:pretty]">No thought leadership, no listicles, no reposted benchmarks. Things we measured, things we got wrong, and the occasional argument about where agent infrastructure is going. Every number in every post cites the gate that produced it.</p>
+      <p class="font-mono text-12 leading-[1.7] text-taupe m-0">{posts.length} {posts.length === 1 ? 'post' : 'posts'} · written by the people who build it · no guest posts, ever</p>
+    </section>
+
+    <section>
+      <div class="grid gap-0 border-t border-sand">
+        {posts.map((p) => (
+          <article class="border-b border-sand">
+            <a href={`/ledger/${slug(p.id)}/`} class="block no-underline py-6 px-0.5 group">
+              <div class="flex items-center gap-3 flex-wrap mb-4">
+                {p.data.draft && (
+                  <span class="font-mono text-10 tracking-[0.1em] uppercase text-claret bg-blushBg border border-shell rounded-pill px-2.5 py-1">DRAFT</span>
+                )}
+                <span class="font-mono text-11 text-taupe">{p.data.date}</span>
+              </div>
+              <h2 class="font-serif text-26 leading-[1.14] tracking-[-0.022em] font-normal text-ink mt-0 mb-4 max-w-[26em] group-hover:underline [text-underline-offset:4px] decoration-1">{p.data.title}</h2>
+              <p class="text-15 leading-[1.7] text-slate m-0 max-w-[44em]">{p.data.standfirst}</p>
+            </a>
+          </article>
+        ))}
+      </div>
+      {posts.length === 0 && (
+        <p class="text-14 text-slate border-b border-sand pb-8 m-0">Nothing published yet. The first entries are being written; the subscribe box below is how you hear about them.</p>
+      )}
+
+      <div class="bg-parchment border border-sand rounded-5 px-6 py-[26px] mt-[34px] flex items-center justify-between gap-6 flex-wrap">
+        <div class="min-w-0 max-w-[34em]">
+          <p class="text-14 font-semibold mt-0 mb-2">The Session Economy</p>
+          <p class="text-13 leading-[1.65] text-slate m-0">Essays on where agent infrastructure is going. One email per essay. Nothing else.</p>
+        </div>
+        <form method="post" action="/api/subscribe" class="flex gap-2 flex-nowrap flex-[1_1_280px] min-w-0">
+          <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input
+            type="email" name="email" required placeholder="you@company.com" aria-label="email address"
+            class="flex-[1_1_0%] min-w-0 font-sans text-13 text-ink bg-white border border-sand rounded-3 px-3 py-[11px] focus:outline-none focus:border-claret"
+          />
+          <button type="submit" class="font-sans text-13 font-medium text-paper bg-claret border-0 rounded-3 px-4 py-[11px] cursor-pointer hover:bg-claretDeep flex-none">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</Site>

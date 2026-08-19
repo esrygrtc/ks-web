@@ -1,0 +1,5 @@
+# Verbatim lines carried from design/The Ledger.dc.html (isPost branch)
+# into the post page chrome. The composite's sample post bodies, authors
+# and read times are fabrications and were not carried.
+Every number here comes from a gate run. If one disagrees with your own measurement, that is a finding and we will publish the correction.
+DRAFT · awaiting founder review · not yet an official position

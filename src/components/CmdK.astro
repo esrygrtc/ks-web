@@ -22,7 +22,11 @@
   let pagefind = null;
   const ensureIndex = async () => {
     if (pagefind) return pagefind;
-    try { pagefind = await import('/pagefind/pagefind.js'); await pagefind.init(); } catch { pagefind = null; }
+    // /pagefind/pagefind.js exists only in the built site (pagefind runs
+    // after astro build), so the bundler must not try to resolve it; the
+    // indirection keeps the import a runtime-only URL.
+    const pagefindUrl = '/pagefind/pagefind.js';
+    try { pagefind = await import(/* @vite-ignore */ pagefindUrl); await pagefind.init(); } catch { pagefind = null; }
     return pagefind;
   };
   const resultsEl = () => overlay?.querySelector('[data-cmdk-results]');

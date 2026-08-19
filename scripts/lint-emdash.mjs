@@ -12,7 +12,13 @@ const walk = (d) => {
     if (statSync(p).isDirectory()) { walk(p); continue; }
     if (!exts.some((x) => p.endsWith(x))) continue;
     const lines = readFileSync(p, 'utf8').split('\n');
+    // Fenced code in markdown is a quoted artifact (often the product's
+    // gate-tested bytes), not house prose; the law governs content and
+    // UI strings. Fences are exempt in .md/.mdx only.
+    let fence = false;
     lines.forEach((line, i) => {
+      if (/\.(md|mdx)$/.test(p) && line.trim().startsWith('```')) { fence = !fence; return; }
+      if (fence) return;
       if (line.includes('—')) { console.error(`emdash: ${p}:${i + 1}: em dash`); bad++; }
       const en = line.replace(/\d–\d/g, '');
       if (en.includes('–')) { console.error(`emdash: ${p}:${i + 1}: en dash outside a numeric range`); bad++; }
