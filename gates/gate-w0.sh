@@ -7,6 +7,14 @@
 # BLOCKED from merging by the required build check. GREEN iff blocked.
 #
 # WORLD 1 (macOS) script: portable clock, no GNU-isms. Hard cap 1500 s.
+#
+# AMENDED v2 (2026-08-19, founder authority: the ks-* naming migration
+# order): the resource group reference keepstate-web-rg -> ks-web-rg,
+# because the founder recreated the estate under ks-* names and the old
+# group no longer exists. One identifier changed; no assertion,
+# threshold, or logic changed. The v1 run that earned web-0-green
+# executed against the old name and its output in docs/phase-w0.md is
+# unchanged history.
 set -u
 cd "$(dirname "$0")/.."
 REPO=esrygrtc/ks-web
