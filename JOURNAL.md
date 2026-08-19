@@ -149,3 +149,16 @@
   against a broken store all failed loudly and stored nothing.
 - web-4-green NOT tagged. Awaiting: two amendments + KS_EMAIL_KEY.
 - Proceeding to W5 per the all-phases directive.
+
+## 2026-08-20 — Phase W5: product green on the real host, gate blocked on probes
+- Every budget met on staging: 100/100 on all four gate pages, CLS
+  0.000, axe zero critical, full header set on GET. The budgets earned
+  their keep: they found the light-band-5 fidelity+contrast bug, the
+  chip contrast, color-only links, a missing landmark, and font-swap
+  CLS; each fix is in the phase doc with its measurement.
+- Gate blocked on three probe defects (HEAD vs GET, axe API misuse,
+  uncompressed localhost); BLOCKED.md carries exact amendments and the
+  evidence. No tag.
+- Next: W6's machine-doable parts (cache policy, k6, rollback, uptime
+  script); DNS + production deploy + email key + amendments = founder
+  return list.
