@@ -47,6 +47,26 @@ Replace the two lines above with a chain-following check:
 Stricter than the original (asserts the landing host, not a substring
 anywhere in a URL), and satisfiable.
 
+## Second blocked assertion set: the sabotage's own precondition
+
+The sabotage breaks KS_LEADS_CONN and sleeps 20 s. Measured on
+2026-08-20: SWA app-setting changes take 7 to 10 MINUTES to reach the
+running worker. The sabotage judged the system before its own sabotage
+was in effect, so its three failures are a trial that could not be held
+(rule-14 class), not a falsification. Live evidence that the mechanism
+works once propagation lands: during the restore window, submissions
+returned /sorry?why=storage and stored NOTHING (verified by table
+query); durability failure was loud and no email was implied.
+
+Amendment options for the sabotage, founder's choice:
+1. RECOMMENDED: change the vector: delete the leads table instead of
+   breaking the connection (takes effect immediately, no propagation),
+   assert /sorry?why=storage + no false success, then recreate the
+   table. Header bump to v2.
+2. Keep the vector, replace sleep 20 with poll-until-flipped (cap 15
+   min): submit probes until one returns why=storage, then run the
+   assertions.
+
 ## While blocked
 
 web-4-green is NOT tagged. Phase W5 (budgets and hardening) does not
