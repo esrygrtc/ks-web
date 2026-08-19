@@ -86,3 +86,21 @@
   extraction script; src contains zero hex literals, gate-enforced.
 - Next: tag web-1-green, push; Phase W2 (marketing pages, copy
   verbatim, sync-claims for Proof) on founder go.
+
+## 2026-08-19 — Phase W2 GREEN: nineteen honest pages
+- Seven parallel agents built eleven pages from their composites; four
+  built by hand (about/press/contact simple per G2 default, proof/
+  compatibility generated). Every agent independently refused the
+  composites' demo data: fake gate tags, sample uptimes, invented
+  grantees, fictional pilots. The two-agent inconsistency (pen test
+  kept vs refused) was reconciled to the stricter treatment.
+- sync-claims is live: Proof and Compatibility render 16 claims, 2
+  matrix rows, 11 tags from the product repo; hand edits fail the hash
+  check (sabotage-proven, and the sabotage found check-sync's own
+  process.exit bug stranding backups).
+- Gate W2 GREEN (16 asserts), sabotage GREEN (both lints + hash check
+  bite). 139 verbatim design lines held by the copy lint.
+- Founder review flags: security@ mail routing (W-1), certification
+  records (W-2), careers salary terms.
+- Next: tag web-2-green, push, deploy staging for founder review;
+  Phase W3 (docs + Ledger) on founder go.
