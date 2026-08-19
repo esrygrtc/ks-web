@@ -3,6 +3,7 @@
 // Code blocks arrive with build-time copy buttons (rehype-copy); the
 // script below makes them work and keeps the label honest.
 import Site from './Site.astro';
+import CmdK from '../components/CmdK.astro';
 import { getCollection } from 'astro:content';
 interface Props { title: string; description: string; headings?: { depth: number; slug: string; text: string }[] }
 const { title, description, headings = [] } = Astro.props;
@@ -28,6 +29,7 @@ const current = Astro.url.pathname;
 <Site title={title} description={description} footer="docs">
   <div class="max-w-[1280px] mx-auto px-7 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_180px] gap-10 py-10">
     <nav class="lg:sticky lg:top-24 self-start" aria-label="docs sections">
+      <div class="mb-5"><CmdK /></div>
       {nav.map((s) => (
         <div class="mb-5">
           <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mb-2">{s.section}</p>
