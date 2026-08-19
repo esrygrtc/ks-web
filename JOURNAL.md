@@ -75,3 +75,14 @@
   to the new group name; the push testing this doubles as proof the
   deployment token survived the move.
 - Founder to switch CLI back to ks; then Phase W1 begins.
+
+## 2026-08-19 — Phase W1 GREEN: the sheet is code and the laws bite
+- 18 tokens-only components, /design-system with every state, 13 law
+  tests in CI. Gate learned two lessons the honest way: its pill grep
+  was stricter than the page's whitespace (fixed in the component,
+  rule-7 disclosed, gate untouched), and its git-checkout restore
+  assumes a committed subject (first sabotage ran on a dirty bench).
+- Token pass 2: 12 sheet-verified colors promoted to names via the
+  extraction script; src contains zero hex literals, gate-enforced.
+- Next: tag web-1-green, push; Phase W2 (marketing pages, copy
+  verbatim, sync-claims for Proof) on founder go.
