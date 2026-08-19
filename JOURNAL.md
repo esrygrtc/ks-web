@@ -45,3 +45,22 @@
   Phase W0 (SWA Standard ~$9/mo in keepstate-web-rg awaits approval,
   which the founder has implicitly queued but I will re-confirm cost at
   creation time per the tripwire).
+
+## 2026-08-19 — Phase W0 GREEN: the pipeline is real
+- Logged in as ks (sees exactly two groups). Naming law applied: every
+  Azure name from now on is ks-*; the two admin-created RGs keep their
+  keepstate-* names as a recorded exception (ADR-W1) until an admin
+  moment recreates them.
+- Built: Astro scaffold, tokens.json extraction (script, reproducible),
+  self-hosted fonts, holding page, CI with PR previews + auto staging +
+  dispatch-only production, idempotent infra script, ADR-W1.
+- Azure created: SWA ks-web (Standard, westeurope, ~$9/mo) in
+  keepstate-web-rg. Token piped to GitHub secrets, never echoed.
+- GitHub repo esrygrtc/ks-web is PUBLIC: branch protection (required
+  build check) needs public on the free plan, and CI-blocks-merge is
+  gate law. Founder may flip visibility at the cost of protection.
+- Gate W0 GREEN (6/6): staging got the probe with no human action,
+  production stayed untouched, workflow graph has no auto path to
+  production, infra re-ran idempotently. Sabotage GREEN: broken page
+  PR failed CI, merge state BLOCKED, merge refused.
+- Next action: tag web-0-green; Phase W1 (component sheet) on founder go.
