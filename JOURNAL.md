@@ -162,3 +162,31 @@
 - Next: W6's machine-doable parts (cache policy, k6, rollback, uptime
   script); DNS + production deploy + email key + amendments = founder
   return list.
+
+## 2026-08-20 — All phases complete to the machine's limit; the founder's return list
+The all-phases directive is discharged: W0-W3 tagged green; W4 and W5
+built, measured, and blocked only on gate amendments that need founder
+authority; W6's machine half built and rehearsed (rollback cycle 165 s
+round trip with a clean abort case; k6 rehearsed at 50 VUs: 21,346
+requests, zero failures, p95 236 ms).
+
+### The founder's return list, in order
+1. RULE ON GATE AMENDMENTS (BLOCKED.md, exact diffs included):
+   w4: OAuth chain-following probe; sabotage vector or poll.
+   w5: GET header probe; axe newContext; audit against the compressed
+   host. On your written ok I apply, re-run all gates whole, tag
+   web-4-green and web-5-green.
+2. EMAIL: set KS_EMAIL_KEY/TO/FROM in SWA settings (Resend-compatible;
+   you add the key, it never transits this conversation). Closes the
+   w4 abort leg. Also W-1: real mail routing for security@keepstate.ai.
+3. CONTENT REVIEW before production: Proof page, the DRAFT Ledger post,
+   legal pages (draft-marked), security/enterprise cert rows (W-2),
+   careers role + salary.
+4. PRODUCTION DEPLOY: your manual dispatch of the ci workflow.
+5. CUTOVER (docs/cutover-dns.md): set the two DNS records, run
+   infra/add-domains.sh, approve the ~$2-5/mo uptime resources, run
+   infra/create-uptime.sh, test-fire the alert, then gates/gate-w6.sh
+   + --sabotage, tag web-6-green, launch quietly, send the ten emails.
+6. PRODUCT SIDE, when convenient: the private-repo flip broke the
+   public-quickstart story (gate-7 B5); the han/Apache-2.0 extraction
+   waits on the first design partner.
