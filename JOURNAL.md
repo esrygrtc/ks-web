@@ -135,3 +135,17 @@
   founder legal review required before cutover.
 - Next: tag web-3-green; Phase W4 (forms, functions, console shell)
   needs the leads storage account (~cents/mo) and the email decision.
+
+## 2026-08-20 — Phase W4 built, 19/20 proven, blocked on two gate amendments
+- Leads path live on staging: durable-before-delivered proven for all
+  four forms, dead email step run live (unconfigured), honeypot and
+  rate limit proven (after the gate caught the x-forwarded-for port
+  bug), console shell honest in three states.
+- Gate defects found by running: OAuth assertion sees only hop 1 of
+  SWA's 3-hop chain (lands on github.com at hop 3, measured); sabotage
+  sleep 20s vs measured 7-10min app-setting propagation. Both in
+  BLOCKED.md with precise amendments; only the founder amends gates.
+- Live accidental proof during manual verification: nine submissions
+  against a broken store all failed loudly and stored nothing.
+- web-4-green NOT tagged. Awaiting: two amendments + KS_EMAIL_KEY.
+- Proceeding to W5 per the all-phases directive.
