@@ -9,7 +9,7 @@ const hot = !missing && pct >= 80;
 <article class="bg-white border border-sand rounded-5 p-[22px]">
   <p class="text-12 text-slate mt-0 mb-3.5">{label}</p>
   {missing ? (
-    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
+    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-slate bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
       <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
       unavailable{reason ? ` (${reason})` : ''}
     </span>

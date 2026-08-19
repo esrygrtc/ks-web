@@ -87,16 +87,18 @@ const legal = [['Terms', '/legal/terms'], ['Privacy', '/legal/privacy'], ['DPA',
       </div>
     </>
   )}
-  <div class="max-w-[1180px] mx-auto px-7 py-4 flex items-center justify-between gap-4 flex-wrap">
-    <div class="flex items-center gap-3.5 flex-wrap">
-      <StatusChip />
-      <p class="font-mono text-11 text-taupe m-0" data-system-line>{systemLine}</p>
-    </div>
-    <div class="flex items-center gap-3.5 flex-wrap">
-      {variant !== 'console' && legal.map(([label, href]) => (
-        <a href={href} class="font-mono text-12 text-stone no-underline hover:text-ink py-1">{label}</a>
-      ))}
-      <p class="font-mono text-12 text-termMuted m-0">© 2026 KeepState, Inc. · Every claim on this site cites its evidence: <a href="/proof" class="text-blush no-underline hover:underline">/proof</a></p>
+  <div class="bg-ink">
+    <div class="max-w-[1180px] mx-auto px-7 py-4 flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-center gap-3.5 flex-wrap">
+        <StatusChip />
+        <p class="font-mono text-11 text-borderMuted m-0" data-system-line>{systemLine}</p>
+      </div>
+      <div class="flex items-center gap-3.5 flex-wrap">
+        {variant !== 'console' && legal.map(([label, href]) => (
+          <a href={href} class="font-mono text-12 text-borderMuted no-underline hover:text-paper py-1">{label}</a>
+        ))}
+        <p class="font-mono text-12 text-borderMuted m-0">© 2026 KeepState, Inc. · Every claim on this site cites its evidence: <a href="/proof" class="text-blush underline underline-offset-2">/proof</a></p>
+      </div>
     </div>
   </div>
 </footer>

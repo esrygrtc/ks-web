@@ -22,7 +22,7 @@ const shown = missing ? '' : (typeof value === 'string' ? value : Number(value).
 <article class="bg-white border border-sand rounded-4 p-4">
   <p class="text-12 text-slate mb-2 mt-0">{label}</p>
   {missing ? (
-    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
+    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-slate bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
       <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
       unavailable{reason ? ` (${reason})` : ''}
     </span>
@@ -31,7 +31,7 @@ const shown = missing ? '' : (typeof value === 'string' ? value : Number(value).
       <span data-state="value" class="font-mono text-26 text-claret">{shown}{unit}</span>
       {badge && <Badge kind={badge} />}
       {evidenceHref && (
-        <a href={evidenceHref} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline">
+        <a href={evidenceHref} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret underline underline-offset-2">
           <span class="w-[6px] h-[6px] bg-claret rotate-45 inline-block"></span>{evidenceTag ?? 'evidence'}
         </a>
       )}

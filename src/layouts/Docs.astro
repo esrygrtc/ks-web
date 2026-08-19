@@ -27,7 +27,7 @@ const nav = sections.map((s) => ({
 const current = Astro.url.pathname;
 ---
 <Site title={title} description={description} footer="docs">
-  <div class="max-w-[1280px] mx-auto px-7 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_180px] gap-10 py-10">
+  <main class="max-w-[1280px] mx-auto px-7 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_180px] gap-10 py-10">
     <nav class="lg:sticky lg:top-24 self-start" aria-label="docs sections">
       <div class="mb-5"><CmdK /></div>
       {nav.map((s) => (
@@ -60,14 +60,14 @@ const current = Astro.url.pathname;
         </>
       )}
     </aside>
-  </div>
+  </main>
 </Site>
 <style is:global>
   .docs-prose h1 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.34); font-weight: 500; margin: 0 0 10px; }
   .docs-prose h2 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.22); font-weight: 500; margin: 34px 0 8px; }
   .docs-prose h3 { font-size: theme(fontSize.15); font-weight: 600; margin: 22px 0 6px; }
   .docs-prose p, .docs-prose li { font-size: theme(fontSize.14); line-height: 1.65; color: theme(colors.slate); }
-  .docs-prose a { color: theme(colors.claret); }
+  .docs-prose a { color: theme(colors.claret); text-decoration: underline; text-underline-offset: 3px; }
   .docs-prose code { font-family: theme(fontFamily.mono); font-size: theme(fontSize.12); background: theme(colors.parchment); border-radius: theme(borderRadius.2); padding: 1px 4px; }
   .docs-prose pre { position: relative; background: theme(colors.ink); border: 1px solid theme(colors.inkBorder); border-radius: theme(borderRadius.5); padding: 14px 16px; overflow-x: auto; }
   .docs-prose pre code { background: none; padding: 0; color: theme(colors.parchment); font-size: theme(fontSize.12); line-height: 1.65; }

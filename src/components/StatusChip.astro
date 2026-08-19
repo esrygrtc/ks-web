@@ -12,7 +12,7 @@ const state: 'operational' | 'incident' | 'unavailable' =
 const look = {
   operational: { dot: 'bg-moss',   text: 'text-ink',   label: 'all systems operational' },
   incident:    { dot: 'bg-claret', text: 'text-claret', label: 'incident in progress' },
-  unavailable: { dot: 'bg-stone',  text: 'text-taupe',  label: 'status unavailable' },
+  unavailable: { dot: 'bg-stone',  text: 'text-slate',  label: 'status unavailable' },
 }[state];
 ---
 <span data-status={state} class={`inline-flex items-center gap-[7px] font-mono text-12 ${look.text} bg-parchment border border-sand rounded-3 px-2.5 py-1.5`}>

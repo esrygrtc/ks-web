@@ -139,7 +139,7 @@ const money = (n: number) => '$' + n.toLocaleString('en-US', { maximumFractionDi
             <p class="text-14 leading-relaxed text-slate m-0">
               {m.body}
               {m.evidence && (
-                <a href={m.evidence} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline ml-1.5">
+                <a href={m.evidence} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret underline underline-offset-2 ml-1.5">
                   <span class="w-[6px] h-[6px] bg-claret rotate-45 inline-block"></span>gate-6
                 </a>
               )}
@@ -147,7 +147,7 @@ const money = (n: number) => '$' + n.toLocaleString('en-US', { maximumFractionDi
             <p class="font-mono text-11 leading-relaxed text-taupe m-0">
               {m.note}
               {m.evidence && (
-                <a href={m.evidence} class="text-claret no-underline hover:underline ml-1.5">· evidence</a>
+                <a href={m.evidence} class="text-claret underline underline-offset-2 ml-1.5">· evidence</a>
               )}
             </p>
           </div>
@@ -182,7 +182,7 @@ const money = (n: number) => '$' + n.toLocaleString('en-US', { maximumFractionDi
                 <span id="pc-cad-val" class="font-mono text-14 text-claret">every {s.cadence}m</span>
               </div>
               <input id="pc-cad" type="range" min="1" max="60" step="1" value={s.cadence} class="w-full accent-claret" />
-              <p class="font-mono text-11 text-taupe mt-2.5 mb-0">dedup measured at <a href="/proof#gate-6" class="text-claret no-underline hover:underline">19.1x</a>, so cadence costs less than it reads</p>
+              <p class="font-mono text-11 text-taupe mt-2.5 mb-0">dedup measured at <a href="/proof#gate-6" class="text-claret underline underline-offset-2">19.1x</a>, so cadence costs less than it reads</p>
             </div>
             <div>
               <p class="text-13 font-medium text-ink mt-0 mb-3">Inference</p>
@@ -197,27 +197,27 @@ const money = (n: number) => '$' + n.toLocaleString('en-US', { maximumFractionDi
 
         <div class="bg-ink rounded-5 px-[26px] py-7">
           <div class="flex items-center justify-between gap-3 mb-[22px] flex-wrap">
-            <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted m-0">monthly, all meters</p>
-            <Badge kind="ESTIMATED" />
+            <p class="font-mono text-10 tracking-[0.12em] uppercase text-borderMuted m-0">monthly, all meters</p>
+            <Badge kind="ESTIMATED" onDark />
           </div>
           <p class="mt-0 mb-1.5">
             <span id="pc-total" data-pc-value class="font-mono text-34 leading-none text-paper tracking-tight tabular-nums">{money(total)}</span>
-            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable (invalid input)</span>
+            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-borderMuted bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable (invalid input)</span>
           </p>
           <p class="mt-0 mb-[26px]">
-            <span id="pc-subtitle" data-pc-value class="font-mono text-12 text-termMuted">{hoursMonth.toLocaleString('en-US')} agent-hours per month</span>
-            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+            <span id="pc-subtitle" data-pc-value class="font-mono text-12 text-borderMuted">{hoursMonth.toLocaleString('en-US')} agent-hours per month</span>
+            <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-borderMuted bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
           </p>
           <div class="grid gap-0">
             <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
-              <span class="font-mono text-12 text-termMuted">session-minutes</span>
+              <span class="font-mono text-12 text-borderMuted">session-minutes</span>
               <span>
                 <span id="pc-compute" data-pc-value class="font-mono text-13 text-parchment tabular-nums">{money(compute)}</span>
-                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
+                <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-borderMuted bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>
               </span>
             </div>
             <div class="flex items-baseline justify-between gap-3.5 py-3 border-t border-inkBorder">
-              <span class="font-mono text-12 text-termMuted">checkpoint storage</span>
+              <span class="font-mono text-12 text-borderMuted">checkpoint storage</span>
               <span>
                 <span id="pc-storage" data-pc-value class="font-mono text-13 text-parchment tabular-nums">{money(storage)}</span>
                 <span data-pc-unavail class="hidden items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5"><span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>unavailable</span>

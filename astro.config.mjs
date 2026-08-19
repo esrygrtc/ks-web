@@ -8,4 +8,5 @@ export default defineConfig({
   site: 'https://keepstate.ai',
   integrations: [mdx(), tailwind(), sitemap({ filter: (p) => !p.includes('/design-system') })],
   markdown: { rehypePlugins: [rehypeCopy] },
+  build: { inlineStylesheets: 'always' },
 });
