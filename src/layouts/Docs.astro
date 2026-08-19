@@ -87,3 +87,10 @@ const current = Astro.url.pathname;
     });
   });
 </script>
+<style is:global media="print">
+  header, footer, nav, aside, .ks-copy, [data-cmdk-open] { display: none !important; }
+  .docs-prose { max-width: 100% !important; }
+  .docs-prose pre { border: 1px solid #999; background: #fff; }
+  .docs-prose pre code { color: #000; }
+  body { background: #fff; color: #000; }
+</style>
