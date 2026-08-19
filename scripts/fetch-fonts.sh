@@ -24,10 +24,12 @@ for subset, block in blocks:
     name = f'{fam}-{weight}-{style}.woff2'
     urllib.request.urlretrieve(url, f'public/fonts/{name}')
     block = block.replace(url, f'/fonts/{name}')
-    # JetBrains Mono renders long code blocks; a late swap reflows them
-    # (measured CLS 0.214 on the quickstart). optional = no swap, no shift.
-    if fam == 'JetBrainsMono':
-        block = block.replace('font-display: swap;', 'font-display: optional;')
+    # optional for every face: a late swap reflows content (measured CLS
+    # 0.214 on the quickstart via Inter/Newsreader arriving after first
+    # paint). The composites themselves name Georgia/Arial as fallbacks,
+    # so a slow first visit degrades to the designer's own fallback and
+    # never shifts. Preloads in the layout keep the hit rate high.
+    block = block.replace('font-display: swap;', 'font-display: optional;')
     out.append(block)
     n += 1
 pathlib.Path('src/styles/fonts.css').write_text(
