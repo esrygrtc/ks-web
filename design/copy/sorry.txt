@@ -1,0 +1,4 @@
+# The one composite line carried onto the form-failure page (the 500
+# screen's voice, per the W2 brief). The rest of the page is voice-law
+# copy, honest that the submission was NOT stored.
+Our fault, and our ledger saw it.

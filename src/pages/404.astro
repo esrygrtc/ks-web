@@ -1,0 +1,27 @@
+---
+// The 404, from design/Auth & System States.dc.html (the is404 screen).
+// Astro emits this as dist/404.html, which staticwebapp.config.json
+// already rewrites to via responseOverrides. Copy carried verbatim.
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+---
+<Site
+  title="404 · KeepState"
+  description="This page was never checkpointed. Nothing to resume."
+  footer="console"
+  noindex
+>
+  <main class="max-w-[1180px] mx-auto px-7">
+    <div class="flex items-center min-h-[70vh] py-16">
+      <div class="max-w-[34em]">
+        <p class="font-mono text-34 leading-none text-claret tracking-[-0.04em] mt-0 mb-6" aria-hidden="true">404</p>
+        <h1 class="font-serif text-34 leading-[1.1] tracking-[-0.022em] font-normal mt-0 mb-4">This page was never checkpointed. Nothing to resume.</h1>
+        <p class="text-16 leading-relaxed text-slate mt-0 mb-7">The address does not exist, or it did and its route was retired. Neither is recoverable from here.</p>
+        <div class="flex gap-3 flex-wrap">
+          <Button href="/">Back to keepstate.ai</Button>
+          <Button href="/docs" variant="secondary">Search the docs</Button>
+        </div>
+      </div>
+    </div>
+  </main>
+</Site>

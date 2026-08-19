@@ -1,6 +1,11 @@
 // Link lint: zero broken internal links, zero orphan pages, over dist/.
 // Exemptions are declared here, visibly, not hidden in logic:
-const EXEMPT_ORPHANS = ['/design-system/', '/']; // '/' is the root, not an orphan; design-system is internal tooling linked from nowhere by design
+const EXEMPT_ORPHANS = [
+  '/design-system/', // internal tooling, linked from nowhere by design
+  '/',               // the root is not an orphan
+  '/404.html', '/500.html', // error pages: reached by failure, not by links
+  '/thanks/', '/sorry/',    // form redirect targets: reached by 303, not by links
+];
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 const dist = new URL('../dist', import.meta.url).pathname;

@@ -1,0 +1,36 @@
+---
+// Form failure page, in the 500 screen's voice (design/Auth & System
+// States.dc.html). The one thing this page must never do is soften the
+// truth: landing here means the durable write FAILED, so the submission
+// was NOT stored and we do not have it. The failure itself is logged on
+// our side; the content of the form is not.
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+---
+<Site
+  title="Not stored · KeepState"
+  description="The form write failed before your submission became durable. We do not have it; here is what to do."
+  footer="docs"
+  noindex
+>
+  <main class="max-w-[1180px] mx-auto px-7">
+    <div class="flex items-center min-h-[70vh] py-16">
+      <div class="max-w-[34em]">
+        <h1 class="font-serif text-34 leading-[1.1] tracking-[-0.022em] font-normal mt-0 mb-4">Our fault, and our ledger saw it.</h1>
+        <p class="text-16 leading-relaxed text-slate mt-0 mb-5">The write failed before your submission became durable. The failure is filed on our side; your words are not. Nothing you typed was stored, so nobody will read it and nobody will reply to it.</p>
+        <div class="bg-white border border-sand rounded-4 px-4 py-4 mb-7">
+          <p class="text-13 font-semibold text-ink mt-0 mb-1.5">What to do</p>
+          <p class="text-13 leading-relaxed text-slate m-0">Go back and submit the form again; your browser usually still holds the text. If it fails twice, stop retrying and route around it: the contact page lists every other way to reach us.</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button type="button" data-retry-back class="font-sans text-14 font-medium text-paper bg-claret border border-claret rounded-3 px-[18px] py-2.5 cursor-pointer hover:bg-claretDeep">Go back and retry</button>
+          <Button href="/contact" variant="secondary">Other ways to reach us</Button>
+        </div>
+      </div>
+    </div>
+  </main>
+</Site>
+
+<script>
+  document.querySelector('[data-retry-back]')?.addEventListener('click', () => history.back());
+</script>

@@ -1,0 +1,7 @@
+# Verbatim lines carried from design/Auth & System States.dc.html (is500).
+# Not carried: the sample error reference (err_5b2f109c + timestamp); a
+# static page cannot know one, so it renders "error reference unavailable".
+Our fault, and our ledger saw it.
+Your sessions and checkpoints are not affected by this page failing. The status page is the source of truth for what is actually degraded.
+Status page
+Back to console

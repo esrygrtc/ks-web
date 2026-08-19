@@ -1,0 +1,31 @@
+---
+// Form success page. The honesty it trades on comes from the constitution:
+// the forms backend writes every submission to the leads Table BEFORE any
+// email is attempted, and only then redirects here. So if this page
+// rendered, the row exists. No reply-time promises: we have not measured
+// one, so we do not print one (UI Law 2 by omission).
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+---
+<Site
+  title="Received · KeepState"
+  description="Your submission was durable before we replied: it is already a row in the ledger."
+  noindex
+>
+  <main class="max-w-[1180px] mx-auto px-7">
+    <div class="flex items-center min-h-[70vh] py-16">
+      <div class="max-w-[34em]">
+        <p class="inline-flex items-center gap-2 font-mono text-10 uppercase tracking-[0.12em] text-claret mt-0 mb-4">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>checkpoint reached
+        </p>
+        <h1 class="font-serif text-34 leading-[1.1] tracking-[-0.022em] font-normal mt-0 mb-4">Durable before we replied.</h1>
+        <p class="text-16 leading-relaxed text-slate mt-0 mb-5">Your submission became a row in our ledger before this page rendered. That ordering is deliberate: the write comes first, the email comes second, and if the email ever fails, the row survives it. A lost lead is a lost session, and we do not lose sessions.</p>
+        <div class="bg-white border border-sand rounded-4 px-4 py-4 mb-7">
+          <p class="text-13 font-semibold text-ink mt-0 mb-1.5">What happens next</p>
+          <p class="text-13 leading-relaxed text-slate m-0">A person reads the ledger and replies from a real address. No autoresponder will get there first, and we will not quote a reply time we have not measured.</p>
+        </div>
+        <Button href="/">Back to keepstate.ai</Button>
+      </div>
+    </div>
+  </main>
+</Site>
