@@ -62,3 +62,17 @@ only specifies the footer status feed. Resolution: build /status at W2
 using the design, defaulting to unavailable-by-honesty (UI Law 3), since
 shipping a designed page the footer links to is cheaper than an orphan
 lint failure. Flagged here because it is technically a plan amendment.
+# BACKLOG addendum, W2
+
+### W-1. Mail routing for keepstate.ai must exist before cutover
+The security page publishes security@keepstate.ai as the responsible-
+disclosure address (per the design). No mailbox or routing exists yet. A
+vulnerability report that bounces is the worst possible first contact.
+Resolve at W6 alongside DNS, or sooner.
+
+### W-2. Certification records are founder-supplied facts
+Security and Enterprise pages state SOC 2 "not yet claimed" and pen test
+"not yet published". The composites carried dates ("completed 2026-05",
+"window closes Q4 2026") that no record in either repo supports. If the
+records exist, the founder supplies them at content review and the pages
+change; the site does not state them first.

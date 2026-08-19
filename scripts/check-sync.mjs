@@ -11,9 +11,10 @@ try {
   const fresh = readFileSync(p, 'utf8');
   if (fresh !== committed) {
     console.error('check-sync: MISMATCH - proof.json disagrees with a fresh generation (hand edit or stale sync)');
-    process.exit(1);
+    process.exitCode = 1; // NOT process.exit: that skips finally and strands the .bak
+  } else {
+    console.log('check-sync: proof.json matches a fresh generation');
   }
-  console.log('check-sync: proof.json matches a fresh generation');
 } finally {
   renameSync(p + '.bak', p);
 }
