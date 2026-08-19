@@ -1,0 +1,176 @@
+{
+  "$generated": "by scripts/sync-claims.mjs; DO NOT EDIT. Re-run the script.",
+  "sourceSha": "de08d81fd2b08bd8812283c1782998df01097727c5ca46ea9ab0be93ec56634c",
+  "syncedFrom": {
+    "repo": "esrygrtc/ks",
+    "file": "docs/claims.md"
+  },
+  "invariant": "The standing invariant: **no claim outlives its gate.** Every row below cites a green tag in this repository. A claim whose gate is removed, or whose gate never existed, is removed from this file · not softened, not footnoted. It runs forward too: no claim precedes its gate. Second rule, learned in Phase 7: **when behavior splits by third party, the claim splits with it.** A sentence true of one agent and not another is two sentences, each carrying its own evidence. Gate 7 machine-checks this file: every row must cite a tag that exists in `git tag`, and a row citing a missing tag fails the gate.",
+  "tags": [
+    {
+      "tag": "gate-0-green",
+      "subject": "gate-0 green"
+    },
+    {
+      "tag": "gate-1-green",
+      "subject": "gate-1 green: a microVM died mid-count and woke up mid-sentence"
+    },
+    {
+      "tag": "gate-2a-green",
+      "subject": "gate-2a green: ksd carries sessions across kill-and-resume, twice in a row"
+    },
+    {
+      "tag": "gate-2b-green",
+      "subject": "gate-2b green: checkpoints are portable, forkable, crash-consistent objects"
+    },
+    {
+      "tag": "gate-3-green",
+      "subject": "gate-3 green: a real specimen was frozen mid-thought and resumed, billed once"
+    },
+    {
+      "tag": "gate-4-green",
+      "subject": "gate-4 green: one command, an agent killed with its own daemon, back at work in 25 seconds"
+    },
+    {
+      "tag": "gate-5-green",
+      "subject": "gate-5 green: three branches, one checkpoint, three histories that differ only by their steer"
+    },
+    {
+      "tag": "gate-6-green",
+      "subject": "gate-6 green: durability measured as a rate, 25/25 with a Wilson interval that admits what 25 trials can carry"
+    },
+    {
+      "tag": "gate-7-green",
+      "subject": "gate-7 green: a second agent and a second machine, with zero core changes"
+    },
+    {
+      "tag": "v0.1.0-mvp",
+      "subject": "KeepState v0.1.0-mvp · the durable agent session cloud"
+    },
+    {
+      "tag": "v0.1.1",
+      "subject": "KeepState v0.1.1 · the five wrap defects, fixed under the Patch Law"
+    }
+  ],
+  "proven": [
+    {
+      "claim": "A microVM's memory survives a hard kill of its VMM",
+      "provenBy": "`gate-1-green`",
+      "evidence": "Nonce `f65f7add…` continued 2 → 3,4,5 across `kill -9`; a fresh boot fails the same assertions"
+    },
+    {
+      "claim": "A daemon can carry sessions across kill-and-resume",
+      "provenBy": "`gate-2a-green`",
+      "evidence": "Gate run twice back to back from clean state; sabotage (fresh boot) correctly failed"
+    },
+    {
+      "claim": "A checkpoint is a portable object, restorable elsewhere",
+      "provenBy": "`gate-2b-green`",
+      "evidence": "Data dir gutted; a second ksd revived the session from chunks + manifest alone"
+    },
+    {
+      "claim": "Checkpoint publishing is crash-consistent",
+      "provenBy": "`gate-2b-green`",
+      "evidence": "Crash injected mid-publish; previous checkpoint byte-identical, no torn manifest visible"
+    },
+    {
+      "claim": "A corrupt checkpoint refuses to restore rather than booting garbage",
+      "provenBy": "`gate-2b-green`",
+      "evidence": "One flipped byte → restore refused, no firecracker started"
+    },
+    {
+      "claim": "An agent survives kill-and-resume through the gateway with reconciled ledgers",
+      "provenBy": "`gate-3-green`",
+      "evidence": "Guest seq and host head converged at 5; `ledger.reconciled` recorded a gap of exactly 1"
+    },
+    {
+      "claim": "Billed at most once, gateway-enforced, regardless of client behavior",
+      "provenBy": "`gate-3-green`, `gate-7-green`",
+      "evidence": "No request hash appears twice in billed spend; a completed response is retained for the interrupted call whether or not the client returns for it."
+    },
+    {
+      "claim": "An interrupted call is transparently absorbed on resume · **Claude Code**",
+      "provenBy": "`gate-3-green`",
+      "evidence": "Retry served from store citing `original_seq=4`; 31,486 tokens excluded from spend"
+    },
+    {
+      "claim": "The whole demo runs unattended in one command",
+      "provenBy": "`gate-4-green`",
+      "evidence": "`ks demo --kill-at 3m --headless` exit 0; measured downtime 25.2 s; doctor clean at end"
+    },
+    {
+      "claim": "A killed agent resumes with its work intact",
+      "provenBy": "`gate-4-green`",
+      "evidence": "The microVM **and** ksd killed together; specimen returned and finished the fixture task"
+    },
+    {
+      "claim": "One checkpoint forks into branches that diverge",
+      "provenBy": "`gate-5-green`",
+      "evidence": "Three branches, three disks, three lineage chains; a file written in A absent from B and C"
+    },
+    {
+      "claim": "Steering is a gateway concern; guests are never touched",
+      "provenBy": "`gate-5-green`",
+      "evidence": "Pre-steer bodies byte-identical (`6d7c898a…`) across branches; only the steer differed"
+    },
+    {
+      "claim": "Durability is a rate, not an anecdote",
+      "provenBy": "`gate-6-green`",
+      "evidence": "25/25 fresh kill-and-resume cycles, **Wilson 95% CI [86.7%, 100.0%]**"
+    },
+    {
+      "claim": "Checkpoints hours old still wake",
+      "provenBy": "`gate-6-green`",
+      "evidence": "A ~14.5 h-old preserved checkpoint woken in 14.3 s: `COUNT=63` while its living twin read 4841"
+    },
+    {
+      "claim": "Repeated checkpointing does not grow storage linearly",
+      "provenBy": "`gate-6-green`",
+      "evidence": "82 checkpoints: 4,233 MiB actual vs 80,952 MiB naive · **19.1× dedup**"
+    },
+    {
+      "claim": "The daemons do not leak memory under sustained load",
+      "provenBy": "`gate-6-green`",
+      "evidence": "7 h soak, 82 checkpoints: ksd **+0 MiB**, ksgw **+0 MiB** peak RSS growth"
+    }
+  ],
+  "antiClaims": [
+    {
+      "head": "\"Runs on a different provider.\"",
+      "body": "Rewritten to *fresh host, fresh daemon*."
+    },
+    {
+      "head": "\"Production-ready\" / \"scales.\"",
+      "body": "The bench is one Mac Mini, and gate 6"
+    },
+    {
+      "head": "\"Zero downtime.\"",
+      "body": "Measured downtime is 14-25 s, dominated by chunk"
+    },
+    {
+      "head": "\"An interrupted call is transparently absorbed on resume\" · for aider.",
+      "body": ""
+    },
+    {
+      "head": "\"Any agent works out of the box.\"",
+      "body": "One second agent is evidence of"
+    },
+    {
+      "head": "A resume success percentage beyond what the sample carries.",
+      "body": "25/25 is"
+    }
+  ],
+  "matrix": [
+    {
+      "agent": "Claude Code",
+      "verdict": "**claimed**",
+      "evidence": "`gate-3-green`"
+    },
+    {
+      "agent": "aider 0.86.2",
+      "verdict": "**not claimed** · door held 4 of 4, walked through 3 of 4",
+      "evidence": "`gate-7-green` (runs tabulated in `docs/phase-7.md`)"
+    }
+  ],
+  "closing": "Three times in this project a measurement contradicted a belief: the soak found a connection leak twenty-five clean cycles could not see; our own cleanup destroyed an artifact a ruling had protected; and a gate passed an assertion on empty evidence while the system under test was healthy. Each time the ledger won. This file is where that discipline meets the outside world: if a sentence here cannot name its gate, it does not belong here."
+}

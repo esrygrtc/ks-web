@@ -1,0 +1,48 @@
+---
+// Generated, like Proof: the per-agent compatibility matrix, updated only
+// by gate runs in the product repo, never by hand.
+import Site from '../layouts/Site.astro';
+import proof from '../generated/proof.json';
+const mono = (s: string) => s.replace(/`([^`]+)`/g, '<code class="font-mono text-12 bg-parchment rounded-2 px-1">$1</code>')
+  .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+---
+<Site title="Compatibility · KeepState" description="Which agents KeepState has frozen, killed, and resumed, with the gate evidence per agent. Updated only by gate runs.">
+  <main class="max-w-[1180px] mx-auto px-7 py-14">
+    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mb-2">Compatibility</p>
+    <h1 class="font-serif text-34 font-medium mt-0 mb-3">Per agent, evidence-linked.</h1>
+    <p class="text-15 text-slate max-w-2xl leading-relaxed">
+      Two agents have been frozen mid-call, killed, and resumed on the bench.
+      That is evidence of generality, not proof of universality, and this
+      table only grows when a gate runs. Rows are never edited by hand.
+    </p>
+    <p class="font-mono text-11 text-taupe mt-2 mb-10">
+      generated from {proof.syncedFrom.repo}/{proof.syncedFrom.file} · source {proof.sourceSha.slice(0, 12)}
+    </p>
+    <div class="overflow-x-auto mb-10">
+      <table class="w-full border-collapse bg-white border border-sand rounded-4 text-13 max-w-3xl">
+        <thead><tr>
+          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Agent</th>
+          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Interrupted call absorbed on resume</th>
+          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Evidence</th>
+        </tr></thead>
+        <tbody>
+          {proof.matrix.map((r) => (
+            <tr class="align-top">
+              <td class="px-3.5 py-2.5 border-b border-parchment font-medium text-ink">{r.agent}</td>
+              <td class="px-3.5 py-2.5 border-b border-parchment text-slate" set:html={mono(r.verdict)} />
+              <td class="px-3.5 py-2.5 border-b border-parchment font-mono text-12 text-claret" set:html={mono(r.evidence)} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="max-w-2xl bg-parchment border border-sand rounded-4 p-4">
+      <p class="text-13 text-slate m-0">
+        Your agent not here? The whole adaptation surface for agent #2 was one
+        line inside the guest image. <a href="/grants" class="text-claret">Apply for a grant</a>
+        or <a href="/#partner" class="text-claret">become a design partner</a> and
+        your row is earned by a gate run, not written by marketing.
+      </p>
+    </div>
+  </main>
+</Site>

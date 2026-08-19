@@ -1,0 +1,84 @@
+---
+// UI Law 4: this page is GENERATED. Its content comes exclusively from
+// src/generated/proof.json (synced from the product repo by
+// scripts/sync-claims); nothing here is typed by hand and CI fails if
+// the JSON disagrees with a fresh generation.
+import Site from '../layouts/Site.astro';
+import proof from '../generated/proof.json';
+const gateTags = proof.tags.filter((t) => t.tag.startsWith('gate-'));
+const releases = proof.tags.filter((t) => !t.tag.startsWith('gate-'));
+const mono = (s: string) => s.replace(/`([^`]+)`/g, '<code class="font-mono text-12 bg-parchment rounded-2 px-1">$1</code>')
+  .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+---
+<Site title="Proof · KeepState" description="Every public claim KeepState makes, and the green gate that proves it. Generated from the product repository; never typed.">
+  <main class="max-w-[1180px] mx-auto px-7 py-14">
+    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mb-2">Proof</p>
+    <h1 class="font-serif text-34 font-medium mt-0 mb-3">No claim outlives its gate.</h1>
+    <p class="text-15 text-slate max-w-2xl leading-relaxed" set:html={mono(proof.invariant)} />
+    <p class="font-mono text-11 text-taupe mt-2 mb-10">
+      generated from <code class="bg-parchment rounded-2 px-1">{proof.syncedFrom.repo}/{proof.syncedFrom.file}</code>
+      · source {proof.sourceSha.slice(0, 12)} · hand edits fail CI
+    </p>
+
+    <section class="mb-14" id="gates">
+      <h2 class="font-serif text-26 mt-0 mb-4">The gates</h2>
+      <div class="grid gap-0 border border-sand rounded-4 bg-white overflow-hidden">
+        {gateTags.map((t) => (
+          <div class="flex items-baseline gap-4 px-4 py-3 border-b border-parchment last:border-0" id={t.tag.replace('-green', '')}>
+            <span class="flex items-center gap-2 font-mono text-12 text-claret w-36 shrink-0">
+              <span class="w-[6px] h-[6px] bg-claret rotate-45 block"></span>{t.tag}
+            </span>
+            <span class="text-13 text-slate">{t.subject}</span>
+          </div>
+        ))}
+      </div>
+      {releases.length > 0 && (
+        <p class="font-mono text-11 text-taupe mt-3">
+          releases: {releases.map((r) => r.tag).join(' · ')}
+        </p>
+      )}
+    </section>
+
+    <section class="mb-14" id="claims">
+      <h2 class="font-serif text-26 mt-0 mb-1">Proven</h2>
+      <p class="text-13 text-slate mb-4">Every row cites a tag that exists in the product repository. The gate machine-checks this file at its source.</p>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse bg-white border border-sand rounded-4 text-13">
+          <thead><tr>
+            <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Claim</th>
+            <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Proven by</th>
+            <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">The evidence</th>
+          </tr></thead>
+          <tbody>
+            {proof.proven.map((r) => (
+              <tr class="align-top">
+                <td class="px-3.5 py-2.5 border-b border-parchment text-ink" set:html={mono(r.claim)} />
+                <td class="px-3.5 py-2.5 border-b border-parchment font-mono text-12 text-claret whitespace-nowrap" set:html={mono(r.provenBy)} />
+                <td class="px-3.5 py-2.5 border-b border-parchment text-slate" set:html={mono(r.evidence)} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mb-14 max-w-3xl" id="not-claimed">
+      <h2 class="font-serif text-26 mt-0 mb-1">Deliberately not claimed</h2>
+      <p class="text-13 text-slate mb-4">The sentences a reader might expect and will not find. They have no gate, so they are prose, not rows: a row on this page is a promise, and a promise needs a tag.</p>
+      <div class="grid gap-4">
+        {proof.antiClaims.map((a) => (
+          <div class="bg-white border border-sand rounded-4 p-4">
+            <p class="text-14 font-medium text-ink mt-0 mb-1.5" set:html={mono(a.head)} />
+            <p class="text-13 text-slate leading-relaxed m-0" set:html={mono(a.body)} />
+          </div>
+        ))}
+      </div>
+      <p class="text-13 text-slate mt-4">The per-agent picture lives on <a href="/compatibility" class="text-claret">Compatibility</a>.</p>
+    </section>
+
+    <section class="max-w-3xl mb-4" id="the-rule">
+      <h2 class="font-serif text-26 mt-0 mb-3">The rule this page exists to enforce</h2>
+      <p class="font-serif italic text-16 text-ink leading-relaxed" set:html={mono(proof.closing)} />
+    </section>
+  </main>
+</Site>
