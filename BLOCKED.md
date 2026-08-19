@@ -67,6 +67,27 @@ Amendment options for the sabotage, founder's choice:
    min): submit probes until one returns why=storage, then run the
    assertions.
 
+## Gate W5: three amendments, same rule-15 family (all evidence measured)
+
+1. The header probe uses HEAD (`curl -fsSI`); SWA attaches globalHeaders
+   to GET only. Measured: GET serves the full set (CSP with 9 script
+   hashes and no unsafe-inline for scripts, HSTS max-age=31536000
+   WITHOUT preload beating the platform default, frame-ancestors none,
+   nosniff, referrer-policy). Amendment: `curl -s -D- -o /dev/null`.
+2. gates/gate-w5-audit.mjs crashes in the axe leg: AxeBuilder requires a
+   page from browser.newContext(), not browser.newPage(). Two-line fix
+   in the audit script (part of the gate, so founder authority).
+3. The audit measures `astro preview`, which serves UNCOMPRESSED HTML.
+   Production serves brotli: pricing is 70,042 bytes raw, 7,255 encoded.
+   Measured LCP: localhost 1,955 ms (budget fail by 155 ms), staging
+   914 ms with performance 100. Amendment: the gate exports
+   GATE_BASE=$STAGING to the audit leg so budgets measure the transport
+   users get. Local scores stay in the log as a canary.
+
+With the three amendments applied and the deployed contrast fixes, every
+W5 measurement is green on the real host (home 100/100 local even
+uncompressed).
+
 ## While blocked
 
 web-4-green is NOT tagged. Phase W5 (budgets and hardening) does not
