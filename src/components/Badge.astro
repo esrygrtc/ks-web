@@ -1,0 +1,11 @@
+---
+// UI Law 2: every rendered number carries provenance. This is the mark.
+interface Props { kind: 'MEASURED' | 'ESTIMATED' }
+const { kind } = Astro.props;
+if (kind !== 'MEASURED' && kind !== 'ESTIMATED')
+  throw new Error(`Badge: kind must be MEASURED or ESTIMATED, got "${kind}"`);
+const cls = kind === 'MEASURED'
+  ? 'text-ink border-ink'
+  : 'text-taupe border-sandDeep';
+---
+<span class={`font-mono text-9 tracking-[0.12em] border rounded-2 px-1.5 py-0.5 ${cls}`}>{kind}</span>

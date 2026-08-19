@@ -1,0 +1,29 @@
+---
+interface Props { labels: string[]; active?: number; id: string }
+const { labels, active = 0, id } = Astro.props;
+---
+<div data-tabs={id}>
+  <div class="flex gap-1 border-b border-sand" role="tablist">
+    {labels.map((l, i) => (
+      <button type="button" role="tab" aria-selected={i === active ? 'true' : 'false'} data-tab={i}
+        class={`font-sans text-13 font-medium px-3.5 py-2 rounded-t-3 border-b-2 -mb-px cursor-pointer
+          ${i === active ? 'text-ink border-claret bg-white' : 'text-slate border-transparent hover:text-ink'}`}>
+        {l}
+      </button>
+    ))}
+  </div>
+  <div class="pt-3"><slot /></div>
+</div>
+<script>
+  document.querySelectorAll('[data-tabs]').forEach((root) => {
+    const tabs = root.querySelectorAll('[data-tab]');
+    const panels = root.querySelectorAll('[data-panel]');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => { x.setAttribute('aria-selected', 'false');
+        x.className = x.className.replace('text-ink border-claret bg-white', 'text-slate border-transparent'); });
+      t.setAttribute('aria-selected', 'true');
+      t.className = t.className.replace('text-slate border-transparent', 'text-ink border-claret bg-white');
+      panels.forEach((p) => p.classList.toggle('hidden', p.getAttribute('data-panel') !== t.getAttribute('data-tab')));
+    }));
+  });
+</script>

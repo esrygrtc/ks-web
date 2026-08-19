@@ -1,0 +1,21 @@
+---
+// The diamond timeline: checkpoints as rotated squares on a rail; the
+// current one is filled claret; forks branch upward from their diamond.
+interface Ckpt { id: string; current?: boolean; fork?: boolean }
+interface Props { checkpoints: Ckpt[]; caption?: string }
+const { checkpoints, caption } = Astro.props;
+---
+<figure class="m-0">
+  <div class="flex items-center gap-0 py-4" role="img" aria-label={caption ?? 'checkpoint timeline'}>
+    {checkpoints.map((c, i) => (
+      <>
+        {i > 0 && <span class="h-px bg-sandDeep flex-1 min-w-[18px]"></span>}
+        <span class="relative block" title={c.id}>
+          <span class={`block w-[9px] h-[9px] rotate-45 ${c.current ? 'bg-claret' : 'bg-white border border-sandDeep'}`}></span>
+          {c.fork && <span class="absolute left-[3px] -top-3 w-px h-3 bg-sandDeep"></span>}
+        </span>
+      </>
+    ))}
+  </div>
+  {caption && <figcaption class="font-mono text-11 text-taupe">{caption}</figcaption>}
+</figure>

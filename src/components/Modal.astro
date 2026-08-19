@@ -1,0 +1,33 @@
+---
+// Destructive modal: consequence in one sentence, then type-to-confirm.
+// The confirm button is dead until the typed text matches exactly.
+interface Props { title: string; confirm: string; actionLabel: string; open?: boolean }
+const { title, confirm, actionLabel, open = false } = Astro.props;
+const id = `modal-${confirm.replace(/[^a-z0-9]/gi, '')}`;
+---
+<div class={`${open ? '' : 'hidden'} bg-white border border-sand rounded-5 shadow-e2 p-6 max-w-md`} data-modal={id}>
+  <p class="font-serif text-20 text-ink mt-0 mb-2">{title}</p>
+  <p class="text-13 text-slate mt-0 mb-4"><slot /></p>
+  <label class="block mb-4">
+    <span class="block text-12 text-slate mb-1.5">Type <span class="font-mono text-claret">{confirm}</span> to confirm</span>
+    <input type="text" data-confirm-input class="w-full font-mono text-14 text-ink bg-white border border-sand rounded-3 px-3 py-2.5 focus:outline-none focus:border-ink" />
+  </label>
+  <div class="flex gap-2.5">
+    <button type="button" data-confirm-action data-expected={confirm} disabled
+      class="font-sans text-14 font-medium rounded-3 border px-[18px] py-2.5 text-stone bg-disabledBg border-disabledBd cursor-not-allowed data-[armed]:text-paper data-[armed]:bg-claret data-[armed]:border-claret data-[armed]:cursor-pointer">
+      {actionLabel}
+    </button>
+    <button type="button" class="font-sans text-14 font-medium rounded-3 border border-sand bg-white text-ink px-[18px] py-2.5 cursor-pointer hover:border-ink">Cancel</button>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('[data-modal]').forEach((m) => {
+    const input = m.querySelector('[data-confirm-input]');
+    const btn = m.querySelector('[data-confirm-action]');
+    input?.addEventListener('input', () => {
+      const armed = input.value === btn.getAttribute('data-expected');
+      btn.disabled = !armed;
+      if (armed) btn.setAttribute('data-armed', ''); else btn.removeAttribute('data-armed');
+    });
+  });
+</script>

@@ -1,0 +1,18 @@
+---
+interface Props {
+  label: string; name: string; type?: string; value?: string;
+  placeholder?: string; help?: string; error?: string; mono?: boolean;
+}
+const { label, name, type = 'text', value, placeholder, help, error, mono = false } = Astro.props;
+---
+<label class="block">
+  <span class="block text-12 font-medium text-slate mb-1.5">{label}</span>
+  <input
+    name={name} type={type} value={value} placeholder={placeholder}
+    aria-invalid={error ? 'true' : undefined}
+    class={`w-full ${mono ? 'font-mono' : 'font-sans'} text-14 text-ink bg-white border rounded-3 px-3 py-2.5
+      focus:outline-none focus:ring-0 ${error ? 'border-claret' : 'border-sand focus:border-ink'}`}
+  />
+  {error && <span class="block text-12 text-claret mt-1.5">{error}</span>}
+  {help && !error && <span class="block text-12 text-taupe mt-1.5">{help}</span>}
+</label>

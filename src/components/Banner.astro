@@ -1,0 +1,14 @@
+---
+interface Props { tone: 'incident' | 'maintenance' | 'grant'; title: string; href?: string; linkLabel?: string }
+const { tone, title, href, linkLabel } = Astro.props;
+const looks = {
+  incident:    'bg-blushBg border-shell text-claret',
+  maintenance: 'bg-parchment border-sand text-slate',
+  grant:       'bg-white border-moss text-ink',
+};
+---
+<div class={`border rounded-4 px-4 py-3 ${looks[tone]}`} role="status">
+  <p class="text-13 font-medium m-0">{title}</p>
+  <p class="text-13 m-0 mt-0.5 text-slate"><slot /></p>
+  {href && <a href={href} class="text-13 text-claret underline underline-offset-2">{linkLabel ?? 'More'}</a>}
+</div>

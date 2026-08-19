@@ -1,0 +1,22 @@
+---
+// Session status pills, exactly the sheet's map. aborted (rule 14:
+// infrastructure could not hold the trial) and failed (the session's own
+// error) are never the same pill.
+import tokens from '../../design/tokens.json';
+const c = tokens.color;
+interface Props { status: 'running' | 'parked' | 'checkpointing' | 'resuming' | 'aborted' | 'failed' }
+const { status } = Astro.props;
+const map = {
+  running:       { color: c.claret, bg: c.blushBg,   border: c.shell,      dot: c.claret },
+  parked:        { color: c.slate,  bg: c.parchment, border: c.sand,       dot: c.stone },
+  checkpointing: { color: c.slate,  bg: c.white,     border: c.slate,      dot: c.slate },
+  resuming:      { color: c.claret, bg: c.white,     border: c.shell,      dot: c.blush },
+  aborted:       { color: c.taupe,  bg: c.white,     border: c.sandDeep,   dot: c.sandDeep },
+  failed:        { color: c.paper,  bg: c.ink,       border: c.ink,        dot: c.blush },
+} as const;
+const p = map[status];
+if (!p) throw new Error(`StatusPill: unknown status "${status}"`);
+---
+<span class="inline-flex items-center gap-[7px] font-mono text-12 rounded-pill px-2.5 py-1"
+      style={`color:${p.color}; background:${p.bg}; border:1px solid ${p.border};`}>
+  <span class="w-[5px] h-[5px] rotate-45 block" style={`background:${p.dot};`}></span>{status}</span>

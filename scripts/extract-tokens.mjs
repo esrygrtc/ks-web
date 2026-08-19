@@ -29,6 +29,19 @@ const semantic = {
   blush:      '#d9b8b8', // claret tint (charts, hovers)
   shell:      '#e4cfcc', // claret tint lighter
   white:      '#ffffff',
+  // second pass (W1): sheet-verified colors promoted from paletteExtended
+  moss:       '#4f7a52', // operational dot (status feed)
+  claretDeep: '#641e27', // primary button hover
+  blushBg:    '#f6ecea', // running pill bg, incident banner bg
+  track:      '#ede9df', // meter/budget bar track
+  sandDeep:   '#c9c2b2', // aborted pill border, ESTIMATED badge border
+  borderMuted:'#c9c4ba', // muted rules
+  termMuted:  '#8a8378', // terminal secondary text
+  inkBorder:  '#2a2622', // border on ink surfaces
+  inkSoft:    '#3a352e', // raised line on ink surfaces
+  disabledBg: '#f2efe8', // disabled button bg
+  disabledBd: '#e2ddd1', // disabled button border
+  shellSoft:  '#efdfdc', // claret tint, faintest
 };
 const named = new Set(Object.values(semantic));
 const extended = {};

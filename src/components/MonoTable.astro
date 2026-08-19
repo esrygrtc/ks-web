@@ -1,0 +1,21 @@
+---
+// Mono data table: numerals right-aligned and tabular; sortable headers
+// are visual affordances (real sorting arrives with real feeds).
+interface Props { headers: string[]; align?: ('l' | 'r')[]; caption?: string }
+const { headers, align = [], caption } = Astro.props;
+---
+<figure class="m-0 overflow-x-auto">
+  <table class="w-full border-collapse bg-white border border-sand rounded-4 text-13">
+    <thead>
+      <tr>
+        {headers.map((h, i) => (
+          <th class={`font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] border-b border-sand px-3.5 py-2.5 ${align[i] === 'r' ? 'text-right' : 'text-left'}`}>{h}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody class="[&_td]:px-3.5 [&_td]:py-2.5 [&_td]:border-b [&_td]:border-parchment [&_tr:last-child_td]:border-0 [&_td.num]:text-right [&_td.num]:font-mono [&_td.num]:tabular-nums">
+      <slot />
+    </tbody>
+  </table>
+  {caption && <figcaption class="font-mono text-11 text-taupe mt-2">{caption}</figcaption>}
+</figure>

@@ -1,0 +1,6 @@
+---
+// Skeletons hold the exact geometry of the loaded state, so nothing jumps.
+interface Props { w?: string; h?: string; class?: string }
+const { w = '100%', h = '14px', class: cls = '' } = Astro.props;
+---
+<span class={`block rounded-2 bg-parchment animate-pulse motion-reduce:animate-none ${cls}`} style={`width:${w};height:${h}`} aria-hidden="true"></span>

@@ -1,0 +1,41 @@
+---
+// UI Law 1: absence is not zero. A zero is a measurement; a missing feed
+// renders "unavailable" and can never render 0.
+// UI Law 2: no number without provenance: badge or evidence link, enforced.
+interface Props {
+  label: string;
+  value: number | string | null | undefined;
+  unit?: string;
+  badge?: 'MEASURED' | 'ESTIMATED';
+  evidenceHref?: string;
+  evidenceTag?: string;
+  note?: string;
+  reason?: string; // why the value is unavailable, e.g. "meter unreachable"
+}
+import Badge from './Badge.astro';
+const { label, value, unit = '', badge, evidenceHref, evidenceTag, note, reason } = Astro.props;
+if (!badge && !evidenceHref)
+  throw new Error(`MetricCard "${label}": UI Law 2 requires a MEASURED/ESTIMATED badge or an evidence link`);
+const missing = value === null || value === undefined || (typeof value === 'number' && Number.isNaN(value)); // LAW1_GUARD
+const shown = missing ? '' : (typeof value === 'string' ? value : Number(value).toLocaleString('en-US'));
+---
+<article class="bg-white border border-sand rounded-4 p-4">
+  <p class="text-12 text-slate mb-2 mt-0">{label}</p>
+  {missing ? (
+    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
+      <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
+      unavailable{reason ? ` (${reason})` : ''}
+    </span>
+  ) : (
+    <span class="flex items-baseline gap-2.5 flex-wrap">
+      <span data-state="value" class="font-mono text-26 text-claret">{shown}{unit}</span>
+      {badge && <Badge kind={badge} />}
+      {evidenceHref && (
+        <a href={evidenceHref} class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline">
+          <span class="w-[6px] h-[6px] bg-claret rotate-45 inline-block"></span>{evidenceTag ?? 'evidence'}
+        </a>
+      )}
+    </span>
+  )}
+  {note && <p class="text-12 text-taupe mt-2 mb-0">{note}</p>}
+</article>

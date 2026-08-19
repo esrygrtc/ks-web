@@ -1,0 +1,175 @@
+---
+import '../styles/fonts.css';
+import Badge from '../components/Badge.astro';
+import Banner from '../components/Banner.astro';
+import BudgetBar from '../components/BudgetBar.astro';
+import Button from '../components/Button.astro';
+import CmdK from '../components/CmdK.astro';
+import DiamondTimeline from '../components/DiamondTimeline.astro';
+import EmptyState from '../components/EmptyState.astro';
+import Field from '../components/Field.astro';
+import MetricCard from '../components/MetricCard.astro';
+import Modal from '../components/Modal.astro';
+import MonoTable from '../components/MonoTable.astro';
+import ArtifactCard from '../components/ArtifactCard.astro';
+import Skeleton from '../components/Skeleton.astro';
+import StatusChip from '../components/StatusChip.astro';
+import StatusPill from '../components/StatusPill.astro';
+import Tabs from '../components/Tabs.astro';
+import Terminal from '../components/Terminal.astro';
+import Toast from '../components/Toast.astro';
+const statuses = ['running', 'parked', 'checkpointing', 'resuming', 'aborted', 'failed'] as const;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>KeepState design system</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="bg-paper text-ink font-sans">
+    <main class="max-w-[1240px] mx-auto px-7 py-12">
+      <header class="mb-10">
+        <div class="flex items-center gap-2.5 mb-2">
+          <span class="block w-2.5 h-2.5 bg-claret rotate-45"></span>
+          <span class="font-serif text-22 font-medium">KeepState</span>
+          <span class="font-mono text-11 text-taupe">component sheet, in code</span>
+        </div>
+        <p class="text-14 text-slate max-w-2xl">
+          Every component in every state it can hold, including every
+          unavailable state. Three laws come before the parts.
+        </p>
+      </header>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-1">UI Laws, running</h2>
+        <p class="text-13 text-slate mb-5">These cards are not pictures of the laws; they are the components obeying them.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <p class="font-mono text-11 text-claret tracking-[0.08em] mb-2">LAW 1 · absence is not zero</p>
+            <div class="grid gap-3">
+              <MetricCard label="Tokens metered (zero is a measurement)" value={0} badge="MEASURED" />
+              <MetricCard label="Tokens metered (feed missing)" value={null} badge="MEASURED" reason="meter unreachable" note="The meter said nothing. We refuse to invent a number." />
+            </div>
+          </div>
+          <div>
+            <p class="font-mono text-11 text-claret tracking-[0.08em] mb-2">LAW 2 · numbers carry provenance</p>
+            <div class="grid gap-3">
+              <MetricCard label="Tokens not re-purchased" value="41.2M" badge="MEASURED" />
+              <MetricCard label="Value of tokens not re-purchased" value="$4,100" badge="ESTIMATED" note="at published list rates, 2026-08-01" />
+            </div>
+          </div>
+          <div>
+            <p class="font-mono text-11 text-claret tracking-[0.08em] mb-2">LAW 3 · claims link evidence</p>
+            <div class="grid gap-3">
+              <MetricCard label="Dedup measured on our own soak" value="19.1x" evidenceHref="/proof#gate-6" evidenceTag="gate-6-green" />
+              <MetricCard label="Fresh kill-and-resume cycles" value="25/25" evidenceHref="/proof#gate-6" evidenceTag="gate-6-green" note="Wilson 95% CI [86.7%, 100.0%]" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-4">Buttons, fields, navigation</h2>
+        <div class="flex gap-2.5 flex-wrap mb-5">
+          <Button>Run</Button>
+          <Button variant="secondary">Park</Button>
+          <Button variant="ghost">Fork</Button>
+          <Button disabled>Wake</Button>
+          <Button size="sm">Checkpoint</Button>
+          <Button variant="secondary" size="sm">Attach</Button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5 max-w-3xl">
+          <Field label="Session name" name="session" placeholder="payments-migration" />
+          <Field label="Budget cap" name="cap" value="-3" mono error="A cap must be a positive dollar amount." />
+          <Field label="Checkpoint cadence" name="cadence" value="5m" mono help="Storage is content-addressed, so cadence costs less than it looks." />
+        </div>
+        <div class="flex items-center gap-6 flex-wrap">
+          <CmdK />
+          <Tabs id="code" labels={['CLI', 'API', 'SDK']}>
+            <div data-panel="0" class="font-mono text-12 text-slate">ks run --image claude-code --workspace .</div>
+            <div data-panel="1" class="hidden font-mono text-12 text-slate">POST /v1/sessions</div>
+            <div data-panel="2" class="hidden font-mono text-12 text-slate">ks.sessions.create(...)</div>
+          </Tabs>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-4">Tables, metrics, meters, pills</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+          <MonoTable headers={['Session', 'Checkpoints', 'Storage', 'Dedup']} align={['l','r','r','r']} caption="click a header to sort · numerals right-aligned, tabular">
+            <tr><td class="font-mono">s_7f3a</td><td class="num">41</td><td class="num">1.2 GB</td><td class="num">19.1x</td></tr>
+            <tr><td class="font-mono">s_a1c9</td><td class="num">7</td><td class="num">640 MB</td><td class="num">11.4x</td></tr>
+            <tr><td class="font-mono">s_00e2</td><td class="num">0</td><td class="num">0 B</td><td class="num">1.0x</td></tr>
+          </MonoTable>
+          <div class="grid gap-3">
+            <BudgetBar label="Budget, org" spent={418} cap={500} />
+            <BudgetBar label="Budget, org (meter unreachable)" spent={null} cap={500} reason="meter unreachable" note="Law 1: absence never renders as zero." />
+          </div>
+        </div>
+        <p class="text-12 text-slate mb-2">Status pills. aborted: infrastructure could not hold the trial. failed: the session's own error. Never the same pill.</p>
+        <div class="flex gap-2 flex-wrap mb-5">
+          {statuses.map((s) => <StatusPill status={s} />)}
+        </div>
+        <p class="text-12 text-slate mb-2">The status chip: three states; its default with no feed is unavailable.</p>
+        <div class="flex gap-2.5 flex-wrap">
+          <StatusChip feed={{ status: 'operational', asOf: '12:04Z' }} />
+          <StatusChip feed={{ status: 'incident', asOf: '12:04Z' }} />
+          <StatusChip />
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-4">Session objects</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+          <div>
+            <DiamondTimeline caption="s_7f3a · 41 checkpoints · 3 branches"
+              checkpoints={[{id:'c_0037'},{id:'c_0038'},{id:'c_0039',fork:true},{id:'c_0040',current:true,fork:true},{id:'c_0041',fork:true}]} />
+            <Terminal session="s_7f3a · attached" copy="ks save s_7f3a">$ ks save s_7f3a
+checkpoint c_0041 · 1.2 GB · dedup 19x</Terminal>
+          </div>
+          <div class="grid gap-3">
+            <ArtifactCard id="c_0041" size="1.2 GB" />
+            <ArtifactCard id="c_0040" size="1.2 GB" preserved ruling="Legal hold LH-19" retention="7 years" />
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-4">Banners, toasts, friction</h2>
+        <div class="grid gap-3 max-w-2xl mb-5">
+          <Banner tone="incident" title="Incident: elevated resume latency in eu-west." href="/status" linkLabel="Status page">Cold resumes are averaging 140 s. Checkpoints are unaffected.</Banner>
+          <Banner tone="maintenance" title="Maintenance, Sunday 02:00 to 04:00 UTC.">Running sessions checkpoint and park automatically, then wake. No action needed.</Banner>
+          <Banner tone="grant" title="Grant applied: 500 hours of session credit." href="/compatibility" linkLabel="See it">Your Compatibility row is live.</Banner>
+        </div>
+        <div class="grid gap-3 max-w-md mb-5">
+          <Toast tone="success">Checkpoint c_0041 written. 1.2 GB, dedup 19x.</Toast>
+          <Toast tone="info">Budget reached. Session checkpointed and parked, nothing lost. Raise the cap to wake it.</Toast>
+          <Toast tone="replay" detail="replayed from store, 0 new tokens">Interrupted call absorbed on resume.</Toast>
+        </div>
+        <Modal open title="Kill session s_7f3a" confirm="s_7f3a" actionLabel="Kill session">
+          The VM stops now. Checkpoints through c_0041 remain and stay resumable; work since the last checkpoint, about 4 minutes, is lost.
+        </Modal>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="font-serif text-26 mb-4">Empty, loading, error</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <EmptyState title="No sessions yet. One line starts one." command="ks run --image claude-code --workspace .">
+            It checkpoints every 5 minutes from the first second, so the first crash costs you nothing.
+          </EmptyState>
+          <div>
+            <p class="text-12 text-slate mb-2">Loading: skeletons hold the exact geometry of the loaded state.</p>
+            <div class="bg-white border border-sand rounded-4 p-4 grid gap-2.5 max-w-sm mb-4">
+              <Skeleton w="40%" h="12px" /><Skeleton w="70%" h="26px" /><Skeleton w="55%" h="12px" />
+            </div>
+            <p class="text-12 text-slate mb-2">Error: the feed failed, so the meter says so.</p>
+            <MetricCard label="Billing" value={undefined} badge="MEASURED" reason="billing feed error" note="Our fault, and our ledger saw it. Retrying." />
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

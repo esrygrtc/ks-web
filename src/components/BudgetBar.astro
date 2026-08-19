@@ -1,0 +1,29 @@
+---
+// Budget meter. Law 1 applies: a missing meter is unavailable, never $0.
+interface Props { label: string; spent: number | null | undefined; cap: number; note?: string; reason?: string }
+const { label, spent, cap, note, reason } = Astro.props;
+const missing = spent === null || spent === undefined || Number.isNaN(spent);
+const pct = missing ? 0 : Math.min(100, (Number(spent) / cap) * 100);
+const hot = !missing && pct >= 80;
+---
+<article class="bg-white border border-sand rounded-5 p-[22px]">
+  <p class="text-12 text-slate mt-0 mb-3.5">{label}</p>
+  {missing ? (
+    <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
+      <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
+      unavailable{reason ? ` (${reason})` : ''}
+    </span>
+  ) : (
+    <>
+      <div class="flex items-baseline justify-between gap-2.5 mb-2">
+        <span class="font-mono text-20 text-ink tabular-nums">${Number(spent).toLocaleString('en-US')}</span>
+        <span class="font-mono text-12 text-taupe">of ${cap.toLocaleString('en-US')} cap</span>
+      </div>
+      <div class="h-1.5 bg-track rounded-3 overflow-hidden mb-2">
+        <div class={`h-full ${hot ? 'bg-claret' : 'bg-slate'}`} style={`width:${pct.toFixed(1)}%`}></div>
+      </div>
+      {hot && <p class="text-12 text-claret m-0">Past 80 percent. Sessions checkpoint and park at the cap.</p>}
+    </>
+  )}
+  {note && <p class="text-12 text-taupe mt-2 mb-0">{note}</p>}
+</article>

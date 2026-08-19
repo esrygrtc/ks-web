@@ -1,0 +1,21 @@
+---
+// UI Law 3 (chip form): three states, and the default with no feed is
+// UNAVAILABLE. Green is impossible without live data: the only path to
+// "operational" is a feed object asserting it, with a timestamp.
+type Feed = { status: 'operational' | 'incident'; asOf: string };
+interface Props { feed?: Feed | null }
+const { feed } = Astro.props;
+const state: 'operational' | 'incident' | 'unavailable' =
+  feed && (feed.status === 'operational' || feed.status === 'incident')
+    ? feed.status
+    : 'unavailable';
+const look = {
+  operational: { dot: 'bg-moss',   text: 'text-ink',   label: 'all systems operational' },
+  incident:    { dot: 'bg-claret', text: 'text-claret', label: 'incident in progress' },
+  unavailable: { dot: 'bg-stone',  text: 'text-taupe',  label: 'status unavailable' },
+}[state];
+---
+<span data-status={state} class={`inline-flex items-center gap-[7px] font-mono text-12 ${look.text} bg-parchment border border-sand rounded-3 px-2.5 py-1.5`}>
+  <span class={`w-[5px] h-[5px] ${look.dot} rotate-45 block`}></span>
+  {look.label}{state !== 'unavailable' && feed?.asOf ? ` · ${feed.asOf}` : ''}
+</span>

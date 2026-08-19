@@ -1,0 +1,21 @@
+---
+// A checkpoint artifact. Preservation law made visual: a preserved
+// artifact renders NO delete affordance at all, not a disabled one.
+interface Props { id: string; size: string; preserved?: boolean; ruling?: string; retention?: string }
+const { id, size, preserved = false, ruling, retention } = Astro.props;
+import Button from './Button.astro';
+---
+<article class="bg-white border border-sand rounded-4 p-4 max-w-sm">
+  {preserved && (
+    <p class="inline-flex items-center gap-1.5 font-mono text-10 uppercase tracking-[0.1em] text-claret bg-blushBg border border-shell rounded-2 px-1.5 py-0.5 mt-0 mb-2.5">
+      <span class="w-[5px] h-[5px] bg-claret rotate-45 block"></span>preserved under ruling
+    </p>
+  )}
+  <p class="font-mono text-13 text-ink mt-0 mb-1">{id} · {size}</p>
+  {preserved
+    ? <p class="text-12 text-taupe mt-0 mb-0">Retention: {retention}. {ruling}.</p>
+    : <div class="flex gap-2 mt-3">
+        <Button variant="secondary" size="sm">Resume</Button>
+        <Button variant="ghost" size="sm">Delete</Button>
+      </div>}
+</article>

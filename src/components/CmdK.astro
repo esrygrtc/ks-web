@@ -1,0 +1,29 @@
+---
+// Command palette shell. Opens on cmd-K / ctrl-K; search wires to
+// Pagefind at W3. Until then it is honest about being a shell.
+---
+<button type="button" data-cmdk-open
+  class="inline-flex items-center gap-2.5 font-sans text-13 text-taupe bg-white border border-sand rounded-3 px-3 py-2 cursor-pointer hover:border-ink w-64 justify-between">
+  <span>Search sessions, checkpoints, docs</span>
+  <span class="font-mono text-11 text-stone border border-sand rounded-2 px-1.5 py-0.5">&#8984;K</span>
+</button>
+<div data-cmdk-overlay class="hidden fixed inset-0 bg-ink/40 items-start justify-center pt-[18vh] z-50">
+  <div class="bg-white border border-sand rounded-5 shadow-e2 w-[560px] max-w-[90vw] p-2">
+    <input type="text" data-cmdk-input placeholder="Type to search"
+      class="w-full font-sans text-14 text-ink px-3 py-2.5 border-0 focus:outline-none" />
+    <p class="font-mono text-11 text-taupe px-3 py-2 border-t border-parchment m-0">
+      search index arrives with the docs; esc closes
+    </p>
+  </div>
+</div>
+<script>
+  const overlay = document.querySelector('[data-cmdk-overlay]');
+  const show = (on) => { overlay?.classList.toggle('hidden', !on); overlay?.classList.toggle('flex', on);
+    if (on) overlay?.querySelector('[data-cmdk-input]')?.focus(); };
+  document.querySelector('[data-cmdk-open]')?.addEventListener('click', () => show(true));
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); show(true); }
+    if (e.key === 'Escape') show(false);
+  });
+  overlay?.addEventListener('click', (e) => { if (e.target === overlay) show(false); });
+</script>

@@ -1,0 +1,9 @@
+---
+interface Props { tone?: 'info' | 'success' | 'replay'; detail?: string }
+const { tone = 'info', detail } = Astro.props;
+const border = { info: 'border-sand', success: 'border-moss', replay: 'border-shell' }[tone];
+---
+<div class={`bg-white border ${border} rounded-4 px-4 py-3 shadow-e1 max-w-md`}>
+  <p class="text-13 text-ink m-0"><slot /></p>
+  {detail && <p class="font-mono text-11 text-claret mt-1 mb-0">{detail}</p>}
+</div>

@@ -1,0 +1,11 @@
+---
+// Every empty state teaches a command. No illustrations of empty boxes.
+interface Props { title: string; command: string }
+const { title, command } = Astro.props;
+import Terminal from './Terminal.astro';
+---
+<div class="border border-dashed border-sandDeep rounded-5 p-6 max-w-lg">
+  <p class="font-serif text-17 text-ink mt-0 mb-1.5">{title}</p>
+  <p class="text-13 text-slate mt-0 mb-4"><slot /></p>
+  <Terminal copy={command}>$ {command}</Terminal>
+</div>

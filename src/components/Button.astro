@@ -1,0 +1,22 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'md' | 'sm';
+  disabled?: boolean;
+  href?: string;
+  type?: 'button' | 'submit';
+}
+const { variant = 'primary', size = 'md', disabled = false, href, type = 'button' } = Astro.props;
+const base = 'font-sans font-medium rounded-3 border inline-flex items-center gap-2';
+const sizes = { md: 'text-14 px-[18px] py-2.5', sm: 'text-12 px-3 py-1.5' };
+const looks = {
+  primary: 'text-paper bg-claret border-claret hover:bg-claretDeep hover:border-claretDeep',
+  secondary: 'text-ink bg-white border-sand hover:border-ink',
+  ghost: 'text-slate bg-white/0 border-white/0 hover:bg-parchment hover:text-ink',
+};
+const dis = 'text-stone bg-disabledBg border-disabledBd cursor-not-allowed';
+const cls = `${base} ${sizes[size]} ${disabled ? dis : looks[variant] + ' cursor-pointer'}`;
+---
+{href && !disabled
+  ? <a href={href} class={cls + ' no-underline'}><slot /></a>
+  : <button type={type} disabled={disabled} class={cls}><slot /></button>}
