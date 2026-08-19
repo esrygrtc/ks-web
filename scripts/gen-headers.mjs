@@ -37,8 +37,16 @@ const csp = [
 const config = {
   platform: { apiRuntime: 'node:20' },
   responseOverrides: { 404: { rewrite: '/404.html' } },
-  routes: [{ route: '/api/*', allowedRoles: ['anonymous'] }],
+  // Cache policy (W6): hashed assets immutable for a year; HTML short so
+  // deploys propagate in minutes; fonts immutable (content-stable names).
+  routes: [
+    { route: '/api/*', allowedRoles: ['anonymous'] },
+    { route: '/_astro/*', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+    { route: '/fonts/*', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+    { route: '/pagefind/*', headers: { 'Cache-Control': 'public, max-age=3600' } },
+  ],
   globalHeaders: {
+    'Cache-Control': 'public, max-age=300, must-revalidate',
     'Content-Security-Policy': csp,
     // HSTS without preload: preload is one-way like a license (tripwire).
     'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',

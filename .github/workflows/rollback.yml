@@ -1,0 +1,33 @@
+# Rollback: redeploy a previous run's built artifact, verbatim. Manual
+# dispatch only, like every production-affecting action. Aborts loudly
+# (exit 75 semantics) if the artifact does not exist; never half-deploys.
+name: rollback
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'CI run id whose "site" artifact to redeploy'
+        required: true
+      environment:
+        description: 'staging (named env) or production'
+        required: true
+        default: staging
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4   # api/ must ride along; SWA deploys app+api together
+      - name: fetch artifact or abort
+        run: |
+          gh run download ${{ inputs.run_id }} --repo ${{ github.repository }} -n site -D dist \
+            || { echo "::error::ABORT(75): no 'site' artifact on run ${{ inputs.run_id }}; nothing was deployed"; exit 75; }
+          test -f dist/index.html || { echo "::error::ABORT(75): artifact malformed; nothing was deployed"; exit 75; }
+        env: { GH_TOKEN: '${{ github.token }}' }
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_TOKEN }}
+          action: upload
+          app_location: dist
+          api_location: api
+          skip_app_build: true
+          deployment_environment: ${{ inputs.environment == 'production' && '' || inputs.environment }}
