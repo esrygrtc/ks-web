@@ -399,3 +399,32 @@ Next action: none for this page; founder eyeball at 1280.
   global [hidden]{display:none!important} in Site.astro.
 - TODO tokens: #8A8372 and #8A7A78 (both rendered as termMuted), #6A6258 (hover
   border, rendered as taupe). All lints + laws tests green; copy files updated.
+
+## 2026-08-20 — The fidelity sweep: the design became the site
+- Founder ruling: the built pages had drifted from the composites and
+  the design is the spec, every detail. Process answer: render every
+  composite in a real browser, screenshot both sides, LOOK, rebuild,
+  re-look. Home rebuilt by hand first (terminal typewriter loop with
+  kill-flash, fork draw-in, -45% count-up, partner strip, the
+  composite's own footer); nine agents then swept every other page with
+  the same loop, pixel-diffing their work (careers 3946px exact,
+  pricing 3025px exact, offsets within 1-6px elsewhere).
+- What survived fidelity, by constitution: Proof/Compatibility data
+  stays generated (the composite's placeholder claims became a shell
+  that real proof.json rows fill); status renders every live value
+  honestly unavailable inside the exact layout; fabricated authors and
+  quotes keep the design's placeholder treatments; forms keep working
+  mechanics inside exact shells. Design-verbatim now includes the
+  marketing numbers (founder overruled proof-only for depiction; F-6).
+- Cross-agent conflicts resolved at integration: the global five-band
+  footer restored on interior pages (every page-scoped agent dropped
+  it; Footer System is itself a composite), region name honest in the
+  live system line but design-verbatim in depiction rows, the last
+  four composite colors promoted (32 named tokens, zero hex in src).
+- Real bugs the sweep found: Astro drops media="print" on bundled
+  styles (print rules were eating the docs chrome); Tailwind display
+  utilities defeating [hidden]; a composite slider bound a localized
+  string. New: support tickets POST to a real durable endpoint.
+- Gates: w1 GREEN, w3 GREEN, w2 RED only on its home-footer probes
+  (home follows its composite, which has no status system): one-line
+  amendment in BLOCKED.md. Founder flags F-1..F-6 in BACKLOG.
