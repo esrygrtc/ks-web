@@ -5,6 +5,7 @@
 // DCLogic behavior (terminal typewriter loop, fork draw-in, econ count-up).
 import '../styles/fonts.css';
 import tokens from '../../design/tokens.json';
+import Footer from '../components/Footer.astro';
 const c = tokens.color;
 const title = 'KeepState · Your agents never start over.';
 const description = 'KeepState runs your AI agents inside snapshot-able micro-VMs. One API: run, checkpoint, fork, resume, replay. Any model, any harness.';
@@ -275,41 +276,8 @@ const canonical = new URL('/', Astro.site);
       </div>
     </section>
 
-    <!-- footer (the home composite's own) -->
-    <footer id="docs-foot" class="border-t border-sand">
-      <div class="max-w-[1180px] mx-auto px-7 pt-[60px] pb-10">
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-9">
-          <div class="flex flex-col gap-3">
-            <p class="text-11 font-semibold tracking-[0.16em] uppercase text-claret m-0 mb-1">Product</p>
-            <a href="/docs" class="text-14 text-slate no-underline hover:text-ink">Docs</a>
-            <a href="/docs/cli" class="text-14 text-slate no-underline hover:text-ink">CLI</a>
-            <a href="/status" class="text-14 text-slate no-underline hover:text-ink">Status</a>
-          </div>
-          <div class="flex flex-col gap-3">
-            <p class="text-11 font-semibold tracking-[0.16em] uppercase text-claret m-0 mb-1">Company</p>
-            <a href="/manifesto" class="text-14 text-slate no-underline hover:text-ink">Manifesto</a>
-            <a href="/careers" class="text-14 text-slate no-underline hover:text-ink">Careers</a>
-            <p class="text-13 leading-[1.5] text-taupe -mt-1 mb-0">Hiring engineer #1: virtualization and storage</p>
-            <a href="/contact" class="text-14 text-slate no-underline hover:text-ink">Contact</a>
-          </div>
-          <div class="flex flex-col gap-3">
-            <p class="text-11 font-semibold tracking-[0.16em] uppercase text-claret m-0 mb-1">Protocol</p>
-            <p class="text-14 leading-[1.5] text-slate m-0">han, the open session protocol</p>
-            <a href="/docs/api" class="text-14 text-slate no-underline hover:text-ink">Spec</a>
-          </div>
-          <div class="flex flex-col gap-3">
-            <p class="text-11 font-semibold tracking-[0.16em] uppercase text-claret m-0 mb-1">Legal</p>
-            <a href="/legal/terms" class="text-14 text-slate no-underline hover:text-ink">Terms</a>
-            <a href="/legal/privacy" class="text-14 text-slate no-underline hover:text-ink">Privacy</a>
-            <a href="/security" class="text-14 text-slate no-underline hover:text-ink">Security</a>
-          </div>
-        </div>
-        <div class="flex items-center gap-2.5 mt-12 pt-[22px] border-t border-sand">
-          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
-          <p class="font-mono text-11 tracking-[0.08em] text-taupe m-0">&copy; KeepState</p>
-        </div>
-      </div>
-    </footer>
+    <Footer variant="marketing" />
+
 
     <style>
       @keyframes ksPulse { 0% { transform: rotate(45deg) scale(0.6); opacity: 0; } 60% { transform: rotate(45deg) scale(1.18); opacity: 1; } 100% { transform: rotate(45deg) scale(1); opacity: 1; } }

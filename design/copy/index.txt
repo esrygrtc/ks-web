@@ -36,5 +36,3 @@ What the 2024 forecasts called unhobbling is now a workload. Its substrate is un
 fal taxes generative media. KeepState taxes agent-hours.
 Every long-running task in the world is becoming a session: metered, durable, forkable, replayable. We are building the layer that keeps that state, the way the caravanserai kept the caravans: the place where long journeys checkpoint for the night and continue at dawn. The open session protocol is named han in its honor.
 Send us one trace of your longest run.
-Hiring engineer #1: virtualization and storage
-han, the open session protocol
