@@ -42,6 +42,11 @@ const semantic = {
   disabledBg: '#f2efe8', // disabled button bg
   disabledBd: '#e2ddd1', // disabled button border
   shellSoft:  '#efdfdc', // claret tint, faintest
+  // third pass (home rebuild): page-verified colors, founder-resolved
+  mist:       '#9a9384', // partner strip labels, '+' separators
+  slateLine:  '#5a616c', // chip border on the governance slate band
+  slateSoft:  '#e6e3dc', // body text on the governance slate band
+  inkLine:    '#4a443c', // secondary button border on ink bands
 };
 const named = new Set(Object.values(semantic));
 const extended = {};
