@@ -224,6 +224,12 @@ const socials = [
     )}
   </div>
 </footer>
+<style is:global>
+  /* Tailwind display utilities defeat the hidden attribute; standalone
+     composite pages do not load Site.astro's global fix, so the footer
+     carries it for every page that carries the footer. */
+  [hidden] { display: none !important; }
+</style>
 
 <style>
   @keyframes ksTip { from { opacity: 0; transform: translate(-50%, 4px); } to { opacity: 1; transform: translate(-50%, 0); } }
