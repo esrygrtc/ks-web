@@ -1,2 +1,16 @@
+# Verbatim lines from design/Product Pages.dc.html (tab 3: Governance & Replay)
 Logs tell you what the agent said it did. Replay re-executes what it actually did.
+Deterministic replay from checkpointed state turns an audit from an interview into a reproduction. The engineer does nothing extra; the evidence is a byproduct of how sessions already work.
+The flight recorder
 Deterministic replay from checkpointed state. Audit trails with sequence lineage. Deposition-grade evidence for the compliance officer, zero extra work for the engineer.
+Re-execute the run from the freeze that preceded it, byte for byte.
+Every event names its parent checkpoint, so order is provable rather than asserted.
+A signed archive scoped to the sessions and range your reviewer named.
+Enterprise: sovereign deploys, retention, SSO.
+A log is the agent's account of itself, written by the thing under investigation. A replay re-executes the run from the freeze that preceded it, so the evidence is produced by the system rather than narrated by it. Every event carries the checkpoint it descended from, which is what makes the reproduction exact rather than approximate.
+claude-code, from checkpointed state
+every event names its parent checkpoint
+the delete path is removed, not disabled
+Determinism is gated at 500 replays per release, and a red gate removes the claim from the site automatically.
+Give your auditors a reproduction, not a transcript.
+Deterministic replay, sequence lineage, and retention measured in years.

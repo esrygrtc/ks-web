@@ -18,6 +18,7 @@ const ledger = defineCollection({
     date: z.string(),
     draft: z.boolean().default(false),
     standfirst: z.string(),
+    tag: z.enum(['measurement', 'postmortem', 'argument', 'engineering']).optional(),
   }),
 });
 export const collections = { docs, ledger };

@@ -1,0 +1,19 @@
+# Verbatim lines carried from design/Docs.dc.html (dedashed; none needed changes).
+# Checked against the built /docs/ page: header, section nav, badge, TOC, feedback footer.
+Search the docs
+Pricing
+Proof
+Console →
+Get started
+Concepts
+Guides
+Reference
+Quickstart
+Claude Code on KeepState
+Troubleshooting
+last verified against
+On this page
+Did this work? The quickstart is gate-tested; if it failed, that is a finding:
+report it
+It worked
+It failed

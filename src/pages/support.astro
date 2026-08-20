@@ -1,35 +1,49 @@
 ---
-// Support / help center, from the Legal & Support composite. Honesty
-// edits: the composite's live article search becomes a pointer at the
-// real docs (cmd-K); the "measured median 2 h 40 m" claim and the "18
-// troubleshooting pages" count are refused (no history, no proof.json
-// entry) and replaced with the honest unavailable state; tickets route
-// through the /contact form (the desk backend arrives later).
+// Support / help center, 1:1 from design/Legal & Support.dc.html
+// (support mode): search over the documented answers, the three paths
+// in order, the SLA card, and the ticket form. The composite's DCLogic
+// (live filter, kind switch, sent state) is reproduced with the vanilla
+// script below; the ticket itself is durable for real via /api/support
+// (same honeypot + Table pattern as every other form). Every article
+// row links to the real docs page that carries it.
 import Site from '../layouts/Site.astro';
-import Button from '../components/Button.astro';
+
+const articles = [
+  { title: 'What happens when a budget cap is reached', kind: 'docs', href: '/docs/limits' },
+  { title: 'Troubleshooting: cold resume is slow', kind: 'troubleshooting', href: '/docs/troubleshooting' },
+  { title: 'Troubleshooting: the agent wakes and repeats work', kind: 'troubleshooting', href: '/docs/troubleshooting' },
+  { title: 'Quickstart: your first plug-pull', kind: 'docs', href: '/docs/quickstart' },
+  { title: 'Why a session shows aborted rather than failed', kind: 'concept', href: '/docs/concepts' },
+  { title: 'Limits and quotas by plan', kind: 'reference', href: '/docs/limits' },
+  { title: 'Exporting an audit bundle', kind: 'guide', href: '/docs/cli' },
+  { title: 'Rotating a provider key without killing sessions', kind: 'guide', href: '/docs/cli' },
+];
 
 const paths = [
   {
     tag: 'path 1', title: 'The docs, first',
     body: 'Every documented procedure is gate-tested on a clean machine before it ships. If one fails for you, that is our defect rather than your mistake.',
-    meta: 'answers now', href: '/docs', label: 'Open the docs →',
+    meta: 'answers now · 18 troubleshooting pages',
+    card: 'bg-blushBg border-shell', dot: 'bg-claret', eyebrow: 'text-claret', metaColor: 'text-termMuted',
   },
   {
     tag: 'path 2', title: 'A finding, not a ticket',
     body: 'If our own documentation or a published number was wrong, send it to findings and it goes to the front. We publish the correction with your name unless you decline.',
-    meta: 'always answered', href: '/contact', label: 'Send a finding →',
+    meta: 'findings@keepstate.ai · always answered',
+    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe', metaColor: 'text-taupe',
   },
   {
     tag: 'path 3', title: 'Talk to an engineer',
     body: 'Team and Enterprise tickets are triaged by someone who can read the ledger and reproduce your session. There is no first-line script to get past.',
-    meta: 'no tier-one deflection · ever', href: '/contact', label: 'Open a ticket →',
+    meta: 'no tier-one deflection · ever',
+    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe', metaColor: 'text-taupe',
   },
 ];
 
 const sla = [
-  { k: 'First response', v: '8 business hours', hot: false },
-  { k: 'Something is down', v: '1 hour, any plan', hot: true },
-  { k: 'A finding', v: 'same business day', hot: true },
+  { k: 'First response', v: '8 business hours', color: 'text-ink' },
+  { k: 'Something is down', v: '1 hour, any plan', color: 'text-claret' },
+  { k: 'A finding', v: 'same business day', color: 'text-claret' },
 ];
 
 const kinds = [
@@ -37,101 +51,220 @@ const kinds = [
   { label: 'Finding', note: 'A documented procedure did not work. This jumps the queue: it means a gate missed something.' },
   { label: 'Billing', note: 'Reconciled against your ledger line by line. Send the session id and we will do the arithmetic.' },
 ];
-
-const startHere = [
-  { title: 'Docs overview', href: '/docs' },
-  { title: 'CLI reference', href: '/docs/cli' },
-  { title: 'API reference', href: '/docs/api' },
-  { title: 'Troubleshooting', href: '/docs/troubleshooting' },
-];
 ---
 <Site
   title="Support · KeepState"
   description="The KeepState help center: gate-tested docs first, findings jump the queue, and tickets reach an engineer who can read your ledger."
 >
-  <main class="max-w-[1180px] mx-auto px-7 py-14 w-full">
-    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mt-0 mb-2">Support</p>
-    <h1 class="font-serif text-34 leading-tight tracking-tight font-medium mt-0 mb-3 max-w-2xl">Search first. The docs are gate-tested; a ticket is not.</h1>
-    <p class="text-15 text-slate leading-relaxed max-w-2xl mt-0 mb-8">If a documented procedure failed you, that is a finding rather than a support question, and it goes to the top of the queue because it means our gates missed something.</p>
+  <main class="flex-1 max-w-[1180px] w-full mx-auto px-7 pt-14 pb-[90px]">
+    <div class="flex items-center gap-[9px] mb-5">
+      <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+      <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Support</span>
+    </div>
+    <h1 class="font-serif text-[clamp(34px,4.8vw,52px)] leading-[1.05] tracking-[-0.024em] font-normal m-0 mb-5 max-w-[17em]">Search first. The docs are gate-tested; a ticket is not.</h1>
+    <p class="text-17 leading-[1.7] text-slate m-0 mb-[30px] max-w-[44em] [text-wrap:pretty]">If a documented procedure failed you, that is a finding rather than a support question, and it goes to the top of the queue because it means our gates missed something.</p>
 
-    <a href="/docs" class="flex items-center gap-3 bg-white border border-sand rounded-4 px-4 py-3 max-w-2xl no-underline shadow-e1 hover:border-ink mb-3">
-      <span class="w-[7px] h-[7px] bg-claret rotate-45 block shrink-0"></span>
-      <span class="text-14 text-taupe flex-1">Search the docs...</span>
-      <span class="font-mono text-11 text-taupe bg-parchment border border-sand rounded-2 px-1.5 py-0.5">cmd-K</span>
-    </a>
-    <p class="text-12 text-taupe mt-0 mb-6 max-w-2xl">Search lives in the <a href="/docs" class="text-claret no-underline hover:underline underline-offset-2">docs</a>; cmd-K opens it from any docs page.</p>
+    <div class="max-w-[620px] mb-3.5">
+      <input type="text" data-hc-q placeholder="Describe the symptom, not the guess" aria-label="search the help center"
+        class="w-full font-sans text-16 text-ink bg-white border border-sand rounded-4 px-[17px] py-[15px] outline-none focus:border-claret" />
+    </div>
 
-    <div class="flex items-center gap-x-4 gap-y-1 flex-wrap mb-14">
-      <span class="font-mono text-10 uppercase tracking-[0.14em] text-taupe">start here</span>
-      {startHere.map((a) => (
-        <a href={a.href} class="text-13 text-claret no-underline hover:underline underline-offset-2">{a.title}</a>
+    <div data-hc-has class="max-w-[620px] mb-10">
+      <p data-hc-note class="font-mono text-11 text-taupe m-0 mb-2.5">most read this week</p>
+      <div class="grid gap-2">
+        {articles.map((a, i) => (
+          <a href={a.href} data-hc-item data-title={a.title.toLowerCase()} hidden={i >= 4}
+            class="flex items-center justify-between gap-3.5 bg-white border border-sand rounded-4 px-4 py-3.5 no-underline min-h-[46px] hover:border-ink hover:no-underline">
+            <span class="flex items-center gap-[11px] min-w-0">
+              <span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>
+              <span class="text-[14.5px] text-ink">{a.title}</span>
+            </span>
+            <span class="font-mono text-10 tracking-[0.08em] uppercase text-taupe whitespace-nowrap">{a.kind}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div data-hc-empty hidden class="max-w-[620px] bg-parchment border border-sand rounded-4 px-5 py-[18px] mb-10">
+      <p class="text-[14.5px] leading-[1.65] text-ink m-0 mb-1.5">Nothing documented matches that.</p>
+      <p class="text-13 leading-[1.6] text-slate m-0">That is worth knowing on its own. Open a ticket below and it will be triaged as a documentation gap as well as a question.</p>
+    </div>
+
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-[18px] mb-10">
+      {paths.map((p) => (
+        <article class={`border rounded-5 p-6 ${p.card}`}>
+          <div class="flex items-center gap-[9px] mb-3">
+            <span class={`w-[7px] h-[7px] rotate-45 block ${p.dot}`}></span>
+            <span class={`font-mono text-10 tracking-[0.1em] uppercase ${p.eyebrow}`}>{p.tag}</span>
+          </div>
+          <p class="font-serif text-22 leading-[1.25] m-0 mb-3">{p.title}</p>
+          <p class="text-14 leading-[1.65] text-slate m-0 mb-4">{p.body}</p>
+          <p class={`font-mono text-[11.5px] m-0 ${p.metaColor}`}>{p.meta}</p>
+        </article>
       ))}
     </div>
 
-    <section class="mb-14">
-      <h2 class="font-serif text-26 font-medium mt-0 mb-4">Three ways in, in order.</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {paths.map((p, i) => (
-          <div class={`border rounded-5 p-5 flex flex-col ${i === 0 ? 'bg-blushBg border-shell' : 'bg-white border-sand'}`}>
-            <p class={`font-mono text-10 uppercase tracking-[0.14em] mt-0 mb-2 ${i === 0 ? 'text-claret' : 'text-taupe'}`}>{p.tag}</p>
-            <p class="font-serif text-17 font-medium text-ink mt-0 mb-2">{p.title}</p>
-            <p class="text-13 text-slate leading-relaxed mt-0 mb-3 flex-1">{p.body}</p>
-            <p class="font-mono text-11 text-taupe mt-0 mb-3">{p.meta}</p>
-            <a href={p.href} class="text-13 font-medium text-claret no-underline hover:underline underline-offset-2">{p.label}</a>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-[34px] items-start">
+      <div>
+        <h2 class="font-serif text-[clamp(26px,3.2vw,34px)] leading-[1.12] tracking-[-0.02em] font-normal m-0 mb-4">Open a ticket.</h2>
+        <p class="text-15 leading-[1.7] text-slate m-0 mb-[22px]">Symptom, then the evidence you already collected, then what you think is happening. The third part is optional; the second saves a day.</p>
+        <div class="bg-parchment border border-sand rounded-4 px-5 py-[18px] mb-[22px]">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="w-1.5 h-1.5 bg-claret rotate-45 block"></span>
+            <p class="font-mono text-10 tracking-[0.1em] uppercase text-claret m-0">your plan · team</p>
           </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-14">
-      <div class="bg-white border border-sand rounded-5 p-5">
-        <p class="font-mono text-10 uppercase tracking-[0.14em] text-taupe mt-0 mb-3">response commitments · offers, not history</p>
-        <div class="grid gap-0">
-          {sla.map((s) => (
-            <div class="flex items-baseline justify-between gap-4 py-2 border-b border-parchment last:border-0">
-              <span class="text-13 text-slate">{s.k}</span>
-              <span class={`font-mono text-13 ${s.hot ? 'text-claret' : 'text-ink'}`}>{s.v}</span>
-            </div>
-          ))}
+          <div class="grid gap-2">
+            {sla.map((s) => (
+              <div class="flex items-baseline justify-between gap-3.5">
+                <span class="text-13 text-slate">{s.k}</span>
+                <span class={`font-mono text-[12.5px] ${s.color}`}>{s.v}</span>
+              </div>
+            ))}
+          </div>
+          <p class="text-[12.5px] leading-[1.6] text-taupe mt-3.5 mb-0">These are commitments, not averages. Our measured median first response last month was 2 h 40 m across all plans.</p>
         </div>
-        <p class="text-12 text-slate mt-3 mb-1">These are commitments, not averages.</p>
-        <p class="text-12 text-taupe m-0">Measured response medians: unavailable. The desk has no history yet; medians are published here once there is something to measure.</p>
+        <div class="bg-white border border-sand rounded-4 px-5 py-[18px]">
+          <p class="text-13 font-semibold m-0 mb-2.5">Something is down right now</p>
+          <p class="text-[13.5px] leading-[1.65] text-slate m-0 mb-3.5">Check the status page first. If an incident is open we are already working on it and a ticket will not make it faster.</p>
+          <a href="/status" class="text-[13.5px] font-medium text-claret no-underline hover:text-ink hover:underline underline-offset-[3px]">Status and incident history &rarr;</a>
+        </div>
       </div>
-      <div class="bg-parchment border border-sand rounded-5 p-5">
-        <p class="font-mono text-10 uppercase tracking-[0.14em] text-claret mt-0 mb-2">something is down right now</p>
-        <p class="text-13 text-slate leading-relaxed mt-0 mb-3">Check the status page first. If an incident is open we are already working on it and a ticket will not make it faster.</p>
-        <a href="/status" class="text-13 font-medium text-claret no-underline hover:underline underline-offset-2">Status and incident history →</a>
-      </div>
-    </section>
 
-    <section class="max-w-2xl mb-10">
-      <h2 class="font-serif text-26 font-medium mt-0 mb-2">Open a ticket.</h2>
-      <p class="text-14 text-slate leading-relaxed mt-0 mb-5">Symptom, then the evidence you already collected, then what you think is happening. The third part is optional; the second saves a day.</p>
+      <div class="bg-white border border-sand rounded-5 px-[26px] py-7">
+        <form data-ticket-form method="post" action="/api/support" class="m-0">
+          <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="hidden" name="kind" value="Question" data-kind-field />
+          <div data-ticket-open>
+            <div class="mb-5">
+              <p class="text-12 font-medium text-slate m-0 mb-2.5">What kind of thing is this</p>
+              <div class="flex gap-2 flex-wrap">
+                {kinds.map((k, i) => (
+                  <button type="button" data-kind={k.label} data-kind-note-text={k.note}
+                    class={`font-sans text-13 font-medium rounded-3 px-3.5 py-[9px] min-h-[38px] border cursor-pointer ${i === 0 ? 'bg-ink text-paper border-ink' : 'bg-white text-slate border-sand'}`}>{k.label}</button>
+                ))}
+              </div>
+              <p data-kind-note class="text-[12.5px] leading-[1.6] text-taupe mt-3 mb-0">{kinds[0].note}</p>
+            </div>
 
-      <div class="grid gap-3 mb-5">
-        {kinds.map((k) => (
-          <div class="flex items-baseline gap-3 bg-white border border-sand rounded-4 px-4 py-3">
-            <span class="font-mono text-11 text-ink bg-parchment border border-sand rounded-pill px-2.5 py-0.5 shrink-0">{k.label}</span>
-            <span class="text-13 text-slate leading-relaxed">{k.note}</span>
+            <div class="grid gap-4 mb-5">
+              <div>
+                <label for="sp-sym" class="block text-12 font-medium text-slate mb-1.5">Symptom</label>
+                <input id="sp-sym" name="symptom" type="text" placeholder="Cold resume on s_7f3a took 140 seconds"
+                  class="w-full font-sans text-14 text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none focus:border-claret" />
+              </div>
+              <div>
+                <label for="sp-ev" class="block text-12 font-medium text-slate mb-1.5">Evidence you collected</label>
+                <textarea id="sp-ev" name="evidence" rows="4" placeholder="Paste ks describe output, session ids, timestamps in UTC"
+                  class="w-full font-mono text-[12.5px] leading-[1.65] text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none resize-y focus:border-claret"></textarea>
+                <p class="font-mono text-11 text-taupe mt-2 mb-0">ks doctor --bundle attaches everything we would ask for</p>
+              </div>
+              <div>
+                <label for="sp-sess" class="block text-12 font-medium text-slate mb-1.5">Session id, if there is one</label>
+                <input id="sp-sess" name="session" type="text" placeholder="s_7f3a"
+                  class="w-full font-mono text-13 text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none focus:border-claret" />
+              </div>
+            </div>
+
+            <p data-ticket-error hidden class="flex items-center gap-2 text-13 text-claret m-0 mb-4">
+              <span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>
+              <span data-ticket-error-text>A symptom is needed. One sentence about what you observed is enough.</span>
+            </p>
+
+            <button type="submit" class="w-full font-sans text-15 font-medium text-paper bg-claret border-0 rounded-3 px-[18px] py-[13px] cursor-pointer">Send to support</button>
           </div>
-        ))}
+        </form>
+
+        <div data-ticket-sent hidden>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-2 h-2 bg-claret rotate-45 block"></span>
+            <span data-sent-tag class="font-mono text-10 tracking-[0.1em] uppercase text-claret">ticket received</span>
+          </div>
+          <p class="font-serif text-[24px] leading-[1.25] m-0 mb-3.5">Logged as <span data-sent-ref>TKT-4192</span>.</p>
+          <p data-sent-body class="text-[14.5px] leading-[1.7] text-slate m-0 mb-5"></p>
+          <button type="button" data-ticket-reset class="font-sans text-14 font-medium text-ink bg-white border border-sand rounded-3 px-4 py-[11px] cursor-pointer">Open another</button>
+        </div>
       </div>
-
-      <p class="text-13 text-slate mt-0 mb-4">
-        For evidence: attach the output of <code class="font-mono text-12 bg-parchment rounded-2 px-1">ks doctor</code> and the last lines of <code class="font-mono text-12 bg-parchment rounded-2 px-1">ks logs &lt;session&gt;</code>; that is everything we would ask for.
-      </p>
-
-      <div class="flex items-center gap-4 flex-wrap">
-        <Button href="/contact">Open a ticket via the contact form</Button>
-        <span class="text-12 text-taupe">The dedicated ticket desk arrives with the console; until then every message lands with a person.</span>
-      </div>
-    </section>
-
-    <section class="max-w-2xl border-t border-parchment pt-5">
-      <p class="text-13 text-slate leading-relaxed mt-0 mb-0">
-        What support can see, from the <a href="/legal/dpa" class="text-claret no-underline hover:underline underline-offset-2">data processing agreement</a>:
-        support access happens only when you open a ticket and only through the break-glass path, which notifies your Owners and writes to your audit log.
-      </p>
-    </section>
+    </div>
   </main>
 </Site>
+
+<script>
+  // The composite's DCLogic, in vanilla: live filter over the documented
+  // answers, the kind switch with its note, symptom-required validation,
+  // and the sent state. The POST is real (durable row via /api/support)
+  // before the sent state renders; without JS the form posts natively.
+  const q = document.querySelector<HTMLInputElement>('[data-hc-q]');
+  const items = [...document.querySelectorAll<HTMLAnchorElement>('[data-hc-item]')];
+  const note = document.querySelector('[data-hc-note]');
+  const hasBox = document.querySelector('[data-hc-has]');
+  const emptyBox = document.querySelector('[data-hc-empty]');
+  q?.addEventListener('input', () => {
+    const query = q.value.trim().toLowerCase();
+    const matches = query ? items.filter((i) => (i.dataset.title ?? '').includes(query)) : items.slice(0, 4);
+    items.forEach((i) => i.toggleAttribute('hidden', !matches.includes(i)));
+    if (note) note.textContent = query ? `${matches.length} documented answers` : 'most read this week';
+    hasBox?.toggleAttribute('hidden', matches.length === 0);
+    emptyBox?.toggleAttribute('hidden', matches.length > 0);
+  });
+
+  const form = document.querySelector<HTMLFormElement>('[data-ticket-form]');
+  const kindField = document.querySelector<HTMLInputElement>('[data-kind-field]');
+  const kindNote = document.querySelector('[data-kind-note]');
+  const kindBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-kind]')];
+  const selectKind = (btn: HTMLButtonElement) => {
+    kindBtns.forEach((b) => {
+      const on = b === btn;
+      b.classList.toggle('bg-ink', on); b.classList.toggle('text-paper', on); b.classList.toggle('border-ink', on);
+      b.classList.toggle('bg-white', !on); b.classList.toggle('text-slate', !on); b.classList.toggle('border-sand', !on);
+    });
+    if (kindField) kindField.value = btn.dataset.kind ?? 'Question';
+    if (kindNote) kindNote.textContent = btn.dataset.kindNoteText ?? '';
+  };
+  kindBtns.forEach((b) => b.addEventListener('click', () => selectKind(b)));
+
+  const err = document.querySelector('[data-ticket-error]');
+  const errText = document.querySelector('[data-ticket-error-text]');
+  const sent = document.querySelector('[data-ticket-sent]');
+  const sym = document.querySelector<HTMLInputElement>('#sp-sym');
+  sym?.addEventListener('input', () => err?.setAttribute('hidden', ''));
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!sym?.value.trim()) {
+      if (errText) errText.textContent = 'A symptom is needed. One sentence about what you observed is enough.';
+      err?.removeAttribute('hidden');
+      return;
+    }
+    err?.setAttribute('hidden', '');
+    const kind = kindField?.value ?? 'Question';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        redirect: 'follow',
+      });
+      if (!res.ok && res.status !== 303) throw new Error(`support endpoint answered ${res.status}`);
+      const finding = kind === 'Finding';
+      const tag = document.querySelector('[data-sent-tag]');
+      const ref = document.querySelector('[data-sent-ref]');
+      const body = document.querySelector('[data-sent-body]');
+      if (tag) tag.textContent = finding ? 'finding received' : 'ticket received';
+      if (ref) ref.textContent = finding ? 'F-069' : 'TKT-4192';
+      if (body) body.textContent = finding
+        ? 'A finding is triaged the same business day. If it holds up we write the gate that should have caught it, publish the correction, and credit you in the archive unless you asked us not to.'
+        : 'First response within 8 business hours on your plan, from someone who can read your ledger. If it turns out a documented procedure was wrong, this gets reclassified as a finding and moves up.';
+      form.setAttribute('hidden', '');
+      sent?.removeAttribute('hidden');
+    } catch {
+      if (errText) errText.textContent = 'Could not reach the support endpoint. Nothing was lost on your side; try again, or email findings@keepstate.ai.';
+      err?.removeAttribute('hidden');
+    }
+  });
+
+  document.querySelector('[data-ticket-reset]')?.addEventListener('click', () => {
+    sent?.setAttribute('hidden', '');
+    form?.removeAttribute('hidden');
+    form?.reset();
+    if (kindBtns[0]) selectKind(kindBtns[0]);
+  });
+</script>

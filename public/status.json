@@ -1,0 +1,10 @@
+{
+  "status": "unavailable",
+  "version": "keepstate v0.1.1",
+  "api": "unavailable",
+  "gateway": "unavailable",
+  "doctor": "unavailable",
+  "incidents": "unavailable",
+  "region": "westeurope",
+  "note": "No external probe is reporting yet. Every field renders unavailable rather than green; a zero is a measurement."
+}

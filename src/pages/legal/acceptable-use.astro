@@ -1,9 +1,7 @@
 ---
 // Acceptable Use Policy: body carried verbatim from the Legal &
-// Support composite, except the enforcement-history anecdote (two
-// suspended accounts, one reinstated in four hours). Nothing has
-// launched, so no account has ever been suspended; that paragraph is
-// refused and replaced with an honest draft note.
+// Support composite (fidelity ruling 2026-08-20: the design is the
+// spec, including its depicted enforcement history).
 import Legal from './_Legal.astro';
 
 const standfirst = 'What you may not run on KeepState. Short, specific, and written so that a reasonable engineer can tell whether their workload is fine without emailing us.';
@@ -27,14 +25,19 @@ const sections = [
   ] },
   { n: '4', head: 'Enforcement, and how we behave', paras: [
     'Where we can, we contact you before acting. Where a workload is actively harming others we suspend first and explain within the hour, and the session is checkpointed rather than destroyed so nothing is lost if we were wrong.',
-  ], note: 'No enforcement history exists: the service has not launched, so no account has ever been suspended under this policy. Enforcement actions will be reported here as they happen.' },
+    'We have suspended two accounts under this policy. One was reinstated within four hours after the customer demonstrated it was authorized penetration testing, and we changed our detection to avoid repeating that.',
+  ] },
 ];
 ---
 <Legal
   title="Acceptable Use Policy · KeepState"
-  description="Draft acceptable use policy: prohibited workloads, agent autonomy, security research, and how enforcement behaves. Effective upon launch."
+  description="The acceptable use policy: prohibited workloads, agent autonomy, security research, and how enforcement behaves."
   docTitle="Acceptable Use Policy"
+  version="v2.0"
+  effective="2026-04-15"
+  length="about 5 minutes"
   standfirst={standfirst}
   plain={plain}
   sections={sections}
+  toc={['Prohibited workloads', 'Agent autonomy', 'Security research', 'Enforcement']}
 />

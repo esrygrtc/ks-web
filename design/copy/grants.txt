@@ -1,12 +1,37 @@
-# Verbatim lines carried from design/Grants.dc.html (dedashed) into /grants
+# verbatim lines carried from design/Grants.dc.html into /grants, one per line
+# (fidelity rebuild 2026-08-20; the form keeps its working mechanics inside the composite's visuals)
 KeepState Grants: compute for the people building the agents.
 The harnesses we wrap were written by people who were not paid to make our product work. Grants are how we settle that: session credits, engineering time, and a compatibility row of your own so your users can see the freeze holds.
+awarded to date: 31 grants
+credits committed: $186,000
+median decision time: 9 days
+Open-source harness maintainers
 You wrote the agent people actually use. We wrap it, gate it, and keep the wrap current at your release cadence rather than ours.
+Session credits for your own development and CI
+Engineering time from us on the wrap, not a support queue
+A compatibility row of your own, gated and published
+Day-0 wrapping of new releases within 48 hours
+$5,000 to $25,000
+12 months, renewable · no exclusivity
 Long-horizon agent studies need sessions that outlive the machine. A trial that dies at hour 40 is not a result, it is a lost week.
 No institutional affiliation required and no proposal review board. If you are learning to build agents, the meter should not be the thing that stops you.
 Day-0 support is a promise: new harness releases get a wrapped image within 48 hours.
+measured on the last 14 releases · median 19 h · worst 41 h · gated as G-171
 Not a logo, not a case study, not an exclusivity clause. Three things, all of which we would want anyway:
 Tell us when the freeze does not hold for your harness. A failed absorption is a finding we publish, and it is worth more to us than a testimonial.
+Let us gate your project publicly, including the rows where the answer is only observed rather than proven.
+Keep building whatever you were going to build. If that turns out to be something we compete with, the credits still stand for the term.
+Grants are not a sales channel. Two of our grantees publicly recommend a competitor for parts of their workflow, and their credits were renewed anyway.
 Names appear only where the grantee asked for them. The rest are described by what they build.
-Four questions. A human reads it, and you get a yes or a no with a reason, never silence.
+A widely used terminal coding agent, wrap plus day-0 releases
+University lab studying 60-hour tool-use horizons
+A community MCP server suite, 40 tools
+Independent researcher on replay determinism, published a defect in ours
+Undergraduate building an agent for accessibility auditing
+Four questions. A human reads it, and you get a yes or a no with a reason, never silence. Median decision is nine days; the worst was 24 and we told them why it was slow.
+Pick a track and tell us who you are. A GitHub handle is enough identification.
+Link the project. Anything public: a repo, a paper, a demo, a thread.
+Describe the workload and, more usefully, what breaks about it today.
+Name a number. Asking for more than the range does not disqualify you, it just needs a sentence.
 No pitch deck, no call required. If we need more we will ask one question by email.
+Send the application

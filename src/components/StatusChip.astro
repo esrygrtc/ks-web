@@ -3,8 +3,8 @@
 // UNAVAILABLE. Green is impossible without live data: the only path to
 // "operational" is a feed object asserting it, with a timestamp.
 type Feed = { status: 'operational' | 'incident'; asOf: string };
-interface Props { feed?: Feed | null }
-const { feed } = Astro.props;
+interface Props { feed?: Feed | null; variant?: 'default' | 'pill' }
+const { feed, variant = 'default' } = Astro.props;
 const state: 'operational' | 'incident' | 'unavailable' =
   feed && (feed.status === 'operational' || feed.status === 'incident')
     ? feed.status
@@ -14,8 +14,22 @@ const look = {
   incident:    { dot: 'bg-claret', text: 'text-claret', label: 'incident in progress' },
   unavailable: { dot: 'bg-stone',  text: 'text-slate',  label: 'status unavailable' },
 }[state];
+// Pill form, from the Footer System composite's chips map: rounded-full,
+// round dot, per-state background. Same law: no feed, no green.
+const pill = {
+  operational: { box: 'text-slate bg-white border-sand',      dot: 'bg-moss' },
+  incident:    { box: 'text-claret bg-blushBg border-shell',  dot: 'bg-claret' },
+  unavailable: { box: 'text-taupe bg-parchment border-sand',  dot: 'bg-stone' },
+}[state];
 ---
-<span data-status={state} class={`inline-flex items-center gap-[7px] font-mono text-12 ${look.text} bg-parchment border border-sand rounded-3 px-2.5 py-1.5`}>
-  <span class={`w-[5px] h-[5px] ${look.dot} rotate-45 block`}></span>
-  {look.label}{state !== 'unavailable' && feed?.asOf ? ` · ${feed.asOf}` : ''}
-</span>
+{variant === 'pill' ? (
+  <span data-status={state} class={`inline-flex items-center gap-2 font-mono text-[11.5px] ${pill.box} border rounded-pill px-[13px] py-[7px] min-h-[34px]`}>
+    <span class={`w-[7px] h-[7px] ${pill.dot} rounded-pill block flex-none`}></span>
+    {look.label}{state !== 'unavailable' && feed?.asOf ? ` · ${feed.asOf}` : ''}
+  </span>
+) : (
+  <span data-status={state} class={`inline-flex items-center gap-[7px] font-mono text-12 ${look.text} bg-parchment border border-sand rounded-3 px-2.5 py-1.5`}>
+    <span class={`w-[5px] h-[5px] ${look.dot} rotate-45 block`}></span>
+    {look.label}{state !== 'unavailable' && feed?.asOf ? ` · ${feed.asOf}` : ''}
+  </span>
+)}

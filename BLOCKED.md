@@ -88,6 +88,17 @@ With the three amendments applied and the deployed contrast fixes, every
 W5 measurement is green on the real host (home 100/100 local even
 uncompressed).
 
+## Gate W2, one amendment after the fidelity sweep
+
+The founder's fidelity ruling (2026-08-20) rebuilt every page 1:1 from
+its composite. Home's composite carries its OWN footer (four columns,
+no status system), so gate-w2's footer-honesty probes, which read
+dist/index.html, now fail on a page that is correct by ruling. The
+five-band footer with the unavailable chip and system line lives on
+every interior marketing page (verified: /pricing/ carries
+data-status="unavailable" and the all-unavailable system line).
+Amendment: point section 3's three greps at dist/pricing/index.html.
+
 ## While blocked
 
 web-4-green is NOT tagged. Phase W5 (budgets and hardening) does not

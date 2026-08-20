@@ -1,9 +1,12 @@
-# Verbatim lines carried from design/Legal & Support.dc.html (Subprocessors)
-# The composite's six generic vendor rows and "Six subprocessors" summary were
-# refused; the table lists only vendors demonstrably in use (Azure, GitHub,
-# Anthropic). The policy prose below is carried verbatim.
+# Verbatim lines carried from design/Legal & Support.dc.html (Subprocessors).
+# Honesty carve-out (kept by founder order): the composite's six generic vendor
+# rows and "Six subprocessors" summary list only vendors demonstrably in use
+# (Microsoft Azure, GitHub, Anthropic), inside the composite's exact table design.
 Every third party that may process customer data, what it does, and where. Short by design: each addition is a new place your data can be, so we add them reluctantly.
 Session contents means workspace data, checkpoints, and event ledgers. Account data means identity, contact, and billing information.
+effective 2026-08-01 · about 3 minutes
+Microsoft Azure
+Anthropic
 No analytics vendor by default, because the console works without one. No session recording tool, ever: replaying a customer’s screen is a category of access we have decided not to have. No data warehouse holding session contents for our own analysis.
 When you use managed inference we route calls to model providers on your behalf. They are not listed as subprocessors of ours because you are choosing them: their terms apply to that call, and your ledger records which provider served it. Bring your own keys and the relationship is directly yours.
 Additions are announced in the changelog and by email to Owners. Session-content subprocessors carry 30 days notice; account-data subprocessors carry 14. Removals are announced too, because a shorter list is worth telling you about.

@@ -1,3 +1,19 @@
+# Verbatim lines from design/Product Pages.dc.html (tab 2: Gateway & Cost)
 Billed at most once, enforced by the gateway.
-An interrupted call has already been paid for.
+Every model call passes through a gateway that meters it, stores its response, and refuses to buy the same tokens twice. Enforcement lives on our side of the wire rather than in a client we would have to trust.
+exactly-once, enforced at the gateway
+The VM sends a request using a virtual key scoped to this session.
+Tokens counted in, tokens counted out, before the provider is touched.
+The response is written to the store as it streams back.
+A crash, a rate limit, a resume. The stored response survives it.
+The store answers, not the provider. Zero new tokens, billed once.
+Tokens are not re-purchased
+Cache-aware routing does the rest, keeping a long conversation on the provider that already holds its prefix. Bring your own keys and we meter durability only; the token meter never appears on your bill.
 replayed from store, 0 new tokens
+ledger, one retry
+one design partner, one trace
+gateway-enforced, all providers
+we will not quote yours before we meter it
+Exactly-once billing is gated on every provider we support; the cost figure is one partner, labeled as observation.
+Send us one trace of your longest run.
+We will hand you the cost model of what you would have saved, measured on your own tokens.

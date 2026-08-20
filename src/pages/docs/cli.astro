@@ -2,10 +2,13 @@
 // Generated CLI reference: verbs and usage text come from the product's
 // own cmd/keepstate/usage.go via sync-docs. Never retyped: if the CLI
 // changes, this page changes on the next sync or goes stale loudly.
+// Styled to the composite's CLI archetype: dark synopsis blocks with a
+// mono kicker, and mono chip links per the "Related" treatment.
 import Docs from '../../layouts/Docs.astro';
 import docs from '../../generated/docs.json';
+const headings = docs.verbs.map((v) => ({ depth: 2, slug: v.verb, text: `ks ${v.verb}` }));
 ---
-<Docs title="CLI reference · KeepState docs" description="Every ks verb with its usage text, synced from the product binary's own help strings.">
+<Docs title="CLI reference · KeepState docs" description="Every ks verb with its usage text, synced from the product binary's own help strings." headings={headings}>
   <h1>CLI reference</h1>
   <p>
     Every verb below is real: the synopsis and usage text are synced from
@@ -13,11 +16,19 @@ import docs from '../../generated/docs.json';
     {docs.productVersion}). Ask any verb what it does with
     <code>ks &lt;verb&gt; --help</code>; it prints usage and does nothing else.
   </p>
+  <div class="flex gap-2.5 flex-wrap mb-2">
+    {docs.verbs.map((v) => (
+      <a href={`#${v.verb}`} class="font-mono text-12 text-slate border border-sand rounded-3 px-[13px] py-2 no-underline hover:text-ink hover:border-ink">ks {v.verb}</a>
+    ))}
+  </div>
   {docs.verbs.map((v) => (
     <section id={v.verb}>
       <h2>ks {v.verb}</h2>
       <p>{v.synopsis}</p>
-      <pre data-copy-wrapped="true">{v.usage}<button type="button" class="ks-copy" data-copy={v.usage}>copy</button></pre>
+      <div class="docs-syn">
+        <p class="docs-syn-kicker">usage</p>
+        <pre data-copy-wrapped="true">{v.usage}<button type="button" class="ks-copy" data-copy={v.usage}>copy</button></pre>
+      </div>
     </section>
   ))}
 </Docs>

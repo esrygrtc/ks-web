@@ -89,3 +89,39 @@ ks steer, fork <session>@<step>, repeatable --steer strings, dollar
 budgets, run-level --checkpoint cadence, doctor --bundle. The docs ship
 the real CLI only (synced from the binary). This list is product
 roadmap input: each item is a designed UX the product could grow into.
+
+# Fidelity sweep addendum (founder review items), 2026-08-20
+
+### F-1. Security page now shows a decorative PGP fingerprint
+"security@keepstate.ai · PGP 4E91 C02D 7F3A 2C19" restored verbatim per
+the fidelity ruling. A fingerprint that verifies nothing is a hazard the
+day a reporter tries to use it: publish the real key before cutover or
+strike the line.
+
+### F-2. Composite gate tags (G-1xx) render on security + product pages
+They link to /proof (real evidence) but the labels cite gate ids that do
+not exist in the product repo. Decide: keep the designed labels or remap
+to the real nine tags.
+
+### F-3. Google sign-in button on /console
+The composite's sign-in card has a Google button; SWA needs a custom
+OIDC provider configured (founder + secret) before it works. Until then
+it renders per design but errors on click.
+
+### F-4. Social chips in the footer utility band
+GitHub links to the real repo; X/LinkedIn/YouTube/RSS are designed
+placeholders rendered as spans until the accounts exist.
+
+### F-5. Newsreader optical sizing
+The composites use Google's variable Newsreader (opsz axis); we
+self-host static subsets, rendering display serifs slightly heavier and
+~3% wider. Careers already ships a variable italic subset. Post-review
+polish: move all Newsreader faces to variable subsets and re-verify the
+agents' line-break compensations (17em/14em max-widths).
+
+### F-6. The marketing numbers are design-verbatim now
+"Warm resume under 100 ms", "50-70%", "-45%", pilot metrics, award
+rows: all render as designed per the fidelity ruling, without evidence
+badges. The Proof page remains generated and fully evidenced; the
+tension between UI Law 2 and the fidelity ruling on marketing pages is
+the founder's standing decision, recorded here.

@@ -14,10 +14,12 @@ const sections = [
   { n: '1', head: 'Current list', paras: [
     'Session contents means workspace data, checkpoints, and event ledgers. Account data means identity, contact, and billing information.',
   ], table: { head: ['subprocessor', 'purpose', 'data and region'], rows: [
-    ['Microsoft Azure', 'hosting: compute and storage', 'West Europe'],
+    ['Microsoft Azure', 'hosting: compute and storage', 'session · West Europe'],
     ['GitHub', 'source hosting and CI', 'no customer session data'],
-    ['Anthropic', 'model inference for product sessions', 'session prompts, when routed through the gateway'],
-  ] }, note: 'These are the vendors we demonstrably use today. Categories the composite anticipated (payments, transactional email, error monitoring, support desk) have no chosen vendor yet and are added here, with notice, before launch.' },
+    ['Anthropic', 'model inference for product sessions', 'session · via gateway'],
+  ] }, list: [
+    'These are the vendors we demonstrably use today. Categories a launched service will need (payments, transactional email, error monitoring, support desk) have no chosen vendor yet; they are added here, with notice, before any takes customer data.',
+  ] },
   { n: '2', head: 'What is deliberately absent', paras: [
     'No analytics vendor by default, because the console works without one. No session recording tool, ever: replaying a customer’s screen is a category of access we have decided not to have. No data warehouse holding session contents for our own analysis.',
   ] },
@@ -31,9 +33,13 @@ const sections = [
 ---
 <Legal
   title="Subprocessors · KeepState"
-  description="The draft subprocessor list: only vendors KeepState demonstrably uses today (Microsoft Azure, GitHub, Anthropic), finalized before launch."
+  description="The subprocessor list: only vendors KeepState demonstrably uses today (Microsoft Azure, GitHub, Anthropic), finalized before launch."
   docTitle="Subprocessors"
+  version="updated monthly"
+  effective="2026-08-01"
+  length="about 3 minutes"
   standfirst={standfirst}
   plain={plain}
   sections={sections}
+  toc={['Current list', 'What is deliberately absent', 'Model providers', 'Notification']}
 />

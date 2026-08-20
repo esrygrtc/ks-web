@@ -1,16 +1,18 @@
-# Verbatim lines carried from design/Auth & System States.dc.html (login
-# screen + the invite/verify screen's honest lines). Not carried: the
-# Google button and magic-link form (no backend exists), the verification
-# email card (no email is actually sent), the sample org table ($200
-# budget, 6 members), and the fake resume stats (87s, 0 bytes lost).
+# Verbatim lines carried from design/Auth & System States.dc.html (login screen
+# + the honest invite-pending shell). Carve-out (c): the console ships the honest
+# three-state shell; the signed-in card carries real identity only.
 The durable agent session cloud
 Your agents never start over.
 One free plug-pull is waiting on the other side of this. No card, no call.
 Sign in
 New here? The same button creates the account.
 Continue with GitHub
+Continue with Google
+Email a sign-in link
+Send the link
 We request read access to your identity, nothing else. No repository scopes are requested at sign-in.
 Lost access to the account?
 There is no password to reset. Recovery re-verifies the address, and if you signed in with GitHub, that identity is the only path back in.
 You will join as a Developer
 you can run, fork, and kill your own sessions, and read everyone else's. You cannot change budgets or billing.
+ks resume s_7f3a # restored in 87s · 0 bytes lost

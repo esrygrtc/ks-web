@@ -1,12 +1,19 @@
 # Verbatim lines carried from design/The Ledger.dc.html (isIndex branch).
-# The composite's seven sample posts, authors, read times, the "18 posts ·
-# written by the 6 people" count and the "Five essays" promise are
-# fabrications and were not carried; the post count is computed and the
-# series blurb dropped its invented count.
+# The composite's seven sample posts, their named authors and read times,
+# and the "18 posts · written by the 6 people" counts are fabrications and
+# were not carried: the list holds exactly the real posts (one, DRAFT-
+# marked), the post count is computed, and read time is computed from the
+# real word count.
 The Ledger
 An engineering notebook we happen to publish.
 No thought leadership, no listicles, no reposted benchmarks. Things we measured, things we got wrong, and the occasional argument about where agent infrastructure is going. Every number in every post cites the gate that produced it.
 written by the people who build it · no guest posts, ever
+all posts
+measurement
+postmortem
+argument
+engineering
+Counting the OOMs of agent-hours
 The Session Economy
-One email per essay. Nothing else.
+Five essays on where agent infrastructure is going. One email per essay. Nothing else.
 Subscribe

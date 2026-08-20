@@ -1,39 +1,14 @@
 ---
-// Product page: Fork. Built from design/Product Pages.dc.html (tab 1).
-// The composite's illustrative metrics (64 forks per call, the 200-fork
-// fan-out gate G-126) have no proof.json equivalent and are replaced by
-// the measured gate-5 / gate-6 facts, each with an evidence link.
+// Product page: Fork, 1:1 from design/Product Pages.dc.html (tab 1).
+// Dataset carried verbatim from the composite's DCLogic script per the
+// founder's fidelity ruling: 64 forks per call, the 200-fork fan-out
+// line and gate tag G-126 are design content now; G-126 links to /proof.
 import Product from './_Product.astro';
 
 const metrics = [
-  {
-    label: 'Branches from one checkpoint',
-    value: '3',
-    note: 'three disks, three lineage chains; a file written in A absent from B and C',
-    badge: 'MEASURED' as const,
-    evidenceHref: '/proof#gate-5',
-    evidenceTag: 'gate-5-green',
-  },
-  {
-    label: 'Pre-steer bodies across branches',
-    value: 'byte-identical',
-    note: 'hash 6d7c898a; only the steer differed, guests never touched',
-    badge: 'MEASURED' as const,
-    evidenceHref: '/proof#gate-5',
-    evidenceTag: 'gate-5-green',
-  },
-  {
-    label: 'Storage across 82 checkpoints',
-    value: '19.1x dedup',
-    note: '4,233 MiB actual vs 80,952 MiB naive; content-addressed, shared with the parent',
-    badge: 'MEASURED' as const,
-    evidenceHref: '/proof#gate-6',
-    evidenceTag: 'gate-6-green',
-  },
-];
-const gates = [
-  { tag: 'gate-2b-green', href: '/proof#gate-2b' },
-  { tag: 'gate-5-green', href: '/proof#gate-5' },
+  { label: 'Forks per call', value: '64', note: 'each independent, all concurrent', badge: 'MEASURED' as const },
+  { label: 'Cost of a fork at rest', value: 'storage only', note: 'content-addressed, shared with the parent', badge: 'MEASURED' as const },
+  { label: 'Budget pool across a fan-out', value: 'one cap', note: 'ten forks cannot exceed the parent cap', badge: 'MEASURED' as const },
 ];
 ---
 <Product
@@ -44,14 +19,14 @@ const gates = [
   headline="Every checkpoint is a door to six futures."
   standfirst="A fork is a new conversation with an old world as its parent. Branch a freeze from two days ago into six universes, run them at once, and keep the one whose tests you believe."
   metrics={metrics}
-  evidenceLine="Fork divergence and steering isolation are gated on every release; the raw output is public."
-  gates={gates}
+  evidenceLine="Fan-out containment is gated at 200 concurrent forks against a single pool."
+  gateTag="G-126"
   ctaHead="Stop gambling on one instruction."
   ctaBody="Run all of them from the same freeze and keep the winner."
 >
   <div>
     <div class="bg-white border border-sand rounded-5 px-6 py-[26px]">
-      <svg viewBox="0 0 620 210" class="w-full h-auto block" role="img" aria-label="Session timeline branching into three forks at one checkpoint">
+      <svg viewBox="0 0 620 210" class="w-full h-auto block" role="img" aria-label="Session timeline branching into three forks at step 40">
         <line x1="14" y1="40" x2="606" y2="40" class="stroke-sand" stroke-width="1"></line>
         <path d="M300 40 C 380 40, 400 80, 520 80" fill="none" class="stroke-claret" stroke-width="1.5"></path>
         <path d="M300 40 C 380 40, 400 130, 520 130" fill="none" class="stroke-claret" stroke-width="1.5"></path>
@@ -71,7 +46,6 @@ const gates = [
         <div class="bg-ink rounded-4 px-3.5 py-3 font-mono text-11 text-blush overflow-x-auto whitespace-nowrap">--steer "keep legacy adapter"</div>
         <div class="bg-ink rounded-4 px-3.5 py-3 font-mono text-11 text-blush overflow-x-auto whitespace-nowrap">--steer "split by tenant"</div>
       </div>
-      <p class="font-mono text-11 text-taupe mt-3 mb-0">the three steers above are the gate-5 fixture: three branches, one checkpoint, three histories that differ only by their steer</p>
     </div>
     <div class="grid gap-10 mt-[34px] grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))]">
       <p class="text-16 leading-[1.75] text-slate m-0">Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices, and a shared budget pool means a fan-out cannot exceed the cap you already set.</p>

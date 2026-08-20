@@ -6,3 +6,6 @@ That unit has no home. Frameworks orchestrate it, sandboxes host it, nothing kee
 We think the durable session is the primitive the whole agent economy will be built on, and that the company which keeps that state gets to meter it.
 The full argument is being written down; leave an address and we will send it when it is finished.
 Get the manifesto when it ships
+Notify me
+← Back to site
+© KeepState · han, the open session protocol

@@ -1,7 +1,7 @@
 ---
 // Privacy Policy: body carried verbatim from the Legal & Support
-// composite. All commitments are forward-looking policy; the draft
-// banner in _Legal marks that nothing is effective before launch.
+// composite (fidelity ruling 2026-08-20: the design is the spec,
+// including its version chip and dates).
 import Legal from './_Legal.astro';
 
 const standfirst = 'What personal data we hold, why, and for how long. Session contents are covered separately by the data processing agreement, because there we are a processor acting on your instructions rather than a controller.';
@@ -36,14 +36,18 @@ const sections = [
   ] },
   { n: '6', head: 'Contact and complaints', paras: [
     'Our data protection contact is privacy@keepstate.ai. If we handle a request badly you may complain to the Information Commissioner’s Office in the UK, or to your own supervisory authority in the EU.',
-  ], note: 'The privacy inbox and supervisory-authority details are part of the draft under founder legal review; they are confirmed before this policy takes effect at launch.' },
+  ] },
 ];
 ---
 <Legal
   title="Privacy Policy · KeepState"
-  description="Draft privacy policy: what personal data KeepState holds, why, for how long, and what it deliberately does not do. Effective upon launch."
+  description="What personal data KeepState holds, why, for how long, and what it deliberately does not do."
   docTitle="Privacy Policy"
+  version="v3.2"
+  effective="2026-06-01"
+  length="about 7 minutes"
   standfirst={standfirst}
   plain={plain}
   sections={sections}
+  toc={['What we collect', 'What we do not do', 'Who else touches it', 'Where it lives', 'Your rights', 'Contact and complaints']}
 />

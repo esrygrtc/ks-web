@@ -1,82 +1,140 @@
 ---
-// The three-column docs layout: section nav, content, on-page TOC.
-// Code blocks arrive with build-time copy buttons (rehype-copy); the
-// script below makes them work and keeps the label honest.
+// The docs shell, mirrored 1:1 from design/Docs.dc.html: sticky docs
+// header (Site header="docs"), a 236px section nav with diamond markers,
+// a 72ch content column under a breadcrumb and a "last verified against"
+// badge, and a 216px on-page TOC. Code blocks arrive with build-time
+// copy buttons (rehype-copy); the script below makes them work and
+// keeps the label honest.
 import Site from './Site.astro';
-import CmdK from '../components/CmdK.astro';
 import { getCollection } from 'astro:content';
+import docs from '../generated/docs.json';
 interface Props { title: string; description: string; headings?: { depth: number; slug: string; text: string }[] }
 const { title, description, headings = [] } = Astro.props;
 const entries = await getCollection('docs');
 const sections = ['Start', 'Concepts', 'Guides', 'Reference', 'Operations'];
+// The composite names the first band "Get started"; the collection's
+// frontmatter says "Start". Map the label, not the data.
+const sectionLabel: Record<string, string> = { Start: 'Get started' };
 // Generated reference pages live as .astro files; they register here so
-// the nav is one list, not two systems.
+// the nav is one list, not two systems. Order mirrors the composite:
+// CLI, API, compatibility matrix, limits, troubleshooting.
 const extra = [
   { section: 'Start', order: 0, title: 'Overview', href: '/docs/' },
   { section: 'Reference', order: 30, title: 'CLI reference', href: '/docs/cli/' },
   { section: 'Reference', order: 31, title: 'API reference', href: '/docs/api/' },
-  { section: 'Operations', order: 50, title: 'Troubleshooting', href: '/docs/troubleshooting/' },
+  { section: 'Reference', order: 32, title: 'Compatibility matrix', href: '/compatibility' },
+  { section: 'Reference', order: 50, title: 'Troubleshooting', href: '/docs/troubleshooting/' },
 ];
 const nav = sections.map((s) => ({
   section: s,
+  label: sectionLabel[s] ?? s,
   items: [
     ...entries.filter((e) => e.data.section === s).map((e) => ({ order: e.data.order, title: e.data.title, href: `/docs/${e.id.replace(/\.mdx?$/, '')}/` })),
     ...extra.filter((x) => x.section === s),
   ].sort((a, b) => a.order - b.order),
 })).filter((s) => s.items.length);
 const current = Astro.url.pathname;
+const flat = nav.flatMap((s) => s.items.map((i) => ({ ...i, sectionLabel: s.label })));
+const activeIdx = flat.findIndex((i) => i.href === current);
+const activeItem = flat[activeIdx];
+// Real data only: the version and the date it shipped come from the
+// synced product repo, never typed by hand.
+const verifiedDate = docs.changelog?.[0]?.date;
+const h2s = headings.filter((h) => h.depth === 2);
+// Footer pager: the reading order is the nav order.
+const pager = activeIdx === -1 ? undefined : {
+  prev: flat[activeIdx - 1] && { title: flat[activeIdx - 1].title, href: flat[activeIdx - 1].href },
+  next: flat[activeIdx + 1] && { title: flat[activeIdx + 1].title, href: flat[activeIdx + 1].href },
+};
 ---
-<Site title={title} description={description} footer="docs">
-  <main class="max-w-[1280px] mx-auto px-7 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_180px] gap-10 py-10">
-    <nav class="lg:sticky lg:top-24 self-start" aria-label="docs sections">
-      <div class="mb-5"><CmdK /></div>
+<Site title={title} description={description} footer="docs" header="docs" pager={pager}>
+  <div class="flex items-stretch">
+    <nav class="hidden md:flex w-[236px] shrink-0 border-r border-sand pt-6 px-3.5 pb-[60px] flex-col sticky top-[67px] self-start max-h-[calc(100vh-67px)] overflow-y-auto" aria-label="docs sections">
       {nav.map((s) => (
-        <div class="mb-5">
-          <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mb-2">{s.section}</p>
-          <ul class="list-none m-0 p-0 grid gap-1">
+        <div class="mb-3.5">
+          <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe m-0 mb-2 px-2.5">{s.label}</p>
+          <ul class="list-none m-0 p-0">
             {s.items.map((i) => (
               <li><a href={i.href} aria-current={current === i.href ? 'page' : undefined}
-                class={`text-13 no-underline py-0.5 inline-block ${current === i.href ? 'text-claret font-medium' : 'text-slate hover:text-ink'}`}>{i.title}</a></li>
+                class={`flex items-center gap-[9px] text-13 no-underline rounded-3 px-2.5 py-[7px] ${current === i.href ? 'bg-parchment text-ink font-semibold' : 'text-slate hover:text-ink'}`}>
+                <span class={`w-[5px] h-[5px] rotate-45 block shrink-0 ${current === i.href ? 'bg-claret' : 'bg-[transparent]'}`}></span>{i.title}</a></li>
             ))}
           </ul>
         </div>
       ))}
     </nav>
-    <article class="docs-prose min-w-0" data-pagefind-body>
-      <slot />
-      <div class="mt-12 pt-5 border-t border-parchment flex items-center gap-3 flex-wrap">
-        <p class="text-13 text-slate m-0">Did this work? The quickstart is gate-tested; if it failed, that is a finding: <a href="/contact" class="text-claret">report it</a>.</p>
+    <main class="flex-1 min-w-0 px-8 pt-[30px] pb-20 max-w-full">
+      <div class="max-w-[72ch]">
+        <nav class="flex items-center gap-2 flex-wrap text-12 text-taupe mb-[18px]" aria-label="breadcrumb">
+          <span>Docs</span><span>/</span>
+          {activeItem ? (<><span>{activeItem.sectionLabel}</span><span>/</span><span class="text-ink">{activeItem.title}</span></>) : (<span class="text-ink">{title.split(' · ')[0]}</span>)}
+        </nav>
+        <div class="flex items-center gap-3 flex-wrap mb-4">
+          <span class="font-mono text-10 tracking-[0.1em] uppercase text-claret border border-shell bg-blushBg rounded-3 px-[9px] py-1">last verified against {docs.productVersion}</span>
+          {verifiedDate && <span class="font-mono text-11 text-taupe">verified {verifiedDate}</span>}
+        </div>
+        <article class="docs-prose min-w-0" data-pagefind-body>
+          <slot />
+        </article>
+        <div class="border-t border-sand mt-11 pt-6 flex items-center justify-between gap-[18px] flex-wrap">
+          <p class="text-14 leading-[1.6] text-slate m-0 max-w-[40em]">Did this work? The quickstart is gate-tested; if it failed, that is a finding: <a href="/contact" class="text-claret no-underline hover:text-ink hover:underline underline-offset-[3px]">report it</a>.</p>
+          <div class="flex gap-2">
+            <a href="/contact" class="font-sans text-13 font-medium text-ink bg-white border border-sand rounded-3 px-4 py-2 no-underline hover:border-ink">It worked</a>
+            <a href="/contact" class="font-sans text-13 font-medium text-ink bg-white border border-sand rounded-3 px-4 py-2 no-underline hover:border-ink">It failed</a>
+          </div>
+        </div>
       </div>
-    </article>
-    <aside class="hidden lg:block lg:sticky lg:top-24 self-start" aria-label="on this page">
-      {headings.filter((h) => h.depth === 2).length > 0 && (
-        <>
-          <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe mb-2">On this page</p>
-          <ul class="list-none m-0 p-0 grid gap-1.5">
-            {headings.filter((h) => h.depth === 2).map((h) => (
-              <li><a href={`#${h.slug}`} class="text-12 text-slate no-underline hover:text-ink leading-snug inline-block">{h.text}</a></li>
-            ))}
-          </ul>
-        </>
-      )}
+    </main>
+    <aside class={`w-[216px] shrink-0 px-6 pt-[30px] pb-[60px] flex-col gap-2.5 sticky top-[67px] self-start max-h-[calc(100vh-67px)] overflow-y-auto ${h2s.length > 0 ? 'hidden lg:flex' : 'hidden'}`} aria-label="on this page">
+      <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe m-0 mb-1">On this page</p>
+      {h2s.map((h, idx) => (
+        <a href={`#${h.slug}`} class={`text-[12.5px] leading-[1.5] no-underline border-l-2 pl-[11px] py-[3px] ${idx === 0 ? 'text-ink border-claret' : 'text-taupe border-disabledBd hover:text-ink'}`}>{h.text}</a>
+      ))}
     </aside>
-  </main>
+  </div>
 </Site>
 <style is:global>
-  .docs-prose h1 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.34); font-weight: 500; margin: 0 0 10px; }
-  .docs-prose h2 { font-family: theme(fontFamily.serif); font-size: theme(fontSize.22); font-weight: 500; margin: 34px 0 8px; }
-  .docs-prose h3 { font-size: theme(fontSize.15); font-weight: 600; margin: 22px 0 6px; }
-  .docs-prose p, .docs-prose li { font-size: theme(fontSize.14); line-height: 1.65; color: theme(colors.slate); }
-  .docs-prose a { color: theme(colors.claret); text-decoration: underline; text-underline-offset: 3px; }
-  .docs-prose code { font-family: theme(fontFamily.mono); font-size: theme(fontSize.12); background: theme(colors.parchment); border-radius: theme(borderRadius.2); padding: 1px 4px; }
-  .docs-prose pre { position: relative; background: theme(colors.ink); border: 1px solid theme(colors.inkBorder); border-radius: theme(borderRadius.5); padding: 14px 16px; overflow-x: auto; }
-  .docs-prose pre code { background: none; padding: 0; color: theme(colors.parchment); font-size: theme(fontSize.12); line-height: 1.65; }
-  .docs-prose table { border-collapse: collapse; width: 100%; font-size: theme(fontSize.13); }
-  .docs-prose th { font-family: theme(fontFamily.mono); font-size: theme(fontSize.11); text-transform: uppercase; letter-spacing: 0.08em; color: theme(colors.taupe); text-align: left; border-bottom: 1px solid theme(colors.sand); padding: 8px 10px; }
-  .docs-prose td { border-bottom: 1px solid theme(colors.parchment); padding: 8px 10px; vertical-align: top; }
-  .docs-prose blockquote { border-left: 2px solid theme(colors.shell); margin: 0; padding: 2px 0 2px 14px; font-style: italic; }
-  .ks-copy { position: absolute; top: 8px; right: 8px; font-family: theme(fontFamily.mono); font-size: theme(fontSize.10); color: theme(colors.termMuted); background: theme(colors.ink); border: 1px solid theme(colors.inkSoft); border-radius: theme(borderRadius.2); padding: 2px 7px; cursor: pointer; }
-  .ks-copy:hover { color: theme(colors.parchment); }
+  /* Content typography per the composite. Unclassed p/a keep real
+     specificity so markdown output is styled while page-level utility
+     classes stay in control of their own elements. */
+  .docs-prose h1 { font-family: theme(fontFamily.serif); font-size: clamp(32px, 4.2vw, 44px); line-height: 1.08; letter-spacing: -0.022em; font-weight: 400; margin: 0 0 18px; }
+  /* Generated markdown carries its own title h1; the shell already
+     rendered the frontmatter title, so the duplicate is presentation
+     noise the composite does not have. */
+  .docs-prose h1 ~ h1 { display: none; }
+  .docs-prose h1 + p:not([class]) { font-size: 17px; line-height: 1.72; color: theme(colors.slate); margin: 0 0 34px; }
+  .docs-prose h2 { font-family: theme(fontFamily.serif); font-size: 26px; line-height: 1.2; font-weight: 500; margin: 38px 0 12px; }
+  .docs-prose h3 { font-size: theme(fontSize.15); font-weight: 600; margin: 24px 0 8px; }
+  .docs-prose p:not([class]), .docs-prose li { font-size: theme(fontSize.15); line-height: 1.7; color: theme(colors.slate); }
+  .docs-prose p:not([class]) { margin: 0 0 14px; }
+  .docs-prose ul, .docs-prose ol { margin: 0 0 14px; padding-left: 1.2em; }
+  .docs-prose li { margin: 0 0 6px; }
+  .docs-prose a:not([class]) { color: theme(colors.claret); text-decoration: none; }
+  .docs-prose a:not([class]):hover { color: theme(colors.ink); text-decoration: underline; text-underline-offset: 3px; }
+  .docs-prose strong { color: theme(colors.ink); font-weight: 500; }
+  .docs-prose code { font-family: theme(fontFamily.mono); font-size: 0.87em; }
+  .docs-prose pre { position: relative; background: theme(colors.ink); border-radius: theme(borderRadius.4); padding: 15px 56px 15px 17px; margin: 0 0 14px; overflow-x: auto; font-family: theme(fontFamily.mono); font-size: 12.5px; line-height: 1.7; color: theme(colors.parchment); white-space: pre; }
+  .docs-prose pre code { background: none; padding: 0; color: theme(colors.parchment); font-size: 12.5px; line-height: 1.7; }
+  /* Shiki inlines a github-dark palette; the composite's terminal blocks
+     are monochrome parchment on ink, so the scoped override wins. */
+  .docs-prose pre.astro-code { background: theme(colors.ink) !important; color: theme(colors.parchment) !important; }
+  .docs-prose pre.astro-code span { color: inherit !important; font-style: normal !important; font-weight: inherit !important; }
+  .docs-prose table { width: 100%; border-collapse: separate; border-spacing: 0; background: theme(colors.white); border: 1px solid theme(colors.sand); border-radius: theme(borderRadius.5); overflow: hidden; font-size: theme(fontSize.13); margin: 0 0 30px; }
+  .docs-prose th { background: theme(colors.paper); text-align: left; font-size: theme(fontSize.10); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: theme(colors.taupe); padding: 11px 16px; border-bottom: 1px solid theme(colors.sand); }
+  .docs-prose td { padding: 12px 16px; border-bottom: 1px solid theme(colors.track); font-size: theme(fontSize.13); line-height: 1.6; color: theme(colors.slate); vertical-align: top; }
+  .docs-prose tr:last-child td { border-bottom: 0; }
+  .docs-prose td:first-child code { color: theme(colors.claret); }
+  .docs-prose blockquote { border-left: 2px solid theme(colors.sand); margin: 0 0 30px; padding: 2px 0 2px 20px; }
+  .docs-prose blockquote p { font-family: theme(fontFamily.serif); font-style: italic; font-size: 19px; line-height: 1.55; color: theme(colors.ink); margin: 0; }
+  .docs-prose hr { border: 0; border-top: 1px solid theme(colors.sand); margin: 34px 0; }
+  /* Dark reference block with its mono kicker, per the composite's CLI
+     synopsis treatment. The pre inside goes transparent and static so
+     the copy button anchors to the block. */
+  .docs-syn { position: relative; background: theme(colors.ink); border-radius: theme(borderRadius.4); padding: 16px 18px; margin: 0 0 28px; }
+  .docs-syn-kicker { font-family: theme(fontFamily.mono); font-size: theme(fontSize.10); letter-spacing: 0.12em; text-transform: uppercase; color: theme(colors.termMuted); margin: 0 0 10px; }
+  .docs-prose .docs-syn pre { position: static; background: none; border-radius: 0; padding: 0 56px 0 0; margin: 0; }
+  .ks-copy { position: absolute; top: 10px; right: 10px; font-family: theme(fontFamily.mono); font-size: theme(fontSize.10); letter-spacing: 0.06em; color: theme(colors.borderMuted); background: transparent; border: 1px solid theme(colors.inkSoft); border-radius: theme(borderRadius.3); padding: 3px 8px; cursor: pointer; }
+  .ks-copy:hover { color: theme(colors.paper); border-color: theme(colors.taupe); }
 </style>
 <script>
   document.querySelectorAll('.ks-copy').forEach((b) => {
@@ -87,10 +145,15 @@ const current = Astro.url.pathname;
     });
   });
 </script>
-<style is:global media="print">
-  header, footer, nav, aside, .ks-copy, [data-cmdk-open] { display: none !important; }
-  .docs-prose { max-width: 100% !important; }
-  .docs-prose pre { border: 1px solid #999; background: #fff; }
-  .docs-prose pre code { color: #000; }
-  body { background: #fff; color: #000; }
+<style is:global>
+  /* Astro drops the media attribute when bundling <style> tags, so the
+     print rules must live inside an @media block or they hide the whole
+     shell on screen (the pre-rebuild drift did exactly that). */
+  @media print {
+    header, footer, nav, aside, .ks-copy, [data-cmdk-open] { display: none !important; }
+    .docs-prose { max-width: 100% !important; }
+    .docs-prose pre { border: 1px solid #999; background: #fff; }
+    .docs-prose pre, .docs-prose pre code { color: #000; }
+    body { background: #fff; color: #000; }
+  }
 </style>

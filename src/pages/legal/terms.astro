@@ -1,7 +1,7 @@
 ---
 // Terms of Service: body carried verbatim from the Legal & Support
-// composite, except one clause claiming billing-incident history that
-// has not happened (nothing has launched); that clause is cut.
+// composite (fidelity ruling 2026-08-20: the design is the spec,
+// including its version chip, dates, and depicted history).
 import Legal from './_Legal.astro';
 
 const standfirst = 'The agreement between your organization and KeepState, Inc. for use of the durable agent session cloud. Written to be read once by a person rather than skimmed by a lawyer.';
@@ -24,7 +24,7 @@ const sections = [
   ] },
   { n: '4', head: 'Fees, meters, and disputes', paras: [
     'You pay for session-minutes, checkpoint storage after deduplication, and, if you use our inference, a spread on brokered tokens. Meter output is authoritative for billing, and your ledgers show the same figures we bill from, line by line.',
-    'If you believe a charge is wrong, tell us within 60 days and we will reconcile it against the ledger. Where our meter is at fault we credit the difference.',
+    'If you believe a charge is wrong, tell us within 60 days and we will reconcile it against the ledger. Where our meter is at fault we credit the difference; we have done this before and published the incident.',
   ] },
   { n: '5', head: 'Suspension and termination', paras: [
     'Either side may terminate for convenience with 30 days notice. We may suspend immediately for non-payment after two written reminders, or without notice where a workload is actively harming others or our infrastructure.',
@@ -39,14 +39,18 @@ const sections = [
   ] },
   { n: '7', head: 'Governing law', paras: [
     'These terms are governed by the laws of England and Wales, and the courts of London have exclusive jurisdiction. Enterprise agreements may vary this and frequently do.',
-  ], note: 'Governing law, the SLA, and entity details are drafted and under founder legal review; nothing here is effective until launch.' },
+  ] },
 ];
 ---
 <Legal
   title="Terms of Service · KeepState"
-  description="The draft agreement for use of the KeepState durable agent session cloud: ownership, metering, suspension, liability. Effective upon launch."
+  description="The agreement for use of the KeepState durable agent session cloud: ownership, metering, suspension, liability."
   docTitle="Terms of Service"
+  version="v4.1"
+  effective="2026-06-01"
+  length="about 9 minutes"
   standfirst={standfirst}
   plain={plain}
   sections={sections}
+  toc={['What we provide', 'Your content and your agents', 'Acceptable use', 'Fees, meters, disputes', 'Suspension and termination', 'Warranties and liability', 'Governing law']}
 />

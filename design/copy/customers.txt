@@ -1,8 +1,29 @@
-# verbatim lines carried from design/Customers.dc.html (dedashed), one per line
-Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not.
-Names are withheld until each partner clears its own logo; the measurements are not.
-Reports are written from meter output, not from interviews. If a figure here disagrees with your own measurement, that is a finding and we will publish the correction.
+# verbatim lines carried from design/Customers.dc.html, one per line
+# (fidelity rebuild 2026-08-20; quotes/attributions are the carve-out and are not listed)
+Four pilots, four numbers we measured.
+Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not. Names are withheld until each partner clears its own logo; the measurements are not.
+4 pilots · 2 still running · 1 ended without a durability win, published anyway
+logo pending clearance
+pilot running
+pilot complete
+A six-hour schema migration across 40 services, run nightly by one agent.
+$4,100/mo
+not re-purchased, at their own provider rates
+Fan-out refactors: one freeze forked six ways, best branch merged.
+refactor attempts per engineer-day, before and after
+Agent-driven reconciliation with a compliance review at every release.
+11 days → 2 h
+time to produce an audit bundle for one run
+Long-horizon evaluation runs, 30 to 60 hours per trial.
+no durability win
+their harness kept state outside the VM
 Read the pilot report
+Every pilot has a signed report and a named contact. None has finished its own internal approval to appear here, so the slots stay honestly empty rather than filled with marks nobody agreed to. The numbers came from our meters and can be reproduced from the reports.
+A nightly migration that stopped dying at hour five.
+Forking replaced arguing about which instruction to try.
+An audit bundle in two hours instead of eleven days.
+A pilot where durability did not help.
+Reports are written from meter output, not from interviews. If a figure here disagrees with your own measurement, that is a finding and we will publish the correction.
 signed by both parties
 Run your own pilot
 Send us one trace of your longest run.

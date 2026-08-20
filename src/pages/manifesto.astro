@@ -1,39 +1,100 @@
 ---
-// Manifesto: one essay, carried verbatim from design/Manifesto.dc.html
-// (the composite's copy contains no em dashes; nothing needed dedashing).
-// Serif long-form typography per the W2 brief. The notify form posts to
-// /api/subscribe; the backend lands at W4, honeypot included now.
-import Site from '../layouts/Site.astro';
+// Manifesto, 1:1 from design/Manifesto.dc.html. The composite carries its
+// OWN minimal chrome (logo + "Back to site" header, one-line mono footer),
+// so this page does not use the Site layout. Copy is verbatim (no em
+// dashes in the composite; nothing dedashed). The notify form keeps its
+// working mechanics (POST /api/subscribe + honeypot) inside the design's
+// exact shell; the composite's DCLogic note line ("enter a valid address"
+// on a bad address, empty by default) is reproduced by the inline script.
+import '../styles/fonts.css';
+const title = 'Manifesto · KeepState';
+const description =
+  'The Session Economy: compute is now billed in agent-hours, and the durable session is the primitive the whole agent economy will be built on.';
+const canonical = new URL('/manifesto', Astro.site);
 ---
-<Site
-  title="Manifesto · KeepState"
-  description="The Session Economy: compute is now billed in agent-hours, and the durable session is the primitive the whole agent economy will be built on."
->
-  <main class="max-w-[1180px] mx-auto px-7 pt-[84px] pb-24 w-full">
-    <div class="max-w-[62ch]">
-      <div class="flex items-center gap-[9px] mb-5">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/Newsreader-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Newsreader-500-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-500-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <!-- leading-[normal]: the composite inherits the browser default line
+       height everywhere it does not set one; preflight's 1.5 drifts. -->
+  <body class="bg-paper text-ink font-sans antialiased leading-[normal] min-h-screen flex flex-col">
+    <header class="border-b border-sand">
+      <nav class="max-w-[1180px] mx-auto px-7 py-4 flex items-center justify-between gap-6">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline">
+          <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+          {/* leading-[21px]: the composite's variable Newsreader sizes this
+              line box at 21px; our static instance would add 3px. */}
+          <span class="font-serif text-[21px] leading-[21px] font-medium tracking-[-0.01em]">KeepState</span>
+        </a>
+        <a href="/" class="text-14 text-slate no-underline">← Back to site</a>
+      </nav>
+    </header>
+
+    <main class="flex-1 max-w-[1180px] mx-auto pt-[84px] px-7 pb-24 w-full">
+      <div class="max-w-[62ch]">
+        <div class="flex items-center gap-[9px] mb-[22px]">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+          <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Manifesto</span>
+        </div>
+        <h1 class="font-serif text-[clamp(38px,5.6vw,62px)] leading-[1.05] tracking-[-0.025em] font-normal mt-0 mb-[30px]">The Session Economy</h1>
+        <p class="text-[18px] leading-[1.75] text-slate mt-0 mb-10 [text-wrap:pretty]">Compute used to be billed in requests, then in tokens. It is now billed in agent-hours: long, stateful, interruptible work that behaves less like an API call and more like an employee's afternoon. That unit has no home. Frameworks orchestrate it, sandboxes host it, nothing keeps it. We think the durable session is the primitive the whole agent economy will be built on, and that the company which keeps that state gets to meter it. The full argument is being written down; leave an address and we will send it when it is finished.</p>
+
+        <div class="border-t border-sand pt-[30px] max-w-[30em]">
+          <p class="text-14 font-semibold mt-0 mb-3.5">Get the manifesto when it ships</p>
+          <form id="notify" method="post" action="/api/subscribe" novalidate class="flex gap-2.5 flex-wrap">
+            <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input
+              type="email" name="email" placeholder="you@company.com" aria-label="email address"
+              class="flex-[1_1_220px] min-w-0 font-sans text-15 text-ink bg-white border border-sand rounded-3 px-3.5 py-3 outline-none focus:border-claret"
+            />
+            <button type="submit" class="font-sans text-15 font-medium text-paper bg-claret border-0 rounded-3 px-5 py-3 cursor-pointer hover:bg-ink">Notify me</button>
+          </form>
+          <p id="notify-note" class="font-mono text-11 tracking-[0.06em] text-taupe mt-3.5 mb-0 min-h-[16px]"></p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-sand">
+      <div class="max-w-[1180px] mx-auto px-7 py-[22px] flex items-center gap-2.5">
         <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
-        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Manifesto</span>
+        <p class="font-mono text-11 tracking-[0.08em] text-taupe m-0">© KeepState · han, the open session protocol</p>
       </div>
+    </footer>
 
-      <h1 class="font-serif text-34 leading-[1.05] tracking-[-0.025em] font-normal mt-0 mb-7">The Session Economy</h1>
-
-      <p class="font-serif text-17 leading-[1.75] text-slate mt-0 mb-10 [text-wrap:pretty]">
-        Compute used to be billed in requests, then in tokens. It is now billed in agent-hours: long, stateful, interruptible work that behaves less like an API call and more like an employee's afternoon. That unit has no home. Frameworks orchestrate it, sandboxes host it, nothing keeps it. We think the durable session is the primitive the whole agent economy will be built on, and that the company which keeps that state gets to meter it. The full argument is being written down; leave an address and we will send it when it is finished.
-      </p>
-
-      <div class="border-t border-sand pt-7 max-w-[30em]">
-        <p class="text-14 font-semibold mt-0 mb-3.5">Get the manifesto when it ships</p>
-        <form method="post" action="/api/subscribe" class="flex gap-2.5 flex-wrap">
-          <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <input
-            type="email" name="email" required placeholder="you@company.com" aria-label="email address"
-            class="flex-[1_1_220px] min-w-0 font-sans text-15 text-ink bg-white border border-sand rounded-3 px-3.5 py-3 focus:outline-none focus:border-claret"
-          />
-          <button type="submit" class="font-sans text-15 font-medium text-paper bg-claret border-0 rounded-3 px-5 py-3 cursor-pointer hover:bg-ink">Notify me</button>
-        </form>
-        <p class="font-mono text-11 tracking-[0.06em] text-taupe mt-3.5 mb-0">one email when it ships · nothing else</p>
-      </div>
-    </div>
-  </main>
-</Site>
+    <script>
+      // The composite's DCLogic form behavior: the note line starts empty,
+      // clears on typing, and reads "enter a valid address" on a bad
+      // address. A valid address submits for real (POST /api/subscribe).
+      const form = document.getElementById('notify');
+      const note = document.getElementById('notify-note');
+      const email = form.querySelector('input[type=email]');
+      email.addEventListener('input', () => { note.textContent = ''; });
+      form.addEventListener('submit', (e) => {
+        if (!/.+@.+\..+/.test(email.value)) {
+          e.preventDefault();
+          note.textContent = 'enter a valid address';
+        }
+      });
+    </script>
+  </body>
+</html>

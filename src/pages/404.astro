@@ -1,9 +1,9 @@
 ---
-// The 404, from design/Auth & System States.dc.html (the is404 screen).
-// Astro emits this as dist/404.html, which staticwebapp.config.json
-// already rewrites to via responseOverrides. Copy carried verbatim.
+// The 404, 1:1 from design/Auth & System States.dc.html (the is404
+// screen). Astro emits this as dist/404.html, which the generated
+// staticwebapp.config.json rewrites to via responseOverrides. Copy and
+// geometry carried verbatim; the composite's hrefs map to real routes.
 import Site from '../layouts/Site.astro';
-import Button from '../components/Button.astro';
 ---
 <Site
   title="404 · KeepState"
@@ -11,15 +11,15 @@ import Button from '../components/Button.astro';
   footer="console"
   noindex
 >
-  <main class="max-w-[1180px] mx-auto px-7">
-    <div class="flex items-center min-h-[70vh] py-16">
+  <main class="max-w-[1240px] mx-auto px-[26px] w-full">
+    <div class="flex items-center min-h-[78vh] py-[60px]">
       <div class="max-w-[34em]">
-        <p class="font-mono text-34 leading-none text-claret tracking-[-0.04em] mt-0 mb-6" aria-hidden="true">404</p>
-        <h1 class="font-serif text-34 leading-[1.1] tracking-[-0.022em] font-normal mt-0 mb-4">This page was never checkpointed. Nothing to resume.</h1>
-        <p class="text-16 leading-relaxed text-slate mt-0 mb-7">The address does not exist, or it did and its route was retired. Neither is recoverable from here.</p>
+        <p class="font-mono text-[clamp(48px,8vw,78px)] leading-none text-claret tracking-[-0.04em] m-0 mb-6" aria-hidden="true">404</p>
+        <h1 class="font-serif text-[clamp(30px,4.2vw,44px)] leading-[1.1] tracking-[-0.022em] font-normal m-0 mb-[18px]">This page was never checkpointed. Nothing to resume.</h1>
+        <p class="text-16 leading-[1.7] text-slate m-0 mb-7">The address does not exist, or it did and its route was retired. Neither is recoverable from here.</p>
         <div class="flex gap-3 flex-wrap">
-          <Button href="/">Back to keepstate.ai</Button>
-          <Button href="/docs" variant="secondary">Search the docs</Button>
+          <a href="/" class="text-15 font-medium text-paper bg-claret rounded-3 px-[22px] py-[13px] no-underline hover:no-underline hover:text-paper">Back to keepstate.ai</a>
+          <a href="/docs" class="text-15 font-medium text-ink border border-sand rounded-3 px-[21px] py-3 no-underline hover:no-underline hover:text-ink">Search the docs</a>
         </div>
       </div>
     </div>

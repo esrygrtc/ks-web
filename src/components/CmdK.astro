@@ -3,20 +3,26 @@
 // Pagefind at W3. Until then it is honest about being a shell.
 ---
 <button type="button" data-cmdk-open
-  class="inline-flex items-center gap-2.5 font-sans text-13 text-taupe bg-white border border-sand rounded-3 px-3 py-2 cursor-pointer hover:border-ink w-64 justify-between">
-  <span>Search sessions, checkpoints, docs</span>
-  <span class="font-mono text-11 text-stone border border-sand rounded-2 px-1.5 py-0.5">&#8984;K</span>
+  class="w-full max-w-[460px] flex items-center justify-between gap-3 font-sans text-13 text-taupe bg-white border border-sand rounded-3 px-[13px] py-[9px] cursor-pointer hover:border-ink text-left">
+  <span>Search the docs</span>
+  <span class="font-mono text-10 border border-sand rounded-2 px-1.5 py-px">&#8984;K</span>
 </button>
-<div data-cmdk-overlay class="hidden fixed inset-0 bg-ink/40 items-start justify-center pt-[18vh] z-50">
-  <div class="bg-white border border-sand rounded-5 shadow-e2 w-[560px] max-w-[90vw] p-2">
-    <input type="text" data-cmdk-input placeholder="Type to search" autocomplete="off"
-      class="w-full font-sans text-14 text-ink px-3 py-2.5 border-0 focus:outline-none" />
-    <div data-cmdk-results class="max-h-[320px] overflow-y-auto border-t border-parchment"></div>
-    <p class="font-mono text-11 text-taupe px-3 py-2 border-t border-parchment m-0">
-      static index, built at compile time; esc closes
-    </p>
+<div data-cmdk-overlay class="hidden fixed inset-0 bg-ink/40 items-start justify-center pt-[12vh] px-5 pb-5 z-[100]">
+  <div class="w-full max-w-[560px] bg-paper border border-sand rounded-6 shadow-e3 overflow-hidden">
+    <div class="flex items-center gap-3 px-[18px] py-[15px] border-b border-sand">
+      <span class="w-[7px] h-[7px] bg-claret rotate-45 block shrink-0"></span>
+      <input type="text" data-cmdk-input placeholder="Search the docs" autocomplete="off"
+        class="flex-1 min-w-0 font-sans text-15 text-ink bg-[transparent] border-0 focus:outline-none" />
+      <span class="font-mono text-10 text-taupe border border-sand rounded-3 px-1.5 py-0.5">esc</span>
+    </div>
+    <div data-cmdk-results class="max-h-[340px] overflow-y-auto p-2"></div>
   </div>
 </div>
+<style is:global>
+  /* Pagefind excerpts arrive with <mark>; the browser default yellow is
+     off-palette, so highlights carry the design's blush treatment. */
+  [data-cmdk-results] mark { background: theme(colors.blushBg); color: theme(colors.claret); }
+</style>
 <script>
   const overlay = document.querySelector('[data-cmdk-overlay]');
   let pagefind = null;
@@ -42,8 +48,8 @@
     if (my !== seq) return;
     const items = await Promise.all(search.results.slice(0, 8).map((r) => r.data()));
     el.innerHTML = items.length
-      ? items.map((d) => `<a href="${d.url}" class="block px-3 py-2 no-underline hover:bg-parchment">
-          <span class="block text-13 text-ink font-medium">${d.meta?.title ?? d.url}</span>
+      ? items.map((d) => `<a href="${d.url}" class="block px-3 py-[11px] rounded-4 no-underline hover:bg-parchment">
+          <span class="block text-14 text-ink">${d.meta?.title ?? d.url}</span>
           <span class="block text-12 text-taupe">${d.excerpt}</span></a>`).join('')
       : '<p class="font-mono text-11 text-taupe px-3 py-2 m-0">nothing found</p>';
   });

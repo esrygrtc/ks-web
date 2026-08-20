@@ -1,186 +1,454 @@
 ---
-// Customers: the pilot-report template, shipped honestly empty.
-// UI Law 3 (constitution scope fence): no invented customers, no invented
-// testimonials. The design is a report template; until a pilot finishes
-// and clears publication, every card below is an explicit placeholder and
-// every metric slot renders the unavailable state (UI Law 1).
-import Site from '../layouts/Site.astro';
-import Button from '../components/Button.astro';
-import MonoTable from '../components/MonoTable.astro';
+import Footer from '../components/Footer.astro';
+// Customers, 1:1 from design/Customers.dc.html (fidelity ruling,
+// 2026-08-20: the design is the spec, numbers included). The composite
+// carries its OWN chrome (customers nav: Product / Pricing / Proof /
+// Enterprise / Become a design partner; the page ends on the ink #partner
+// band with no site footer), so this page does not use the Site layout.
+// The DCLogic index<->report state machine ships as a vanilla inline
+// script: each card's button opens its pilot report in place, the back
+// button returns, exactly like the composite.
+// Carve-outs (constitution, reported): third-party QUOTES that do not
+// exist render the designed placeholder treatment inside the composite's
+// exact blockquote visuals (quote line + "attribution · none yet"); the
+// "logo pending clearance" slots are the composite's own placeholder and
+// stay verbatim. Everything else, sectors, workloads, metrics, badges,
+// report tables, is the composite's content verbatim.
+// Links: composite hrefs map to real routes (/product/sessions, /pricing,
+// /proof, /enterprise, /contact); gate references link to /proof.
+import '../styles/fonts.css';
 
-const slots = [
+const title = 'Customers · KeepState';
+const description =
+  'Four pilots, four numbers we measured. Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not.';
+const canonical = new URL('/customers', Astro.site);
+
+const pillCls = {
+  running: 'text-claret bg-blushBg border-shell',
+  complete: 'text-slate bg-parchment border-sand',
+} as const;
+const badgeCls = {
+  MEASURED: 'text-ink border-ink',
+  ESTIMATED: 'text-taupe border-sandDeep',
+  UNAVAILABLE: 'text-taupe border-sandDeep',
+} as const;
+const afterCls = { claret: 'text-claret', ink: 'text-ink', taupe: 'text-taupe' } as const;
+
+const cards = [
   {
-    n: '01',
-    will: "A real workload, run unchanged for at least two weeks, in the partner's own stack.",
-    quote: 'The quote that sits here belongs to a partner who has not signed yet.',
+    sector: 'Payments infrastructure',
+    workload: 'A six-hour schema migration across 40 services, run nightly by one agent.',
+    metric: '$4,100/mo',
+    badge: 'ESTIMATED' as const,
+    note: 'not re-purchased, at their own provider rates',
+    ph: 'The quote that sits here belongs to a partner who has not signed yet.',
+    id: 'PR-004',
+    stage: 'pilot running',
+    pill: 'running' as const,
   },
   {
-    n: '02',
-    will: 'One headline number from our meters, badged MEASURED or ESTIMATED, reproducible from the report.',
-    quote: 'No stand-in words. The border waits for a sentence someone actually said.',
+    sector: 'Developer tooling',
+    workload: 'Fan-out refactors: one freeze forked six ways, best branch merged.',
+    metric: '6.2x',
+    badge: 'MEASURED' as const,
+    note: 'refactor attempts per engineer-day, before and after',
+    ph: 'No stand-in words. The border waits for a sentence someone actually said.',
+    id: 'PR-003',
+    stage: 'pilot running',
+    pill: 'running' as const,
   },
   {
-    n: '03',
-    will: 'The stage of the pilot, running or complete, with the report signed by both parties.',
-    quote: 'A quote appears only after the partner reads the report and signs it.',
+    sector: 'Regulated fintech',
+    workload: 'Agent-driven reconciliation with a compliance review at every release.',
+    metric: '11 days → 2 h',
+    badge: 'MEASURED' as const,
+    note: 'time to produce an audit bundle for one run',
+    ph: 'A quote appears only after the partner reads the report and signs it.',
+    id: 'PR-002',
+    stage: 'pilot complete',
+    pill: 'complete' as const,
   },
   {
-    n: '04',
-    will: 'The version where we did not help, published anyway, if that is how it ends.',
-    quote: 'If a pilot ends badly, its quote still runs. That is the deal.',
+    sector: 'Research lab',
+    workload: 'Long-horizon evaluation runs, 30 to 60 hours per trial.',
+    metric: 'no durability win',
+    badge: 'MEASURED' as const,
+    note: 'their harness kept state outside the VM',
+    ph: 'If a pilot ends badly, its quote still runs. That is the deal.',
+    id: 'PR-001',
+    stage: 'pilot complete',
+    pill: 'complete' as const,
   },
 ];
 
-const anatomy = [
-  { k: 'summary', v: 'What ran, for how long, what interrupted it, and what happened next.' },
-  { k: 'results', v: 'A before and after table. Every row carries MEASURED or ESTIMATED, or renders unavailable.' },
-  { k: 'method', v: 'How each number was taken, so the partner can reproduce it from their own side.' },
-  { k: 'what did not work', v: 'The section that makes the rest believable. It is never optional.' },
-];
-
-const illustrationRows = [
-  'Runs completed without restart',
-  'Tokens re-sent after interruption',
-  'Time to produce an audit bundle',
+const reports = [
+  {
+    id: 'PR-004',
+    title: 'A nightly migration that stopped dying at hour five.',
+    sector: 'Payments infrastructure',
+    window: '14 days, 2026-07-08 to 2026-07-22',
+    facts: [
+      { k: 'agent', v: 'claude-code' },
+      { k: 'sessions', v: '41' },
+      { k: 'longest run', v: '06:41:22' },
+      { k: 'kills survived', v: '19' },
+    ],
+    summary:
+      'The partner ran an unchanged nightly migration on KeepState for two weeks alongside their existing sandbox. Nineteen interruptions occurred, seventeen from provider rate limits and two from host loss. Every one resumed. On their previous setup each would have restarted the run from zero, re-sending the accumulated context to the model.',
+    rows: [
+      { m: 'Runs completed without restart', b: '9 of 14', a: '14 of 14', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Tokens re-sent after interruption', b: '41.2M', a: '0', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Value of tokens not re-purchased', b: 'n/a', a: '$4,100 / mo', ac: 'claret', badge: 'ESTIMATED' as const },
+      { m: 'Median resume, cold', b: 'n/a', a: '81 s', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Checkpoint storage after dedup', b: 'n/a', a: '18.4 GB', ac: 'ink', badge: 'MEASURED' as const },
+    ],
+    provenanceNote:
+      'Token counts come from the gateway meter on both sides: their previous provider invoices for the before column, our meter for the after. The dollar figure is estimated because it applies their published rates to measured token counts.',
+    method: [
+      'The same migration script, unchanged, pointed at KeepState with a five-minute checkpoint cadence.',
+      'Interruptions were not simulated. We counted the ones that happened, and separately performed two deliberate kill -9 tests at hour five.',
+      'The before column is their own 14 days immediately prior, taken from provider invoices rather than estimates.',
+      'No engineer on their side changed prompts, tools, or model choice during the window.',
+    ],
+    negative:
+      'Two resumes took longer than our published 90-second bound, at 104 s and 118 s, both when the checkpoint crossed a region boundary. We report those as failures against our own claim and pinned their sessions to one region for the remainder of the pilot.',
+    ph: 'The quote that sits here belongs to a partner who has not signed yet.',
+    gate: 'G-101, G-107, G-121',
+    signed: '2026-07-24',
+  },
+  {
+    id: 'PR-003',
+    title: 'Forking replaced arguing about which instruction to try.',
+    sector: 'Developer tooling',
+    window: '21 days, 2026-06-15 to 2026-07-06',
+    facts: [
+      { k: 'agent', v: 'claude-code, aider' },
+      { k: 'forks created', v: '1,284' },
+      { k: 'engineers', v: '6' },
+      { k: 'budget pool', v: 'one, org-wide' },
+    ],
+    summary:
+      'The team used fork as their default refactor workflow: freeze at the decision point, branch six ways with different steering, merge the branch whose tests pass. The interesting result was behavioral rather than technical. Attempts per engineer-day rose sharply because attempts stopped being expensive to abandon.',
+    rows: [
+      { m: 'Refactor attempts per engineer-day', b: '1.4', a: '8.7', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Median forks per decision point', b: '1', a: '6', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Storage cost of a fork at rest', b: 'n/a', a: '$0.004 / day', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Budget overruns from fan-out', b: 'n/a', a: '0', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Branches discarded', b: 'n/a', a: '1,072 of 1,284', ac: 'ink', badge: 'MEASURED' as const },
+    ],
+    provenanceNote:
+      'Attempt counts are measured from their event ledgers, not self-reported. The discarded-branch figure is included deliberately: most forks are meant to be thrown away, and a low number would mean the tool was not being used as intended.',
+    method: [
+      'Fork was introduced in week one with no process guidance, so usage patterns were theirs rather than ours.',
+      'The before column covers the four weeks prior, counted from their git history and CI runs.',
+      'A single org-wide budget pool was set at their existing monthly spend, deliberately not raised for the pilot.',
+      'Aider sessions were included even though absorption on aider is only observed, not proven.',
+    ],
+    negative:
+      'On aider, one fork in four woke with stale tool state and had to be discarded and re-forked. That is the same 3-of-4 result our compatibility matrix reports, reproduced independently by a customer. It is a limitation of where aider keeps state, and we have not fixed it.',
+    ph: 'No stand-in words. The border waits for a sentence someone actually said.',
+    gate: 'G-126, G-135',
+    signed: '2026-07-09',
+  },
+  {
+    id: 'PR-002',
+    title: 'An audit bundle in two hours instead of eleven days.',
+    sector: 'Regulated fintech',
+    window: '30 days, 2026-05-04 to 2026-06-03',
+    facts: [
+      { k: 'agent', v: 'codex' },
+      { k: 'sessions audited', v: '212' },
+      { k: 'retention', v: '7 years' },
+      { k: 'region', v: 'eu-central-1, pinned' },
+    ],
+    summary:
+      'The partner needed to answer a supervisory question about what an agent did to a reconciliation ledger on a specific date. Previously this meant an engineer reconstructing intent from application logs over roughly two working weeks. With deterministic replay they re-executed the run from its checkpoint and handed over the reproduction plus the signed bundle.',
+    rows: [
+      { m: 'Time to produce an audit bundle', b: '11 days', a: '2 h 10 m', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Engineer hours per request', b: '38', a: '0.5', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Replays reproduced byte-identical', b: 'n/a', a: '212 of 212', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Checkpoints under legal hold', b: 'n/a', a: '19', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Annualized compliance cost', b: 'n/a', a: '−$180,000', ac: 'claret', badge: 'ESTIMATED' as const },
+    ],
+    provenanceNote:
+      'Timings are measured from ticket open to bundle delivery in their own tracker. The cost figure is estimated: it applies their blended engineering rate to the measured hours saved and assumes the same request volume continues.',
+    method: [
+      'One real supervisory request was answered both ways in parallel, the old process and replay, without telling either team the other was running.',
+      'The 212 replays were run in a single batch at the end of the window to test determinism at volume, not just on the audited session.',
+      'Their compliance officer, not an engineer, judged whether the bundle answered the question.',
+      'Region pinning was enforced from day one because their data cannot leave the EU.',
+    ],
+    negative:
+      'The first bundle we generated omitted steering events issued from a phone, because our export scoped to API-originated events only. Their reviewer caught it, not us. It is filed as F-064, the export path was fixed, and the gate that would have caught it now exists.',
+    ph: 'A quote appears only after the partner reads the report and signs it.',
+    gate: 'G-118',
+    signed: '2026-06-11',
+  },
+  {
+    id: 'PR-001',
+    title: 'A pilot where durability did not help.',
+    sector: 'Research lab',
+    window: '18 days, 2026-04-02 to 2026-04-20',
+    facts: [
+      { k: 'agent', v: 'custom harness' },
+      { k: 'trials', v: '64' },
+      { k: 'trial length', v: '30 to 60 h' },
+      { k: 'outcome', v: 'gateway only' },
+    ],
+    summary:
+      'The lab ran long-horizon evaluation trials with a harness that keeps conversation state in a provider-side store rather than in the process. A checkpoint cannot capture state it does not host, so on resume the agent had its filesystem back but not its memory of the conversation. We published this outcome rather than quietly ending the pilot.',
+    rows: [
+      { m: 'Trials resumed with full state', b: 'n/a', a: '0 of 64', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Trials resumed with filesystem only', b: 'n/a', a: '64 of 64', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Tokens not re-purchased via gateway', b: '0', a: '8.8M', ac: 'ink', badge: 'MEASURED' as const },
+      { m: 'Interrupted calls billed twice', b: '2,140', a: '0', ac: 'claret', badge: 'MEASURED' as const },
+      { m: 'Cost of a lost trial', b: 'unavailable (never metered)', a: 'unavailable (never metered)', ac: 'taupe', badge: 'UNAVAILABLE' as const },
+    ],
+    provenanceNote:
+      'The last row stays unavailable because neither side ever instrumented the cost of a discarded trial. We could estimate it, and an estimate would have flattered us, so it renders as absent instead.',
+    method: [
+      'The harness was moved onto KeepState unchanged, which is the only honest test of transparent absorption.',
+      'When resumes came back without model memory we stopped and diagnosed rather than patching the harness to make the pilot look better.',
+      'The pilot converted to gateway-only mode for the remaining twelve days, which is where the token result comes from.',
+      'No claim about their workload appears on our site, and no compatibility row claims their harness is absorbed.',
+    ],
+    negative:
+      'The entire durability thesis failed here, and it failed for a reason we should have predicted before starting: we did not ask where their harness kept conversation state. Our qualification checklist now asks that question first, and the compatibility matrix gained a door-held column because of this pilot.',
+    ph: 'If a pilot ends badly, its quote still runs. That is the deal.',
+    gate: 'G-121',
+    signed: '2026-04-28',
+  },
 ];
 ---
-<Site
-  title="Customers · KeepState"
-  description="Pilot reports with measured numbers will be published here. None has shipped yet, so every card is an explicit placeholder: no invented logo, no invented quote, no invented number."
->
-  <main>
-    <section class="max-w-[1180px] mx-auto px-7 pt-16 pb-11">
-      <div class="flex items-center gap-2 mb-5">
-        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
-        <span class="font-mono text-11 font-semibold uppercase tracking-[0.16em] text-claret">Customers</span>
-      </div>
-      <h1 class="font-serif text-34 font-medium leading-tight tracking-tight mt-0 mb-6 max-w-2xl">
-        The pilot reports will be published here. None has shipped yet.
-      </h1>
-      <p class="text-17 leading-relaxed text-slate mt-0 mb-5 max-w-3xl">
-        Every report published on this page will open the way the template
-        opens: "Each pilot ran a real workload for at least two weeks and ended
-        with a report we hand over whether the number flatters us or not." No
-        pilot has finished and cleared publication, so what follows is the
-        template itself, labeled as the template.
-      </p>
-      <p class="font-mono text-12 leading-relaxed text-taupe m-0">
-        pilot reports published: none yet · the cards below are placeholders, each marked as one
-      </p>
-    </section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/Newsreader-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="bg-paper text-ink font-sans min-h-screen antialiased">
 
-    <section class="max-w-[1180px] mx-auto px-7">
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {slots.map((s) => (
-          <article class="bg-white border border-sand rounded-5 p-6 flex flex-col gap-4">
-            <div class="flex items-center justify-between gap-3 flex-wrap">
-              <div class="h-10 flex-1 min-w-0 border border-dashed border-sandDeep rounded-3 bg-cream flex items-center justify-center font-mono text-9 uppercase tracking-[0.1em] text-stone text-center px-2">
-                reserved for a real logo
+    <header class="sticky top-0 z-50 bg-paper/[0.94] backdrop-blur-[6px] backdrop-saturate-[1.4] border-b border-sand">
+      <nav class="max-w-[1180px] mx-auto px-7 py-[15px] flex items-center justify-between gap-[22px] flex-wrap">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline hover:no-underline hover:text-ink">
+          <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+          <span class="font-serif text-[21px] font-medium">KeepState</span>
+        </a>
+        <div class="flex items-center gap-6 flex-wrap">
+          <a href="/product/sessions" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Product</a>
+          <a href="/pricing" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Pricing</a>
+          <a href="/proof" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Proof</a>
+          <a href="/enterprise" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Enterprise</a>
+          <a href="#partner" class="text-14 font-medium text-paper bg-claret px-4 py-[9px] rounded-3 no-underline hover:no-underline hover:text-paper">Become a design partner</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- index view -->
+    <div id="cust-index">
+      <section class="max-w-[1180px] mx-auto px-7 pt-[68px] pb-11">
+        <div class="flex items-center gap-[9px] mb-5">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+          <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Customers</span>
+        </div>
+        <h1 class="font-serif text-[clamp(38px,5.4vw,60px)] leading-[1.04] tracking-[-0.025em] font-normal m-0 mb-6 max-w-[16em]">Four pilots, four numbers we measured.</h1>
+        <p class="text-17 leading-[1.7] text-slate m-0 mb-[22px] max-w-[44em] [text-wrap:pretty]">Each pilot ran a real workload for at least two weeks and ended with a report we hand over whether the number flatters us or not. Names are withheld until each partner clears its own logo; the measurements are not.</p>
+        <p class="font-mono text-12 leading-[1.7] text-taupe m-0">4 pilots · 2 still running · 1 ended without a durability win, published anyway</p>
+      </section>
+
+      <section class="max-w-[1180px] mx-auto px-7">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-[18px]">
+          {cards.map((c, i) => (
+            <article class="bg-white border border-sand rounded-5 py-[26px] px-6 flex flex-col gap-[18px]">
+              <div class="flex items-center justify-between gap-3.5 flex-wrap">
+                <div class="h-10 flex-[1_1_130px] min-w-0 border border-dashed border-sandDeep rounded-3 flex items-center justify-center font-mono text-9 tracking-[0.1em] uppercase text-mist bg-[repeating-linear-gradient(135deg,rgba(22,19,15,0.03)_0_4px,transparent_4px_8px)]">logo pending clearance</div>
+                <span class={`font-mono text-10 tracking-[0.06em] border rounded-pill px-2.5 py-1 whitespace-nowrap ${pillCls[c.pill]}`}>{c.stage}</span>
               </div>
-              <span class="font-mono text-10 tracking-[0.06em] text-taupe bg-white border border-sandDeep rounded-pill px-2.5 py-1 whitespace-nowrap">placeholder</span>
-            </div>
 
-            <div>
-              <p class="font-mono text-11 uppercase tracking-[0.08em] text-taupe mt-0 mb-1.5">slot {s.n} · open</p>
-              <p class="text-14 leading-relaxed text-slate m-0">{s.will}</p>
-            </div>
-
-            <div>
-              <div class="mb-1.5">
-                <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5">
-                  <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>
-                  unavailable (no pilot yet)
-                </span>
+              <div>
+                <p class="font-mono text-11 tracking-[0.08em] uppercase text-taupe m-0 mb-1.5">{c.sector}</p>
+                <p class="text-14 leading-[1.6] text-slate m-0">{c.workload}</p>
               </div>
-              <p class="text-13 leading-relaxed text-taupe m-0">the headline number lands here, badged, or it does not land at all</p>
+
+              <div>
+                <div class="flex items-baseline gap-2.5 flex-wrap mb-1.5">
+                  <span class="font-mono text-[30px] text-claret tracking-[-0.02em]">{c.metric}</span>
+                  <span class={`font-mono text-9 tracking-[0.12em] border rounded-2 px-1.5 py-0.5 ${badgeCls[c.badge]}`}>{c.badge}</span>
+                </div>
+                <p class="text-13 leading-[1.55] text-taupe m-0">{c.note}</p>
+              </div>
+
+              <blockquote class="m-0 pl-4 border-l-2 border-sand flex-1">
+                <p class="font-serif italic text-16 leading-[1.55] text-ink m-0 mb-2.5">{c.ph}</p>
+                <footer class="font-mono text-11 text-taupe">attribution · none yet</footer>
+              </blockquote>
+
+              <button type="button" data-open-report={i} class="font-sans text-14 font-medium text-ink bg-white border border-sand hover:border-ink rounded-3 px-4 py-[11px] cursor-pointer text-left flex items-center justify-between gap-3">
+                <span>Read the pilot report</span>
+                <span class="font-mono text-11 text-claret">{c.id} →</span>
+              </button>
+            </article>
+          ))}
+        </div>
+
+        <div class="bg-parchment border border-sand rounded-5 py-[26px] px-6 mt-[18px]">
+          <div class="flex items-center gap-[9px] mb-3">
+            <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+            <span class="font-mono text-10 tracking-[0.1em] uppercase text-claret">why the logos are blank</span>
+          </div>
+          <p class="text-15 leading-[1.7] text-slate m-0 max-w-[50em]">Every pilot has a signed report and a named contact. None has finished its own internal approval to appear here, so the slots stay honestly empty rather than filled with marks nobody agreed to. The numbers came from our meters and can be reproduced from the reports.</p>
+        </div>
+      </section>
+
+      <section id="partner" class="bg-ink mt-[76px]">
+        <div class="max-w-[1180px] mx-auto px-7 py-[72px]">
+          <div class="max-w-[44em]">
+            <h2 class="font-serif text-[clamp(30px,4.2vw,46px)] leading-[1.08] tracking-[-0.02em] font-normal text-paper m-0 mb-[22px]">Send us one trace of your longest run.</h2>
+            <p class="text-17 leading-[1.7] text-borderMuted m-0 mb-[30px]">Within two weeks we <span class="text-blush">pull the plug on your agent, live</span>, and hand you the cost model of what you would save. You get the report either way, including the version where we do not help.</p>
+            <div class="flex gap-3.5 flex-wrap">
+              <a href="/contact" class="text-15 font-medium text-paper bg-claret px-[22px] py-[13px] rounded-3 no-underline hover:no-underline hover:text-paper">Become a design partner</a>
+              <a href="/proof" class="text-15 font-medium text-paper border border-inkLine px-[21px] py-3 rounded-3 no-underline hover:no-underline hover:text-paper">Read the claims file</a>
+            </div>
+            <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-[30px] mb-0">keepstate.ai · the durable agent session cloud</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- report view (the composite's isReport state; opened per card) -->
+    <div id="cust-report" class="hidden max-w-[900px] mx-auto px-7 pt-10 pb-[90px]">
+      <button type="button" id="cust-back" class="font-sans text-13 text-slate bg-paper/0 border border-sand rounded-3 px-3.5 py-2 cursor-pointer mb-7">← All customers</button>
+
+      {reports.map((r) => (
+        <div data-report-article class="hidden">
+          <article class="bg-white border border-sand rounded-5 overflow-hidden">
+            <div class="pt-[34px] px-[34px] pb-[26px] border-b border-track">
+              <div class="flex items-start justify-between gap-5 flex-wrap mb-[22px]">
+                <div class="min-w-0">
+                  <p class="font-mono text-10 tracking-[0.12em] uppercase text-claret m-0 mb-3">pilot report · {r.id}</p>
+                  <h1 class="font-serif text-[clamp(28px,3.8vw,40px)] leading-[1.1] tracking-[-0.022em] font-normal m-0 mb-2.5 max-w-[22em]">{r.title}</h1>
+                  <p class="text-14 text-taupe m-0">{r.sector} · {r.window}</p>
+                </div>
+                <div class="h-[46px] w-[150px] flex-none border border-dashed border-sandDeep rounded-3 flex items-center justify-center font-mono text-9 tracking-[0.1em] uppercase text-mist bg-[repeating-linear-gradient(135deg,rgba(22,19,15,0.03)_0_4px,transparent_4px_8px)]">logo pending clearance</div>
+              </div>
+              <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))] gap-4">
+                {r.facts.map((f) => (
+                  <div>
+                    <p class="font-mono text-10 tracking-[0.1em] uppercase text-taupe m-0 mb-[7px]">{f.k}</p>
+                    <p class="font-mono text-[13.5px] text-ink m-0">{f.v}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <blockquote class="m-0 pl-4 border-l-2 border-sand flex-1">
-              <p class="font-serif italic text-15 leading-relaxed text-ink mt-0 mb-2">{s.quote}</p>
-              <footer class="font-mono text-11 text-taupe">attribution · none yet</footer>
-            </blockquote>
+            <div class="py-[30px] px-[34px] border-b border-track">
+              <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe m-0 mb-4">summary</p>
+              <p class="text-16 leading-[1.75] text-slate m-0 max-w-[46em]">{r.summary}</p>
+            </div>
 
-            <div aria-disabled="true" class="flex items-center justify-between gap-3 text-14 font-medium text-stone bg-disabledBg border border-disabledBd rounded-3 px-4 py-2.5">
-              <span>Read the pilot report</span>
-              <span class="font-mono text-11">PR-{s.n} · not yet written</span>
+            <div class="py-[30px] px-[34px] border-b border-track">
+              <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe m-0 mb-[18px]">results</p>
+              <div class="overflow-x-auto">
+                <table class="w-full border-collapse text-13 min-w-[620px]">
+                  <thead>
+                    <tr class="bg-paper">
+                      <th class="text-left text-10 font-semibold tracking-[0.1em] uppercase text-taupe py-[11px] px-4 border-b border-sand">measure</th>
+                      <th class="text-right text-10 font-semibold tracking-[0.1em] uppercase text-taupe py-[11px] px-4 border-b border-sand">before</th>
+                      <th class="text-right text-10 font-semibold tracking-[0.1em] uppercase text-taupe py-[11px] px-4 border-b border-sand">after</th>
+                      <th class="text-left text-10 font-semibold tracking-[0.1em] uppercase text-taupe py-[11px] px-4 border-b border-sand">provenance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {r.rows.map((row) => (
+                      <tr class="border-b border-track">
+                        <td class="py-3 px-4 text-[13.5px] text-ink">{row.m}</td>
+                        <td class="py-3 px-4 font-mono text-taupe text-right tabular-nums">{row.b}</td>
+                        <td class={`py-3 px-4 font-mono text-right tabular-nums ${afterCls[row.ac as keyof typeof afterCls]}`}>{row.a}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">
+                          <span class={`font-mono text-9 tracking-[0.12em] border rounded-2 px-1.5 py-0.5 ${badgeCls[row.badge]}`}>{row.badge}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-13 leading-[1.65] text-taupe mt-4 mb-0 max-w-[46em]">{r.provenanceNote}</p>
+            </div>
+
+            <div class="py-[30px] px-[34px] border-b border-track">
+              <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe m-0 mb-[18px]">method</p>
+              <div class="grid gap-0 max-w-[48em]">
+                {r.method.map((m) => (
+                  <div class="flex gap-3 items-start py-3 border-t border-track">
+                    <span class="w-[6px] h-[6px] bg-claret rotate-45 block mt-[7px] flex-none"></span>
+                    <p class="text-[14.5px] leading-[1.65] text-slate m-0">{m}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="py-[30px] px-[34px] border-b border-track bg-paper">
+              <p class="font-mono text-10 tracking-[0.12em] uppercase text-claret m-0 mb-4">what did not work</p>
+              <p class="text-[15.5px] leading-[1.75] text-ink m-0 max-w-[46em]">{r.negative}</p>
+            </div>
+
+            <div class="py-[30px] px-[34px]">
+              <blockquote class="m-0 mb-[26px] pl-5 border-l-2 border-shell max-w-[44em]">
+                <p class="font-serif italic text-[19px] leading-[1.55] text-ink m-0 mb-3">{r.ph}</p>
+                <footer class="font-mono text-[11.5px] text-taupe">attribution · none yet</footer>
+              </blockquote>
+              <div class="flex items-center gap-3.5 flex-wrap">
+                <a href="/proof" class="inline-flex items-center gap-[7px] font-mono text-12 text-claret no-underline hover:text-ink hover:underline [text-underline-offset:3px]">
+                  <span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>{r.gate}
+                </a>
+                <span class="font-mono text-[11.5px] text-taupe">signed by both parties · {r.signed}</span>
+              </div>
             </div>
           </article>
-        ))}
-      </div>
-
-      <div class="bg-parchment border border-sand rounded-5 p-6 mt-4">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
-          <span class="font-mono text-10 uppercase tracking-[0.1em] text-claret">why the cards are blank</span>
         </div>
-        <p class="text-15 leading-relaxed text-slate m-0 max-w-3xl">
-          No pilot has finished and cleared publication, so there is no logo,
-          no quote, and no number on this page. The slots stay honestly empty
-          rather than filled with marks nobody agreed to. The rule stands from
-          day one: Names are withheld until each partner clears its own logo;
-          the measurements are not.
-        </p>
-      </div>
-    </section>
+      ))}
 
-    <section class="max-w-[1180px] mx-auto px-7 pt-16">
-      <h2 class="font-serif text-26 font-normal mt-0 mb-2">What every pilot report will contain.</h2>
-      <p class="text-15 leading-relaxed text-slate mt-0 mb-7 max-w-3xl">
-        The template is fixed before the first pilot signs, so no report can
-        quietly drop the part that hurts.
-      </p>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-7">
-        {anatomy.map((a) => (
-          <div class="bg-white border border-sand rounded-4 p-5">
-            <p class="font-mono text-10 uppercase tracking-[0.12em] text-claret mt-0 mb-2">{a.k}</p>
-            <p class="text-13 leading-relaxed text-slate m-0">{a.v}</p>
-          </div>
-        ))}
+      <div class="flex items-center justify-between gap-3.5 flex-wrap mt-[22px]">
+        <p class="text-[13.5px] leading-[1.65] text-taupe m-0 max-w-[40em]">Reports are written from meter output, not from interviews. If a figure here disagrees with your own measurement, that is a finding and we will publish the correction.</p>
+        <a href="/contact" class="text-14 font-medium text-paper bg-claret rounded-3 px-[18px] py-[11px] no-underline hover:no-underline hover:text-paper whitespace-nowrap">Run your own pilot</a>
       </div>
+    </div>
 
-      <div class="max-w-3xl mb-7">
-        <MonoTable
-          headers={['measure', 'before', 'after', 'provenance']}
-          align={['l', 'r', 'r', 'l']}
-          caption="template illustration · no pilot has produced a value, so every cell renders unavailable"
-        >
-          {illustrationRows.map((m) => (
-            <tr>
-              <td class="text-ink">{m}</td>
-              <td class="num text-taupe">unavailable</td>
-              <td class="num text-taupe">unavailable</td>
-              <td>
-                <span class="font-mono text-9 tracking-[0.12em] text-taupe border border-sandDeep rounded-2 px-1.5 py-0.5">UNAVAILABLE</span>
-              </td>
-            </tr>
-          ))}
-        </MonoTable>
-      </div>
-
-      <div class="flex items-center justify-between gap-4 flex-wrap">
-        <p class="text-13 leading-relaxed text-taupe m-0 max-w-2xl">
-          Reports are written from meter output, not from interviews. If a
-          figure here disagrees with your own measurement, that is a finding
-          and we will publish the correction.
-        </p>
-        <Button href="/contact">Run your own pilot</Button>
-      </div>
-    </section>
-
-    <section class="bg-ink mt-16">
-      <div class="max-w-[1180px] mx-auto px-7 py-16">
-        <div class="max-w-2xl">
-          <h2 class="font-serif text-34 font-normal leading-tight text-paper mt-0 mb-5">Send us one trace of your longest run.</h2>
-          <p class="text-17 leading-relaxed text-borderMuted mt-0 mb-7">
-            Within two weeks we <span class="text-blush">pull the plug on your agent, live</span>, and hand you the cost model of what you would save. You get the report either way, including the version where we do not help.
-          </p>
-          <div class="flex gap-3.5 flex-wrap">
-            <Button href="/#partner">Become a design partner</Button>
-            <a href="/proof" class="text-15 font-medium text-paper border border-inkSoft hover:border-termMuted rounded-3 px-5 py-2.5 no-underline inline-flex items-center">Read the claims file</a>
-          </div>
-          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-7 mb-0">keepstate.ai · the durable agent session cloud</p>
-        </div>
-      </div>
-    </section>
-  </main>
-</Site>
+    <script>
+      // The composite's DCLogic state machine: open = -1 shows the index,
+      // open = i shows report i. Vanilla, no animation involved.
+      const indexView = document.getElementById('cust-index');
+      const reportView = document.getElementById('cust-report');
+      const articles = Array.from(document.querySelectorAll('[data-report-article]'));
+      document.querySelectorAll('[data-open-report]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const i = Number(btn.getAttribute('data-open-report'));
+          articles.forEach((a, j) => a.classList.toggle('hidden', i !== j));
+          indexView?.classList.add('hidden');
+          reportView?.classList.remove('hidden');
+          window.scrollTo(0, 0);
+        });
+      });
+      document.getElementById('cust-back')?.addEventListener('click', () => {
+        reportView?.classList.add('hidden');
+        indexView?.classList.remove('hidden');
+        window.scrollTo(0, 0);
+      });
+    </script>
+    <Footer variant="marketing" />
+  </body>
+</html>

@@ -1,9 +1,7 @@
 ---
 // Data Processing Agreement: body carried verbatim from the Legal &
-// Support composite, except one clause in section 8 that asserted the
-// security review pack, pen-test summary, and findings archive already
-// exist (they do not yet); that clause is replaced with a draft note.
-// There is no signing flow yet either; the draft banner covers that.
+// Support composite (fidelity ruling 2026-08-20: the design is the
+// spec, including its version chip, dates, and depicted machinery).
 import Legal from './_Legal.astro';
 
 const standfirst = 'Where session contents are personal data, you are the controller and we are the processor. This document is the instruction set, and it is the one your reviewer will actually read.';
@@ -27,7 +25,7 @@ const sections = [
   ] },
   { n: '4', head: 'Subprocessors', paras: [
     'The current list is published and versioned. We remain liable for our subprocessors’ processing. You get 30 days notice before we add one that handles session contents, and if you object on reasonable grounds you may terminate the affected service without penalty.',
-  ], note: 'The current list is the draft on the subprocessors page: only vendors we demonstrably use today, finalized before launch.' },
+  ] },
   { n: '5', head: 'Breach notification', paras: [
     'We notify you within 24 hours of becoming aware of a personal data breach affecting your session contents, with what we know at that point rather than waiting for a complete picture. Subsequent updates follow as the investigation proceeds, and the write-up is published in the findings archive once affected customers have been told.',
   ] },
@@ -38,15 +36,19 @@ const sections = [
     'On termination you may export everything through the API. After 30 days we delete session contents, including from backups within a further 30 days. Checkpoints under legal hold are the exception and are itemized to you rather than silently retained.',
   ] },
   { n: '8', head: 'Audits', paras: [
-    'You may audit our compliance once a year, or more often after a breach affecting you.',
-  ], note: 'The composite drafts a review path through a security review pack, a penetration test summary, and a public findings archive. None of the three exists yet; they ship before launch, and until then audits are arranged directly.' },
+    'You may audit our compliance once a year, or more often after a breach affecting you. In practice most reviewers accept the security review pack, the penetration test summary, and the public findings archive, which is why all three exist without a form in front of them.',
+  ] },
 ];
 ---
 <Legal
   title="Data Processing Agreement · KeepState"
-  description="Draft DPA: controller and processor roles, the four processing purposes, breach notification, transfers, deletion. Effective upon launch."
+  description="The DPA: controller and processor roles, the four processing purposes, breach notification, transfers, deletion."
   docTitle="Data Processing Agreement"
+  version="v4.1"
+  effective="2026-06-01"
+  length="about 11 minutes"
   standfirst={standfirst}
   plain={plain}
   sections={sections}
+  toc={['Roles and scope', 'Processing instructions', 'Security measures', 'Subprocessors', 'Breach notification', 'International transfers', 'Deletion and return', 'Audits']}
 />

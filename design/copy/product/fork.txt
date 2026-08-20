@@ -1,1 +1,14 @@
+# Verbatim lines from design/Product Pages.dc.html (tab 1: Fork)
 Every checkpoint is a door to six futures.
+A fork is a new conversation with an old world as its parent. Branch a freeze from two days ago into six universes, run them at once, and keep the one whose tests you believe.
+--steer "one big migration"
+--steer "keep legacy adapter"
+--steer "split by tenant"
+Fork a two-day-old freeze ten times. The API is stateless; each fork is just a conversation that went differently. Your bill is the only one who notices, and a shared budget pool means a fan-out cannot exceed the cap you already set.
+This is the difference between steering an agent and gambling on it. You stop choosing which instruction to try and run all of them from the same starting state, then keep the one that produced tests you believe.
+each independent, all concurrent
+content-addressed, shared with the parent
+ten forks cannot exceed the parent cap
+Fan-out containment is gated at 200 concurrent forks against a single pool.
+Stop gambling on one instruction.
+Run all of them from the same freeze and keep the winner.

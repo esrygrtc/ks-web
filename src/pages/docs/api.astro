@@ -1,9 +1,12 @@
 ---
 // Generated API inventory: routes from the daemon's own server.go.
+// Styled to the composite's API archetype: one endpoint card per route,
+// method badge on claret, path in mono.
 import Docs from '../../layouts/Docs.astro';
 import docs from '../../generated/docs.json';
+const headings = [{ depth: 2, slug: 'endpoints', text: 'Endpoints' }];
 ---
-<Docs title="API reference · KeepState docs" description="The ksd daemon's HTTP surface, synced from its route table.">
+<Docs title="API reference · KeepState docs" description="The ksd daemon's HTTP surface, synced from its route table." headings={headings}>
   <h1>API reference</h1>
   <p>
     The daemon listens on <code>127.0.0.1:7440</code> inside the bench
@@ -11,14 +14,15 @@ import docs from '../../generated/docs.json';
     anything the CLI does, the API does. Full request and response schemas
     arrive with the han protocol documentation.
   </p>
-  <table>
-    <thead><tr><th>Method</th><th>Path</th></tr></thead>
-    <tbody>
-      {docs.routes.map((r) => (
-        <tr><td><code>{r.method}</code></td><td><code>{r.path}</code></td></tr>
-      ))}
-    </tbody>
-  </table>
+  <h2 id="endpoints">Endpoints</h2>
+  <div class="grid gap-2.5 mb-[26px]">
+    {docs.routes.map((r) => (
+      <div class="flex items-center gap-3 flex-wrap bg-white border border-sand rounded-4 px-4 py-[13px]">
+        <span class="font-mono text-11 tracking-[0.08em] text-paper bg-claret rounded-3 px-[9px] py-1">{r.method}</span>
+        <span class="font-mono text-14 text-ink">{r.path}</span>
+      </div>
+    ))}
+  </div>
   <p>
     Sessions are created with <code>POST /sessions</code>, frozen with
     <code>POST /sessions/&lbrace;id&rbrace;/checkpoint</code>, woken with

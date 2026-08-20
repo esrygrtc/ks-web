@@ -10,6 +10,9 @@ const FORMS = {
   grants: { fields: ['track', 'name', 'link', 'run', 'credits'], table: 'grants' },
   subscribe: { fields: ['email'], table: 'subscribers' },
   contact: { fields: ['name', 'email', 'message'], table: 'contact' },
+  // The help-center ticket (design's Legal & Support composite): only
+  // the symptom is required; evidence and session id are welcome extras.
+  support: { fields: ['kind', 'symptom'], extras: ['evidence', 'session'], table: 'contact' },
 };
 const RATE_LIMIT = 5;          // submissions
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -93,7 +96,7 @@ for (const [form, spec] of Object.entries(FORMS)) {
           partitionKey: ipHash,
           rowKey: `${new Date().toISOString()}_${randomUUID().slice(0, 8)}`,
           form,
-          ...Object.fromEntries(spec.fields.map((f) => [f, String(body[f]).slice(0, 4000)])),
+          ...Object.fromEntries([...spec.fields, ...(spec.extras ?? [])].map((f) => [f, String(body[f] ?? '').slice(0, 4000)])),
           emailStatus: 'pending',
         };
         await client.createEntity(row);          // durability FIRST

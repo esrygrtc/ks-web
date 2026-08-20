@@ -1,32 +1,46 @@
 ---
 // Generated from the product OPERATOR manual's own symptom table.
+// Styled to the composite's troubleshooting archetype: one card per
+// symptom with a diamond kicker, serif symptom line, and labeled
+// meaning/action sections; the blocked protocol closes in the
+// composite's blush panel treatment.
 import Docs from '../../layouts/Docs.astro';
 import docs from '../../generated/docs.json';
 const mono = (s) => s.replace(/`([^`]+)`/g, '<code>$1</code>');
+const headings = docs.trouble.map((t, i) => ({ depth: 2, slug: `sym-${i}`, text: t.symptom.replace(/`/g, '') }));
 ---
-<Docs title="Troubleshooting · KeepState docs" description="Symptoms, what they mean, and what to do, synced from the operator manual.">
+<Docs title="Troubleshooting · KeepState docs" description="Symptoms, what they mean, and what to do, synced from the operator manual." headings={headings}>
   <h1>Troubleshooting</h1>
   <p>
     <code>ks doctor</code> is the first move, always: it is the executable
     form of every hazard this project has hit, and every gate calls it
     first. The table is synced from the operator manual.
   </p>
-  <table>
-    <thead><tr><th>Symptom</th><th>What it means</th><th>What to do</th></tr></thead>
-    <tbody>
-      {docs.trouble.map((t) => (
-        <tr>
-          <td set:html={mono(t.symptom)} />
-          <td set:html={mono(t.meaning)} />
-          <td set:html={mono(t.action)} />
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  <p>
-    Stuck past that? The product's blocked protocol applies to humans too:
-    after three genuinely different failed hypotheses, stop and write down
-    the symptom, the hypotheses, and the evidence. Then
-    <a href="/contact">send it to us</a>.
-  </p>
+  <div class="grid gap-[18px] mt-6">
+    {docs.trouble.map((t, i) => (
+      <article id={`sym-${i}`} class="bg-white border border-sand rounded-5 p-6">
+        <div class="flex items-center gap-[9px] mb-3">
+          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+          <p class="font-mono text-10 tracking-[0.1em] uppercase text-claret m-0">symptom</p>
+        </div>
+        <p class="font-serif text-22 leading-[1.25] text-ink m-0 mb-[18px]" set:html={mono(t.symptom)} />
+        <p class="text-11 font-semibold tracking-[0.1em] uppercase text-taupe m-0 mb-2">What it means</p>
+        <p class="text-15 leading-[1.7] text-slate m-0 mb-4" set:html={mono(t.meaning)} />
+        <p class="text-11 font-semibold tracking-[0.1em] uppercase text-taupe m-0 mb-2">What to do</p>
+        <p class="text-15 leading-[1.7] text-slate m-0" set:html={mono(t.action)} />
+      </article>
+    ))}
+  </div>
+  <div class="bg-blushBg border border-shell rounded-5 p-6 mt-9">
+    <div class="flex items-center gap-[9px] mb-3">
+      <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+      <p class="font-mono text-10 tracking-[0.1em] uppercase text-claret m-0">stuck past that</p>
+    </div>
+    <p class="text-15 leading-[1.7] text-ink m-0">
+      The product's blocked protocol applies to humans too: after three
+      genuinely different failed hypotheses, stop and write down the
+      symptom, the hypotheses, and the evidence. Then
+      <a href="/contact">send it to us</a>.
+    </p>
+  </div>
 </Docs>

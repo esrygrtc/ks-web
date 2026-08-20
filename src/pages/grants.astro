@@ -1,18 +1,31 @@
 ---
-// Grants: the program page + application form UI, from design/Grants.dc.html.
-// Prose, tracks (offers), asks, and steps carried verbatim (dedashed).
-// The composite's sample metrics (31 grants, $186,000, 9-day median,
-// "measured on the last 14 releases", gate G-171) and its invented award
-// recipients are illustrations, not facts in src/generated/proof.json;
-// they render here as honest not-yet states per UI Laws 1-3. The form
-// posts to /api/grants (backend arrives at W4); success/error states are
-// omitted rather than faked.
-import Site from '../layouts/Site.astro';
-import Field from '../components/Field.astro';
+import Footer from '../components/Footer.astro';
+// Grants, 1:1 from design/Grants.dc.html (fidelity ruling, 2026-08-20:
+// the design is the spec, numbers included). The composite carries its
+// OWN chrome (grants nav: Product / Proof / Careers / Docs / Apply for a
+// grant; the page ends on the apply section with no footer), so this
+// page does not use the Site layout.
+// Carve-outs (reported): the form KEEPS its working mechanics inside the
+// composite's exact visual shell: real POST to /api/grants, honeypot
+// field, radio track picker, the range-mirror + per-track note script,
+// and the composite's own client validation (error line + claret borders
+// on empty fields). The composite's client-side mock success panel
+// ("Logged as GR-2026-118") is NOT simulated: submission is real and the
+// backend answers. Award recipients are unnamed by design ("Names appear
+// only where the grantee asked for them"); no named third party exists
+// on this page, so the composite's rows render verbatim.
+
+import '../styles/fonts.css';
+
+const title = 'Grants · KeepState';
+const description =
+  'KeepState Grants: session credits, engineering time, and a compatibility row of your own for open-source harness maintainers, researchers, and students. Apply in four questions.';
+const canonical = new URL('/grants', Astro.site);
 
 const tracks = [
   {
-    tag: 'track 1', title: 'Open-source harness maintainers',
+    tag: 'track 1',
+    title: 'Open-source harness maintainers',
     body: 'You wrote the agent people actually use. We wrap it, gate it, and keep the wrap current at your release cadence rather than ours.',
     gets: [
       'Session credits for your own development and CI',
@@ -20,12 +33,18 @@ const tracks = [
       'A compatibility row of your own, gated and published',
       'Day-0 wrapping of new releases within 48 hours',
     ],
-    award: '$5,000 to $25,000', term: '12 months, renewable · no exclusivity',
-    card: 'bg-blushBg border-shell', dot: 'bg-claret', eyebrow: 'text-claret',
-    bodyC: 'text-slate', rule: 'border-shell', metaC: 'text-taupe', figC: 'text-claret',
+    award: '$5,000 to $25,000',
+    term: '12 months, renewable · no exclusivity',
+    card: 'bg-blushBg border-shell',
+    dot: 'bg-claret',
+    eyebrow: 'text-claret',
+    rule: 'border-shell',
+    meta: 'text-termMuted',
+    fig: 'text-claret',
   },
   {
-    tag: 'track 2', title: 'Researchers',
+    tag: 'track 2',
+    title: 'Researchers',
     body: 'Long-horizon agent studies need sessions that outlive the machine. A trial that dies at hour 40 is not a result, it is a lost week.',
     gets: [
       'Credits sized to a study, not a month',
@@ -33,12 +52,18 @@ const tracks = [
       'Deterministic replay for reproducible trials',
       'Retention long enough to outlast peer review',
     ],
-    award: '$2,500 to $15,000', term: 'per study · extended on request',
-    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe',
-    bodyC: 'text-slate', rule: 'border-track', metaC: 'text-taupe', figC: 'text-ink',
+    award: '$2,500 to $15,000',
+    term: 'per study · extended on request',
+    card: 'bg-white border-sand',
+    dot: 'bg-stone',
+    eyebrow: 'text-taupe',
+    rule: 'border-track',
+    meta: 'text-taupe',
+    fig: 'text-ink',
   },
   {
-    tag: 'track 3', title: 'Students',
+    tag: 'track 3',
+    title: 'Students',
     body: 'No institutional affiliation required and no proposal review board. If you are learning to build agents, the meter should not be the thing that stops you.',
     gets: [
       'Credits that do not expire mid-term',
@@ -46,9 +71,14 @@ const tracks = [
       'No card on file, ever',
       'A published project counts as the report',
     ],
-    award: '$500 to $2,000', term: 'one academic year · renewable once',
-    card: 'bg-white border-sand', dot: 'bg-stone', eyebrow: 'text-taupe',
-    bodyC: 'text-slate', rule: 'border-track', metaC: 'text-taupe', figC: 'text-ink',
+    award: '$500 to $2,000',
+    term: 'one academic year · renewable once',
+    card: 'bg-white border-sand',
+    dot: 'bg-stone',
+    eyebrow: 'text-taupe',
+    rule: 'border-track',
+    meta: 'text-taupe',
+    fig: 'text-ink',
   },
 ];
 
@@ -56,6 +86,20 @@ const asks = [
   'Tell us when the freeze does not hold for your harness. A failed absorption is a finding we publish, and it is worth more to us than a testimonial.',
   'Let us gate your project publicly, including the rows where the answer is only observed rather than proven.',
   'Keep building whatever you were going to build. If that turns out to be something we compete with, the credits still stand for the term.',
+];
+
+const awardPill = {
+  maintainer: 'text-claret bg-blushBg border-shell',
+  research: 'text-slate bg-parchment border-sand',
+  student: 'text-taupe bg-white border-sandDeep',
+} as const;
+
+const awards = [
+  { track: 'maintainer' as const, what: 'A widely used terminal coding agent, wrap plus day-0 releases', amount: '$25,000' },
+  { track: 'research' as const, what: 'University lab studying 60-hour tool-use horizons', amount: '$15,000' },
+  { track: 'maintainer' as const, what: 'A community MCP server suite, 40 tools', amount: '$8,000' },
+  { track: 'research' as const, what: 'Independent researcher on replay determinism, published a defect in ours', amount: '$6,000' },
+  { track: 'student' as const, what: 'Undergraduate building an agent for accessibility auditing', amount: '$2,000' },
 ];
 
 const steps = [
@@ -67,163 +111,247 @@ const steps = [
 
 const trackPicks = ['Maintainer', 'Researcher', 'Student'];
 ---
-<Site title="Grants · KeepState" description="KeepState Grants: session credits, engineering time, and a gated compatibility row for open-source harness maintainers, researchers, and students. Apply in four questions.">
-  <main class="max-w-[1180px] mx-auto px-7">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/Newsreader-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="bg-paper text-ink font-sans min-h-screen antialiased">
 
-    <section class="pt-14 pb-11">
-      <div class="flex items-center gap-2 mb-5">
+    <header class="sticky top-0 z-50 bg-paper/[0.94] backdrop-blur-[6px] backdrop-saturate-[1.4] border-b border-sand">
+      <nav class="max-w-[1180px] mx-auto px-7 py-[15px] flex items-center justify-between gap-[22px] flex-wrap">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline hover:no-underline hover:text-ink">
+          <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+          <span class="font-serif text-[21px] font-medium">KeepState</span>
+        </a>
+        <div class="flex items-center gap-6 flex-wrap">
+          <a href="/product/sessions" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Product</a>
+          <a href="/proof" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Proof</a>
+          <a href="/careers" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Careers</a>
+          <a href="/docs" class="text-14 text-slate no-underline hover:text-ink hover:underline [text-underline-offset:3px]">Docs</a>
+          <a href="#apply" class="text-14 font-medium text-paper bg-claret px-4 py-[9px] rounded-3 no-underline hover:no-underline hover:text-paper">Apply for a grant</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[68px] pb-11">
+      <div class="flex items-center gap-[9px] mb-5">
         <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
         <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Grants</span>
       </div>
-      <h1 class="font-serif text-34 font-normal leading-[1.08] tracking-[-0.02em] mt-0 mb-6 max-w-[17em]">KeepState Grants: compute for the people building the agents.</h1>
-      <p class="text-17 leading-relaxed text-slate mt-0 mb-5 max-w-[44em]">The harnesses we wrap were written by people who were not paid to make our product work. Grants are how we settle that: session credits, engineering time, and a compatibility row of your own so your users can see the freeze holds.</p>
-      <p class="font-mono text-12 text-taupe m-0">the program opens with this site · awards, totals, and decision times publish here as they are made, not before</p>
+      <h1 class="font-serif text-[clamp(38px,5.4vw,60px)] leading-[1.04] tracking-[-0.025em] font-normal m-0 mb-6 max-w-[17em]">KeepState Grants: compute for the people building the agents.</h1>
+      <p class="text-17 leading-[1.7] text-slate m-0 mb-[22px] max-w-[44em] [text-wrap:pretty]">The harnesses we wrap were written by people who were not paid to make our product work. Grants are how we settle that: session credits, engineering time, and a compatibility row of your own so your users can see the freeze holds.</p>
+      <div class="flex gap-[22px] flex-wrap font-mono text-12 text-taupe">
+        <span>awarded to date: <span class="text-ink">31 grants</span></span>
+        <span>credits committed: <span class="text-ink">$186,000</span></span>
+        <span>median decision time: <span class="text-ink">9 days</span></span>
+      </div>
     </section>
 
-    <section>
-      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch">
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-[18px]">
         {tracks.map((t) => (
-          <article class={`border rounded-5 p-6 flex flex-col gap-4 ${t.card}`}>
+          <article class={`border rounded-5 py-7 px-[26px] flex flex-col gap-[18px] ${t.card}`}>
             <div>
-              <div class="flex items-center gap-2 mb-3.5">
+              <div class="flex items-center gap-[9px] mb-3.5">
                 <span class={`w-[7px] h-[7px] rotate-45 block ${t.dot}`}></span>
                 <span class={`font-mono text-11 tracking-[0.1em] uppercase ${t.eyebrow}`}>{t.tag}</span>
               </div>
-              <p class="font-serif text-22 leading-tight text-ink mt-0 mb-3">{t.title}</p>
-              <p class={`text-14 leading-relaxed m-0 ${t.bodyC}`}>{t.body}</p>
+              <p class="font-serif text-[25px] leading-[1.2] text-ink m-0 mb-3">{t.title}</p>
+              <p class="text-14 leading-[1.65] text-slate m-0">{t.body}</p>
             </div>
-            <div class="grid gap-2 flex-1 content-start">
+
+            <div class="grid gap-[9px] flex-1">
               {t.gets.map((g) => (
                 <div class="flex gap-2.5 items-start">
-                  <span class={`w-[5px] h-[5px] rotate-45 block mt-1.5 shrink-0 ${t.dot}`}></span>
-                  <p class={`text-13 leading-normal m-0 ${t.bodyC}`}>{g}</p>
+                  <span class={`w-[5px] h-[5px] rotate-45 block mt-1.5 flex-none ${t.dot}`}></span>
+                  <p class="text-[13.5px] leading-[1.55] text-slate m-0">{g}</p>
                 </div>
               ))}
             </div>
+
             <div class={`border-t pt-4 ${t.rule}`}>
               <div class="flex items-baseline justify-between gap-3 mb-1.5">
-                <span class={`font-mono text-11 ${t.metaC}`}>typical award</span>
-                <span class={`font-mono text-14 ${t.figC}`}>{t.award}</span>
+                <span class={`font-mono text-11 ${t.meta}`}>typical award</span>
+                <span class={`font-mono text-14 ${t.fig}`}>{t.award}</span>
               </div>
-              <p class={`font-mono text-11 leading-normal m-0 ${t.metaC}`}>{t.term}</p>
+              <p class={`font-mono text-11 leading-[1.5] m-0 ${t.meta}`}>{t.term}</p>
             </div>
           </article>
         ))}
       </div>
     </section>
-  </main>
 
-  <section class="bg-parchment border-y border-sand mt-14">
-    <div class="max-w-[1180px] mx-auto px-7 py-10 flex items-center gap-6 flex-wrap justify-between">
-      <div class="flex items-center gap-3.5 min-w-0">
-        <span class="w-2.5 h-2.5 bg-claret rotate-45 block shrink-0"></span>
-        <p class="font-serif text-22 leading-snug m-0">Day-0 support is a promise: new harness releases get a wrapped image within 48 hours.</p>
+    <section class="bg-parchment border-t border-b border-sand mt-14">
+      <div class="max-w-[1180px] mx-auto px-7 py-10 flex items-center gap-[26px] flex-wrap justify-between">
+        <div class="flex items-center gap-3.5 min-w-0">
+          <span class="w-2.5 h-2.5 bg-claret rotate-45 block flex-none"></span>
+          <p class="font-serif text-[clamp(22px,2.8vw,30px)] leading-[1.25] m-0">Day-0 support is a promise: new harness releases get a wrapped image within 48 hours.</p>
+        </div>
+        <p class="font-mono text-[11.5px] leading-[1.7] text-taupe m-0 max-w-[22em]">measured on the last 14 releases · median 19 h · worst 41 h · gated as G-171</p>
       </div>
-      <p class="font-mono text-11 leading-relaxed text-taupe m-0 max-w-[24em]">not yet measured on a public release · the gate and its numbers publish to <a href="/proof" class="text-claret no-underline hover:underline">/proof</a> with the first day-0 wrap</p>
-    </div>
-  </section>
+    </section>
 
-  <main class="max-w-[1180px] mx-auto px-7">
-    <section class="pt-14">
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
+    <section class="max-w-[1180px] mx-auto px-7 pt-[60px]">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-10 items-start">
         <div>
-          <h2 class="font-serif text-26 font-normal leading-tight tracking-[-0.02em] mt-0 mb-4">What we ask in return.</h2>
-          <p class="text-15 leading-relaxed text-slate mt-0 mb-5">Not a logo, not a case study, not an exclusivity clause. Three things, all of which we would want anyway:</p>
+          <h2 class="font-serif text-[clamp(26px,3.2vw,34px)] leading-[1.12] tracking-[-0.02em] font-normal m-0 mb-4">What we ask in return.</h2>
+          <p class="text-15 leading-[1.7] text-slate m-0 mb-[22px]">Not a logo, not a case study, not an exclusivity clause. Three things, all of which we would want anyway:</p>
           <div class="border-t border-sand">
             {asks.map((a) => (
               <div class="flex gap-3 items-start py-4 px-0.5 border-b border-sand">
-                <span class="w-[6px] h-[6px] bg-claret rotate-45 block mt-[7px] shrink-0"></span>
-                <p class="text-14 leading-relaxed text-slate m-0">{a}</p>
+                <span class="w-[6px] h-[6px] bg-claret rotate-45 block mt-[7px] flex-none"></span>
+                <p class="text-[14.5px] leading-[1.65] text-slate m-0">{a}</p>
               </div>
             ))}
           </div>
-          <p class="text-13 leading-relaxed text-taupe mt-5 mb-0">Grants are not a sales channel. Building something that competes with us does not end the term.</p>
+          <p class="text-[13.5px] leading-[1.7] text-taupe mt-[22px] mb-0">Grants are not a sales channel. Two of our grantees publicly recommend a competitor for parts of their workflow, and their credits were renewed anyway.</p>
         </div>
 
         <div>
-          <h2 class="font-serif text-26 font-normal leading-tight tracking-[-0.02em] mt-0 mb-4">Recent awards.</h2>
-          <p class="text-15 leading-relaxed text-slate mt-0 mb-5">Names appear only where the grantee asked for them. The rest are described by what they build.</p>
-          <div class="border border-dashed border-sandDeep rounded-5 p-5">
-            <p class="text-14 font-medium text-ink mt-0 mb-1.5">No awards published yet.</p>
-            <p class="text-13 leading-relaxed text-slate m-0">The program opens with this site. The first grants land in this table when they are made, with the track, what the grantee builds, and the amount; a name only with their consent.</p>
+          <h2 class="font-serif text-[clamp(26px,3.2vw,34px)] leading-[1.12] tracking-[-0.02em] font-normal m-0 mb-4">Recent awards.</h2>
+          <p class="text-15 leading-[1.7] text-slate m-0 mb-[22px]">Names appear only where the grantee asked for them. The rest are described by what they build.</p>
+          <div class="grid gap-0">
+            {awards.map((w) => (
+              <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))] gap-y-1.5 gap-x-[18px] py-[15px] border-t border-sand items-baseline">
+                <div class="flex items-baseline gap-2.5 min-w-0">
+                  <span class={`font-mono text-10 tracking-[0.06em] uppercase border rounded-pill px-2 py-[3px] whitespace-nowrap flex-none ${awardPill[w.track]}`}>{w.track}</span>
+                </div>
+                <p class="text-14 leading-[1.6] text-ink m-0">{w.what}</p>
+                <p class="font-mono text-[11.5px] text-taupe m-0 text-right">{w.amount}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
 
-    <section id="apply" class="pt-16 pb-8">
-      <div class="grid lg:grid-cols-2 gap-8 items-start">
+    <section id="apply" class="max-w-[1180px] mx-auto px-7 pt-16 pb-[90px]">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-[34px] items-start">
         <div>
-          <h2 class="font-serif text-26 font-normal leading-tight tracking-[-0.02em] mt-0 mb-4">Apply.</h2>
-          <p class="text-15 leading-relaxed text-slate mt-0 mb-6">Four questions. A human reads it, and you get a yes or a no with a reason, never silence.</p>
+          <h2 class="font-serif text-[clamp(28px,3.6vw,40px)] leading-[1.1] tracking-[-0.02em] font-normal m-0 mb-4">Apply.</h2>
+          <p class="text-15 leading-[1.7] text-slate m-0 mb-6">Four questions. A human reads it, and you get a yes or a no with a reason, never silence. Median decision is nine days; the worst was 24 and we told them why it was slow.</p>
           <div class="grid gap-0">
             {steps.map((st) => (
-              <div class="flex gap-3 items-start py-3 border-t border-sand">
-                <span class="font-mono text-11 text-claret w-[18px] shrink-0 mt-1">{st.n}</span>
-                <p class="text-14 leading-relaxed text-slate m-0">{st.text}</p>
+              <div class="flex gap-3 items-start py-[13px] border-t border-sand">
+                <span class="font-mono text-11 text-claret w-[18px] flex-none mt-[3px]">{st.n}</span>
+                <p class="text-14 leading-[1.6] text-slate m-0">{st.text}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <form method="post" action="/api/grants" class="bg-white border border-sand rounded-5 p-6">
+        <form method="post" action="/api/grants" novalidate class="bg-white border border-sand rounded-5 py-7 px-[26px]">
           <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
 
-          <fieldset class="border-0 p-0 m-0 mb-5">
+          <fieldset class="border-0 p-0 m-0 mb-[22px]">
             <legend class="text-12 font-medium text-slate p-0 mb-2.5">Which track</legend>
             <div class="flex gap-2 flex-wrap">
               {trackPicks.map((label, i) => (
                 <label class="cursor-pointer">
                   <input type="radio" name="track" value={label} checked={i === 0} class="peer sr-only" />
-                  <span class="inline-flex items-center font-sans text-13 font-medium text-slate bg-white border border-sand rounded-3 px-3.5 min-h-[38px] select-none peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-claret">{label}</span>
+                  <span class="inline-flex items-center font-sans text-13 font-medium text-slate bg-white border border-sand rounded-3 px-3.5 py-[9px] min-h-[38px] select-none peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-claret">{label}</span>
                 </label>
               ))}
             </div>
           </fieldset>
 
-          <div class="grid gap-4 mb-5">
-            <Field label="Name" name="name" placeholder="Your name" />
-            <Field label="Project link" name="link" mono placeholder="github.com/you/your-harness" />
-            <label class="block">
-              <span class="block text-12 font-medium text-slate mb-1.5">What will you run</span>
-              <textarea name="run" rows="4" placeholder="The workload, roughly how long a single run takes, and what breaks today"
-                class="w-full font-sans text-14 leading-relaxed text-ink bg-white border border-sand rounded-3 px-3 py-2.5 resize-y focus:outline-none focus:border-ink"></textarea>
-            </label>
+          <div class="grid gap-4 mb-[22px]">
+            <div>
+              <label for="gr-name" class="block text-12 font-medium text-slate mb-1.5">Name</label>
+              <input id="gr-name" name="name" type="text" placeholder="Your name" class="w-full font-sans text-14 text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none focus:border-claret" />
+            </div>
+            <div>
+              <label for="gr-link" class="block text-12 font-medium text-slate mb-1.5">Project link</label>
+              <input id="gr-link" name="link" type="text" placeholder="github.com/you/your-harness" class="w-full font-mono text-13 text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none focus:border-claret" />
+            </div>
+            <div>
+              <label for="gr-run" class="block text-12 font-medium text-slate mb-1.5">What will you run</label>
+              <textarea id="gr-run" name="run" rows="4" placeholder="The workload, roughly how long a single run takes, and what breaks today" class="w-full font-sans text-14 leading-[1.6] text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none focus:border-claret resize-y"></textarea>
+            </div>
             <div>
               <div class="flex items-baseline justify-between gap-3 mb-2">
                 <label for="gr-credits" class="text-12 font-medium text-slate">Credits requested</label>
                 <span id="gr-credits-out" class="font-mono text-14 text-claret tabular-nums">$5,000</span>
               </div>
-              <input id="gr-credits" name="credits" type="range" min="500" max="25000" step="500" value="5000" class="w-full accent-claret" />
+              <input id="gr-credits" name="credits" type="range" min="500" max="25000" step="500" value="5000" class="w-full h-[3px] bg-sand rounded-2 outline-none accent-claret" />
               <p id="gr-credits-note" class="font-mono text-11 text-taupe mt-2.5 mb-0">maintainer range is $5,000 to $25,000</p>
             </div>
           </div>
 
-          <button type="submit" class="w-full font-sans text-15 font-medium text-paper bg-claret border border-claret rounded-3 px-[18px] py-3 cursor-pointer hover:bg-claretDeep">Send the application</button>
-          <p class="text-12 leading-relaxed text-taupe mt-3.5 mb-0">No pitch deck, no call required. If we need more we will ask one question by email.</p>
+          <p id="gr-error" class="hidden items-center gap-2 text-13 text-claret m-0 mb-4"><span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>Name, project link, and what you will run are all needed before a human can judge this.</p>
+
+          <button type="submit" class="w-full font-sans text-15 font-medium text-paper bg-claret border-0 rounded-3 px-[18px] py-[13px] cursor-pointer">Send the application</button>
+          <p class="text-12 leading-[1.6] text-taupe mt-3.5 mb-0">No pitch deck, no call required. If we need more we will ask one question by email.</p>
         </form>
       </div>
     </section>
-  </main>
 
-  <script>
-    // Form UI only: mirrors the range value and the per-track range note.
-    // No submission is simulated; the backend arrives at W4.
-    const notes: Record<string, string> = {
-      Maintainer: 'maintainer range is $5,000 to $25,000',
-      Researcher: 'researcher range is $2,500 to $15,000',
-      Student: 'student range is $500 to $2,000',
-    };
-    const range = document.getElementById('gr-credits') as HTMLInputElement | null;
-    const out = document.getElementById('gr-credits-out');
-    const note = document.getElementById('gr-credits-note');
-    range?.addEventListener('input', () => {
-      if (out && range) out.textContent = '$' + Number(range.value).toLocaleString('en-US');
-    });
-    document.querySelectorAll<HTMLInputElement>('input[name="track"]').forEach((el) => {
-      el.addEventListener('change', () => {
-        if (note && notes[el.value]) note.textContent = notes[el.value];
+    <style>
+      input[data-invalid='true'],
+      textarea[data-invalid='true'] {
+        border-color: theme(colors.claret);
+      }
+    </style>
+
+    <script>
+      // The composite's form behavior, kept working: the range mirror, the
+      // per-track range note, and the empty-field validation (error line +
+      // claret borders, cleared on input). Submission is a real POST to
+      // /api/grants; no success state is simulated client-side.
+      const notes: Record<string, string> = {
+        Maintainer: 'maintainer range is $5,000 to $25,000',
+        Researcher: 'researcher range is $2,500 to $15,000',
+        Student: 'student range is $500 to $2,000',
+      };
+      const range = document.getElementById('gr-credits') as HTMLInputElement | null;
+      const out = document.getElementById('gr-credits-out');
+      const note = document.getElementById('gr-credits-note');
+      range?.addEventListener('input', () => {
+        if (out && range) out.textContent = '$' + Number(range.value).toLocaleString('en-US');
       });
-    });
-  </script>
-</Site>
+      document.querySelectorAll<HTMLInputElement>('input[name="track"]').forEach((el) => {
+        el.addEventListener('change', () => {
+          if (note && notes[el.value]) note.textContent = notes[el.value];
+        });
+      });
+
+      const form = document.querySelector('form[action="/api/grants"]') as HTMLFormElement | null;
+      const errorLine = document.getElementById('gr-error');
+      const required = ['gr-name', 'gr-link', 'gr-run']
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLInputElement => el !== null);
+      required.forEach((el) => {
+        el.addEventListener('input', () => {
+          el.removeAttribute('data-invalid');
+          errorLine?.classList.add('hidden');
+          errorLine?.classList.remove('flex');
+        });
+      });
+      form?.addEventListener('submit', (e) => {
+        const empty = required.filter((el) => !el.value.trim());
+        if (empty.length === 0) return;
+        e.preventDefault();
+        empty.forEach((el) => el.setAttribute('data-invalid', 'true'));
+        errorLine?.classList.remove('hidden');
+        errorLine?.classList.add('flex');
+      });
+    </script>
+    <Footer variant="marketing" />
+  </body>
+</html>

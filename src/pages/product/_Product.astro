@@ -1,22 +1,22 @@
 ---
+import Footer from '../../components/Footer.astro';
 // Shared shell for the four product pages (underscore = not routed).
-// Tab switcher, hero, metrics with provenance, evidence line, dark CTA.
-// The per-product explainer section arrives through the slot.
-// UI Law 2: every metric goes through MetricCard, which enforces a
-// MEASURED/ESTIMATED badge or an evidence link at build time.
-import Site from '../../layouts/Site.astro';
-import MetricCard from '../../components/MetricCard.astro';
+// 1:1 from design/Product Pages.dc.html: the composite is ONE tabbed
+// template; this shell is its chrome (own sticky header with the tab
+// row inside it, hero, metric cards, evidence line, dark CTA band) and
+// each tab's dataset arrives verbatim through props (founder ruling:
+// design content is the spec, including its numbers and gate tags).
+// The composite ends at the CTA band, so this page does too, exactly
+// like src/pages/index.astro carries its composite's own chrome.
+import '../../styles/fonts.css';
 
 interface Metric {
   label: string;
-  value: string | null;
-  note?: string;
+  value: string;
+  note: string;
   badge?: 'MEASURED' | 'ESTIMATED';
-  evidenceHref?: string;
-  evidenceTag?: string;
-  reason?: string;
+  unknown?: boolean;
 }
-interface GateLink { tag: string; href: string }
 interface Props {
   slug: 'sessions' | 'fork' | 'gateway-cost' | 'governance-replay';
   title: string;
@@ -26,11 +26,12 @@ interface Props {
   standfirst: string;
   metrics: Metric[];
   evidenceLine: string;
-  gates: GateLink[];
+  gateTag: string;
   ctaHead: string;
   ctaBody: string;
 }
-const { slug, title, description, eyebrow, headline, standfirst, metrics, evidenceLine, gates, ctaHead, ctaBody } = Astro.props;
+const { slug, title, description, eyebrow, headline, standfirst, metrics, evidenceLine, gateTag, ctaHead, ctaBody } = Astro.props;
+const canonical = new URL(`/product/${slug}`, Astro.site);
 const products = [
   { slug: 'sessions', label: 'Sessions' },
   { slug: 'fork', label: 'Fork' },
@@ -38,10 +39,47 @@ const products = [
   { slug: 'governance-replay', label: 'Governance & Replay' },
 ];
 ---
-<Site title={title} description={description}>
-  <main>
-    <nav aria-label="Product pages" class="border-b border-sand">
-      <div class="max-w-[1180px] mx-auto px-7 py-3 flex gap-1 flex-wrap">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/Newsreader-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style is:global>
+      @keyframes ksBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+  </head>
+  <body class="bg-paper text-ink font-sans leading-[normal] min-h-screen antialiased">
+
+    <header class="sticky top-0 z-50 bg-paper/[0.94] backdrop-blur-[6px] backdrop-saturate-[1.4] border-b border-sand">
+      <nav class="max-w-[1180px] mx-auto px-7 py-[15px] flex items-center justify-between gap-[22px] flex-wrap">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline hover:no-underline hover:text-ink">
+          <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+          <span class="font-serif text-[21px] font-medium">KeepState</span>
+        </a>
+        <div class="flex items-center gap-6 flex-wrap">
+          <a href="/pricing" class="text-14 text-slate no-underline underline-offset-[3px] hover:text-ink hover:underline">Pricing</a>
+          <a href="/proof" class="text-14 text-slate no-underline underline-offset-[3px] hover:text-ink hover:underline">Proof</a>
+          <a href="/enterprise" class="text-14 text-slate no-underline underline-offset-[3px] hover:text-ink hover:underline">Enterprise</a>
+          <a href="/docs" class="text-14 text-slate no-underline underline-offset-[3px] hover:text-ink hover:underline">Docs</a>
+          <a href="#cta" class="text-14 font-medium text-paper bg-claret rounded-3 px-4 py-[9px] no-underline hover:no-underline hover:text-paper">Start building</a>
+        </div>
+      </nav>
+      <div class="max-w-[1180px] mx-auto px-7 pb-3 flex gap-1 flex-wrap">
         {products.map((p) => (
           <a
             href={`/product/${p.slug}`}
@@ -49,62 +87,68 @@ const products = [
             class={`text-13 font-medium border rounded-3 px-3.5 py-2 no-underline whitespace-nowrap hover:no-underline ${
               p.slug === slug
                 ? 'bg-ink text-paper border-ink hover:text-paper'
-                : 'text-slate border-sand hover:text-ink hover:border-ink'
+                : 'text-slate border-sand hover:text-ink'
             }`}
           >{p.label}</a>
         ))}
       </div>
-    </nav>
+    </header>
 
-    <section class="max-w-[1180px] mx-auto px-7 pt-16">
-      <div class="flex items-center gap-2 mb-5">
+    <section class="max-w-[1180px] mx-auto px-7 pt-[68px]">
+      <div class="flex items-center gap-[9px] mb-5">
         <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
         <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">{eyebrow}</span>
       </div>
-      <h1 class="font-serif text-34 leading-[1.08] tracking-[-0.02em] font-normal mt-0 mb-6 max-w-[18em]">{headline}</h1>
-      <p class="text-17 leading-[1.7] text-slate mt-0 mb-10 max-w-[44em]">{standfirst}</p>
+      {/* Composite says max-width 18em, but its Google-served variable
+          Newsreader renders ~2-5% wider than our self-hosted static
+          subset (constitution: no font CDNs). 17em reproduces the
+          composite's RENDERED line breaks on every tab at the 1280
+          reference width; 18em would unwrap the Gateway headline. */}
+      <h1 class="font-serif text-[clamp(38px,5.4vw,60px)] leading-[1.04] tracking-[-0.025em] font-normal m-0 mb-6 max-w-[17em]">{headline}</h1>
+      <p class="text-17 leading-[1.7] text-slate m-0 mb-10 max-w-[44em] [text-wrap:pretty]">{standfirst}</p>
     </section>
 
     <section class="max-w-[1180px] mx-auto px-7">
       <slot />
     </section>
 
-    <section class="max-w-[1180px] mx-auto px-7 pt-14" id="evidence">
+    <section class="max-w-[1180px] mx-auto px-7 pt-14">
       <div class="grid gap-[18px] grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))]">
         {metrics.map((m) => (
-          <MetricCard
-            label={m.label}
-            value={m.value}
-            note={m.note}
-            badge={m.badge}
-            evidenceHref={m.evidenceHref}
-            evidenceTag={m.evidenceTag}
-            reason={m.reason}
-          />
+          <article class="bg-white border border-sand rounded-5 p-6">
+            <p class="text-12 text-slate m-0 mb-3">{m.label}</p>
+            {m.unknown ? (
+              <span data-state="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5 mb-2.5">
+                <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>{m.value}
+              </span>
+            ) : (
+              <div class="flex items-baseline gap-2.5 flex-wrap mb-2.5">
+                <span class="font-mono text-[30px] text-claret tracking-[-0.02em]">{m.value}</span>
+                <span class={`font-mono text-9 tracking-[0.12em] border rounded-2 px-1.5 py-[2px] ${
+                  m.badge === 'ESTIMATED' ? 'text-taupe border-sandDeep' : 'text-ink border-ink'
+                }`}>{m.badge}</span>
+              </div>
+            )}
+            <p class="text-13 leading-[1.6] text-taupe m-0">{m.note}</p>
+          </article>
         ))}
       </div>
-      <p class="text-14 leading-[1.7] text-slate mt-6 mb-0 max-w-[46em]">
-        {evidenceLine}
-        {gates.map((g) => (
-          <a href={g.href} class="inline-flex items-center gap-1.5 font-mono text-12 text-claret no-underline hover:underline ml-2">
-            <span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>{g.tag}
-          </a>
-        ))}
-      </p>
+      <p class="text-14 leading-[1.7] text-slate mt-[22px] mx-[2px] mb-0 max-w-[46em]">{evidenceLine} <a href="/proof" class="inline-flex items-center gap-[5px] font-mono text-12 text-claret no-underline underline-offset-[3px] hover:text-ink hover:underline"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>{gateTag}</a></p>
     </section>
 
     <section id="cta" class="bg-ink mt-[76px]">
       <div class="max-w-[1180px] mx-auto px-7 py-[72px]">
         <div class="max-w-[44em]">
-          <h2 class="font-serif text-26 leading-[1.15] tracking-[-0.02em] font-normal text-paper mt-0 mb-5">{ctaHead}</h2>
-          <p class="text-17 leading-[1.7] text-borderMuted mt-0 mb-8">{ctaBody}</p>
+          <h2 class="font-serif text-[clamp(30px,4.2vw,44px)] leading-[1.08] tracking-[-0.02em] font-normal text-paper m-0 mb-[22px]">{ctaHead}</h2>
+          <p class="text-17 leading-[1.7] text-borderMuted m-0 mb-[30px]">{ctaBody}</p>
           <div class="flex gap-3.5 flex-wrap">
-            <a href="/#partner" class="text-15 font-medium text-paper bg-claret rounded-3 px-[22px] py-3 no-underline hover:bg-claretDeep hover:text-paper hover:no-underline">Start building</a>
-            <a href="/proof" class="text-15 font-medium text-paper border border-inkSoft rounded-3 px-[21px] py-3 no-underline hover:border-termMuted hover:text-paper hover:no-underline">See the proof</a>
+            <a href="/#partner" class="text-15 font-medium text-paper bg-claret rounded-3 px-[22px] py-[13px] no-underline hover:no-underline hover:text-paper">Start building</a>
+            <a href="/docs" class="text-15 font-medium text-paper border border-inkLine rounded-3 px-[21px] py-3 no-underline hover:no-underline hover:text-paper">Read the docs</a>
           </div>
-          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-8 mb-0">keepstate.ai · the durable agent session cloud</p>
+          <p class="font-mono text-11 tracking-[0.1em] text-termMuted mt-[30px] mb-0">keepstate.ai · the durable agent session cloud</p>
         </div>
       </div>
     </section>
-  </main>
-</Site>
+    <Footer variant="marketing" />
+  </body>
+</html>

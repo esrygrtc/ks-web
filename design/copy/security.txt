@@ -1,12 +1,34 @@
 # Verbatim lines carried from design/Security.dc.html (dedashed) into /security
 The real key never enters a guest, an image, or a snapshot.
 A checkpoint is a copy of a running machine, which makes every secret inside that machine a copy too. So we keep secrets out of the machine. What follows is the architecture, stated as policy rather than as reassurance.
+Your real provider key, encrypted per organization, outside the isolation boundary and unreachable from any guest.
+Mints a virtual key scoped to one session, meters every call, and enforces exactly-once billing on our side of the wire.
+The agent, its filesystem, its tools. Hardware-virtualized, one tenant, no shared kernel. Sees the virtual key only.
+Content-addressed, encrypted at rest, pinned to the region you named. Contains no live credential by construction.
 The guest is the only place your agent's code runs, and it is the only place that never holds a durable credential. A stolen checkpoint yields a filesystem and a conversation, not a way to spend your money.
+Key handling, stated as rules.
 These are not aspirations. Each one is enforced in code, and where a gate watches it, the gate is named.
 A provider key is never written into a guest.
+A checkpoint is scanned for credential material before it is acknowledged.
 Virtual keys are scoped to one session and die with it.
+Humans never handle a virtual key.
+A revoked key stops working mid-session.
+Support staff cannot read your checkpoints.
+policy, no gate yet
 Checkpoint keys are per-organization and rotated on a 90-day schedule. Enterprise customers may hold the root key themselves, in which case we cannot read a checkpoint even under subpoena.
+Certifications, stated honestly
 No badge appears on this site until the certificate exists. There is no reserved slot waiting to be filled, because a reserved slot is a claim.
+Responsible disclosure
 Report anything that looks like a way past the boundary. We answer within one business day, fix or explain within thirty, and publish the finding in the archive with your name on it unless you ask us not to.
+yes, good faith research
+What we would tell an attacker.
 The honest version of a threat model names what it does not cover. These are the three places we consider ourselves most exposed today.
+A compromised harness image could exfiltrate your workspace.
+A checkpoint is a complete copy of a machine, including whatever your agent wrote into it.
+We are a young company with a small team and no SOC 2 yet.
 Read it before you talk to us.
+The DPA, the subprocessor list, the architecture overview, and the penetration test summary download together, with
+no form and no call first
+Download the security review pack
+Status and incident history
+keepstate.ai · the durable agent session cloud

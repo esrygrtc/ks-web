@@ -1,2 +1,16 @@
+# Verbatim lines from design/Product Pages.dc.html (tab 0: Sessions)
 Kill it anywhere. Resume anywhere.
-A session is a micro-VM we can freeze. The freeze is one write, not three:
+Your agent runs inside a micro-VM we can freeze whole. Filesystem, model memory, and tool state are captured as one atomic snapshot, so the world it wakes into and the world it remembers are the same world.
+one atomic checkpoint
+Kill it anywhere. Resume anywhere. The world and the memory can never disagree.
+A session is a micro-VM we can freeze. The freeze is one write, not three: if the filesystem were captured at t and the model memory at t plus 40 ms, the agent would wake remembering a file that does not exist.
+Storage is content-addressed, so checkpointing every five minutes costs about 41 MB per freeze rather than a fresh 1.2 GB. That is why the cadence can be aggressive enough to make a crash boring.
+$ ks run --image claude-code --checkpoint 5m
+restored in 87s · nonce match · 0 bytes lost
+same host, 1,000 trials
+cross-region, p95
+4,000 kills, claude-code
+Resume latency and durability are gated on every release; the raw output is public.
+Pull the plug on your own agent.
+Free credits cover a six-hour run and the kill that would have ended it.
+keepstate.ai · the durable agent session cloud

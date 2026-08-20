@@ -1,0 +1,14 @@
+# Verbatim static lines rendered on /proof, from design/Proof.dc.html
+# (fidelity rebuild 2026-08-20). Generated claim/matrix/archive rows are
+# data from src/generated/proof.json and are deliberately not listed.
+No claim outlives its evidence.
+This page renders our claims file. Every row cites the gate run that proves it; unproven claims cannot appear here, by construction.
+A claim whose gate goes red is removed from this page automatically, not softened by hand. That is why the count above can go down.
+When behavior splits by third party, the claim splits with it.
+Absorption means the harness never notices the freeze. Where it holds for one agent and not another, we publish both rows rather than one average.
+Findings archive
+We publish our own defects.
+What gates watch stays true. What nothing watches drifts.
+If a number on this site is wrong, that is a finding, and we would rather have it than not. Send it with the trace and we will publish the correction with your name on it unless you ask us not to.
+Report a finding
+See pricing

@@ -190,3 +190,212 @@ requests, zero failures, p95 236 ms).
 6. PRODUCT SIDE, when convenient: the private-repo flip broke the
    public-quickstart story (gate-7 B5); the han/Apache-2.0 extraction
    waits on the first design partner.
+
+## 2026-08-20 — Fidelity rebuild: /proof and /compatibility re-dressed in the composite's shell
+Per the founder's fidelity ruling, /proof now mirrors design/Proof.dc.html
+1:1: composite header (no footer, composite has none), hero + mono meta
+line, filter pills with the DCLogic interaction in vanilla JS, the
+claims table with status pills and diamond tag links, the absorption
+matrix, the slate findings-archive band, and the italic CTA. UI Law 4
+held throughout: every row, pill, tag, matrix cell, and archive card
+renders from src/generated/proof.json; the composite's placeholder
+claims (G-101, 118/121, F-061...) were treated as placeholders its
+shell renders real data into. antiClaims render as "not claimed" rows
+(the design's muted pill + "no gate yet" treatment); the closing field
+is the archive band's prose; the tag list became the archive cards,
+which restores every /proof#gate-N deep link the docs use.
+/compatibility (no composite of its own) is styled as a sibling of the
+rebuilt Proof. design/copy/proof.txt created (11 verbatim lines). All
+four lints + 13 law tests green. Surprise: none of the composite's
+hexes were missing from tokens.json. Next action: founder content
+review of the new Proof shell alongside return-list item 3.
+
+## 2026-08-20 — Fidelity rebuild: /status and /ledger re-dressed in the composite's shell
+/status now mirrors design/Status.dc.html in its UNAVAILABLE mode (the
+composite's own third view, and the only honest one with no feed):
+hero dot + clamp(34,4.8vw,52) title, mono system line, the uptime card
+with per-surface pills, mono "unavailable" figures, 45-bar strips,
+legend, and the three closing cards at composite sizes. Carve-out (a)
+overrode the composite's leaks: its unavailable view still paints
+days 4-45 green and keeps INC-011..014 + invented incident notes; ours
+renders every bar gray ("no data recorded"), "no probe data recorded"
+notes, an empty incident history, and the incident-definition card
+truncated before "Four of the incidents below". /status.json ships as
+a real static file so the Machine-readable card stops advertising a
+404; region stays westeurope (composite samples eu-central-1).
+/ledger and /ledger/[slug] now mirror The Ledger.dc.html: 60px
+masthead, tag-filter chips with the DCLogic filter in vanilla JS (empty
+filter renders an honest empty line), the composite's 3-column list-row
+design (DRAFT eyebrow in the tag slot, computed read time), and the
+post view's block system (sans 17.5px body, serif crossheads, pill row,
+gate-run footer, conditional next-rail). The seven sample posts, named
+authors (Ravi Krishnan, Priya Nair), "18 posts · 6 people", and
+invented gate ids stayed out. Schema gained optional ledger tag; the
+real post is tagged argument. copy/status.txt (17 lines) and
+copy/ledger.txt (13 lines) rewritten. All lints + 13 law tests green.
+Surprise: none of the composites' hexes were missing from tokens.json,
+but our Newsreader cut wraps the ledger H1 a word later than the
+composite's hosted cut; max-w 14em (vs 15em) restores the exact break.
+Next action: founder review of the DRAFT post treatment (return-list 3).
+
+## 2026-08-20 · product pages fidelity rebuild (sessions, fork, gateway-cost, governance-replay)
+The four product pages now mirror design/Product Pages.dc.html 1:1: the
+composite is one tabbed template, so _Product.astro became its chrome
+(own sticky header with the Pricing/Proof/Enterprise/Docs nav and the
+tab row inside it, hero at clamp(38,5.4vw,60), inline metric cards with
+the composite's 9px bordered MEASURED/ESTIMATED badges and the honest
+unavailable chip, evidence line with a single /proof gate link, dark
+CTA band ending the page, exactly like index.astro carries its own
+chrome). Each tab's DCLogic dataset is carried verbatim per the
+founder's fidelity ruling: the aspirational metrics (< 100 ms, < 90 s,
+4,000 kills, 64 forks, −45%, 500 / 500), the G-1xx gate tags (linked to
+/proof), the ks run/kill/resume terminal with the blinking ksBlink
+cursor (CSS keyframes + reduced-motion fallback; the composite's only
+animation), the fork timeline SVG, the 5-step gateway flow, and the
+slate flight-recorder panel (Enterprise chip is a plain styled p, as
+designed). Two fidelity fixes beyond markup: body leading-[normal]
+(composite default; Tailwind's 1.5 had inflated pages 24-31px) and h1
+max-w 17em vs the composite's 18em, because our self-hosted static
+Newsreader renders ~2-5% narrower than the composite's hosted variable
+cut and 18em unwraps the Gateway headline (same remedy the ledger
+rebuild used, 14em vs 15em). Diff vs composite screenshots: <2% pixels,
+all residual bands are serif glyph width. copy/product/*.txt rewritten
+(15/14/19/16 lines). No hex missing from tokens.json. All lints + 13
+law tests green. Surprise: one npm run build failed mid-session inside
+another agent's legal page edit; it healed on retry.
+Next action: none for these pages; founder eyeball at 1280.
+
+## 2026-08-20 · /pricing rebuilt 1:1 from design/Pricing.dc.html
+Rebuilt src/pages/pricing.astro standalone (own header, page ends at
+the #partner band, like the composite and index.astro): hero, 4 tier
+cards, meters table, calculator, FAQ, dark CTA. Calculator keeps its
+working mechanics inside the composite's exact shell: server-rendered
+defaults from the DCLogic formula, inline vanilla script, ESTIMATED
+chip (now the composite's blush-on-inkLine chip, not the shared Badge
+variant), and the NaN-proof unavailable state (verified in-browser:
+pathological reading flips all 6 outputs to chips, readout "?", no
+NaN; range inputs self-clamp so it is belt-and-braces). Fidelity
+reverts of prior drift: meters copy back to the composite's 19x + "a
+1.2 GB freeze taken every 5m adds about 41 MB" (gate-6/evidence links
+dropped per the founder's verbatim-numbers ruling), Enterprise card
+text slateSoft not parchment, panel labels termMuted, borders inkLine,
+custom diamond range thumbs via is:global style (theme() tokens only).
+FAQ is <details name="pricing-faq">: native exclusive accordion
+matching DCLogic's single-open behavior, no JS. Same body
+leading-[normal] fix as the product pages. Final diff vs composite at
+1280: identical page height (3025), all bands align to the pixel;
+residual diffs are Newsreader static-vs-variable glyph rendering in
+the serif headlines (site-wide, same as index). Lints green (copy 354
+lines incl. 16 for pricing), 13 law tests green. docs/compare
+screenshots refreshed. Surprise: font-display:optional makes the
+first cold paint measure 15px short until webfonts apply; converged
+layout is exact.
+Next action: none for this page; founder eyeball at 1280.
+
+## 2026-08-20 — Fidelity rebuild: /customers and /grants
+- Both pages rebuilt 1:1 from their composites (own chrome, no Site
+  layout, verbatim content incl. numbers per the fidelity ruling).
+- Customers ships the composite's DCLogic index<->report toggle as a
+  vanilla script; carve-out applied: nonexistent third-party quotes and
+  attributions render placeholder lines inside the exact blockquote
+  visuals; "logo pending clearance" slots stay as designed.
+- Grants keeps the working form (POST /api/grants, honeypot, range
+  script, composite's error state reproduced); the composite's mock
+  success panel is not simulated. TODO token #8A7A78 -> termMuted.
+- Self-hosted Newsreader is ~3% narrower than the composite's Google
+  variable font, so both H1s break a word later at 1280; spec values
+  (max-w 16em/17em) kept. Design's slider thumb sits at 50% because the
+  composite binds an invalid localized value; the working form shows
+  the true $5,000 position.
+- copy files updated (67 verbatim lines held); emdash lint clean.
+
+## 2026-08-20 · fidelity rebuild: /manifesto + /careers (agent)
+- Both pages rebuilt 1:1 from their composites, which carry their OWN
+  chrome: manifesto = minimal header (logo + "Back to site") + one-line
+  mono footer; careers = careers-specific nav (Manifesto/Proof/Grants/
+  Open roles) and NO site footer (page ends on the ink CTA band). Site
+  layout dropped on both, per the founder's design-is-the-spec ruling.
+- Root causes of prior drift fixed: (1) Tailwind preflight line-height
+  1.5 vs the composites' browser default -> body leading-[normal];
+  (2) font-display:optional made non-preloaded faces stick on fallback
+  at first paint -> preload the faces each page uses; (3) the sitewide
+  STATIC Newsreader italic is ~3.5% wider than the composite's variable
+  font (opsz axis), wrapping careers epigraph 2 -> self-hosted the
+  variable italic latin subset (public/fonts/Newsreader-italic-var
+  .woff2, page-scoped @font-face on /careers only); (4) careers role
+  summary line inherits the UA <button> font (Arial) in the composite,
+  which sets its wrap -> font-[Arial] on that line, commented.
+- Careers roles ship as native <details> (first open, like DCLogic
+  state open:0) + tiny inline accordion script (opening one closes the
+  other); manifesto notify form keeps POST /api/subscribe + honeypot
+  inside the exact shell, with the DCLogic "enter a valid address"
+  note reproduced. Verified: built /careers full-page height 3946px ==
+  composite; /manifesto 900px == composite; all probed section offsets
+  within 3px. Non-token hex met: #8A7A78 (epigraph 1 meta) -> termMuted.
+- copy files rewritten (manifesto 10, careers 18 verbatim lines); copy,
+  emdash, link lints clean; vitest 13/13; docs/compare/built-*.png
+  refreshed; design (8905) and built (8906) servers killed.
+
+## 2026-08-20 · fidelity rebuild: docs shell + generated docs pages (agent)
+- Docs shell rebuilt 1:1 from design/Docs.dc.html: docs-specific header
+  (logo + mono "docs" + centered "Search the docs" ⌘K affordance +
+  Pricing/Proof/Console →) added as Site.astro header="docs" variant;
+  236px section nav with diamond markers and parchment active row; 72ch
+  content column under breadcrumb + "last verified against {version}"
+  blush badge (REAL v0.1.1 + release date 2026-07-31 from generated
+  docs.json, never the composite's placeholder); 216px "On this page"
+  TOC with claret first-item bar; feedback footer ("It worked"/"It
+  failed" as mailto-free links to /contact).
+- Root cause of the prior "bare column" build found: Astro drops the
+  media attribute when bundling <style is:global media="print">, so the
+  print rules (header/nav/aside display:none) applied on screen. Moved
+  into @media print.
+- Shiki's github-dark inline palette overridden inside .docs-prose
+  (ink bg, monochrome parchment text) to match the composite terminals;
+  .ks-copy restyled to composite (transparent, inkSoft border) with
+  mechanics untouched (gate probe: 5/5 pre/copy on quickstart, cmd-K
+  search returns quickstart for "resume", 8 results).
+- Generated pages restyled toward composite archetypes, data sources
+  unchanged: cli.astro (verb chips per Related treatment + dark usage
+  blocks with mono kicker), api.astro (endpoint cards, claret method
+  badge), troubleshooting.astro (symptom cards with diamond kicker,
+  serif symptom, labeled meaning/action; blocked protocol in the blush
+  "what you just proved" panel treatment). Markdown pages get composite
+  typography via layout CSS; duplicate md h1s (quickstart/limits carry
+  their own titles) hidden via .docs-prose h1 ~ h1.
+- Step-rail treatment NOT applied to quickstart steps: the synced
+  markdown cannot be retyped into the step markup without editing a
+  generated data source; terminal + typography treatments carry it.
+- Wired Footer's new docs pager (prev/next from nav order) through
+  Site.astro pager prop. Non-token hex met: #6A6258 copy-button hover
+  border -> taupe, commented. design/copy/docs.txt written (17 verbatim
+  lines held). emdash/evidence/link lints clean; the 2 copy-lint
+  violations on /support are another agent's in-flight page, verified
+  pre-existing. docs/compare/built-docs.png refreshed; servers killed
+  (8913 design, 8914 built, 8916 dist probe; 8915 belongs to another
+  session and was left alone).
+
+## 2026-08-20 · fidelity rebuild: Legal & Support, Auth & System States, Footer System
+- Rebuilt src/pages/legal/{_Legal,terms,privacy,dpa,subprocessors,acceptable-use}.astro
+  1:1 to the composite (244px doc nav, version chip + effective line, numbered serif
+  sections, hairline lists, 3-col tables, PDF/history buttons, 212px toc rail).
+  Fidelity ruling applied: draft notes removed, composite clauses restored verbatim
+  (billing-incident history, AUP enforcement anecdote, DPA audit clause).
+  Subprocessors keeps the honesty carve-out: only Azure/GitHub/Anthropic rows inside
+  the composite's exact table design.
+- support.astro: composite help-center (live filter over 8 real doc links, 3 path
+  cards, SLA card verbatim, ticket form). New /api/support form spec in forms.js
+  (kind+symptom required, evidence/session extras, contact table, honeypot).
+- console.astro: composite sign-in visuals (GitHub + Google + email-link block)
+  around the honest /.auth/me three-state shell; invite-pending card restyled to
+  the composite card anatomy; banners not faked (carve-out a). 404/500 rebuilt to
+  composite geometry; 500 ref card renders honest unavailable line (carve-out a).
+- Footer.astro: five-band marketing footer (checkpoint dots border + tooltip,
+  brand + install/subscribe cards, 4 link columns, random epigraph, socials +
+  region + StatusChip pill, ink terminal line), docs variant (pager prop + bands
+  3-5), console strip (Docs/Status/Support · Shortcuts ⌘K · v0.1.1). StatusChip
+  gained a pill variant (default untouched; laws tests green).
+- Surprise: Tailwind display utilities defeat the [hidden] attribute; added a
+  global [hidden]{display:none!important} in Site.astro.
+- TODO tokens: #8A8372 and #8A7A78 (both rendered as termMuted), #6A6258 (hover
+  border, rendered as taupe). All lints + laws tests green; copy files updated.

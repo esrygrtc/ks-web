@@ -1,16 +1,20 @@
 ---
-// The global footer: a checkpoint on the border, a law in the middle, a
-// status line at the bottom. Three densities: marketing (five bands),
-// docs (bands 3-5), console (band 5 only; no marketing inside the app).
-// UI Law 3 lives here: with no live feed, every status field prints
-// unavailable, and the dot is never green because nothing said otherwise.
+// The global footer, 1:1 from design/Footer System.dc.html: a checkpoint
+// on the border, a law in the middle, a status line at the bottom. Three
+// densities: marketing (five bands), docs (pager, then bands 3-5),
+// console (band 5 only; no marketing inside the app, ever).
+// UI Law 3 lives here: with no live feed, the chip and every status
+// field print unavailable; the dot is never green because nothing said
+// otherwise (the composite's own "state 3" line, rendered as reality).
+import tokens from '../../design/tokens.json';
 import StatusChip from './StatusChip.astro';
-import Terminal from './Terminal.astro';
-interface Props { variant?: 'marketing' | 'docs' | 'console' }
-const { variant = 'marketing' } = Astro.props;
+const c = tokens.color;
 
-// Only links whose pages exist ship; the rest land with their phases
-// (W3 docs/ledger/legal, W4 support). Progressive honesty over 404s.
+interface Pager { prev?: { title: string; href: string }; next?: { title: string; href: string } }
+interface Props { variant?: 'marketing' | 'docs' | 'console'; pager?: Pager }
+const { variant = 'marketing', pager } = Astro.props;
+
+// Composite hrefs mapped to real routes; every page below exists.
 const columns = [
   { head: 'Product', links: [
     ['Sessions', '/product/sessions'], ['Fork', '/product/fork'],
@@ -23,8 +27,12 @@ const columns = [
     ['Manifesto', '/manifesto'], ['About', '/about'], ['Customers', '/customers'],
     ['Enterprise', '/enterprise'], ['Careers', '/careers'], ['The Ledger', '/ledger'], ['Press', '/press'] ] },
   { head: 'Programs & Trust', links: [
-    ['Grants', '/grants'], ['Security', '/security'], ['Contact', '/contact'] ] },
+    ['Grants', '/grants'], ['Security', '/security'], ['Responsible Disclosure', '/security'],
+    ['Brand & Press Kit', '/press'], ['Contact', '/contact'], ['Partners', '/#partner'] ] },
 ];
+
+// The composite picks the epigraph at random on mount; the build renders
+// the first law and the inline script below re-rolls it on load.
 const epigraphs = [
   "Hosts sleep; ledgers don't.",
   'Assert the fact, not the residue.',
@@ -32,73 +40,244 @@ const epigraphs = [
   'No claim outlives its gate.',
   'The gateway can hold the door open forever; walking back through it belongs to the client.',
 ];
-// Deterministic per-build rotation: the day picks the law.
-const epigraph = epigraphs[new Date().getUTCDate() % epigraphs.length];
+const epigraph = epigraphs[0];
+
+// Carve-out (a): the system line is status data; with no live feed every
+// field prints unavailable (the composite's own state-3 line, verbatim).
 const systemLine = 'keepstate v0.1.1 · api unavailable · gateway unavailable · doctor unavailable · incidents unavailable · westeurope';
 const legal = [['Terms', '/legal/terms'], ['Privacy', '/legal/privacy'], ['DPA', '/legal/dpa'],
   ['Subprocessors', '/legal/subprocessors'], ['Acceptable Use', '/legal/acceptable-use']];
+
+// The checkpoint border: seven diamonds, then the final interactive one.
+const timelineDots = [
+  { left: '9%', size: 6, fill: 'bg-claret' },
+  { left: '22%', size: 6, fill: 'bg-claret' },
+  { left: '34%', size: 5, fill: 'bg-sand' },
+  { left: '48%', size: 6, fill: 'bg-claret' },
+  { left: '61%', size: 5, fill: 'bg-sand' },
+  { left: '74%', size: 6, fill: 'bg-claret' },
+  { left: '87%', size: 5, fill: 'bg-sand' },
+];
+
+// Socials: GitHub is the one real destination (the quickstart's repo
+// host). X / LinkedIn / YouTube / RSS accounts do not exist yet, so they
+// keep the designed chip treatment without pretending to navigate
+// (carve-out b: designed placeholder treatment, reported).
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/esrygrtc/ks', primary: true },
+  { label: 'X' }, { label: 'LinkedIn' }, { label: 'YouTube' }, { label: 'RSS' },
+];
 ---
-<footer class="border-t border-sand bg-paper mt-16">
-  {variant === 'marketing' && (
-    <>
-      <div class="max-w-[1180px] mx-auto px-7 pt-10 pb-8 border-b border-parchment">
-        <p class="inline-flex items-center gap-2 font-mono text-10 uppercase tracking-[0.12em] text-claret m-0 mb-3">
-          <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>checkpoint reached
-        </p>
-        <div class="flex items-end justify-between gap-8 flex-wrap">
-          <p class="font-serif text-26 text-ink m-0">The durable agent session cloud.</p>
-          <div class="w-full max-w-md">
-            <p class="font-mono text-10 uppercase tracking-[0.1em] text-taupe m-0 mb-2">install</p>
-            <Terminal copy="curl -fsSL keepstate.ai/install | sh">$ curl -fsSL keepstate.ai/install | sh</Terminal>
-          </div>
-        </div>
-      </div>
-      <div class="max-w-[1180px] mx-auto px-7 py-7 border-b border-parchment">
-        <div class="flex items-center justify-between gap-8 flex-wrap">
-          <div>
-            <p class="font-serif text-17 text-ink m-0 mb-1">The Session Economy</p>
-            <p class="text-13 text-slate m-0">Five essays on where agent infrastructure is going. One email per essay. Nothing else.</p>
-          </div>
-          <form class="flex gap-2" data-subscribe method="post" action="/api/subscribe">
-            <input type="email" name="email" required placeholder="you@company.com" aria-label="email address"
-              class="font-sans text-14 text-ink bg-white border border-sand rounded-3 px-3 py-2.5 w-64 focus:outline-none focus:border-ink" />
-            <button type="submit" class="font-sans text-14 font-medium text-paper bg-claret border border-claret rounded-3 px-[18px] py-2.5 cursor-pointer hover:bg-claretDeep">Subscribe</button>
-          </form>
-        </div>
-      </div>
-    </>
-  )}
-  {variant !== 'console' && (
-    <>
-      <div class="max-w-[1180px] mx-auto px-7 py-8 grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-parchment">
-        {columns.map((c) => (
-          <div>
-            <p class="font-mono text-10 uppercase tracking-[0.12em] text-taupe m-0 mb-3">{c.head}</p>
-            <ul class="list-none m-0 p-0 grid gap-1.5">
-              {c.links.map(([label, href]) => (
-                <li><a href={href} class="text-13 text-slate no-underline hover:text-ink hover:underline underline-offset-2 py-1 inline-block">{label}</a></li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <div class="max-w-[1180px] mx-auto px-7 py-5 border-b border-parchment">
-        <p class="font-serif italic text-15 text-taupe m-0">{epigraph}</p>
-      </div>
-    </>
-  )}
-  <div class="bg-ink">
-    <div class="max-w-[1180px] mx-auto px-7 py-4 flex items-center justify-between gap-4 flex-wrap">
-      <div class="flex items-center gap-3.5 flex-wrap">
-        <StatusChip />
-        <p class="font-mono text-11 text-borderMuted m-0" data-system-line>{systemLine}</p>
-      </div>
-      <div class="flex items-center gap-3.5 flex-wrap">
-        {variant !== 'console' && legal.map(([label, href]) => (
-          <a href={href} class="font-mono text-12 text-borderMuted no-underline hover:text-paper py-1">{label}</a>
-        ))}
-        <p class="font-mono text-12 text-borderMuted m-0">© 2026 KeepState, Inc. · Every claim on this site cites its evidence: <a href="/proof" class="text-blush underline underline-offset-2">/proof</a></p>
+<footer class="mt-16">
+  {variant === 'docs' && pager && (pager.prev || pager.next) && (
+    <div class="bg-paper border-t border-track">
+      <div class="max-w-[1280px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-3 px-[26px] py-5">
+        {pager.prev ? (
+          <a href={pager.prev.href} class="border border-sand rounded-4 px-4 py-3.5 no-underline min-h-[44px] block">
+            <span class="block font-mono text-10 tracking-[0.1em] uppercase text-taupe mb-1.5">&larr; previous</span>
+            <span class="block text-14 text-ink">{pager.prev.title}</span>
+          </a>
+        ) : <span></span>}
+        {pager.next && (
+          <a href={pager.next.href} class="border border-sand rounded-4 px-4 py-3.5 no-underline text-right min-h-[44px] block">
+            <span class="block font-mono text-10 tracking-[0.1em] uppercase text-taupe mb-1.5">next &rarr;</span>
+            <span class="block text-14 text-ink">{pager.next.title}</span>
+          </a>
+        )}
       </div>
     </div>
+  )}
+
+  {variant !== 'console' && (
+    <div class="relative h-px bg-sand">
+      {timelineDots.map((d) => (
+        <span class={`absolute top-1/2 block -translate-x-1/2 -translate-y-1/2 rotate-45 ${d.fill}`}
+          style={`left:${d.left};width:${d.size}px;height:${d.size}px;`}></span>
+      ))}
+      {variant === 'marketing' && (
+        <button type="button" data-cp-final aria-label="final checkpoint"
+          class="absolute right-[6px] top-1/2 -translate-y-1/2 w-[26px] h-[26px] bg-white/0 border-0 p-0 cursor-pointer flex items-center justify-center">
+          <span class="w-[11px] h-[11px] bg-claret rotate-45 block"></span>
+        </button>
+      )}
+      {variant === 'marketing' && (
+        <span data-cp-tip hidden
+          class="absolute right-0 -top-[38px] bg-ink text-parchment font-mono text-11 tracking-[0.04em] px-[11px] py-1.5 rounded-3 whitespace-nowrap ks-tip">checkpoint reached</span>
+      )}
+    </div>
+  )}
+
+  {variant === 'marketing' && (
+    <div class="max-w-[1180px] mx-auto pt-[22px] px-[30px] pb-5 flex gap-[30px] flex-wrap items-start">
+      <div class="flex-[1_1_430px] min-w-0 flex flex-col gap-3">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2.5 mb-1.5">
+            <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+            <span class="font-serif text-22 font-medium tracking-[-0.01em]">KeepState</span>
+          </div>
+          <p class="text-14 leading-[1.55] text-slate m-0">The durable agent session cloud.</p>
+        </div>
+
+        <div class="flex gap-3 flex-wrap items-stretch">
+          <div class="flex-[1_1_190px] border border-sand rounded-4 px-3.5 py-3 bg-white min-w-0">
+            {}
+            <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted m-0 mb-2.5">install</p>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <code class="font-mono text-[12.5px] text-ink flex-[1_1_200px] min-w-0 overflow-x-auto whitespace-nowrap">curl -fsSL keepstate.ai/install | sh</code>
+              <button type="button" data-install-copy
+                class="font-mono text-11 tracking-[0.06em] text-slate bg-white border border-sand rounded-3 px-3 py-[7px] cursor-pointer flex-none min-h-[32px]">copy</button>
+            </div>
+          </div>
+
+          <div class="flex-[1_1_210px] border border-sand rounded-4 px-3.5 py-3 bg-white min-w-0">
+            <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted m-0 mb-2">The Session Economy</p>
+            <form data-subscribe method="post" action="/api/subscribe" class="m-0">
+              <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <div class="flex gap-2 flex-nowrap mb-2">
+                <input type="email" name="email" required placeholder="you@company.com" aria-label="email address"
+                  class="flex-1 min-w-0 font-sans text-13 text-ink bg-white border border-sand rounded-3 px-3 py-2.5 outline-none min-h-[38px] focus:border-claret" />
+                <button type="submit"
+                  class="font-sans text-13 font-medium text-paper bg-claret border-0 rounded-3 px-4 py-2.5 cursor-pointer flex-none min-h-[38px]">Subscribe</button>
+              </div>
+              <p data-sub-error hidden class="flex items-center gap-[7px] text-12 text-claret m-0 mb-2">
+                <span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>That address is missing an @ or a domain.
+              </p>
+              <p class="text-[11.5px] leading-[1.5] text-taupe m-0">Five essays on where agent infrastructure is going. One email per essay. Nothing else.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-[2_1_460px] min-w-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,152px),1fr))] gap-5">
+        {columns.map((col) => (
+          <nav class="min-w-0">
+            <p class="font-sans text-11 font-semibold tracking-[0.12em] uppercase text-termMuted m-0 mb-2">{col.head}</p>
+            <div class="flex flex-col">
+              {col.links.map(([label, href]) => (
+                <a href={href} class="text-14 leading-[1.4] text-ink no-underline py-[3px] min-h-[26px] flex items-center hover:text-claret hover:underline underline-offset-[3px]">{label}</a>
+              ))}
+            </div>
+          </nav>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {variant !== 'console' && (
+    <>
+      <div class={`border-t border-track text-center ${variant === 'docs' ? 'py-[56px] px-[26px]' : 'py-[56px] px-[30px]'}`}>
+        <span class={`w-2 h-2 bg-claret rotate-45 inline-block ${variant === 'docs' ? 'mb-[18px]' : 'mb-3'}`}></span>
+        <p data-epigraph class="font-serif italic text-17 leading-[1.55] text-ink m-0 mx-auto max-w-[36em]">{epigraph}</p>
+      </div>
+
+      <div class={`border-t border-track flex items-center justify-between gap-[18px] flex-wrap max-w-[1180px] mx-auto ${variant === 'docs' ? 'px-[26px] py-[18px]' : 'px-[30px] py-[9px]'}`}>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          {socials.map((s) => s.href ? (
+            <a href={s.href} title={s.label} aria-label={s.label}
+              class="flex items-center justify-center gap-2 min-w-[44px] min-h-[44px] px-[13px] border border-sandDeep rounded-3 text-ink no-underline font-mono text-[11.5px] tracking-[0.04em] hover:border-ink hover:text-ink hover:no-underline">
+              <span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>{s.label}
+            </a>
+          ) : (
+            <span title={s.label}
+              class="flex items-center justify-center gap-2 min-w-[44px] min-h-[44px] px-[11px] border border-disabledBd rounded-3 text-slate font-mono text-[11.5px] tracking-[0.04em]">
+              <span class="w-[5px] h-[5px] bg-sandDeep rotate-45 block flex-none"></span>{s.label}
+            </span>
+          ))}
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="inline-flex items-center gap-2 font-mono text-[11.5px] text-slate border border-sand rounded-pill px-[13px] py-[7px] min-h-[34px]">region: westeurope</span>
+          <a href="/status" class="no-underline hover:no-underline"><StatusChip variant="pill" /></a>
+        </div>
+      </div>
+    </>
+  )}
+
+  <div class="bg-ink">
+    {variant === 'console' ? (
+      <div class="max-w-[1180px] mx-auto px-[22px] py-3 flex items-center justify-between gap-4 flex-wrap">
+        <p data-system-line class="font-mono text-12 leading-[1.6] text-termMuted m-0 min-w-0 [overflow-wrap:anywhere]">{systemLine}</p>
+        <div class="flex items-center gap-4 flex-wrap">
+          <a href="/docs" class="font-mono text-12 text-borderMuted no-underline hover:text-paper">Docs</a>
+          <a href="/status" class="font-mono text-12 text-borderMuted no-underline hover:text-paper">Status</a>
+          <a href="/support" class="font-mono text-12 text-borderMuted no-underline hover:text-paper">Support</a>
+          {}
+          <button type="button" class="font-mono text-12 text-borderMuted bg-white/0 border border-inkSoft rounded-3 px-2.5 py-[5px] cursor-pointer hover:text-paper hover:border-taupe">Shortcuts &#8984;K</button>
+          <span class="font-mono text-12 text-termMuted">v0.1.1</span>
+        </div>
+      </div>
+    ) : (
+      <div class={`max-w-[1180px] mx-auto flex items-center justify-between gap-4 flex-wrap ${variant === 'docs' ? 'px-[26px] py-3.5' : 'px-[30px] py-3'}`}>
+        <p data-system-line class="font-mono text-12 leading-[1.6] text-termMuted m-0 min-w-0 [overflow-wrap:anywhere]">{systemLine}</p>
+        <div class="flex items-center gap-3.5 flex-wrap justify-end">
+          <div class="flex items-center gap-3 flex-wrap">
+            {legal.map(([label, href]) => (
+              <a href={href} class="font-mono text-12 text-borderMuted no-underline py-1 hover:text-paper">{label}</a>
+            ))}
+          </div>
+          {variant === 'docs' ? (
+            <p class="font-mono text-12 text-termMuted m-0">&copy; 2026 KeepState, Inc. &middot; <a href="/proof" class="text-blush no-underline hover:underline underline-offset-[3px]">/proof</a></p>
+          ) : (
+            <p class="font-mono text-12 text-termMuted m-0">&copy; 2026 KeepState, Inc. &middot; Every claim on this site cites its evidence: <a href="/proof" class="text-blush no-underline hover:underline underline-offset-[3px]">/proof</a></p>
+          )}
+        </div>
+      </div>
+    )}
   </div>
 </footer>
+
+<style>
+  @keyframes ksTip { from { opacity: 0; transform: translate(-50%, 4px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  .ks-tip { animation: ksTip 160ms ease-out; transform: translateX(-50%); }
+  @media (prefers-reduced-motion: reduce) { .ks-tip { animation: none; } }
+</style>
+
+<script define:vars={{ epigraphs, copiedBg: c.blushBg, copiedColor: c.claret, copiedBorder: c.shell }}>
+  // The composite's DCLogic, in vanilla: random epigraph on mount, copy
+  // feedback on the install card, client-side email check on subscribe,
+  // and the final-checkpoint tooltip. Colors here are token values
+  // (blushBg / claret / shell) passed from tokens.json.
+  document.querySelectorAll('[data-epigraph]').forEach((el) => {
+    el.textContent = epigraphs[Math.floor(Math.random() * epigraphs.length)];
+  });
+
+  const copyBtn = document.querySelector('[data-install-copy]');
+  copyBtn?.addEventListener('click', () => {
+    if (navigator.clipboard) navigator.clipboard.writeText('curl -fsSL keepstate.ai/install | sh').catch(() => {});
+    copyBtn.textContent = 'copied';
+    copyBtn.style.background = copiedBg;
+    copyBtn.style.color = copiedColor;
+    copyBtn.style.borderColor = copiedBorder;
+    setTimeout(() => {
+      copyBtn.textContent = 'copy';
+      copyBtn.style.background = '';
+      copyBtn.style.color = '';
+      copyBtn.style.borderColor = '';
+    }, 1500);
+  });
+
+  const subForm = document.querySelector('[data-subscribe]');
+  subForm?.addEventListener('submit', (e) => {
+    const email = subForm.querySelector('input[type="email"]');
+    const err = subForm.querySelector('[data-sub-error]');
+    const ok = /.+@.+\..+/.test(email?.value ?? '');
+    if (!ok) { e.preventDefault(); err?.removeAttribute('hidden'); }
+    else err?.setAttribute('hidden', '');
+  });
+  subForm?.querySelector('input[type="email"]')?.addEventListener('input', () => {
+    subForm.querySelector('[data-sub-error]')?.setAttribute('hidden', '');
+  });
+
+  const finalBtn = document.querySelector('[data-cp-final]');
+  const tip = document.querySelector('[data-cp-tip]');
+  let tipT;
+  const showTip = () => {
+    tip?.removeAttribute('hidden');
+    clearTimeout(tipT);
+    tipT = setTimeout(() => tip?.setAttribute('hidden', ''), 2000);
+  };
+  const hideTip = () => { clearTimeout(tipT); tip?.setAttribute('hidden', ''); };
+  finalBtn?.addEventListener('mouseenter', showTip);
+  finalBtn?.addEventListener('focus', showTip);
+  finalBtn?.addEventListener('mouseleave', hideTip);
+  finalBtn?.addEventListener('blur', hideTip);
+</script>

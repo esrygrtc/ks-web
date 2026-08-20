@@ -1,48 +1,140 @@
 ---
-// Generated, like Proof: the per-agent compatibility matrix, updated only
-// by gate runs in the product repo, never by hand.
-import Site from '../layouts/Site.astro';
+import Footer from '../components/Footer.astro';
+// Compatibility: no composite of its own, so it dresses as a sibling of
+// the rebuilt Proof page (same header, hero, table shell, pill and
+// evidence treatments, CTA family). Like Proof, every matrix cell
+// renders from src/generated/proof.json; rows are updated only by gate
+// runs in the product repo, never by hand.
+import '../styles/fonts.css';
 import proof from '../generated/proof.json';
-const mono = (s: string) => s.replace(/`([^`]+)`/g, '<code class="font-mono text-12 bg-parchment rounded-2 px-1">$1</code>')
-  .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+const title = 'Compatibility · KeepState';
+const description = 'Which agents KeepState has frozen, killed, and resumed, with the gate evidence per agent. Updated only by gate runs.';
+const canonical = new URL('/compatibility', Astro.site);
+
+const tagRe = /(gate-[0-9a-z]+-green|v\d+\.\d+\.\d+[\w.-]*)/g;
+const gateTags = proof.tags.filter((t) => t.tag.startsWith('gate-'));
+const releases = proof.tags.filter((t) => !t.tag.startsWith('gate-'));
+const plain = (s: string) => s.replace(/`([^`]+)`/g, '$1').replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1');
+const anchor = (tag: string) => tag.replace('-green', '');
+
+const pills = {
+  claimed: { chip: 'text-claret bg-blushBg border-shell', dot: 'bg-claret' },
+  other: { chip: 'text-slate bg-white border-slate', dot: 'bg-slate' },
+};
+const matrix = proof.matrix.map((m) => {
+  const v = m.verdict.match(/^\*\*(.+?)\*\*\s*(?:·\s*)?([\s\S]*)$/);
+  const verdict = v ? v[1] : plain(m.verdict);
+  const detail = plain(v ? v[2] : '');
+  const tags = [...m.evidence.matchAll(tagRe)].map((x) => x[1]);
+  const rest = plain(m.evidence).replace(tagRe, '').replace(/\s+/g, ' ').trim();
+  return { agent: m.agent, verdict, detail, tags, rest, pill: verdict === 'claimed' ? pills.claimed : pills.other };
+});
 ---
-<Site title="Compatibility · KeepState" description="Which agents KeepState has frozen, killed, and resumed, with the gate evidence per agent. Updated only by gate runs.">
-  <main class="max-w-[1180px] mx-auto px-7 py-14">
-    <p class="font-mono text-11 uppercase tracking-[0.14em] text-claret mb-2">Compatibility</p>
-    <h1 class="font-serif text-34 font-medium mt-0 mb-3">Per agent, evidence-linked.</h1>
-    <p class="text-15 text-slate max-w-2xl leading-relaxed">
-      Two agents have been frozen mid-call, killed, and resumed on the bench.
-      That is evidence of generality, not proof of universality, and this
-      table only grows when a gate runs. Rows are never edited by hand.
-    </p>
-    <p class="font-mono text-11 text-taupe mt-2 mb-10">
-      generated from {proof.syncedFrom.repo}/{proof.syncedFrom.file} · source {proof.sourceSha.slice(0, 12)}
-    </p>
-    <div class="overflow-x-auto mb-10">
-      <table class="w-full border-collapse bg-white border border-sand rounded-4 text-13 max-w-3xl">
-        <thead><tr>
-          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Agent</th>
-          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Interrupted call absorbed on resume</th>
-          <th class="font-mono text-11 font-medium text-taupe uppercase tracking-[0.08em] text-left border-b border-sand px-3.5 py-2.5">Evidence</th>
-        </tr></thead>
-        <tbody>
-          {proof.matrix.map((r) => (
-            <tr class="align-top">
-              <td class="px-3.5 py-2.5 border-b border-parchment font-medium text-ink">{r.agent}</td>
-              <td class="px-3.5 py-2.5 border-b border-parchment text-slate" set:html={mono(r.verdict)} />
-              <td class="px-3.5 py-2.5 border-b border-parchment font-mono text-12 text-claret" set:html={mono(r.evidence)} />
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <div class="max-w-2xl bg-parchment border border-sand rounded-4 p-4">
-      <p class="text-13 text-slate m-0">
-        Your agent not here? The whole adaptation surface for agent #2 was one
-        line inside the guest image. <a href="/grants" class="text-claret">Apply for a grant</a>
-        or <a href="/#partner" class="text-claret">become a design partner</a> and
-        your row is earned by a gate run, not written by marketing.
-      </p>
-    </div>
-  </main>
-</Site>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/Newsreader-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="bg-paper text-ink font-sans min-h-screen antialiased">
+
+    <header class="sticky top-0 z-50 bg-paper/[0.94] backdrop-blur-[6px] backdrop-saturate-[1.4] border-b border-sand">
+      <nav class="max-w-[1180px] mx-auto px-7 py-4 flex items-center justify-between gap-6 flex-wrap">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline hover:no-underline hover:text-ink">
+          <span class="w-[9px] h-[9px] bg-claret rotate-45 block"></span>
+          <span class="font-serif text-[21px] font-medium">KeepState</span>
+        </a>
+        <div class="flex items-center gap-[26px] flex-wrap">
+          <a href="/" class="text-14 text-slate no-underline hover:text-ink">Product</a>
+          <a href="/pricing" class="text-14 text-slate no-underline hover:text-ink">Pricing</a>
+          <a href="/proof" class="text-14 text-slate no-underline hover:text-ink">Proof</a>
+          <a href="/enterprise" class="text-14 text-slate no-underline hover:text-ink">Enterprise</a>
+          <a href="/manifesto" class="text-14 text-slate no-underline hover:text-ink">Manifesto</a>
+          <a href="/#partner" class="text-14 font-medium text-paper bg-claret px-4 py-[9px] rounded-3 no-underline hover:no-underline hover:text-paper">Start building</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[72px] pb-11">
+      <div class="flex items-center gap-[9px] mb-5">
+        <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
+        <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">Compatibility</span>
+      </div>
+      <h1 class="font-serif text-[clamp(40px,5.6vw,64px)] leading-[1.04] tracking-[-0.025em] font-normal m-0 mb-6 max-w-[14em]">Per agent, evidence-linked.</h1>
+      <p class="text-17 leading-[1.7] text-slate m-0 mb-[26px] max-w-[44em] [text-wrap:pretty]">Two agents have been frozen mid-call, killed, and resumed on the bench. That is evidence of generality, not proof of universality, and this table only grows when a gate runs.</p>
+      <div class="flex gap-[22px] flex-wrap font-mono text-12 text-taupe">
+        <span>claims file: <span class="text-ink">{proof.syncedFrom.repo}/{proof.syncedFrom.file} @ {proof.sourceSha.slice(0, 12)}</span></span>
+        <span>gates green: <span class="text-ink">{gateTags.length}</span></span>
+        <span>releases: <span class="text-ink">{releases.map((r) => r.tag).join(' · ')}</span></span>
+      </div>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7">
+      <div class="bg-white border border-sand rounded-5 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse text-13 min-w-[640px]">
+            <thead>
+              <tr class="bg-paper">
+                <th class="text-left text-10 font-semibold tracking-[0.1em] uppercase text-taupe px-[18px] py-3 border-b border-sand">agent</th>
+                <th class="text-left text-10 font-semibold tracking-[0.1em] uppercase text-taupe px-[18px] py-3 border-b border-sand">absorption claim</th>
+                <th class="text-left text-10 font-semibold tracking-[0.1em] uppercase text-taupe px-[18px] py-3 border-b border-sand">evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matrix.map((m) => (
+                <tr class="border-b border-track align-top hover:bg-paper">
+                  <td class="px-[18px] py-3.5 font-mono text-ink whitespace-nowrap">{m.agent}</td>
+                  <td class="px-[18px] py-3.5">
+                    <span class={`inline-flex items-center gap-[7px] font-mono text-10 tracking-[0.08em] border rounded-pill px-2.5 py-1 whitespace-nowrap ${m.pill.chip}`}>
+                      <span class={`w-[5px] h-[5px] rotate-45 block ${m.pill.dot}`}></span>{m.verdict}
+                    </span>
+                    {m.detail && <p class="font-mono text-10 text-taupe mt-1.5 mb-0">{m.detail}</p>}
+                  </td>
+                  <td class="px-[18px] py-3.5">
+                    {m.tags.length > 0
+                      ? m.tags.map((t, j) => (
+                          <a href={`/proof#${anchor(t)}`} class={`block font-mono text-12 text-claret no-underline hover:text-ink hover:underline underline-offset-[3px] w-fit ${j > 0 ? 'mt-1.5' : ''}`}>{t}</a>
+                        ))
+                      : <span class="font-mono text-12 text-stone">no gate yet</span>}
+                    {m.rest && <p class="font-mono text-10 text-taupe mt-1.5 mb-0">{m.rest}</p>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="text-13 leading-[1.65] text-taupe mt-4 mb-0 mx-0.5 max-w-[46em]">Rows are never edited by hand. Every tag links to the archive on <a href="/proof" class="text-claret no-underline hover:text-ink hover:underline underline-offset-[3px]">Proof</a>.</p>
+    </section>
+
+    <section class="max-w-[1180px] mx-auto px-7 pt-[72px] pb-[88px]">
+      <div class="max-w-[46em]">
+        <p class="font-serif italic text-[clamp(22px,3vw,30px)] leading-[1.4] text-ink m-0 mb-[26px]">Your row is earned by a gate run, not written by marketing.</p>
+        <p class="text-16 leading-[1.7] text-slate m-0 mb-[26px]">Your agent not here? The whole adaptation surface for agent #2 was one line inside the guest image. Apply for a grant or become a design partner and your row appears when its gate goes green.</p>
+        <div class="flex gap-3.5 flex-wrap">
+          <a href="/grants" class="text-15 font-medium text-paper bg-claret px-[22px] py-[13px] rounded-3 no-underline hover:no-underline hover:text-paper">Apply for a grant</a>
+          <a href="/#partner" class="text-15 font-medium text-ink border border-sand px-[21px] py-3 rounded-3 no-underline hover:no-underline hover:text-ink">Become a design partner</a>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+    <Footer variant="marketing" />
+  </body>
+</html>

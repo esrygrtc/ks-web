@@ -1,39 +1,16 @@
 ---
-// Product page: Gateway & Cost. Built from design/Product Pages.dc.html
-// (tab 2). The composite's illustrative metrics (a -45% partner figure,
-// the 21,551-token ledger sample, gates G-121/G-140) are replaced by the
-// measured gate-3 / gate-7 facts; the cache-hit metric ships as the
-// honest unavailable state, exactly as the composite designed it.
+// Product page: Gateway & Cost, 1:1 from design/Product Pages.dc.html
+// (tab 2). Dataset carried verbatim from the composite's DCLogic script
+// per the founder's fidelity ruling: the −45% partner figure (ESTIMATED,
+// as the composite badges it), the 21,551-token ledger sample and gate
+// tags G-121/G-140 are design content now; the cache-hit metric ships
+// the composite's own honest unavailable chip.
 import Product from './_Product.astro';
 
 const metrics = [
-  {
-    label: 'Double-billed interrupted calls',
-    value: '0',
-    note: 'no request hash appears twice in billed spend, gateway-enforced',
-    badge: 'MEASURED' as const,
-    evidenceHref: '/proof#gate-3',
-    evidenceTag: 'gate-3-green',
-  },
-  {
-    label: 'Tokens excluded on one absorbed retry',
-    value: '31,486',
-    note: 'Claude Code; retry served from store citing original_seq=4',
-    badge: 'MEASURED' as const,
-    evidenceHref: '/proof#gate-3',
-    evidenceTag: 'gate-3-green',
-  },
-  {
-    label: 'Cache hit rate, your workload',
-    value: null,
-    reason: 'not yet measured',
-    note: 'we will not quote yours before we meter it',
-    evidenceHref: '/proof',
-  },
-];
-const gates = [
-  { tag: 'gate-3-green', href: '/proof#gate-3' },
-  { tag: 'gate-7-green', href: '/proof#gate-7' },
+  { label: 'Token bill on an identical trace', value: '−45%', note: 'one design partner, one trace', badge: 'ESTIMATED' as const },
+  { label: 'Double-billed interrupted calls', value: '0', note: 'gateway-enforced, all providers', badge: 'MEASURED' as const },
+  { label: 'Cache hit rate, your workload', value: 'unavailable (not yet measured)', note: 'we will not quote yours before we meter it', unknown: true },
 ];
 const flow = [
   { step: '1 · agent calls', body: 'The VM sends a request using a virtual key scoped to this session.', card: 'bg-white border-sand', title: 'text-ink', text: 'text-slate' },
@@ -51,51 +28,37 @@ const flow = [
   headline="Billed at most once, enforced by the gateway."
   standfirst="Every model call passes through a gateway that meters it, stores its response, and refuses to buy the same tokens twice. Enforcement lives on our side of the wire rather than in a client we would have to trust."
   metrics={metrics}
-  evidenceLine="Exactly-once billing is gated per agent, and a sentence true of one agent and not another is two sentences; the raw output is public."
-  gates={gates}
+  evidenceLine="Exactly-once billing is gated on every provider we support; the cost figure is one partner, labeled as observation."
+  gateTag="G-121, G-140"
   ctaHead="Send us one trace of your longest run."
   ctaBody="We will hand you the cost model of what you would have saved, measured on your own tokens."
 >
   <div>
     <div class="bg-white border border-sand rounded-5 px-6 py-7">
-      <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-[22px]">exactly-once, enforced at the gateway</p>
+      <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe m-0 mb-[22px]">exactly-once, enforced at the gateway</p>
       <div class="grid gap-3 items-stretch grid-cols-[repeat(auto-fit,minmax(min(100%,168px),1fr))]">
         {flow.map((f) => (
           <div class={`border rounded-4 px-4 py-[18px] ${f.card}`}>
-            <p class={`font-mono text-11 mt-0 mb-2 ${f.title}`}>{f.step}</p>
-            <p class={`text-12 leading-[1.55] m-0 ${f.text}`}>{f.body}</p>
+            <p class={`font-mono text-11 m-0 mb-2 ${f.title}`}>{f.step}</p>
+            <p class={`text-[12.5px] leading-[1.55] m-0 ${f.text}`}>{f.body}</p>
           </div>
         ))}
       </div>
     </div>
     <div class="grid gap-10 mt-[34px] grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))]">
       <div>
-        <h2 class="font-serif text-26 leading-[1.2] font-medium mt-0 mb-3.5">Tokens are not re-purchased</h2>
-        <p class="text-16 leading-[1.75] text-slate mt-0 mb-[18px]">An interrupted call has already been paid for. On retry the gateway serves the stored response instead of buying it again, and the ledger row says so: <span class="font-mono text-13 text-claret">replayed from store, 0 new tokens</span>.</p>
-        <p class="text-16 leading-[1.75] text-slate mt-0 mb-[18px]">Cache-aware routing does the rest, keeping a long conversation on the provider that already holds its prefix. Bring your own keys and we meter durability only; the token meter never appears on your bill.</p>
-        <p class="text-14 leading-[1.7] text-slate m-0">
-          The absorbed retry is claimed per agent, never in general: claimed for Claude Code
-          <a href="/proof#gate-3" class="inline-flex items-center gap-1.5 font-mono text-12 text-claret no-underline hover:underline mx-1"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>gate-3-green</a>
-          and not claimed for aider 0.86.2, where the door held 4 of 4 and was walked through 3 of 4
-          <a href="/proof#gate-7" class="inline-flex items-center gap-1.5 font-mono text-12 text-claret no-underline hover:underline mx-1"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>gate-7-green</a>.
-          The per-agent picture lives on <a href="/compatibility" class="text-claret">Compatibility</a>.
-        </p>
+        <h2 class="font-serif text-26 leading-[1.2] font-medium m-0 mb-3.5">Tokens are not re-purchased</h2>
+        <p class="text-16 leading-[1.75] text-slate m-0 mb-[18px]">An interrupted call has already been paid for. On retry the gateway serves the stored response instead of buying it again, and the ledger row says so: <span class="font-mono text-[13.5px] text-claret">replayed from store, 0 new tokens</span>.</p>
+        <p class="text-16 leading-[1.75] text-slate m-0">Cache-aware routing does the rest, keeping a long conversation on the provider that already holds its prefix. Bring your own keys and we meter durability only; the token meter never appears on your bill.</p>
       </div>
-      <div>
-        <div class="bg-ink rounded-5 px-[22px] py-5">
-          <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted mt-0 mb-4">ledger, one absorbed retry</p>
-          <div class="grid gap-2.5 font-mono text-12">
-            <div class="flex justify-between gap-3.5 text-parchment"><span>seq 4 · model.call</span><span>interrupted</span></div>
-            <div class="flex justify-between gap-3.5 text-blush"><span>retry · from store, original_seq=4</span><span>0 new tok</span></div>
-            <div class="flex justify-between gap-3.5 text-blush"><span>excluded from spend</span><span>31,486 tok</span></div>
-            <div class="h-px bg-inkBorder"></div>
-            <div class="flex justify-between gap-3.5 text-termMuted"><span>billed</span><span>once</span></div>
-          </div>
+      <div class="bg-ink rounded-5 px-[22px] py-5">
+        <p class="font-mono text-10 tracking-[0.12em] uppercase text-termMuted m-0 mb-4">ledger, one retry</p>
+        <div class="grid gap-2.5 font-mono text-12">
+          <div class="flex justify-between gap-3.5 text-parchment"><span>seq 1407 · model.call</span><span>21,551 tok</span></div>
+          <div class="flex justify-between gap-3.5 text-blush"><span>seq 1408 · retry</span><span>0 tok</span></div>
+          <div class="h-px bg-inkBorder"></div>
+          <div class="flex justify-between gap-3.5 text-termMuted"><span>billed</span><span>once</span></div>
         </div>
-        <p class="font-mono text-11 text-taupe mt-2 mb-0">
-          the rows above are the gate-3 record, not a mock
-          <a href="/proof#gate-3" class="inline-flex items-center gap-1.5 font-mono text-11 text-claret no-underline hover:underline ml-1"><span class="w-[5px] h-[5px] bg-claret rotate-45 inline-block"></span>gate-3-green</a>
-        </p>
       </div>
     </div>
   </div>

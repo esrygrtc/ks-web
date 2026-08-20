@@ -1,14 +1,15 @@
 ---
-// The console is an HONEST early-access shell (constitution scope fence):
-// sign-in, an invite-pending state, and an auth-unavailable state. No live
-// console, no invented metrics, no mock dashboards. Auth state comes from
-// SWA built-in auth (/.auth/me); the server-rendered default is signed-out
-// so no-JS visitors get the sign-in screen. Signed-out and auth-unavailable
-// are DIFFERENT states and render differently (UI Law 1 in spirit: an
-// unanswered identity endpoint is "unavailable", never a guessed zero).
+// The console is an HONEST early-access shell (constitution scope fence)
+// wearing the exact sign-in design from design/Auth & System States.dc.html:
+// the split hero + card, GitHub and Google buttons, the OR divider, and
+// the email sign-in-link block. Auth state comes from SWA built-in auth
+// (/.auth/me); the server-rendered default is signed-out so no-JS
+// visitors get the sign-in screen. Signed-out and auth-unavailable are
+// DIFFERENT states and render differently (an unanswered identity
+// endpoint is "unavailable", never a guessed zero). The signed-in state
+// is the invite-pending card in the composite's card anatomy, with real
+// identity fields only. No live console, no invented metrics.
 import Site from '../layouts/Site.astro';
-import Terminal from '../components/Terminal.astro';
-import Button from '../components/Button.astro';
 ---
 <Site
   title="Console · KeepState"
@@ -16,65 +17,86 @@ import Button from '../components/Button.astro';
   footer="console"
   noindex
 >
-  <main class="max-w-[1180px] mx-auto px-7">
+  <main class="max-w-[1240px] mx-auto px-[26px] w-full">
 
     <!-- State (a): signed out. Server-rendered default; visible without JS. -->
-    <section data-console-state="signed-out" class="grid gap-14 items-center py-16 min-h-[70vh] md:grid-cols-2">
+    <section data-console-state="signed-out"
+      class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-[60px] items-center min-h-[78vh] py-[60px]">
       <div class="max-w-[30em]">
-        <div class="flex items-center gap-2 mb-5">
+        <div class="flex items-center gap-[9px] mb-5">
           <span class="w-[7px] h-[7px] bg-claret rotate-45 block"></span>
           <span class="text-11 font-semibold tracking-[0.16em] uppercase text-claret">The durable agent session cloud</span>
         </div>
-        <h1 class="font-serif text-34 leading-[1.08] tracking-[-0.02em] font-normal mt-0 mb-4">Your agents never start over.</h1>
-        <p class="text-16 leading-relaxed text-slate mt-0 mb-6">One free plug-pull is waiting on the other side of this. No card, no call.</p>
-        <Terminal copy="ks resume s_7f3a">$ ks resume s_7f3a <span class="text-termMuted"># picks up exactly where it stopped</span></Terminal>
+        <h1 class="font-serif text-[clamp(34px,4.4vw,48px)] leading-[1.06] tracking-[-0.024em] font-normal m-0 mb-[18px]">Your agents never start over.</h1>
+        <p class="text-16 leading-[1.7] text-slate m-0 mb-[26px]">One free plug-pull is waiting on the other side of this. No card, no call.</p>
+        <div class="bg-ink rounded-5 px-[19px] py-[17px]">
+          <code class="font-mono text-[12.5px] text-parchment block overflow-x-auto whitespace-nowrap">ks resume s_7f3a<span class="text-termMuted">  # restored in 87s · 0 bytes lost</span></code>
+        </div>
       </div>
 
-      <div class="bg-white border border-sand rounded-6 p-8 w-full max-w-[420px] md:justify-self-end">
-        <p class="font-serif text-26 mt-0 mb-2">Sign in</p>
-        <p class="text-13 text-taupe mt-0 mb-6">New here? The same button creates the account.</p>
-        <form method="get" action="/.auth/login/github" class="grid gap-2.5 mb-5">
-          <input type="hidden" name="post_login_redirect_uri" value="/console" />
-          <button type="submit" class="font-sans text-15 font-medium text-paper bg-ink border border-ink rounded-3 px-[18px] py-3 cursor-pointer hover:bg-claret hover:border-claret w-full">
-            Continue with GitHub
-          </button>
-        </form>
-        <p class="text-12 leading-relaxed text-taupe mt-0 mb-5">We request read access to your identity, nothing else. No repository scopes are requested at sign-in.</p>
-        <div class="border-t border-parchment pt-5">
-          <p class="text-13 font-semibold text-ink mt-0 mb-2">Lost access to the account?</p>
-          <p class="text-13 leading-relaxed text-slate m-0">There is no password to reset. Recovery re-verifies the address, and if you signed in with GitHub, that identity is the only path back in.</p>
+      <div class="bg-white border border-sand rounded-6 px-[30px] py-[34px] max-w-[420px] w-full justify-self-end">
+        <p class="font-serif text-26 m-0 mb-2">Sign in</p>
+        <p class="text-13 text-taupe m-0 mb-[26px]">New here? The same button creates the account.</p>
+        <div class="grid gap-2.5 mb-5">
+          <form method="get" action="/.auth/login/github" class="m-0 grid">
+            <input type="hidden" name="post_login_redirect_uri" value="/console" />
+            <button type="submit" class="w-full font-sans text-15 font-medium text-paper bg-ink border border-ink rounded-3 px-[18px] py-[13px] cursor-pointer hover:bg-inkBorder">Continue with GitHub</button>
+          </form>
+          <form method="get" action="/.auth/login/google" class="m-0 grid">
+            <input type="hidden" name="post_login_redirect_uri" value="/console" />
+            <button type="submit" class="w-full font-sans text-15 font-medium text-ink bg-white border border-sand rounded-3 px-[18px] py-[13px] cursor-pointer hover:border-ink">Continue with Google</button>
+          </form>
         </div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="flex-1 h-px bg-track block"></span>
+          <span class="font-mono text-10 tracking-[0.1em] uppercase text-stone">or</span>
+          <span class="flex-1 h-px bg-track block"></span>
+        </div>
+        <label for="auth-email" class="block text-12 font-medium text-slate mb-1.5">Email a sign-in link</label>
+        <input id="auth-email" type="email" placeholder="you@company.com"
+          class="w-full font-sans text-14 text-ink bg-white border border-sand rounded-3 px-[13px] py-[11px] outline-none mb-2.5 focus:border-claret" />
+        <p data-auth-email-note hidden class="flex items-center gap-[7px] text-12 text-claret m-0 mb-2.5">
+          <span class="w-[5px] h-[5px] bg-claret rotate-45 block flex-none"></span>
+          <span data-auth-email-note-text>That address is missing an @ or a domain.</span>
+        </p>
+        <button type="button" data-auth-send-link
+          class="w-full font-sans text-14 font-medium text-ink bg-white border border-sand rounded-3 px-[18px] py-[11px] cursor-pointer mb-5">Send the link</button>
+        <p class="text-12 leading-[1.6] text-taupe m-0">We request read access to your identity, nothing else. No repository scopes are requested at sign-in.</p>
       </div>
     </section>
 
     <!-- State (b): signed in, invite pending. Real identity from /.auth/me;
          no metrics, no dashboard: nothing here pretends to be a console. -->
-    <section data-console-state="signed-in" hidden class="py-16 min-h-[70vh]">
-      <div class="max-w-[620px] mx-auto bg-white border border-sand rounded-6 p-8">
-        <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe mt-0 mb-4">Early access · invite pending</p>
-        <h1 class="font-serif text-26 leading-[1.15] tracking-[-0.02em] font-normal mt-0 mb-4">
+    <section data-console-state="signed-in" hidden class="py-[60px] min-h-[78vh]">
+      <div class="max-w-[620px] mx-auto bg-white border border-sand rounded-6 px-[30px] py-8">
+        <p class="font-mono text-10 tracking-[0.12em] uppercase text-taupe m-0 mb-[18px]">Early access · invite pending</p>
+        <h1 class="font-serif text-[30px] leading-[1.15] tracking-[-0.02em] font-normal m-0 mb-4">
           Hello, <span data-user-details class="text-claret"></span>. Your invite is pending.
         </h1>
-        <p class="text-15 leading-relaxed text-slate mt-0 mb-5">
+        <p class="text-15 leading-[1.7] text-slate m-0 mb-4">
           Early access is granted in cohorts. Your place is held by the identity you just signed in with; when your cohort opens, this page becomes your console. Until then it stays empty on purpose: we do not draw dashboards with invented numbers.
         </p>
-        <p class="text-15 leading-relaxed text-slate mt-0 mb-6">
-          You will join as a <strong class="text-ink font-semibold">Developer</strong>: you can run, fork, and kill your own sessions, and read everyone else's. You cannot change budgets or billing.
+        <p class="text-15 leading-[1.7] text-slate m-0 mb-6">
+          You will join as a <span class="font-semibold text-ink">Developer</span>: you can run, fork, and kill your own sessions, and read everyone else's. You cannot change budgets or billing.
         </p>
-        <div class="border border-sand rounded-4 px-4 py-4 mb-6">
-          <div class="grid gap-2 font-mono text-12">
+        <div class="border border-sand rounded-4 px-[18px] py-4 mb-6">
+          <div class="grid gap-[9px] font-mono text-12">
             <div class="flex justify-between gap-3"><span class="text-taupe">identity</span><span class="text-slate" data-user-details></span></div>
             <div class="flex justify-between gap-3"><span class="text-taupe">provider</span><span class="text-slate" data-user-provider></span></div>
             <div class="flex justify-between gap-3"><span class="text-taupe">access</span><span class="text-slate">pending · next cohort</span></div>
           </div>
         </div>
-        <p class="text-13 leading-relaxed text-slate mt-0 mb-4">Design partners get pulled forward. If you are running agents in production and want a say in what we build, that is the strongest case for an earlier invite.</p>
-        <div class="flex items-center gap-3 flex-wrap">
-          <Button href="/#partner">Strengthen your case</Button>
+        <p class="text-13 leading-[1.65] text-slate m-0 mb-4">Design partners get pulled forward. If you are running agents in production and want a say in what we build, that is the strongest case for an earlier invite.</p>
+        <div class="flex items-center gap-2.5 flex-wrap mb-6">
+          <a href="/#partner" class="text-15 font-medium text-paper bg-claret rounded-3 px-[22px] py-[13px] no-underline hover:no-underline hover:text-paper">Strengthen your case</a>
           <form method="get" action="/.auth/logout" class="m-0">
             <input type="hidden" name="post_logout_redirect_uri" value="/console" />
-            <button type="submit" class="font-sans text-14 font-medium text-slate bg-white/0 border border-sand rounded-3 px-[18px] py-2.5 cursor-pointer hover:border-ink hover:text-ink">Sign out</button>
+            <button type="submit" class="font-sans text-15 font-medium text-slate bg-white/0 border border-sand rounded-3 px-[21px] py-3 cursor-pointer hover:border-ink hover:text-ink">Sign out</button>
           </form>
+        </div>
+        <div class="border-t border-track pt-5">
+          <p class="text-13 font-semibold m-0 mb-2">Lost access to the account?</p>
+          <p class="text-13 leading-[1.65] text-slate m-0">There is no password to reset. Recovery re-verifies the address, and if you signed in with GitHub, that identity is the only path back in.</p>
         </div>
       </div>
     </section>
@@ -82,16 +104,16 @@ import Button from '../components/Button.astro';
     <!-- State (c): auth unavailable. Not signed out, not signed in: unknown.
          The page says so instead of guessing (never conflate error with
          signed-out). -->
-    <section data-console-state="unavailable" hidden class="py-16 min-h-[70vh] flex items-center">
+    <section data-console-state="unavailable" hidden class="py-[60px] min-h-[78vh] flex items-center">
       <div class="max-w-[34em]">
-        <span data-status="unavailable" class="inline-flex items-center gap-[7px] font-mono text-12 text-taupe bg-parchment border border-sand rounded-3 px-2.5 py-1.5 mb-5">
-          <span class="w-[5px] h-[5px] bg-stone rotate-45 block"></span>auth status unavailable
+        <span data-status="unavailable" class="inline-flex items-center gap-2 font-mono text-[11.5px] text-taupe bg-parchment border border-sand rounded-pill px-[13px] py-[7px] mb-6">
+          <span class="w-[7px] h-[7px] bg-stone rounded-pill block"></span>auth status unavailable
         </span>
-        <h1 class="font-serif text-34 leading-[1.1] tracking-[-0.02em] font-normal mt-0 mb-4">We cannot see your sign-in state right now.</h1>
-        <p class="text-16 leading-relaxed text-slate mt-0 mb-7">The identity endpoint did not answer. That is not the same thing as being signed out, so this page will not guess: no sign-in form, no account details, no assumptions. The status page is the source of truth for what is actually degraded.</p>
+        <h1 class="font-serif text-[clamp(30px,4.2vw,44px)] leading-[1.1] tracking-[-0.022em] font-normal m-0 mb-[18px]">We cannot see your sign-in state right now.</h1>
+        <p class="text-16 leading-[1.7] text-slate m-0 mb-7">The identity endpoint did not answer. That is not the same thing as being signed out, so this page will not guess: no sign-in form, no account details, no assumptions. The status page is the source of truth for what is actually degraded.</p>
         <div class="flex gap-3 flex-wrap">
-          <button type="button" data-auth-retry class="font-sans text-14 font-medium text-paper bg-claret border border-claret rounded-3 px-[18px] py-2.5 cursor-pointer hover:bg-claretDeep">Try again</button>
-          <Button href="/status" variant="secondary">Status page</Button>
+          <button type="button" data-auth-retry class="text-15 font-medium text-paper bg-claret border-0 rounded-3 px-[22px] py-[13px] cursor-pointer">Try again</button>
+          <a href="/status" class="text-15 font-medium text-ink border border-sand rounded-3 px-[21px] py-3 no-underline hover:no-underline hover:text-ink">Status page</a>
         </div>
       </div>
     </section>
@@ -107,6 +129,22 @@ import Button from '../components/Button.astro';
     sections.forEach((s) => s.toggleAttribute('hidden', s.dataset.consoleState !== state));
   };
   document.querySelector('[data-auth-retry]')?.addEventListener('click', () => location.reload());
+
+  // The composite's email-link block, with its exact invalid-address
+  // error; a valid address gets the honest answer (no magic-link backend
+  // exists yet) instead of a silent nothing.
+  const emailEl = document.querySelector<HTMLInputElement>('#auth-email');
+  const emailNote = document.querySelector('[data-auth-email-note]');
+  const emailNoteText = document.querySelector('[data-auth-email-note-text]');
+  emailEl?.addEventListener('input', () => emailNote?.setAttribute('hidden', ''));
+  document.querySelector('[data-auth-send-link]')?.addEventListener('click', () => {
+    const ok = /.+@.+\..+/.test(emailEl?.value ?? '');
+    if (emailNoteText) emailNoteText.textContent = ok
+      ? 'Email sign-in is not enabled yet. Use GitHub or Google above; the same button creates the account.'
+      : 'That address is missing an @ or a domain.';
+    emailNote?.removeAttribute('hidden');
+  });
+
   (async () => {
     try {
       const res = await fetch('/.auth/me', { headers: { accept: 'application/json' } });

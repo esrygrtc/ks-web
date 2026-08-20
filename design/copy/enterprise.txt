@@ -1,7 +1,9 @@
 # verbatim lines carried from design/Enterprise.dc.html (dedashed), one per line
 Two buyers, one purchase.
 Durability is an engineering purchase and an audit purchase at the same time. Both columns below describe the same system, so nobody has to translate for the other.
-Your agent code does not change; the image does.
+Your engineers get durability and 40 to 60 percent lower token delivery cost.
+Any harness, any model. Your agent code does not change; the image does.
+Warm resume under 100 ms, cold under 90 s, on any provider.
 Cache-aware routing and stored-response replay, so an interrupted call is never bought twice.
 Org and per-session budgets with checkpoint-on-exceed. A cap parks work, it never kills it.
 Fleet view of parked agents, waking on schedule or on webhook.
@@ -12,16 +14,27 @@ Retention policy editor measured in years, with legal hold that removes the dele
 Audit bundle export as a signed archive, scoped to the sessions and range you name.
 SIEM webhook, SSO and SCIM, region pinning enforced at the scheduler.
 Service levels, written down.
-Checkpoint durability is a data claim, not an uptime claim, and it is gated separately on the Proof page.
+API and control plane
+external probe, 1 min
+Checkpoint durability is a data claim, not an uptime claim, and it is gated separately on the
 Where your sessions can live.
 Region pinning is enforced at the scheduler, so a checkpoint cannot be written outside the region you pinned. Planned regions are labeled planned until a gate says otherwise.
 Everything procurement asks for, in one download.
 No form, no call first. Read it, then decide whether to talk to us.
+Data processing agreement
+Subprocessor list
+Architecture overview
+Penetration test summary
+Claims file export
+Download the pack
 The real key never enters a guest, an image, or a snapshot.
 Your provider keys live in a vault outside the isolation boundary. The gateway mints a virtual key scoped to one session, and that is the only credential a VM ever sees. A checkpoint of that VM therefore contains no secret worth stealing.
+mints a virtual key scoped to one session, meters, enforces exactly-once
+encrypted at rest, region-pinned, no live credential inside
 Our own build is governed by the same audit discipline we sell.
 Gates before evidence, evidence before claims,
 no claim without a tag
 The constitution that produces the ledger you are buying is public.
 Talk to us
+Read the constitution
 keepstate.ai · the durable agent session cloud

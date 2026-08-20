@@ -1,8 +1,12 @@
 ---
 import Docs from '../../layouts/Docs.astro';
 import docs from '../../generated/docs.json';
+const headings = [
+  { depth: 2, slug: 'start-here', text: 'Start here' },
+  { depth: 2, slug: 'reference', text: 'Reference' },
+];
 ---
-<Docs title="Documentation · KeepState" description="KeepState documentation: quickstart, concepts, guides, and the CLI and API references, synced from the product repository.">
+<Docs title="Documentation · KeepState" description="KeepState documentation: quickstart, concepts, guides, and the CLI and API references, synced from the product repository." headings={headings}>
   <h1>Documentation</h1>
   <p>
     KeepState runs AI agents inside microVMs and gives them five verbs:
@@ -10,17 +14,16 @@ import docs from '../../generated/docs.json';
     machine to a kill-and-resume you performed yourself, then explain the
     two-ledger model everything rests on.
   </p>
-  <p class="font-mono text-11 text-taupe">
-    last verified against {docs.productVersion} · reference pages are
-    generated from the product repository, never retyped
+  <p class="font-mono text-[11.5px] leading-[1.6] text-taupe m-0 mb-[34px]">
+    reference pages are generated from the product repository, never retyped
   </p>
-  <h2>Start here</h2>
+  <h2 id="start-here">Start here</h2>
   <ul>
     <li><a href="/docs/quickstart/">Quickstart</a>: clean clone to your first kill-and-resume, about 20 minutes. Synced from the product repo and gate-tested there.</li>
     <li><a href="/docs/concepts/">Concepts</a>: sessions, checkpoints, the two ledgers, and why the freeze is atomic.</li>
     <li><a href="/docs/claude-code/">Claude Code on KeepState</a>: run a real agent, kill it, watch it resume.</li>
   </ul>
-  <h2>Reference</h2>
+  <h2 id="reference">Reference</h2>
   <ul>
     <li><a href="/docs/cli/">CLI reference</a>: all {docs.verbs.length} verbs, usage text straight from the binary.</li>
     <li><a href="/docs/api/">API reference</a>: the daemon's {docs.routes.length} HTTP routes.</li>

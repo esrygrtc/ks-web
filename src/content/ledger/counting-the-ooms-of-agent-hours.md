@@ -2,6 +2,7 @@
 title: "Counting the OOMs of agent-hours"
 date: "2026-08-20"
 draft: true
+tag: "argument"
 standfirst: "The industry is scaling agent labor by orders of magnitude while the hours themselves stay disposable. A durable session turns compute time from a consumable into an asset, and the difference decides who pays for the same work twice."
 ---
 

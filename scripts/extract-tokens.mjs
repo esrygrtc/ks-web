@@ -47,6 +47,11 @@ const semantic = {
   slateLine:  '#5a616c', // chip border on the governance slate band
   slateSoft:  '#e6e3dc', // body text on the governance slate band
   inkLine:    '#4a443c', // secondary button border on ink bands
+  // fourth pass (fidelity sweep): the last four composite colors
+  taupeDeep:  '#6a6258', // copy-button hover border (component sheet)
+  warmMuted:  '#8a7a78', // award/epigraph meta text
+  oliveMuted: '#8a8372', // utility-band meta text
+  sandLight:  '#ddd7c9', // certification row hairlines
 };
 const named = new Set(Object.values(semantic));
 const extended = {};
